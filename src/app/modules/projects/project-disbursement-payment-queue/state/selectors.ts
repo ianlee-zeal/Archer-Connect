@@ -1,0 +1,24 @@
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import * as fromProjects from '../../state/reducer';
+
+const selectFeature = createFeatureSelector<fromProjects.ProjectsState>('projects_feature');
+export const agGridParams = createSelector(selectFeature, state => state.paymentQueue.common.agGridParams);
+export const paymentQueueGrid = createSelector(selectFeature, state => state.paymentQueue.common.paymentQueueGrid);
+export const advancedSearch = createSelector(selectFeature, state => state.paymentQueue.advancedSearch);
+export const paymentQueueCounts = createSelector(selectFeature, state => state.paymentQueue.common.paymentQueueCounts);
+export const lienPaymentStages = createSelector(selectFeature, state => state.paymentQueue.common.lienPaymentStages);
+export const coaGroupNumbers = createSelector(selectFeature, state => state.paymentQueue.common.coaGroupNumbers);
+export const coaNumbers = createSelector(selectFeature, state => state.paymentQueue.common.coaNumbers);
+export const ledgerEntryStatuses = createSelector(selectFeature, state => state.paymentQueue.common.ledgerEntryStatuses);
+export const lienStatuses = createSelector(selectFeature, state => state.paymentQueue.common.lienStatuses);
+export const bankruptcyStatuses = createSelector(selectFeature, state => state.paymentQueue.common.bankruptcyStatuses);
+export const bankruptcyStages = createSelector(selectFeature, state => state.paymentQueue.common.bankruptcyStages);
+export const activeLienPaymentStages = createSelector(selectFeature, state => state.paymentQueue.common.activeLienPaymentStages);
+export const selectedPaymentQueueGrid = createSelector(selectFeature, state => state.paymentQueue.common.selectedPaymentQueueGrid);
+export const authorizedGridParams = createSelector(selectFeature, state => state.paymentQueue.common.authorizedGridParams);
+export const selectedAuthorizedPaymentQueueGrid = createSelector(selectFeature, state => state.paymentQueue.common.selectedAuthorizedPaymentQueueGrid);
+export const unAuthorizedGridParams = createSelector(selectFeature, state => state.paymentQueue.common.unAuthorizedGridParams);
+export const selectedUnauthorizedPaymentQueueGrid = createSelector(selectFeature, state => state.paymentQueue.common.selectedUnauthorizedPaymentQueueGrid);
+export const showExpandBtn = createSelector(selectFeature, state => state.paymentQueue.advancedSearch.showExpandBtn);
+export const authorizedResultGridParams = createSelector(selectFeature, state => state.paymentQueue.common.authorizedResultGridParams);
+export const selectedAuthorizedPaymentQueueResultGrid = createSelector(selectFeature, state => state.paymentQueue.common.selectedAuthorizedPaymentQueueResultGrid);

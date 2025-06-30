@@ -1,0 +1,8 @@
+<app-grid 
+    *ngIf="currentProjectId"
+    entityLabel="Invoice Items" 
+    [gridId]="gridId" 
+    [gridOptions]="gridOptions" 
+    (gridReady)="gridReady($event)"
+    (loadData)="loadData($event)">
+</app-grid>

@@ -1,0 +1,9 @@
+<div class="page-content" *ngIf="(entity$ | async) as project">
+  <app-payments-grid
+    [isAdvancedSearchEnabled]="true"
+    [entityTypeId]="entityTypeId"
+    [entityId]="project.id"
+    [exportOnlyFilteredData]="false"
+    [useHasTransferItemsFilter]="false">
+  </app-payments-grid>
+</div>

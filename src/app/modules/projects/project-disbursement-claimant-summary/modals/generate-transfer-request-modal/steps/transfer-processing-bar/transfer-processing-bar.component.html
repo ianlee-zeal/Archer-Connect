@@ -1,0 +1,28 @@
+<div>
+  <p class="text-center">Processing Transfer Request - Total Payments Count Transfer</p>
+  <div class="progress-container mb-4">
+  <div  class="progress-count" *ngIf="progressTotalCount"> {{progressCurrentCount ? progressCurrentCount : progressTotalCount}}/{{progressTotalCount}}</div>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" [style.width]="progressWidth" [attr.aria-valuenow]="progressValue"
+      aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+  </div>
+  <div *ngIf="statistics" class="result-table-element-container">
+    <div class="result-table-element">
+      <div class="result-table-element__column">Transfers</div>
+      <div class="result-table-element__value">{{ statistics.TransfersCount }}</div>
+    </div>
+    <div class="result-table-element">
+      <div class="result-table-element__column">Transfer Items</div>
+      <div class="result-table-element__value">{{ statistics.TransferItemsCount }}</div>
+    </div>
+    <div class="result-table-element">
+      <div class="result-table-element__column">Critical Deficiencies</div>
+      <div class="result-table-element__value">{{ statistics.Errors }}</div>
+    </div>
+    <div class="result-table-element">
+      <div class="result-table-element__column">Warning Deficiencies</div>
+      <div class="result-table-element__value">{{ statistics.Deficiencies }}</div>
+    </div>
+  </div>
+</div>

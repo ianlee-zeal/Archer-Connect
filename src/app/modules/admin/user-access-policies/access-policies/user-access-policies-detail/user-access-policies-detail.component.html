@@ -1,0 +1,25 @@
+<div *ngIf="item$ | async as item">
+
+  <div>
+    <div *ngIf="error$ | async as error" class="text-danger mt-2 ms-3">
+      {{ error }}
+    </div>
+
+      <form [formGroup]="fg" [connectForm]="item">
+        <card hideSeparator>
+          <card-col [width]="480" [labelWidth]="117">
+            <card-row label="Name" inputId="name" [control]="fg.get('name')" required>
+              <div cardValue>
+                <input type="text" class="form-control disabled-input" formControlName="name" id="name" required appAutoFocus>
+              </div>
+            </card-row>
+            <card-row label="Description" inputId="description" [control]="fg.get('description')">
+              <input type="text" class="form-control disabled-input" formControlName="description" id="description" cardValue>
+            </card-row>
+            <card-row label="Level" [value]="item.policyLevel.name"></card-row>
+          </card-col>
+        </card>
+      </form>
+
+  </div>
+</div>

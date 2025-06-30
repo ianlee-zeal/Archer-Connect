@@ -1,0 +1,15 @@
+<div class="grid-actions">
+  <div class="grid-actions__action-wrapper">
+    <button
+    *ngIf="params.data.statusId === statuses.Success && params.data.reportDocId"
+    type="button"
+    class="btn-grid-action btn-download"
+    (click)="onDownloadFilesClick()"
+    title="Download Report"
+  ></button>
+  <button type="button" class="btn-grid-action btn-external-link-blue"
+  (click)="onViewResults()" title="View batch details">
+  </button>
+  </div>
+</div>
+

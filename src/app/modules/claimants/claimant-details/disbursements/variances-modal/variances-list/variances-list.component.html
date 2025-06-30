@@ -1,0 +1,63 @@
+<div class="variances-list" *ngIf="variances$ | async as variances">
+    <card hideSeparator class="variances-list__header-info">
+      <card-col [width]="200">
+        <card-row
+          label="Claimant ID"
+          [value]="claimantId"
+        ></card-row>
+      </card-col>
+      <card-col>
+        <card-row>
+          <label cardValue class="fas expand-button" [ngClass]="isExpandedAll ? 'fa-chevron-down' : 'fa-chevron-right'" (click)="toggleExpandAll()">
+            <span class="expand-button__text">{{isExpandedAll ? 'Collapse All': 'Expand All'}}</span>
+          </label>
+        </card-row>
+      </card-col>
+    </card>
+    <card class="variances-list__panel-header">
+      <card-col>
+        <card-row class="variances-list__formula-row" hideLabel>
+          <app-grid-expansion-panel-header
+            [elements]="getHeaderElements()"
+            cardValue
+          ></app-grid-expansion-panel-header>
+        </card-row>
+      </card-col>
+    </card>
+    <div class="variances-list__table">  
+        <card hideSeparator>
+          <card-col>
+            <card-row
+              *ngFor="let variance of variances"
+              class="variances-list__formula-row"
+              hideLabel
+            >
+              <app-grid-expansion-panel-row
+                [elements]="getGroupElements(variance)"
+                [isExpanded]="getExpandedState(variance.id)"
+                (expanded)="onGroupExpanded(variance.id)"
+                class="grid-expansion-panel__variances"
+                cardValue
+              >
+                <card hideSeparator>
+                  <card-col>
+                    <card-row
+                      *ngFor="let entry of variance.groupEntries; let even = even"
+                      class="variances-list__formula-row__child"
+                      hideLabel
+                    >
+                      <app-grid-expansion-panel-row-child
+                        [elements]="getSubGroupElements(entry)"
+                        [alternateBackground]="even"
+                        cardValue
+                      ></app-grid-expansion-panel-row-child>
+                    </card-row>
+                  </card-col>
+                </card>
+              </app-grid-expansion-panel-row>
+            </card-row>
+          </card-col>
+        </card>
+      </div>
+  </div>
+  

@@ -1,0 +1,8 @@
+<div class="page">
+  <app-action-bar *ngIf="actionbar$ | async as actionbar" [actionHandlers]="actionbar"></app-action-bar>
+  <app-context-bar [title]="title" [elements]="null"></app-context-bar>
+  
+  <div class="page-content" style="padding-top: 5px;">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+.invoicing {
+    &__amount {
+        display: flex;
+        align-items: baseline;
+        :first-child {
+            margin-right: 5px;
+        }
+    }
+}

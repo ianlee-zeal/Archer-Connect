@@ -1,0 +1,10 @@
+<div *ngIf="gridOptions">
+  <app-grid
+  class="modal-grid"
+  [enabledAutoHeight]="false"
+  [gridOptions]="gridOptions"
+  (gridReady)="gridReady($event)"
+  (loadData)="loadData($event)"
+  [gridId]="gridId">
+  </app-grid>
+</div>

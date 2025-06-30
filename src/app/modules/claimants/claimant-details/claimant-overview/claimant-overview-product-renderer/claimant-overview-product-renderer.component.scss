@@ -1,0 +1,42 @@
+@import "src/styles/variables.scss";
+
+.service-block {
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+.service-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+  &__one-row {
+    display: flex;
+    align-items: end;
+  }
+}
+
+.service-link {
+  font-size: 16px;
+  color: $black;
+}
+
+.status {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+
+  &--pending {
+    color: #fdba12;
+  }
+
+  &--finalized {
+    color: #4ebf52;
+  }
+}
+
+.finalized-info {
+  font-size: 14px;
+}
+
+.line-part {
+  padding-right: 16px;
+}

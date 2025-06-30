@@ -1,0 +1,177 @@
+@import "src/styles/variables.scss";
+
+.custom-card {
+  padding: 10px 16px;
+  font-family: "Open Sans", sans-serif;
+  width: 100%;
+  gap: 20px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #303030;
+  cursor: default;
+}
+
+.custom-card-border {
+  border-radius: 10px;
+  border: 1px solid #1774DE;
+  padding: 16px 16px;
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  padding-top: 5px;
+}
+
+.card-row-title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 77.5%;
+  gap: 10px;
+}
+
+.title {
+  color: #050041;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+}
+
+.card-row-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 17.5%;
+  gap: 5px;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+
+  div {
+    padding: 5px;
+    line-height: 14px;
+    cursor: pointer;
+  }
+
+  div:hover {
+    background-color: #E3E3E3;
+  }
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  width: 47.5%;
+
+  img {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.participant-dropdown-container {
+  font-weight: 700;
+
+  button:after {
+    display: none;
+  }
+  
+  span {
+    margin-right: 5px;
+  }
+  
+  button:hover {
+    border-radius: 5px;
+    background-color: $light-blue;
+  }
+}
+
+.participant-dropdown {
+  font-size: 13px;
+  color: #303030;
+  font-weight: 600;
+
+  &:hover {
+    color: #303030;
+    background-color: #fff;
+  }
+}
+
+.margin-right-10 {
+  margin-right: 10px;
+}
+
+.project-info {
+  width: 47.5%;
+  text-align: right;
+}
+
+.separator {
+  width: 100%;
+  height: 25px;
+}
+
+.card-row-request-type {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 60%;
+  gap: 5px;
+}
+
+.request-type {
+  width: 55%;
+}
+
+.createdAt {
+  width: 40%;
+}
+
+.last-updated {
+  width: 35%;
+  text-align: right;
+}
+
+.title,
+.project-info,
+.user-info span,
+.request-type,
+.createdAt,
+.last-updated,
+.last-updated-thread {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.description {
+  width: 100%;
+}
+
+.card-row-last-updated-thread {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 47.5%;
+  gap: 5px;
+}
+
+.last-updated-thread {
+  width: 77.5%;
+  text-align: right;
+}
+
+.custom-card-separator {
+  border-bottom: 1px solid #E3E3E3;
+}

@@ -1,0 +1,87 @@
+@import 'src/styles/variables.scss';
+
+$chart-min-width: 320px;
+$chart-min-height: 240px;
+$bar-chart-min-width: 360px;
+$bar-chart-min-height: 260px;
+
+.task-mng-dash-ctn {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+
+    &__top-row {
+      width: 600px;
+      padding: 0 0 10px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__header {
+      width: 100%;
+      font-size: 14px;
+      color: $black;
+    }
+
+    &__select-ctn {
+      width: 160px
+    }
+
+    &__select {
+      font-size: 12px;
+      color: $black;
+      margin: 0;
+      padding: 0;
+    }
+
+    &__title {
+      width: 100%;
+      padding: 0 0 5px 15px;
+      margin: 20px 0 10px 0;
+    }
+
+    &__widgets-ctn {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 0 20px 0;
+    }
+
+    &__widget {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 20px 0 0;
+      min-width: $chart-min-width * 1.1;
+    }
+
+    &__2bars-ctn {
+      display: flex;
+    }
+
+    &__bar-legend-ctn {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__bar-chart-ctn {
+      min-width: $bar-chart-min-width;
+      min-height: $bar-chart-min-height;
+    }
+
+    &__chart-ctn {
+      min-width: $chart-min-width;
+      min-height: $chart-min-height;
+    }
+
+    &__legend {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 0 0;
+    }
+
+    &__total {
+      font-size: 12px;
+      margin: 0 0 5px 0;
+    }
+}

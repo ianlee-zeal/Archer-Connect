@@ -1,0 +1,12 @@
+<modal (close)="respond(false)">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <ng-container modalSection>
+      <div class="modal-section confirm-msg" [innerHTML]="message"></div>
+    </ng-container>
+  </modal-body>
+  <modal-footer>
+      <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="respond(false)">Cancel</button>
+      <button type="button" class="btn modal-footer__btn modal-footer__btn--primary" (click)="respond(true)">{{ buttonOkText || 'Ok' }}</button>
+  </modal-footer>
+</modal>

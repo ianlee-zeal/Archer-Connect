@@ -1,0 +1,7 @@
+@import "src/styles/variables.scss";
+
+::ng-deep.exclamation-triangle {
+    line-height: 21px;
+    color: $validation-invalid-color;
+    padding-left: 4px;
+}

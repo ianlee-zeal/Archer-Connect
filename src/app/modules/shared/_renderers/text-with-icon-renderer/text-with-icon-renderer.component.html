@@ -1,0 +1,6 @@
+<div>
+  <span *ngIf="!!data.textFirst" class="text">{{data.text}}</span>
+  <i *ngIf="data.faIconClass" [ngClass]="data.faIconClass" class="fas"></i>
+  <img *ngIf="data.icon" [title]="data.title||''" [src]="data.icon"/>
+  <span *ngIf="!data.textFirst" class="text">{{data.text}}</span>
+</div>

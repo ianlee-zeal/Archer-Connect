@@ -1,0 +1,87 @@
+@import "../variables.scss";
+@import "../_mixins.scss";
+
+$tooltip-border-radius: 10px;
+
+.tooltip {
+  font-family: $open-sans-font-family;
+}
+
+.grid-tooltip {
+
+  &.show {
+    opacity: 0.95;
+  }
+
+  &.bs-tooltip-top,
+  &.bs-tooltip-bottom {
+    padding: 3px 0;
+  }
+
+  &.bs-tooltip-top .tooltip-inner {
+    border-radius: $tooltip-border-radius $tooltip-border-radius 0 $tooltip-border-radius;
+    box-shadow: 0 10px 16px 0 rgba(0, 80, 142, 0.3);
+  }
+
+  &.bs-tooltip-bottom .tooltip-inner {
+    border-radius: $tooltip-border-radius 0 $tooltip-border-radius $tooltip-border-radius;
+    box-shadow: 0 10px 16px 0 rgba(0, 80, 142, 0.3);
+  }
+
+  .tooltip-arrow {
+    display: none;
+  }
+
+  .tooltip-inner {
+    background-color: $dark-blue;
+    padding: 30px 45px 30px 40px;
+    max-width: none;
+    text-align: left;
+    position: relative;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+  }
+
+  .card-row.form-group label {
+    color: $gray;
+  }
+
+  .card-row.form-group .form-control-plaintext {
+    color: $white;
+  }
+}
+
+.tooltip-info-container {
+  @extend .grid-tooltip;
+  &.show {
+    max-width: 250px;
+  }
+  .tooltip-inner {
+    padding: 15px;
+  }
+}
+
+.dark-mode-tooltip .tooltip-inner {
+  background-color: #1D1C1F;
+  max-width: 286px;
+}
+
+.ql-tooltip.ql-editing[data-mode="link"] {
+  a.ql-action {
+    @include button($white, $custom-blue);
+    margin-left: 5px;
+    padding: 3px 10px;
+    border: none;
+    border-radius: $button-border-radius;
+    &::after {
+      margin-left: 0 !important;
+    }
+  }
+}

@@ -1,0 +1,46 @@
+@import "../variables.scss";
+@import "../_mixins.scss";
+
+.input-sm {
+  height: $controls-old-height;
+  font-size: $controls-old-font-size;
+}
+
+.input-group {
+  height: $controls-old-height;
+
+  & > .form-control:not(textarea) {
+    height: inherit;
+    font-size: $controls-old-font-size;
+    border-radius: unset;
+  }
+
+  & > .input-group-append {
+    & > .input-group-text {
+      font-size: $controls-old-font-size;
+      padding: 0;
+    }
+  }
+}
+
+.input-group-append {
+  position: absolute;
+  z-index: 10;
+  top: 2px;
+  right: 2px;
+  padding: 0;
+  border: none;
+
+  &:focus {
+    outline: 1px dotted;
+  }
+}
+
+.input-group-text {
+  @include square(20px);
+
+  display: inline-block;
+  color: #c2c2c2;
+  background-color: #ececec;
+  border-color: #ececec;
+}

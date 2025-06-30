@@ -1,0 +1,7 @@
+::ng-deep .disabled {
+  .ag-cell-wrapper{
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
+}

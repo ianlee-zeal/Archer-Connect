@@ -1,0 +1,77 @@
+@import "src/styles/variables";
+
+.input-field, .select-container {
+    max-width: 220px;
+}
+
+.payment-type {
+  display: flex;
+  justify-content: space-between;
+
+  &__value {
+    margin-left: 10px;
+  }
+}
+
+.errors-container {
+  flex: 1;
+  color: red;
+
+  &__text {
+    margin-left: 10px;
+    font-size: 15px;
+  }
+
+  &__row {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.transfer {
+  min-width: 210px;
+  margin-top: -40px;
+  margin-left: 400px;
+}
+
+.transfer span {
+  font-size: 14px;
+  opacity: 1 !important;
+}
+
+.transfer span::before {
+  opacity: 0.6 !important;
+}
+.transfer span::after {
+  opacity: 0.6 !important;
+}
+
+
+.form-check span {
+  cursor: default;
+}
+
+.modal-section-fixed {
+  max-height: calc(100vh - 300px);
+  min-height: 300px;
+  overflow-y: auto;
+}
+
+.custom-card {
+  margin-bottom: 15px;
+}
+
+.ledger-entry-info-modal-form {
+  background-color: $gray-lighter;
+}
+.ledger-entry-info-modal-form-container {
+  background-color: $gray;
+}
+.modal-section-last {
+  border-bottom: $gray 2px solid;
+}
+
+.not-resizable {
+  resize: none;
+}

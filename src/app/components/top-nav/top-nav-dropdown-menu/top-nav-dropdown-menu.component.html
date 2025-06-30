@@ -1,0 +1,63 @@
+<ul
+  data-test-id="profile-menu-dropdown"
+  class="user-profile-menu dropdown-menu dropdown-menu-right show">
+  <li *ngIf="user.selectedOrganization"
+      data-test-id="profile-menu-dropdown-item"
+      class="user-profile-menu__item"
+      [routerLink]="['/user-profile', 'details']"
+      (click)="close.emit()" ngbDropdownItem>
+    <img src="assets/svg/gear.svg" class="user-profile-menu__icon" />
+    <a class="user-profile-menu__link" [routerLink]="['/user-profile', 'details']" >
+      My Account
+    </a>
+  </li>
+  <li
+    data-test-id="profile-menu-dropdown-item"
+    class="user-profile-menu__item"
+    (click)="logout.emit()" ngbDropdownItem>
+    <img src="assets/svg/right-from-bracket.svg" class="user-profile-menu__icon" />
+    Log Out
+  </li>
+  <ng-container>
+    <li *ngIf="showHorizontalRule"  class="dropdown-divider"></li>  
+  </ng-container>
+  <ng-container *permissions="switchOrganizationPermission">   
+    <li
+      data-test-id="profile-menu-dropdown-item"
+      class="user-profile-menu__item"
+      (click)="switchOrganization.emit(user.selectedOrganization?.id)" ngbDropdownItem>
+      <a class="user-profile-menu__link">
+        Switch Organization
+      </a>
+    </li>
+    <li
+      *ngIf="canSwitchToDefaultOrg"
+      data-test-id="profile-menu-dropdown-item"
+      class="user-profile-menu__item"
+      (click)="switchToDefaultOrganization.emit(user.defaultOrganization.id)">
+      <a class="user-profile-menu__link">
+        Back to {{ user.defaultOrganization.name }}
+      </a>
+    </li>
+  </ng-container>
+  <ng-container *permissions="impersonateOrgPermission">
+    <li *ngIf="!isImpersonating"
+      data-test-id="profile-menu-dropdown-item-impersonate-org" 
+      class="user-profile-menu__item" 
+      (click)="impersonateOrganization.emit(user.selectedOrganization?.id)" ngbDropdownItem>      
+      <a class="user-profile-menu__link">
+        Impersonate Org
+      </a>
+    </li>
+  </ng-container>
+  <ng-container>
+    <li *ngIf="isImpersonating"
+      data-test-id="profile-menu-dropdown-item-impersonate-org" 
+      class="user-profile-menu__item" 
+      (click)="depersonateOrganization.emit()" ngbDropdownItem>      
+      <a class="user-profile-menu__link">
+        End Impersonation
+      </a>
+    </li>
+  </ng-container>
+</ul>

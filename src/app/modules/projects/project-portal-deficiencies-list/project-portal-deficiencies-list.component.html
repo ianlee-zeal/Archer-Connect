@@ -1,0 +1,12 @@
+<div class="page" *ngIf="currentProject$ | async as project">
+  <div class="page-content">
+      <app-grid
+        [gridOptions]="gridOptions"
+        (gridReady)="gridReady($event)"
+        (loadData)="loadData($event)"
+        [gridId]="gridId"
+        [skipSetContentHeight]="true"
+        entityLabel="Deficiencies">
+      </app-grid>
+  </div>
+</div>

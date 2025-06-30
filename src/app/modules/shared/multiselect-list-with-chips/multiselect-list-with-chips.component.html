@@ -1,0 +1,33 @@
+<div class="multiselect-with-chips-container">
+  <div class="select-container" (click)="toggleDropdown()">
+    <input type="text" [placeholder]="placeholder" [(ngModel)]="selectedText" readonly>
+    <span class="arrow-wrapper">
+      <span class="arrow" [class.open]="showDropdown"></span>
+    </span>
+  </div>
+
+  <div class="multiselect-list" *ngIf="showDropdown">
+    <div class="multiselect-list__option" *ngIf="enableSelectAll && options && options.length > 1">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" (change)="onSelectAll($event.target.checked)"
+          [checked]="isSelectAllChecked">
+        <span>Select All</span>
+      </label>
+    </div>
+
+    <div class="multiselect-list__option" *ngFor="let option of options; let i = index">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" (change)="onChange($event, option, i)"
+          [checked]="option.checked">
+        <span>{{ option.name }}</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="chip-container" *ngIf="!hideChips">
+  <div class="chip" *ngFor="let selectedOption of selectedOptions; let i = index">
+    <span class="remove-chip" (click)="removeChip(selectedOption, i)">x</span>
+    {{ selectedOption.name }}
+  </div>
+</div>

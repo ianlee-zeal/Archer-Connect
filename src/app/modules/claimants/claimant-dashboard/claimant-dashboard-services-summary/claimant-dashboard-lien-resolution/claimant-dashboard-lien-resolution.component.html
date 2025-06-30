@@ -1,0 +1,40 @@
+<app-info-card [state]="infoCardState">
+  <div (click)="onClick()" class="container cursor-pointer" *ngIf="lienResolution as data" infoCardData>
+    <div class="section first-section">
+      <div class="title">Lien Resolution</div>
+        <div *ngIf="!isFinalized; else Final" class="status">IN PROGRESS</div>
+
+        <ng-template #Final>
+          <div class="status-final">FINALIZED</div>
+        </ng-template>
+
+    </div>
+    <div class="section second-section">
+      <div class="summary-row">
+        <span class="property-name">Liens Resolved:</span>
+        <div class="dashed-line"></div>
+        <span data-test-id="dashboard-lienResolution-display-finalizedLiensCount" class="property-value"> {{ data.liensResolved }} / {{ lienResolution.items.length }} </span>
+      </div>
+      <div class="summary-row">
+        <span class="property-name">Initial Total Lien Amount:</span>
+        <div class="dashed-line"></div>
+        <span *ngIf="data.initialTotalAmount != null; else Pending"  data-test-id="dashboard-lienResolution-display-initialTotalAmount" class="property-value"> {{ data.initialTotalAmount | currency }} </span>
+      </div>
+    </div>    
+    <div class="section third-section">
+      <div class="summary-row">
+        <span class="property-name">Final Total Lien Amount:</span>
+        <div class="dashed-line"></div>
+        <span *ngIf="isFinalized; else Pending" data-test-id="dashboard-lienResolution-display-finalTotalAmount" class="property-value"> {{ data.totalLiens | currency }} </span>
+      </div>
+      <div class="summary-row">
+        <span class="property-name">Total Savings</span>
+        <div class="dashed-line"></div>
+        <span *ngIf="data.initialTotalAmount != null && isFinalized; else Pending" data-test-id="dashboard-lienResolution-display-totalSavings" class="property-value"> {{ (data.initialTotalAmount - data.totalLiens) | currency }} </span>
+      </div>
+    </div>
+  </div>
+  <ng-template #Pending>
+    <span data-test-id="dashboard-lienResolution-display-pending" class="property-value"> Pending </span>
+  </ng-template>
+</app-info-card> 

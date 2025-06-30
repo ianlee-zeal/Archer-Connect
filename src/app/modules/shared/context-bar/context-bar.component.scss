@@ -1,0 +1,181 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles.variables";
+
+.context-bar-container {
+  padding: 10px 0;
+  max-height: 150px;
+  display: flex;
+  align-items: flex-start;
+  border-bottom: 2px solid $menu-color;
+}
+
+.context-bar-title {
+  display: flex;
+  font-size: 18px;
+  font-weight: bold;
+  color: $black;
+  word-break: break-all;
+  margin: 0px 60px 0px 20px;
+}
+
+.context-bar-sub-title {
+  font-weight: normal;
+
+  &:before {
+    color: $label-color-gray-light;
+    content: '/';
+    padding: 0 10px;
+  }
+}
+
+.context-bar-status {
+  font-weight: normal;
+  font-size: 18px;
+  font-weight: bold;
+  color: $black;
+
+  &:before {
+    color: $black;
+    content: '|';
+    padding: 0 10px;
+  }
+}
+
+.context-bar-is-edited {
+  width: 60px;
+  height: 24px;
+  border-radius: 2px;
+  background-color: $gray-mid-light;
+  font-size: 10px;
+  line-height: 2.6;
+  letter-spacing: 1px;
+  color: #a4a4a4;
+  font-weight: normal;
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  margin-left: 20px;
+}
+
+.context-bar-element-container {
+  display: flex;
+  margin-top: -15px;
+}
+
+.context-bar-element-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.context-bar-element {
+  display: flex;
+  flex-direction: column;
+  margin-right: 40px;
+  min-height: 55px;
+  justify-content: flex-end;
+
+  &__title {
+    text-align: left;
+    margin-bottom: 2px;
+    color: $label-color-gray-light;
+    font-size: 14px;
+  }
+
+  &__value {
+    text-align: left;
+    font-size: 14px;
+    font-weight: bold;
+    color: $black;
+
+    &--error {
+      color: $validation-invalid-color;
+      font-size: small;
+    }
+  }
+
+  &__link {
+    text-align: left;
+    height: auto;
+    line-height: initial;
+    font-size: 14px;
+    font-weight: bold;
+    width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &:last-child {
+    min-width: max-content;
+    margin-right: 20px;
+  }
+}
+
+.orange-arrow {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+}
+
+.error-text {
+  margin: 0 30px;
+}
+
+.action-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 992px) {
+
+  .context-bar-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .context-bar-title {
+    margin: 0px;
+    text-align: center;
+  }
+
+  .context-bar-element {
+    margin-right: 0px;
+    width: 100%;
+
+    &__title,
+    &__value {
+      text-align: center;
+    }
+
+    &__title {
+      font-weight: 700;
+    }
+  }
+}
+
+.context-bar-toggle {
+  text-align: center;
+  cursor: pointer;
+}
+
+app-rating-icon {
+  position: relative;
+  margin: 0px 20px;
+}
+
+.messaging-container {
+  display: flex;
+  align-items: center;
+  flex-grow: 11;
+  margin-top: 8px;
+}
+
+.messaging-btn {
+  color: $white;
+  background: var(--messaging-btn-color);
+  border-radius: 4px;
+  display: flex;
+  margin-right: 10px;
+}

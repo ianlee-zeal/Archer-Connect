@@ -1,0 +1,154 @@
+@import '../../../../styles.variables.scss';
+@import "../../../../styles/variables.scss";
+
+$end-call-size: 70px;
+$border-radius: 25px;
+$box-shadow: 0 0 5px -3px rgba(0, 0, 0, 0.2),
+20px 10px 30px 5px rgba(0, 0, 0, 0.14),
+10px 5px 10px 5px rgba(0, 0, 0, 0.12);
+
+.call-center-container {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 11;
+  width: calc(100% - 250px);
+
+  @media (max-width: 768px) {
+    width: calc(100% - 50px);
+  }
+}
+
+.call-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+
+  .expand-panel {
+    padding: 0;
+
+    .btn {
+      width: 100%;
+      height: 100%;
+      background-color: $blue;
+      border-radius: $border-radius 0 0 0;
+    }
+  }
+
+  .call-panel {
+    background-color: $blue;
+    box-shadow: $box-shadow;
+
+    button,
+    span {
+      color: $white-smoke !important;
+    }
+
+    .call-duration {
+      font-size: 14px;
+    }
+  }
+
+  .save-call-btn {
+    background-color: $success;
+    border: 1px solid $dark-gray;
+  }
+
+  .hide-btn {
+    flex-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    background-color: $dark-blue;
+    border: 1px solid $dark-gray;
+  }
+
+  &--expanded {
+    display: flex;
+    width: 100%;
+    margin: 0 30px 0 15px;
+
+    .start-decorator {
+      width: 15px;
+      margin-top: -34px;
+      border-radius: $border-radius 0 0 0;
+      background-color: $dark-blue;
+    }
+
+    .data-panel {
+      background-color: $white;
+      padding: 0 20px 5px 10px;
+      box-shadow: $box-shadow;
+      min-height: 335px;
+      max-height: 70vh;
+
+      #widget-nav-tab {
+        margin-top: -50px;
+        margin-left: -10px;
+        background-color: white;
+        width: fit-content;
+        padding: inherit;
+        border-bottom: none;
+        border-radius: 5px;
+        box-shadow: 8px -8px 8px -7px rgba(0, 0, 0, 0.2);
+
+        .nav-link {
+          padding: 0 10px;
+        }
+      }
+    }
+
+    .control-panel {
+      width: 120px;
+
+      .call-panel {
+        padding: 0 8px;
+        text-align: center;
+      }
+
+      .expand-panel .btn {
+        border-radius: 0 $border-radius 0 0;
+      }
+
+      .end-call-btn,
+      .save-call-btn {
+        padding: inherit;
+        margin: 20px 0 30px 0;
+        line-height: 16px;
+        font-weight: 700;
+        height: $end-call-size;
+        width: $end-call-size;
+        border-radius: 50%;
+      }
+
+      .hide-btn {
+        margin-top: 5px;
+      }
+    }
+  }
+
+  &--collapsed {
+    .control-panel {
+      width: 290px;
+
+      .call-panel {
+        padding: 10px 5px 5px 15px;
+      }
+    }
+  }
+
+  &--minimized {
+    margin: 0 15px;
+
+    .control-panel {
+      width: 235px;
+
+      .call-panel {
+        padding: 0;
+
+        .buttons-panel {
+          margin: 3px;
+        }
+      }
+    }
+  }
+}

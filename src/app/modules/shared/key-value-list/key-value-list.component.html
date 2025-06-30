@@ -1,0 +1,17 @@
+<div class="key-value-list" *ngIf="data?.length">
+  <card hideSeparator>
+    <card-col>
+      <card-row #cardRow label="Last Loaded Date">
+        <div class="card-row__content form-control-plaintext" cardValue>
+          {{lastLoadedDate | dateFormat}}
+          <span *ngIf="dataIsStale" class="key-value-list__warning-info">
+          Last Loaded Date > 24 hours ago <img class="key-value-list__warning-icon" src="assets/images/warning-icon.png" alt="Warning" />
+          </span>
+        </div>
+      </card-row>
+      <ng-container *ngFor="let item of data">
+        <card-row #cardRow [label]="item.key" [value]="item.value | jsonValueFormat : item.dataType"></card-row>
+      </ng-container>
+    </card-col>
+  </card>
+</div>

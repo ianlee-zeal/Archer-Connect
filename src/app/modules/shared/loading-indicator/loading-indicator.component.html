@@ -1,0 +1,6 @@
+<div
+  data-test-id="loading-indicator"
+  class="loading-indicator"
+  [ngClass]="{ 'small-padding' : !isSideMenuExpanded, 'no-padding': loadingInProgress && !loadingIndicatorInPage, 'show-loading': (isBusy || loadingInProgress), 'page-loading-indicator': loadingIndicatorInPage }">
+  <app-spinner></app-spinner>
+</div>

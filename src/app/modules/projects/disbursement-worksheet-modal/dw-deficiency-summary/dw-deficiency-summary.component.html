@@ -1,0 +1,14 @@
+<div>
+    <span class="grid-title">
+        <i class="fas fa-exclamation-triangle"></i>
+        CRITICAL DEFICIENCIES <span *ngIf="outputType === outputTypes.Publish">MUST BE FIXED BEFORE CONTINUING</span>
+    </span>
+    <app-dw-deficiencies-critical-list [deficiencies]="criticalDwDeficiencies$"></app-dw-deficiencies-critical-list>
+</div>
+<div class="mt-4">
+    <span class="grid-title">
+        <i class="grid-title__warning fas fa-exclamation-triangle"></i>
+        WARNING DEFICIENCIES ON THIS PROCESS
+    </span>
+    <app-dw-deficiencies-warning-list [deficiencies]="warningDwDeficiencies$"></app-dw-deficiencies-warning-list>
+</div>

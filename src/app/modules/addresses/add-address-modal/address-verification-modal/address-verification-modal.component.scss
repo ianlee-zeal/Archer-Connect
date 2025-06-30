@@ -1,0 +1,37 @@
+@import 'src/styles/variables.scss';
+
+.address-verification-modal {
+  .modal-section.modal-section__height--partial {
+    min-height: 200px;
+  }
+  .modal-section.modal-section__height--half {
+    min-height: 375px;
+  }
+  .modal-section {
+    margin-bottom: $modal-section-indent;
+    border-radius: $modal-border-radius;
+    background-color: $modal-bg;
+    padding: 12px 0;
+  
+    card:last-child {
+      margin-bottom: 0;
+    }
+    &__config {
+      padding: 12px 20px !important;
+
+      & .modal-title__header {
+        font-size: 16px;
+        font-weight: bold;
+        color: $black;
+      }
+    }
+  }
+  &__body-config {
+    padding: 12px 20px !important;
+  }
+}
+
+// imported CSS from app-modal-header
+.modal-header {
+  padding: 0;
+}

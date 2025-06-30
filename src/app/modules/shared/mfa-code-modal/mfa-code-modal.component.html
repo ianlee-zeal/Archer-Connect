@@ -1,0 +1,34 @@
+<modal class="mfa-code-modal" (close)="cancel()">
+  <modal-header>{{title}}</modal-header>
+
+  <modal-body>
+    <div class="modal-section">
+      <div class="mfa-code-modal__message">
+        Enter the code that was sent to your mobile device ending in <span class="mfa-code-modal__phone-number">{{phoneNumberShort}}</span>
+      </div>
+
+      <form [formGroup]="form" novalidate (keyup.enter)="onSubmit()">
+        <div class="mfa-code-modal__control-container">
+          <div class="mfa-code-modal__code-container">
+            <input class="mfa-code-modal__code" formControlName="code" id="code" type="text" maxlength="7" onlyNumbers appAutoFocus>
+            <div class="mfa-code-modal__underline">
+              <div *ngFor="let item of linesCount" class="mfa-code-modal__line"></div>
+            </div>
+          </div>
+          <control-messages [control]="form.get('code')"></control-messages>
+        </div>
+
+        <div class="text-center mfa-code-modal__submit-button-container">
+          <button type="submit" class="btn btn-primary btn-oval" (click)="onSubmit()">Submit</button>
+        </div>
+
+        <div class="mfa-code-modal__note text-center">Did not receive code?
+          <button type="button" class="btn mfa-code-modal__re-send-code-btn" (click)="resendCode()">
+            Re-send Code
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </modal-body>
+</modal>

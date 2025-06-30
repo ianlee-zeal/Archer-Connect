@@ -1,0 +1,11 @@
+<div class="grid-actions">
+  <button
+    *ngIf="hasPermissions"
+    type="button"
+    class="btn-grid-action btn-cure"
+    [title]="title"
+    [disabled]="isDisabled"
+    [ngClass]="{ 'disabled': isDisabled }"
+    (click)="onOverrideClick()" >
+  </button>
+</div>

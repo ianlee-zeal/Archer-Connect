@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+    <defs>
+        <style>
+            .prefix__cls-2,.prefix__cls-4{fill:none}.prefix__cls-4{stroke:#1774de}
+        </style>
+    </defs>
+    <g id="prefix__ic_new" transform="translate(-256 -74)" style="opacity:.75">
+        <path id="prefix__bg" d="M0 0H14V14H0z" class="prefix__cls-2" transform="translate(256 74)"/>
+        <g id="prefix__Rectangle_166" data-name="Rectangle 166" transform="translate(257 75)" style="stroke:#1774de;fill:#fff">
+            <rect width="12" height="12" rx="2" style="stroke:none"/>
+            <rect width="11" height="11" x=".5" y=".5" class="prefix__cls-2" rx="1.5"/>
+        </g>
+        <path id="prefix__Path_77" d="M0-1v7" class="prefix__cls-4" data-name="Path 77" transform="translate(263 78.5)"/>
+        <path id="prefix__Path_78" d="M-1 0h7" class="prefix__cls-4" data-name="Path 78" transform="translate(260.5 81)"/>
+    </g>
+</svg>

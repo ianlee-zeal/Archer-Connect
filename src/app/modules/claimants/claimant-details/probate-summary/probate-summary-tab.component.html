@@ -1,0 +1,24 @@
+<ng-container *ngIf="overviewProbates">
+    <ng-container *ngIf="overviewProbates.length > 0; else noRecords">
+        <card header="Probate Summary">
+            <div class="column-container">
+                <card-col [labelWidth]="215" [width]="600">
+                    <card-row label="Stage" [value]="overviewProbates[0].stage?.name"></card-row>
+                    <card-row label="Service Type"
+                        [value]="overviewProbates[0].serviceType"></card-row>
+                    <card-row label="Allocation" [value]="allocation"></card-row>
+                    <card-row label="Special Pay Instr Exist" [value]="spiExist"></card-row>
+                </card-col>
+
+                <card-col [labelWidth]="215" [width]="600">
+                    <card-row label="Number of Payees" [value]="numPayees"></card-row>
+                    <card-row label="Status" [value]="overviewProbates[0].status"></card-row>
+                    <card-row label="Final Date" [value]="overviewProbates[0].finalDate"></card-row>
+                </card-col>
+            </div>
+        </card>
+    </ng-container>
+    <ng-template #noRecords>
+        <app-tab-placeholder-no-record></app-tab-placeholder-no-record>
+    </ng-template>
+</ng-container>

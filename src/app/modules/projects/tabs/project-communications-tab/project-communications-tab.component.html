@@ -1,0 +1,8 @@
+<div class="page-content" *ngIf="item$ | async as item">
+  <app-communication-list
+    [entityId]="item.id"
+    [entityType]="entityType"
+    [relatedPage]="relatedPage"
+    [parentSelector]="selector">
+  </app-communication-list>
+</div>

@@ -1,0 +1,15 @@
+@import "../../../../../styles/variables.scss";
+
+.allocation {
+    &__amount {
+        display: flex;
+        align-items: baseline;
+        :first-child {
+            margin-right: 5px;
+        }
+    }
+}
+
+.warning {
+    color: $yellow;
+}

@@ -1,0 +1,88 @@
+<form [formGroup]="form" *ngIf="canEdit; else viewTemplate" novalidate>
+  <card hideSeparator>
+    <card-col [width]="500" [labelWidth]="95">
+      <card-row label="Name" inputId="name" [control]="form.get('name')" required>
+        <input type="text" class="form-control" formControlName="name" id="name" maxLength="100" appAutoFocus cardValue required />
+      </card-row>
+      <card-row label="Tort" inputId="matter" [control]="form.get('matter')" required maxContentWidth="400" valuePaddingTop="4">
+        <ng-container cardValue>
+          <app-clearable-input
+            [form]="form"
+            controlName="matter" 
+            [isReadonly]="true"
+            id="matter" 
+            placeholder="Select Tort"
+            width="300"
+            marginRight="5"
+            (clear)="onClear('matter')">
+          </app-clearable-input>
+          <button type="button" class="action__button" (click)="onOpenMatterModal()" title="Select Tort">
+            <img src="assets/images/ic_basic_search.svg">
+          </button>
+        </ng-container>
+      </card-row>
+
+      <card-row label="Firm" inputId="org" [control]="form.get('org')" required maxContentWidth="400" valuePaddingTop="4">
+        <ng-container cardValue>
+          <app-clearable-input
+            [form]="form"
+            controlName="org" 
+            [isReadonly]="true"
+            id="org" 
+            placeholder="Select Firm"
+            width="300"
+            marginRight="5"
+            (clear)="onClear('org')">
+          </app-clearable-input>
+          <button type="button" class="action__button" (click)="onOpenFirmModal()" title="Select Firm" >
+            <img src="assets/images/ic_basic_search.svg">
+          </button>
+        </ng-container>
+      </card-row>
+    </card-col>
+  </card>
+  <card hideSeparator [ngStyle]="{'display': !canShowFinancialSummaryToggle ? 'none' : 'block'}">
+    <card-row label="Show Financial Summary" inputId="showFinancialSummary" [control]="form.get('showFinancialSummary')">
+      <app-checkbox-toggle
+            [id]="'showFinancialSummary'"
+            [name]="'Show Financial Summary'"
+            [showName]="false"
+            [checked]="form.get('showFinancialSummary')?.value"
+            (checkState)="onShowFinancialSummaryCheck($event)"
+            cardValue
+            ></app-checkbox-toggle>
+    </card-row>
+  </card>
+</form>
+
+<ng-template #viewTemplate>
+    <card hideSeparator>
+      <card-col [width]="470" [labelWidth]="128">
+        <card-row label="ID" [value]="settlement.id"></card-row>
+        <card-row label="Name" [value]="settlement.name"></card-row>
+        <card-row label="Tort" [value]="settlement.matter">
+          <a *ngIf="settlement.id" href="javascript:void(0)" class="btn btn-link fw-bold" (click)="redirectToMatter()"
+            cardValue>{{settlement.matter}}</a>
+        </card-row>
+        <card-row label="Firm" [value]="settlement.org">
+          <a *ngIf="settlement.id" href="javascript:void(0)" class="btn btn-link fw-bold" (click)="redirectToFirm()"
+            cardValue>{{settlement.org}}</a>
+        </card-row>
+      </card-col>
+    </card>
+    <card hideSeparator [ngStyle]="{'display': !canShowFinancialSummaryToggle ? 'none' : 'block'}">
+      <card-col [width]="470" [labelWidth]="128">
+        <card-row label="Show Financial Summary" [value]="settlement.showFinancialSummary">
+          <app-checkbox-toggle
+            [id]="'showFinancialSummary'"
+            [name]="'Show Financial Summary'"
+            [showName]="false"
+            [checked]="settlement.showFinancialSummary"
+            [disabled]="true"
+            (checkState)="onShowFinancialSummaryCheck($event)"
+            cardValue
+            ></app-checkbox-toggle>
+        </card-row>
+      </card-col>
+    </card>
+</ng-template>

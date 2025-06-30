@@ -1,0 +1,68 @@
+@import "../../../../styles/elements/charts";
+
+.row {
+  flex-wrap: nowrap;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.pie-chart {
+  min-width: 200px;
+
+  &__header {
+    display: flex;
+    height: 50px;
+    justify-content: center;
+  }
+
+  &__chart {
+    height: 320px;
+  }
+}
+
+.chart-status-legend-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 44px;
+}
+
+.legend-label {
+  font-size: 15px;
+}
+
+.legend-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  padding: 0;
+}
+
+.legend-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 15px;
+}
+
+.chart-phases-legend-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  column-gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  margin-left: 24px;
+
+  &.content-start {
+    justify-content: flex-start;
+  }
+}
+
+.phase-legend-item {
+  display: flex;
+  width: 190px;
+  align-items: center;
+  gap: 8px;
+}

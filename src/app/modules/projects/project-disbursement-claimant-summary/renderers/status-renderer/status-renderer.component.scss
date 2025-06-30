@@ -1,0 +1,13 @@
+.status-renderer {
+  display: flex;
+  justify-content: space-between;
+  width: 80px;
+
+  &__icon {
+    margin-right: 0;
+  }
+
+  &__text {
+    margin-right: 5px;
+  }
+}

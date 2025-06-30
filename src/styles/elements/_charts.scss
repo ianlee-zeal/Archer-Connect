@@ -1,0 +1,43 @@
+@import "../variables.scss";
+@import "../_colors.scss";
+@import "../_mixins.scss";
+
+fusioncharts {
+  text {
+    font-family: $open-sans-font-family !important;
+  }
+
+  .fc__tooltip.fusioncharts-div {
+    border-radius: 8px !important;
+  }
+}
+
+.chart-name {
+  font-weight: bold;
+  color: $custom-navy;
+}
+
+.chart-subtitle{
+  font-weight: normal;
+  color: $custom-navy;
+  font-size: 14px;
+}
+
+.legend {
+  font-size: 11px;
+  color: $label-color;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  .row {
+    align-items: baseline;
+  }
+
+  .row > * {
+    flex-shrink: initial;
+    width: initial;
+    padding-right: 4px;
+    padding-left: 0;
+    margin-top: 0;
+  }
+}

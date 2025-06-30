@@ -1,0 +1,22 @@
+@import '../../../../../styles/variables.scss';
+
+.address-form {
+  &__verified-date-time {
+    margin-top: 40px;
+    background-color: $verified-date-bg;
+    width: 345px;
+    height: 39px;
+    padding: 6px;
+    text-align: center;
+  }
+  &__verified-date-time-label {
+    color: $label-color;
+    padding: 4px;
+  }
+}
+
+.date-range {
+  &__divider {
+    padding: 0 10px;
+  }
+}

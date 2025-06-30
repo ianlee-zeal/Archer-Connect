@@ -1,0 +1,10 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+  <app-context-bar [title]="title"></app-context-bar>
+
+  <!-- main listview -->
+  <div class="page-content">
+    <app-grid [gridOptions]="gridOptions" [skipSetContentHeight]="true" (gridReady)="gridReady($event)" (loadData)="loadData($event)"
+      [gridId]="gridId" entityLabel="sub-organizations"></app-grid>
+  </div>
+</div>

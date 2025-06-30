@@ -1,0 +1,280 @@
+<div class="communication-details">
+  <form [formGroup]="formGroup" novalidate *ngIf="canEdit; else viewTemplate">
+    <card hideSeparator>
+      <card-col [width]="500" [labelWidth]="230">
+        <card-row label="Project Contact" inputId="projectContact" [control]="formGroup.get('projectContact')" required>
+          <app-select
+            id="projectContact"
+            [options]="communicationContactsOptions"
+            formControlName="projectContact"
+            cardValue
+            required>
+          </app-select>
+        </card-row>
+
+        <card-row
+          *ngIf="isShowOrganizationField"
+          labelWidth="230"
+          label="Organization"
+          inputId="organization"
+          [control]="formGroup.get('organization')"
+          alignContentVertically
+          required>
+            <app-clearable-input
+              cursorPointer
+              [form]="formGroup"
+              controlName="organization"
+              [isReadonly]="true"
+              id="organization"
+              (click)="onOpenQSFAdminModal()"
+              placeholder="Select Organization"
+              [rating]="satisfactionRating"
+              cardValue
+              (clear)="onClear()">
+            </app-clearable-input>
+        </card-row>
+
+        <card-row *ngIf="formGroup.get('organization').value" label="Party Name" inputId="partyName" [control]="formGroup.get('callerName')"
+          labelWidth="230" required>
+          <input type="text" class="form-control" formControlName="callerName" id="partyName" [required]="isShowPartyNameField"  cardValue />
+        </card-row>
+        <card-row *ngIf="formGroup.get('organization').value" label="Party Type" inputId="partyType" [control]="formGroup.get('partyType')"
+          labelWidth="230" required>
+          <app-select *ngIf="isShowPartyTypeSelect" id="partyType" [options]="(communicationPartyListSelector$ | async)" formControlName="partyType"
+            cardValue [required]="isShowPartyTypeSelect"></app-select>
+            <input *ngIf="!isShowPartyTypeSelect" type="text" class="form-control" formControlName="partyType" id="partyType" cardValue />
+        </card-row>
+        <card-row label="Direction" inputId="direction" [control]="formGroup.get('direction')" required>
+          <app-select id="direction" [options]="directionsSelector$ | async" formControlName="direction" cardValue
+            required></app-select>
+        </card-row>
+        <card-row label="Method" inputId="method" [control]="formGroup.get('method')" required>
+          <app-select
+            id="method"
+            [options]="(methodsSelector$ | async)"
+            formControlName="method"
+            cardValue
+            required>
+          </app-select>
+        </card-row>
+        <card-row label="Level" inputId="level" [control]="formGroup.get('level')" required>
+          <app-select id="level" [options]="(communicationLevelsOptions$ | async)" formControlName="level"
+            cardValue required></app-select>
+        </card-row>
+        <card-row label="Sentiment" inputId="sentiment" [control]="formGroup.get('sentiment')" required>
+          <app-select id="sentiment" [options]="(communicationSentimentsOptions$ | async)" formControlName="sentiment"
+            cardValue required></app-select>
+        </card-row>
+
+
+      </card-col>
+      <card-col [width]="365">
+
+        <ng-container *ngIf="!hasAttachedEmail; else attachedEmailTemplate">
+          <card-row label="Subject" inputId="subject" [control]="formGroup.get('subject')"
+          [labelWidth]="calculateMiddleColumnLabelWidth()" required>
+          <app-select id="subject" [options]="communicationSubjectListSelector$ | async"
+            (click)="markAsTouched(['subject', 'result'])" formControlName="subject" cardValue required></app-select>
+        </card-row>
+
+          <card-row label="Subject Other" inputId="otherSubject" [control]="formGroup.get('otherSubject')"
+            *ngIf="isShowOtherSubjectField" [labelWidth]="calculateMiddleColumnLabelWidth()" required>
+            <input type="text" class="form-control" formControlName="otherSubject" id="otherSubject"
+              [required]="isShowOtherSubjectField" cardValue />
+          </card-row>
+
+          <card-row
+            label="Result"
+            inputId="result"
+            [control]="formGroup.get('result')"
+            [labelWidth]="calculateMiddleColumnLabelWidth()"
+            [required]="!isOtherResultIsOptional">
+            <app-select
+              id="result"
+              [options]="communicationResultListSelector$ | async"
+              (click)="markAsTouched(['subject', 'result'])"
+              (cleared)="onResultCleared()"
+              formControlName="result"
+              cardValue
+              required>
+            </app-select>
+          </card-row>
+
+          <card-row
+            *ngIf="isShowOtherResultField"
+            label="Result Other"
+            inputId="otherResults"
+            [control]="formGroup.get('otherResults')"
+            [labelWidth]="calculateMiddleColumnLabelWidth()"
+            [required]="!isOtherResultIsOptional">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="otherResults"
+              id="otherResults"
+              [required]="isShowOtherResultField && !isOtherResultIsOptional"
+              cardValue />
+          </card-row>
+        </ng-container>
+
+        <card-row label="Start Date" inputId="startDate" [control]="formGroup.get('startDate')"
+        [labelWidth]="calculateMiddleColumnLabelWidth()" [labelShrink]="0">
+        <div class="card-row__content communication-details__datetimepicker" cardValue>
+          <app-date-selector id="startDate" formControlName="startDate" (ngModelChange)="startDateChanged()">
+          </app-date-selector>
+          <timepicker class="time-picker" formControlName="startDate" (ngModelChange)="timeRangeChanged()"
+            [mousewheel]="true" [arrowkeys]="true" [showSpinners]="false"></timepicker>
+        </div>
+      </card-row>
+
+      <card-row label="End Date" inputId="endDate" [control]="formGroup.get('endDate')"
+        [labelWidth]="calculateMiddleColumnLabelWidth()" [labelShrink]="0">
+        <div class="card-row__content communication-details__datetimepicker" cardValue>
+          <app-date-selector id="endDate" formControlName="endDate" (ngModelChange)="endDateChanged()">
+          </app-date-selector>
+          <timepicker class="time-picker" formControlName="endDate" (ngModelChange)="timeRangeChanged()"
+            [mousewheel]="true" [arrowkeys]="true" [showSpinners]="false"></timepicker>
+        </div>
+      </card-row>
+      </card-col>
+    </card>
+    <card *ngIf="escalationDetailsEnabledEditView" header="Escalation Details">
+      <card-col [width]="500" [labelWidth]="230">
+        <card-row label="Escalation Status" inputId="escalationStatusId" [control]="formGroup.get('escalationStatusId')" required>
+          <app-select
+            id="escalationStatusId"
+            formControlName="escalationStatusId"
+            cardValue
+            [options]="escalationStatusDropdownValues">
+          </app-select>
+        </card-row>
+        <card-row label="Business Impact" inputId="businessImpactId" [control]="formGroup.get('businessImpactId')" required>
+          <app-select
+            id="businessImpactId"
+            formControlName="businessImpactId"
+            cardValue
+            [options]="businessImpactStatuses$ | async"
+            (click)="markAsTouched(['subject', 'result'])">
+          </app-select>
+        </card-row>
+        <card-row label="Operation Root Cause" inputId="operationRootCause" [control]="formGroup.get('operationRootCause')">
+          <input type="text" class="form-control" formControlName="operationRootCause" id="operationRootCause" maxLength="100" cardValue />
+        </card-row>
+        <card-row label="Root Cause Category" inputId="rootCauseCategory" [control]="formGroup.get('rootCauseCategory')">
+          <input type="text" class="form-control" formControlName="rootCauseCategory" id="rootCauseCategory" maxLength="100" cardValue />
+        </card-row>
+        <card-row label="CS Training Needs" inputId="csTrainingNeeds" [control]="formGroup.get('csTrainingNeeds')">
+          <input type="text" class="form-control" formControlName="csTrainingNeeds" id="csTrainingNeeds" maxLength="100" cardValue />
+        </card-row>
+        <card-row label="CS Training Needs Category" inputId="csTrainingNeedsCategory" [control]="formGroup.get('csTrainingNeedsCategory')">
+          <input type="text" class="form-control" formControlName="csTrainingNeedsCategory" id="csTrainingNeedsCategory" maxLength="100" cardValue />
+        </card-row>
+        <card-row label="CS Agent Next Action Tracker" inputId="csAgentNextActionTracker" [control]="formGroup.get('csAgentNextActionTracker')">
+          <input type="text" class="form-control" formControlName="csAgentNextActionTracker" id="csAgentNextActionTracker" maxLength="100" cardValue />
+        </card-row>
+      </card-col>
+      <card-col [width]="500" [labelWidth]="230">
+        <span class="communication-details__additional-label">Primary Department</span>
+        <card-row label="Responsible for Fixing" inputId="primaryDepartment" [control]="formGroup.get('primaryDepartmentResponsibleForFixing')">
+          <input type="text" class="form-control" formControlName="primaryDepartmentResponsibleForFixing" id="primaryDepartment" maxLength="100" cardValue />
+        </card-row>
+        <span class="communication-details__additional-label">Secondary Department</span>
+        <card-row label="Responsible" inputId="secondaryDepartment" [control]="formGroup.get('secondaryDepartmentResponsible')">
+          <input type="text" class="form-control" formControlName="secondaryDepartmentResponsible" id="secondaryDepartment" maxLength="100" cardValue />
+        </card-row>
+        <ng-container *ngIf="isEscalationStatusResolvedEditView">
+          <card-row
+            label="Resolution Summary"
+            [width]="500"
+            [labelWidth]="230"
+            inputId="resolutionSummary"
+            [control]="formGroup.get('resolutionSummary')"
+            required>
+            <textarea id="resolutionSummary" class="form-control" formControlName="resolutionSummary" cardValue></textarea>
+          </card-row>
+          <card-row
+            label="Resolution Date"
+            [width]="500"
+            [labelWidth]="230"
+            inputId="resolutionDate"
+            class="control-dropdown"
+            [control]="formGroup.get('resolutionDate')"
+            required>
+            <app-date-selector id="resolutionDate" formControlName="resolutionDate" cardValue></app-date-selector>
+          </card-row>
+        </ng-container>
+      </card-col>
+    </card>
+
+    <ng-template #attachedEmailTemplate>
+      <card-row label="E-mail Subject" inputId="emailSubject" [control]="formGroup.get('emailSubject')" [labelWidth]="calculateMiddleColumnLabelWidth()">
+        <input type="text" class="form-control" formControlName="emailSubject" id="emailSubject" cardValue />
+      </card-row>
+
+      <card-row label="From" inputId="emailFrom" [control]="formGroup.get('emailFrom')" [labelWidth]="calculateMiddleColumnLabelWidth()" required>
+        <input type="text" class="form-control" formControlName="emailFrom" id="emailFrom" placeholder="Specify the Sender's Name/E-mail" required cardValue />
+      </card-row>
+
+      <card-row label="To" inputId="emailTo" [control]="formGroup.get('emailTo')" [labelWidth]="calculateMiddleColumnLabelWidth()" required>
+        <input type="text" class="form-control" formControlName="emailTo" id="emailTo" placeholder="Specify the Recipient's Name/E-mail" required cardValue />
+      </card-row>
+
+      <card-row label="Body" inputId="emailBody" [control]="formGroup.get('emailBody')" [maxContentWidth]="600" [labelWidth]="calculateMiddleColumnLabelWidth()">
+        <textarea class="form-control" formControlName="emailBody" id="emailBody" cardValue></textarea>
+      </card-row>
+    </ng-template>
+  </form>
+  <ng-template #viewTemplate>
+    <card hideSeparator>
+      <card-col [width]="500" [labelWidth]="230">
+        <card-row label="Project Contact" [value]="projectContactName" containValue></card-row>
+        <card-row label="Organization" [value]="projectCommunicationRecord.org?.name" containValue></card-row>
+        <card-row label="Satisfaction Rating" [value]="projectCommunicationRecord.org?.satisfactionRating?.name" containValue></card-row>
+        <card-row label="Party Name" [value]="projectCommunicationRecord.callerName" containValue></card-row>
+        <card-row label="Party Type" [value]="projectContactReference ? projectContactReference.contactRole?.name : projectCommunicationRecord.partyType?.displayName"></card-row>
+        <card-row label="Direction" [value]="projectCommunicationRecord.direction?.displayName"></card-row>
+        <card-row label="Method" [value]="projectCommunicationRecord.method?.displayName"></card-row>
+        <card-row label="Level" [value]="projectCommunicationRecord.level?.name"></card-row>
+        <card-row label="Sentiment" [value]="projectCommunicationRecord.sentiment?.name"></card-row>
+      </card-col>
+      <card-col [width]="500" [labelWidth]="230">
+        <card-row label="Subject" [value]="projectCommunicationRecord.subject?.displayName"></card-row>
+        <card-row label="Other Subject" *ngIf="projectCommunicationRecord.otherSubject" [value]="projectCommunicationRecord.otherSubject" containValue></card-row>
+        <card-row label="Result" *ngIf="!hasAttachedEmail" [value]="projectCommunicationRecord.result?.displayName"></card-row>
+        <card-row label="Other Result" *ngIf="projectCommunicationRecord.otherResults" [value]="projectCommunicationRecord.otherResults" containValue></card-row>
+        <card-row label="Start Date" [value]="projectCommunicationRecord.startTime  | dateFormat"></card-row>
+        <card-row label="End Date" [value]="projectCommunicationRecord.endTime  | dateFormat"></card-row>
+        <ng-container *ngIf="hasAttachedEmail">
+          <card-row label="E-mail Subject" [value]="projectCommunicationRecord.emailSubject"></card-row>
+          <card-row label="From" [value]="projectCommunicationRecord.emailFrom"></card-row>
+          <card-row label="To" [value]="projectCommunicationRecord.emailTo"></card-row>
+          <card-row label="Body" [value]="projectCommunicationRecord.emailBody"></card-row>
+        </ng-container>
+      </card-col>
+    </card>
+    <card header="Escalation Details" *ngIf="escalationDetailsEnabledReadView">
+      <card-col [width]="500" [labelWidth]="230">
+        <card-row label="Escalation Status" [value]="projectCommunicationRecord.escalationStatus?.name"></card-row>
+        <card-row label="Business Impact" [value]="filterFromSelectOptions(businessImpactStatuses$ | async, projectCommunicationRecord.businessImpactId)?.name"></card-row>
+        <card-row label="Operation Root Cause" [value]="projectCommunicationRecord.operationRootCause" containValue></card-row>
+        <card-row label="Root Cause Category" [value]="projectCommunicationRecord.rootCauseCategory" containValue></card-row>
+        <card-row label="CS Training Needs" [value]="projectCommunicationRecord.csTrainingNeeds" containValue></card-row>
+        <card-row label="CS Training Needs Category" [value]="projectCommunicationRecord.csTrainingNeedsCategory" containValue></card-row>
+        <card-row label="CS Agent Next Action Tracker" [value]="projectCommunicationRecord.csAgentNextActionTracker" containValue></card-row>
+      </card-col>
+      <card-col [width]="500" [labelWidth]="230">
+        <span class="communication-details__additional-label">Primary Department</span>
+        <card-row label="Responsible for Fixing" [value]="projectCommunicationRecord.primaryDepartmentResponsibleForFixing" containValue></card-row>
+        <span class="communication-details__additional-label">Secondary Department</span>
+        <card-row label="Responsible" [value]="projectCommunicationRecord.secondaryDepartmentResponsible" containValue></card-row>
+        <ng-container *ngIf="isEscalationStatusResolvedReadView">
+          <card-row label="Resolution Summary" [value]="projectCommunicationRecord.resolutionSummary" containValue></card-row>
+          <card-row label="Resolution Date" [value]="projectCommunicationRecord.resolutionDate  | dateFormat"></card-row>
+        </ng-container>
+      </card-col>
+    </card>
+  </ng-template>
+
+
+</div>
+

@@ -1,0 +1,105 @@
+<form [formGroup]="form" *ngIf="canEdit; else viewTemplate" novalidate>
+  <card header="Additional Claimant Information">
+    <card-col [width]="600" [labelWidth]="215">
+      <card-row label="County" inputId="county" [control]="form.get('county')">
+        <input type="text" class="form-control" formControlName="county" id="county" maxLength="100" cardValue />
+      </card-row>
+      <card-row label="State of Residence" inputId="stateOfResidence" [control]="form.get('stateOfResidence')">
+        <app-select 
+          id="stateOfResidence" 
+          [options]="statesDropdownValues$ | async" 
+          formControlName="stateOfResidence" 
+          cardValue
+          optionName="code"
+          optionId="code"
+         >
+        </app-select>
+      </card-row>
+      <card-row label="Release ID" inputId="releaseId" [control]="form.get('releaseId')">
+        <input type="text" class="form-control" formControlName="releaseId" id="releaseId" maxLength="100" cardValue />
+      </card-row>
+    </card-col>
+    <card-col [width]="600" [labelWidth]="215">
+      <card-row label="Allocation Amount" inputId="allocationAmount" [control]="form.get('allocationAmount')">
+        <div cardValue class="allocation__amount">
+          <span>$</span>
+          <input 
+            type="text"
+            placeholder="0.00"
+            class="form-control" 
+            formControlName="allocationAmount" 
+            id="allocationAmount" 
+            [allowDecimal]="true"
+            [maxValue]="99999999.99"
+            onlyNumbersEx 
+          />
+        </div>
+      </card-row>
+      <card-row label="Newly Deceased" inputId="newlyDeceased" [control]="form.get('newlyDeceased')">
+        <label class="form-check h-100" cardValue>
+          <input type="checkbox" class="form-check-input" formControlName="newlyDeceased" id="newlyDeceased" />
+          <span></span>
+        </label>
+      </card-row>
+      <card-row label="Date Of Death" inputId="dateOfDeath" [control]="form.get('dateOfDeath')">
+        <app-date-selector id="dateOfDeath" formControlName="dateOfDeath" [maxDate]="todaysDate" cardValue></app-date-selector>
+      </card-row>
+    </card-col>
+  </card>
+
+  <card header="Important Dates">
+    <card-col [width]="600" [labelWidth]="215">
+      <card-row label="Date Sent to Probate Dept" inputId="dateSendToProbateDept" [control]="form.get('dateSentToProbateDept')">
+        <app-date-selector maxWidth="110" id="dateSendToProbateDept" formControlName="dateSentToProbateDept" cardValue></app-date-selector>
+      </card-row>
+      <card-row label="Date Assigned" inputId="dateAssigned" [control]="form.get('dateAssigned')">
+        <app-date-selector maxWidth="110" id="dateAssigned" formControlName="dateAssigned" cardValue></app-date-selector>
+      </card-row>
+    </card-col>
+    <card-col [width]="520" [labelWidth]="215">
+      <card-row label="Date Allocation Rec'd" inputId="dateAllocationRec" [control]="form.get('dateAllocationRecd')">
+        <app-date-selector maxWidth="110" id="dateAllocationRec" formControlName="dateAllocationRecd" cardValue></app-date-selector>
+      </card-row>
+      <card-row label="Next Follow Up Date" inputId="nextFollowUpDate" [control]="form.get('dateNextFollowUp')">
+        <app-date-selector maxWidth="110" id="nextFollowUpDate" formControlName="dateNextFollowUp" cardValue></app-date-selector>
+      </card-row>
+    </card-col>
+    <card-col [width]="600" [labelWidth]="215">
+      <card-row label="Date Completed" inputId="dateCompleted" [control]="form.get('dateCompleted')">
+        <app-date-selector maxWidth="110" id="dateCompleted" formControlName="dateCompleted" cardValue></app-date-selector>
+      </card-row>
+    </card-col>
+  </card>
+</form>
+
+<ng-template #viewTemplate>
+  <card header="Additional Claimant Information">
+    <card-col [width]="600" [labelWidth]="215">
+      <card-row label="County" [value]="probateDetails?.county"></card-row>
+      <card-row label="State of Residence" [value]="probateDetails?.stateOfResidence"></card-row>
+      <card-row label="Release ID" [value]="probateDetails?.releaseId"></card-row>
+    </card-col>
+    <card-col [width]="600" [labelWidth]="215">
+      <card-row label="Allocation Amount" [value]="allocationAmount | extendedCurrency"
+          [tooltip]="allocationAmountTooltip"
+          iconTooltipClass="warning fas fa-exclamation-triangle"
+          ></card-row>
+      <card-row label="Newly Deceased" [value]="probateDetails?.newlyDeceased | yesNoPipe"></card-row>
+      <card-row label="Date Of Death" [value]="probateDetails?.dateOfDeath | dateFormat"></card-row>
+    </card-col>
+  </card>
+
+  <card header="Important Dates">
+    <card-col [width]="600" [labelWidth]="215">
+      <card-row label="Date Sent to Probate Dept" [value]="probateDetails?.dateSentToProbateDept | dateFormat"></card-row>
+      <card-row label="Date Assigned" [value]="probateDetails?.dateAssigned | dateFormat"></card-row>
+    </card-col>
+    <card-col [width]="600" [labelWidth]="215">
+      <card-row label="Date Allocation Rec'd" [value]="probateDetails?.dateAllocationRecd | dateFormat"></card-row>
+      <card-row label="Next Follow Up Date" [value]="probateDetails?.dateNextFollowUp | dateFormat"></card-row>
+    </card-col>
+    <card-col [width]="600" [labelWidth]="215">
+      <card-row label="Date Completed" [value]="probateDetails?.dateCompleted | dateFormat"></card-row>
+    </card-col>
+  </card>
+</ng-template>

@@ -1,0 +1,120 @@
+<form [formGroup]="form" (change)="onChanges()">
+    <card hideSeparator>
+        <card-col [labelWidth]="322" [width]="660">
+            <card-row label="QSF Service" inputId="qsfProductId" [control]="form.get('qsfProductId')" required >
+                <app-select class="dropdown" id="qsfProductId" [options]="qsfProductOptions" formControlName="qsfProductId" cardValue optionAsValue required> </app-select>
+            </card-row>
+
+            <card-row inputId="netAllocationThreshold" 
+                label="Minimum Disbursement Threshold" 
+                [control]="form.get('netAllocationThreshold')" 
+                required>
+                <div cardValue class="card-row__content">
+                    <input 
+                        id="netAllocationThreshold" 
+                        formControlName="netAllocationThreshold" 
+                        type="text" 
+                        class="form-control w-100"
+                        onlyNumbersEx 
+                        [allowDecimal]="true" 
+                        [maxValue]="100" 
+                        [toFixed]="8"
+                        required/>
+                    <span>%</span>
+                </div>
+            </card-row>
+            <card-row *ngIf="!isDefaultLienPaymentsOrganization"            
+                       inputId="lienPaymentsOrganizationName"  
+                       label="Lien Payments Organization" 
+                       [control]="form.get('lienPaymentsOrganizationName')">
+                        <app-clearable-input
+                            [form]="form"
+                            controlName="lienPaymentsOrganizationName"
+                            [isReadonly]="true"
+                            className="w-100"
+                            id="lienPaymentsOrganizationName"
+                            placeholder="Select Lien Payments Organization"
+                            cardValue
+                            (click)="onOpenOrganizationModal()"
+                            (clear)="onClearLienPaymentsOrganization()">
+                        </app-clearable-input>
+            </card-row>
+            <card-row  *ngIf="isDefaultLienPaymentsOrganization"
+                        label="Lien Payments Organization"
+                        [value]="commonSettings.currentData.lienPaymentsOrganization.name">
+            </card-row>
+            <card-row label="Enable Lien Transfers" inputId="enableLienTransfers" [control]="form.get('enableLienTransfers')">
+                <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="enableLienTransfers" formControlName="enableLienTransfers" >
+                    <span></span>
+                </label>
+            </card-row>
+            <card-row label="Multiple Rounds of Funding" inputId="multipleRoundsOfFunding" [control]="form.get('multipleRoundsOfFunding')">
+                <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="multipleRoundsOfFunding" formControlName="multipleRoundsOfFunding" >
+                    <span></span>
+                </label>
+            </card-row>
+            <card-row label="Defense Approval Required" inputId="defenseApprovalRequired" [control]="form.get('defenseApprovalRequired')">
+                <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="defenseApprovalRequired" formControlName="defenseApprovalRequired" >
+                    <span></span>
+                </label>
+            </card-row>
+            <card-row label="Manual Payment Requests Allowed" [tooltip]="manualPaymentRequestTooltip" [tooltipPosition]="tooltipPosition" inputId="isManualPaymentRequestsAllowed" [control]="form.get('isManualPaymentRequestsAllowed')">
+                <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="isManualPaymentRequestsAllowed" formControlName="isManualPaymentRequestsAllowed">
+                    <span></span>
+                </label>
+              </card-row>
+        </card-col>
+    </card>
+    <card header="Automation">
+        <card-col [labelWidth]="322" [width]="660">
+            <card-row label="Enable Fee Automation" inputId="isFeeAutomationEnabled" [control]="form.get('isFeeAutomationEnabled')">
+                <span cardValue>
+                    {{ form.get('isFeeAutomationEnabled')?.value ? 'Yes' : 'No' }}
+                </span>
+            </card-row>
+            <card-row label="Enable Closing Statements Automation" inputId="isClosingStatementAutomationEnabled" [control]="form.get('isClosingStatementAutomationEnabled')">
+                <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="isClosingStatementAutomationEnabled" formControlName="isClosingStatementAutomationEnabled">
+                    <span></span>
+                </label>
+              </card-row>
+            <card-row label="Enable Payment Automation"
+                [tooltip]="!isPaymentAutomationActionable() ? paymentAutomationTooltip : ''" 
+                [tooltipPosition]="tooltipPosition" 
+                [ngClass]="{ 'hidden': !canViewPaymentAutomation }"
+                [labelWidth]="322"
+                inputId="isPaymentAutomationEnabled"
+                [control]="form.get('isPaymentAutomationEnabled')">
+                <label *ngIf="!isPaymentAutomationActionable()" class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="isPaymentAutomationEnabled" formControlName="isPaymentAutomationEnabled" disabled>
+                    <span></span>
+                </label>
+                <label *ngIf="isPaymentAutomationActionable()" class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="isPaymentAutomationEnabled" formControlName="isPaymentAutomationEnabled">
+                    <span></span>
+                </label>
+            </card-row>
+            
+            <card-row label="Enable Lien Import Automation"
+                [tooltip]="!isLienResolutionSettingSetToYes() ? lienImportAutomationTooltip : ''" 
+                [tooltipPosition]="tooltipPosition" 
+                [ngClass]="{ 'hidden': !canViewLienImportAutomationPermission }"
+                [labelWidth]="322"
+                inputId="isLienImportAutomationEnabled"
+                [control]="form.get('isLienImportAutomationEnabled')">
+                <label *ngIf="!isLienResolutionSettingSetToYes()" class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="isLienImportAutomationEnabled" formControlName="isLienImportAutomationEnabled" disabled>
+                    <span></span>
+                </label>
+                <label *ngIf="isLienResolutionSettingSetToYes()" class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="isLienImportAutomationEnabled" formControlName="isLienImportAutomationEnabled">
+                    <span></span>
+                </label>
+            </card-row>
+        </card-col>
+    </card>
+</form>

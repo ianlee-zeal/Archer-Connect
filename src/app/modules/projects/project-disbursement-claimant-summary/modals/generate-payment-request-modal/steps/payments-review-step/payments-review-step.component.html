@@ -1,0 +1,15 @@
+<div class="payments-review-step__container">
+    <app-context-bar 
+        title="Payment Summary By Payee" 
+        [elements]="headerElements">
+    </app-context-bar>
+    <app-grid 
+        class="ag-grid-custom-height-500"
+        [gridId]="gridId"
+        [isPagerEnabled]="false"
+        idColumnName="rowId"
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"
+        (loadData)="loadData($event)">
+    </app-grid>
+</div>

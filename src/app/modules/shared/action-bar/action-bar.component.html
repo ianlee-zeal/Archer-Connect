@@ -1,0 +1,34 @@
+<div
+  data-test-id="action-bar"
+  class="action-bar" [ngClass]="{ 'action-bar__no-border' : noBorder }">
+  <div
+    data-test-id="action-bar-main-actions"
+    class="action-bar__actions">
+    <ng-container *ngFor="let action of mainActions">
+      <ng-container *ngIf="actions">
+        <app-action-bar-button [action]="actions[action.name]" [actionConfig]="action">
+        </app-action-bar-button>
+      </ng-container>
+    </ng-container>
+  </div>
+  <div
+    data-test-id="action-bar-other-actions"
+    class="action-bar__actions col">
+    <ng-container *ngFor="let action of additionalActions">
+      <ng-container *ngIf="actions">
+        <app-action-bar-button [action]="actions[action.name]" [actionConfig]="action">
+        </app-action-bar-button>
+      </ng-container>
+    </ng-container>
+  </div>
+  <ng-container *ngFor="let loadingAction of loadingActions">
+    <div
+      *ngIf="loadingAction && !actions[loadingAction.name].hidden()"
+      data-test-id="action-bar-loading"
+      class="action-bar__action-name">
+      {{loadingAction.label}}
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-left: 5px"></span>
+    </div>
+  </ng-container>
+  <app-simple-pager *ngIf="pager" [pager]="pager" (toPage)="toPage($event)"></app-simple-pager>
+</div>

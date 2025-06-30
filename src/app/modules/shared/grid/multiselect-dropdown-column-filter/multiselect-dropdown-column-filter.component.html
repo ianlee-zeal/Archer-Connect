@@ -1,0 +1,21 @@
+<div class="ag-input-wrapper dropdown-column-filter">
+  <app-select
+  [multiLabelTemplate]="filterMultiLabelTemplate"
+  class="dropdown-column-filter__select-component custom-multiselect--grid"
+  [options]="options"
+  [isMultiselectDropdown]="true"
+  [model]="values"
+  filterMultiselect
+  optionAsValue
+  [appendTo]="'body'"
+  (onModelChange)="onChange($event)"
+  multiple></app-select>
+</div>
+
+<ng-template #filterMultiLabelTemplate>
+  <div class="dropdown-column-filter__selected_options">
+    <span
+      *ngFor="let opt of options | filter: 'checked' : true"
+      class="selected-option">{{opt.name}}</span>
+  </div>
+</ng-template>

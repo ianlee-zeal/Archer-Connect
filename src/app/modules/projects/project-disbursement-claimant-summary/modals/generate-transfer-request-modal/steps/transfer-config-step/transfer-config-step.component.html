@@ -1,0 +1,47 @@
+
+<span class="transfer-config-step__description">
+    Transfer Requests will be generated for all claimants and related entities that are ready to be paid.  This will include any Ledger Entry Items with a status of 'Payment Authorized' or 'Payment Authroized-Partial'.
+</span>
+<card header="Transfer Type" class="card-text">
+    <div>
+        <span class="transfer-config-step__description">
+            Select all of the Transfer Types that you would like to include in this transfer request. Lien Payment option cannot be combined with other transfer type options.
+        </span>
+    </div>
+</card>
+<card [hideSeparator]="true" [readonlyForm]="submitting" class="card-margin">
+    <span class="transfer-config-step__description"></span>
+    <card-col>
+        <card-row label="Transfer Type" [hideText]="true">
+            <div class="transfer-config-step__select-container" cardValue>
+                <app-multiselect-list
+                    *ngIf="paymentTypes"
+                    enableSelectAll
+                    [isSelectAllChecked]="isAllPaymentTypesChecked"
+                    [options]="paymentTypes"
+                    [width]="330"
+                    (select)="onSelectPaymentType($event)"
+                    (selectAll)="onSelectAllPaymentTypes($event)">
+                </app-multiselect-list>
+            </div>
+        </card-row>
+    </card-col>
+    <card-col *ngIf="canSelectFirms">
+        <card-row label="Select Firms">
+            <span
+            [title]="'Select one or more firms to be paid from selected ledgers. Only firms present in selected ledgers will be paid.'"
+            class="fa fa-info-circle ms-2" cardNextToLabel></span>
+            <div class="transfer-config-step__select-container" cardValue>
+                <app-multiselect-list
+                    *ngIf="projectFirmsOptions"
+                    enableSelectAll
+                    [isSelectAllChecked]="isAllProjectFirmsChecked"
+                    [options]="projectFirmsOptions"
+                    [width]="330"
+                    (select)="onSelectProjectFirms($event)"
+                    (selectAll)="onSelectAllProjectFirms($event)">
+                </app-multiselect-list>
+            </div>
+        </card-row>
+    </card-col>
+</card>

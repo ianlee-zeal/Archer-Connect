@@ -1,0 +1,19 @@
+<div class="page">
+  <app-action-bar 
+    [actionHandlers]="actionBar$ | async">
+  </app-action-bar>
+  <app-context-bar 
+    [title]="'Templates Search'">
+  </app-context-bar>
+  <div class="page-content">
+    <app-document-templates-grid 
+        [gridId]="gridId" 
+        (fetch)="onFetch($event)"
+        (actionBarUpdate)="onActionBarUpdated($event)"
+        (templateDelete)="onTemplateDelete($event)"
+        (templateCreateOrUpdate)="onTemplateCreateOrUpdate($event)"
+        (testDITFile)="onTestDITFile($event.templateId, $event.request)"
+        (download)="onDownloadDocumentTemplate($event)">
+    </app-document-templates-grid>
+  </div>
+</div>

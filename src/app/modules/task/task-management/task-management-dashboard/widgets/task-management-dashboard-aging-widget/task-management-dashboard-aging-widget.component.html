@@ -1,0 +1,32 @@
+<div class="task-mng-dash-overdue-aging-widget-ctn">
+  <div class="task-mng-dash-overdue-aging-widget-ctn__top-row task-mng-dash-overdue-aging-widget-ctn__top" >
+    <div class="task-mng-dash-overdue-aging-widget-ctn__cell" *ngFor="let title of titles$">
+      {{title.value}}
+    </div>
+  </div>
+  <div class="task-mng-dash-overdue-aging-widget-ctn__row border-bottom" (click)="rowClickHandler('total')">
+    <div class="task-mng-dash-overdue-aging-widget-ctn__cell" *ngFor="let total of totals$">
+      <span [ngStyle]="{'color': total.color}">{{total.value}}</span>
+    </div>
+  </div>
+  <div class="task-mng-dash-overdue-aging-widget-ctn__row">
+    <div class="task-mng-dash-overdue-aging-widget-ctn__title chart-name">
+      by Priority
+    </div>
+  </div>
+  <div class="task-mng-dash-overdue-aging-widget-ctn__row border-bottom" (click)="rowClickHandler('high')" *ngIf="showHighs$">
+    <div class="task-mng-dash-overdue-aging-widget-ctn__cell" *ngFor="let high of highs$">
+      <span [ngStyle]="{'color': high.color}">{{high.value}}</span>
+    </div>
+  </div>
+  <div class="task-mng-dash-overdue-aging-widget-ctn__row border-bottom" (click)="rowClickHandler('medium')" *ngIf="showMediums$">
+    <div class="task-mng-dash-overdue-aging-widget-ctn__cell" *ngFor="let medium of mediums$">
+      <span [ngStyle]="{'color': medium.color}">{{medium.value}}</span>
+    </div>
+  </div>
+  <div class="task-mng-dash-overdue-aging-widget-ctn__row border-bottom" (click)="rowClickHandler('low')" *ngIf="showLows$">
+    <div class="task-mng-dash-overdue-aging-widget-ctn__cell" *ngFor="let low of lows$">
+      <span [ngStyle]="{'color': low.color}">{{low.value}}</span>
+    </div>
+  </div>
+</div>

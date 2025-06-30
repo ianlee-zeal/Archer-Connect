@@ -1,0 +1,13 @@
+<div class="pt-3">
+  <app-grid entityName="payment"
+            [gridId]="gridId"
+            class="ag-modern-grid"
+            [gridOptions]="gridOptions"
+            [isContentAutoHeight]="true"
+            [enabledAutoHeight]="false"
+            [hideTopStatusbar]="true"
+            [rowData]="paymentItems$ | async"
+            (gridReady)="gridReady($event)"
+            [hideBottomStatusbar]="true">
+  </app-grid>
+</div>

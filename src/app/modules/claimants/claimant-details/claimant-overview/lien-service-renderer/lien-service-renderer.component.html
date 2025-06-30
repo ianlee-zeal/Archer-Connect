@@ -1,0 +1,13 @@
+<ng-container *ngIf="params">
+  <div class="lien-service-renderer" *ngIf="params.value as value">
+    <a href="javascript: void 0" class="lien-service-renderer__service-link" (click)="onClick()">{{ value.name }}</a>
+    <div class="lien-service-renderer__status"
+         [ngClass]="{
+         'lien-service-renderer__status--pending': value.status.id === statuses.Pending,
+         'lien-service-renderer__status--finalized': value.status.id === statuses.Finalized
+       }">{{ value.status.name }}</div>
+    <div *ngIf="value.id === productCategoryEnum.MedicalLiens" class="lien-service-renderer__finalized-info">
+      Reported Final: {{ (finalizedDate$ | async | dateFormat) || 'No' }}
+    </div>
+  </div>
+</ng-container>

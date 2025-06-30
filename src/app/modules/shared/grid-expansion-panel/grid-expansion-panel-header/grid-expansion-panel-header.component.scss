@@ -1,0 +1,123 @@
+@import "src/styles/variables.scss";
+@import "src/styles/colors";
+
+.grid-expansion-panel-header {
+  display: flex;
+
+  .ledger-column {
+    &--account-number {
+      min-width: 80px;
+    }
+    &--name {
+      min-width: 415px;
+    }
+    &--percent {
+      min-width: 150px;
+    }
+    &--amount {
+      min-width: 77px;
+    }
+    &--modified-date {
+      min-width: 135px;
+    }
+    &--description {
+      min-width: 113px;
+      width: 100%;
+    }
+    &--paid-amount {
+      min-width: 132px;
+    }
+    &--payment-status {
+      min-width: 135px;
+    }
+    &--payee {
+      min-width: 170px;
+    }
+    &--actions {
+      min-width: 80px;
+    }
+    @media screen and (max-width: 1790px) {
+      &--account-number {
+        min-width: 80px;
+      }
+      &--name {
+        min-width: 265px;
+      }
+      &--percent {
+        min-width: 122px;
+      }
+      &--amount {
+        min-width: 77px;
+      }
+      &--modified-date {
+        min-width: 135px;
+      }
+      &--description {
+        min-width: 113px;
+        width: 100%;
+      }
+      &--paid-amount {
+        min-width: 120px;
+      }
+      &--payment-status {
+        min-width: 138px;
+      }
+      &--payee {
+        min-width: 160px;
+      }
+      &--actions {
+        min-width: 110px;
+      }
+    }
+    @media screen and (max-width: 1550px) {
+      &--name {
+        min-width: 135px;
+      }
+      &--percent {
+        min-width: 180px;
+      }
+      &--amount {
+        min-width: 100px;
+      }
+      &--modified-date {
+        min-width: 120px;
+      }
+      &--payee {
+        min-width: 165px;
+      }
+      &--paid-amount {
+        min-width: 105px;
+      }
+      &--description {
+        min-width: 100px;
+        width: auto;
+      }
+    }
+    @media screen and (max-width: 1400px) {
+      &--payee {
+        min-width: 70px;
+      }
+    }
+  }
+}
+
+.grid-expansion-panel-header-element {
+  &__value {
+    text-align: left;
+    font-weight: 600;
+    color: $black;
+  }
+
+  &:first-child {
+    margin-left: 48px;
+  }
+
+  &:last-child {
+    min-width: max-content;
+  }
+
+  &__right {
+    text-align: right;
+    padding-right: 15px;
+  }
+}

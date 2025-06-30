@@ -1,0 +1,44 @@
+<div class="claimant-status-container" *ngIf="engagedServicesIds">
+    <span class="claimant-status-title" *ngIf="showTitle">Claimant Status</span>
+    <div class="status-badges">
+      <app-status-tracker-badge
+        [topText]="'Release Admin'"
+        [bottomText]="getBottomText(ProductCategory.Release)"
+        [link]="getLink(ProductCategory.Release)"
+        [status]="getServiceStatus(ProductCategory.Release)"
+        [percentComplete]="getPercentComplete(releaseAdminItem)">    
+      </app-status-tracker-badge>
+      
+      <app-status-tracker-badge
+        [topText]="'Lien Resolution'"
+        [bottomText]="getBottomText(ProductCategory.MedicalLiens)"
+        [link]="getLink(ProductCategory.MedicalLiens)"
+        [status]="getServiceStatus(ProductCategory.MedicalLiens)"
+        [percentComplete]="getPercentComplete(lienData)">
+      </app-status-tracker-badge>
+
+
+      <app-status-tracker-badge 
+        [topText]="'Bankruptcy'"
+        [bottomText]="getBottomText(ProductCategory.Bankruptcy)"
+        [link]="getLink(ProductCategory.Bankruptcy)"
+        [status]="getServiceStatus(ProductCategory.Bankruptcy)"
+        [percentComplete]="getPercentComplete(bankruptcy)">
+      </app-status-tracker-badge>
+      
+      <app-status-tracker-badge 
+        [topText]="'Probate'"
+        [bottomText]="getBottomText(ProductCategory.Probate)"
+        [link]="getLink(ProductCategory.Probate)"
+        [status]="getServiceStatus(ProductCategory.Probate)"
+        [percentComplete]="getPercentComplete(probate)">
+      </app-status-tracker-badge>
+      
+      <app-status-tracker-badge 
+        [topText]="'QSF Admin'"
+        [bottomText]="getBottomText(ProductCategory.QSFAdministration)"
+        [link]="getLink(ProductCategory.QSFAdministration)"
+        [status]="getServiceStatus(ProductCategory.QSFAdministration)">
+      </app-status-tracker-badge>
+    </div>
+  </div>

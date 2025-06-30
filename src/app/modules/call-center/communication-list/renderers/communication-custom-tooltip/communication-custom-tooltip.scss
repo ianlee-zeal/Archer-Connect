@@ -1,0 +1,43 @@
+@import "src/styles/_mixins.scss";
+@import "src/styles/variables.scss";
+
+:host {
+  @include grid-column-tooltip();
+}
+
+:host.ag-tooltip-hiding {
+  opacity: 0;
+}
+
+.custom-tooltip {
+  width: 160px;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  text-decoration:underline;
+  color:$custom-blue;
+  border-radius: 4px;
+
+  .related-documents-list {
+    padding:20px;
+
+    &__item {
+      display: flex;
+      align-items: center;
+
+      &:not(:last-child){
+        padding-bottom: 10px;
+      }
+    }
+
+    &__item-image {
+      padding: 0;
+      margin: 0;
+    }
+    
+    &__item-text {
+        max-width: 100px;
+        padding-left: 10px;
+        word-wrap: break-word;
+    }
+  }
+}

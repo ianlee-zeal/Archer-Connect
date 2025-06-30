@@ -1,0 +1,13 @@
+@import "../../../../../styles/variables";
+
+::ng-deep.exclamation-triangle {
+    line-height: 21px;
+    color: $validation-invalid-color;
+    padding-left: 4px;
+}
+
+::ng-deep.check-square {
+    line-height: 21px;
+    color: $green;
+    padding-left: 4px;
+}

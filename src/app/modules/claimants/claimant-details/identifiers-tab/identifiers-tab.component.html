@@ -1,0 +1,4 @@
+<div *ngIf="item$ | async">
+  <app-grid [gridOptions]="gridOptions" [rowData]="identifiers$ | async" [gridId]="gridId" entityLabel="identifiers">
+  </app-grid>
+</div>

@@ -1,0 +1,206 @@
+<modal (close)="onCancel()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <form [formGroup]="form" novalidate>
+    <div class="modal-section">
+
+        <card hideSeparator>
+          <card-col [width]="620">
+            <card-row label="Level" [labelWidth]="200" inputId="levelId" [control]="form.get('levelId')" maxContentWidth="420" containerWidth="620" required>
+                <app-select
+                  id="levelId"
+                  [options]="levelsList"
+                  formControlName="levelId"
+                  placeholder="Select Level"
+                  fullwidth
+                  cardValue
+                  required>
+                </app-select>
+            </card-row>
+            <card-row label="Project" [hidden]="!isProject" inputId="case" [control]="form.get('case')" [labelWidth]="200" required alignContentVertically>
+              <app-clearable-input
+                id="case"
+                [form]="form"
+                controlName="case"
+                [isReadonly]="true"
+                placeholder="Select Project"
+                cardValue
+                (clear)="onClear('case')"
+                [width]="removableInputWidth"
+                (click)="onOpenProjectModal()">
+              </app-clearable-input>
+            </card-row>
+            <card-row label="Claimant" [hidden]="!isClaimant" inputId="client" [control]="form.get('client')" [labelWidth]="200" required alignContentVertically>
+              <app-clearable-input
+                id="client"
+                [form]="form"
+                controlName="client"
+                [isReadonly]="true"
+                placeholder="Select Claimant"
+                cardValue
+                (clear)="onClear('client')"
+                [width]="removableInputWidth"
+                (click)="onOpenClaimantModal()">
+              </app-clearable-input>
+            </card-row>
+            <card-row label="Project" [hidden]="!isClaimant" inputId="case" [control]="form.get('case')" [labelWidth]="200" alignContentVertically>
+              <label cardValue controlName="case">{{ (form.get('case').value ?? '-')  }}</label>
+            </card-row>
+            <card-row label="Applied Payment Type" [labelWidth]="200" inputId="paymentItemTypeId" [control]="form.get('paymentItemTypeId')" maxContentWidth="420" containerWidth="620" required>
+                <app-select
+                  id="paymentItemTypeId"
+                  [options]="paymentTypes"
+                  formControlName="paymentItemTypeId"
+                  placeholder="Select Payment Type"
+                  fullwidth
+                  cardValue
+                  required>
+                </app-select>
+            </card-row>
+            <card-row label="Transfer to Sub-Account" [hidden]="!hasTransferToSubAccountPermission" [labelWidth]="200" inputId="transferToSubAccount" [control]="form.get('transferToSubAccount')">
+              <label class="form-check h-100" cardValue>
+                <input type="checkbox" class="form-check-input" formControlName="transferToSubAccount" id="transferToSubAccount" />
+                <span></span>
+              </label>
+            </card-row>
+            <card-row [hidden]="isTransferToSubAccChecked" label="Method" [labelWidth]="200" inputId="paymentMethodId" [control]="form.get('paymentMethodId')" maxContentWidth="420" containerWidth="620" required>
+              <app-select
+                id="paymentMethodId"
+                [options]="methodsList"
+                formControlName="paymentMethodId"
+                placeholder="Select Method"
+                fullwidth
+                [required]="!isTransferToSubAccChecked"
+                cardValue>
+              </app-select>
+            </card-row>
+            <card-row [hidden]="isHideTransferSubAccField" [labelWidth]="200" label="Sub QSF Org" inputId="qsfOrg" [control]="form.get('qsfOrg')" alignContentVertically required>
+              <app-clearable-input
+                cursorPointer
+                [form]="form"
+                controlName="qsfOrg"
+                [isReadonly]="true"
+                id="qsfOrg"
+                placeholder="Select QSF org"
+                cardValue
+                (click)="onOpenQSFModal()"
+                (clear)="onClear('qsfOrg')"
+                [width]="removableInputWidth">
+              </app-clearable-input>
+            </card-row>
+            <card-row [hidden]="isHideTransferSubAccField" label="Sub-QSF Bank Account" [labelWidth]="200" inputId="qsfBankAccountId" [control]="form.get('qsfBankAccountId')" maxContentWidth="420" containerWidth="620" [required]="isTransferToSubAccChecked">
+              <app-select
+                id="qsfBankAccountId"
+                [options]="subQsfBankAccounts"
+                formControlName="qsfBankAccountId"
+                placeholder="Select Bank Account"
+                fullwidth
+                [required]="isTransferToSubAccChecked"
+                cardValue>
+              </app-select>
+            </card-row>
+            <card-row [hidden]="isHideTransferSubAccField" label="Transfer Further Credit" [labelWidth]="200" inputId="transferFFC" [control]="form.get('transferFFC')" maxContentWidth="420" containerWidth="620">
+              <input type="text" class="form-control" formControlName="transferFFC" id="transferFFC" cardValue>
+            </card-row>
+            <card-row *ngIf="isWire && !isTransferToSubAccChecked" label="Bank Account" [labelWidth]="200" inputId="bankAccountId" [control]="form.get('bankAccountId')" maxContentWidth="420" containerWidth="620" [required]="isWire">
+                <app-select
+                  id="bankAccountId"
+                  [options]="bankAccountsList$ | async"
+                  formControlName="bankAccountId"
+                  placeholder="Select Bank Account"
+                  fullwidth
+                  [required]="isWire"
+                  cardValue>
+                </app-select>
+            </card-row>
+            <card-row *ngIf="isWire && !isTransferToSubAccChecked" label="Further Credit Account" [labelWidth]="200" inputId="furtherCreditAccount" [control]="form.get('furtherCreditAccount')" maxContentWidth="420" containerWidth="620">
+                <input type="text" class="form-control" formControlName="furtherCreditAccount" id="furtherCreditAccount" cardValue>
+            </card-row>
+            <card-row *ngIf="isCheck && !isTransferToSubAccChecked" label="Default Address" [labelWidth]="200" inputId="addressId" [control]="form.get('addressId')" maxContentWidth="420" containerWidth="620" [required]="isCheck">
+                <app-select
+                  id="addressId"
+                  [options]="defaultPaymentAddress$ | async"
+                  formControlName="addressId"
+                  placeholder="Select Address"
+                  [required]="isCheck"
+                  cardValue>
+                </app-select>
+            </card-row>
+            <card-row label="Status" [labelWidth]="200" inputId="active" [control]="form.get('active')">
+              <label class="checkbox" [ngClass]="{'active': getStatus}" cardValue>
+                <input type="checkbox" name="statusCheckbox" formControlName="active">
+                <span class="checkbox__label">{{ getStatus ? 'Active' : 'Inactive'}}</span>
+              </label>
+            </card-row>
+            <card-row [tooltip]="tooltipText" [tooltipPosition]="tooltipPosition" [hidden]="!showEnableNetToFirmByDefault"  label="Enable Net To Firm by Default" [labelWidth]="260" inputId="enableNetToFirmByDefault" [control]="form.get('enableNetToFirmByDefault')" cardValue>
+              <label class="form-check" cardValue>
+                <input type="checkbox" name="enableNetToFirmByDefaultCheckbox" formControlName="enableNetToFirmByDefault">
+                <span class="checkbox__label"></span>
+              </label>
+              </card-row>
+          </card-col>
+        </card>
+
+    </div>
+    <div *ngIf="isTransferToSubAccChecked && hasTransferToSubAccountPermission" class="modal-section">
+      <card hideSeparator>
+        <card-col [width]="620">
+          <b>Final Payment to Firm (from sub-account)</b>
+          <card-row label="Method" [labelWidth]="200" inputId="paymentMethodId1" [control]="form.get('paymentMethodId')" maxContentWidth="420" containerWidth="620">
+            <app-select
+              id="paymentMethodId1"
+              [options]="methodsList"
+              formControlName="paymentMethodId"
+              placeholder="Select Method"
+              fullwidth
+              cardValue>
+            </app-select>
+          </card-row>
+          <card-row [hidden]="!isCheck" label="Default Address" [labelWidth]="200" inputId="addressId" [control]="form.get('addressId')" maxContentWidth="420" containerWidth="620">
+            <app-select
+              id="addressId2"
+              [options]="defaultPaymentAddress$ | async"
+              formControlName="addressId"
+              placeholder="Select Address"
+              cardValue>
+            </app-select>
+          </card-row>
+          <card-row [hidden]="!isWire" label="Bank Account" [labelWidth]="200" inputId="bankAccountId" [control]="form.get('bankAccountId')" maxContentWidth="420" containerWidth="620">
+            <app-select
+              id="bankAccountId"
+              [options]="bankAccountsList$ | async"
+              formControlName="bankAccountId"
+              placeholder="Select Bank Account"
+              fullwidth
+              cardValue>
+            </app-select>
+          </card-row>
+          <card-row [hidden]="!isWire" label="Further Credit Account" [labelWidth]="200" inputId="furtherCreditAccount" [control]="form.get('furtherCreditAccount')" maxContentWidth="420" containerWidth="620">
+              <input type="text" class="form-control" formControlName="furtherCreditAccount" id="furtherCreditAccount" cardValue>
+          </card-row>
+        </card-col>
+      </card>
+
+    </div>
+    </form>
+    <div class="modal-section" *ngIf="paymentPreferencesItem">
+      <app-system-fields-section [item]="paymentPreferencesItem" modalMode></app-system-fields-section>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onCancel()">
+      Cancel
+    </button>
+    <button
+      type="button"
+      asyncButton
+      [awaitedActionTypes]="awaitedSubmitActionTypes"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      [ngClass]="{ 'disabled': isDisabled }"
+      [disabled]="isDisabled"
+      (click)="onSubmit()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Submit
+    </button>
+  </modal-footer>
+</modal>

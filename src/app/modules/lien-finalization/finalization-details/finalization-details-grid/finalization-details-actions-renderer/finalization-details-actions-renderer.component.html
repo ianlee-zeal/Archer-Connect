@@ -1,0 +1,8 @@
+<div class="grid-actions">
+    <div class="grid-actions__action-wrapper" [ngSwitch]="value" (click)="onChange()">
+      <span *ngSwitchCase="null" class="tag tag--no"></span>
+      <span *ngSwitchCase="false" class="tag tag--no"></span>
+      <span *ngSwitchCase="true" class="tag tag--yes"></span>
+      <span *ngSwitchDefault></span>
+  </div>
+</div>

@@ -1,0 +1,124 @@
+<modal (close)="cancel()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="form" novalidate>
+        <card hideSeparator>
+          <card-col [width]="650" >
+            <card-row label="Fee Cap Name" [labelWidth]="160" inputId="name" [control]="form.get('name')" required>
+              <input
+                id="name"
+                type="text"
+                class="form-control w-100"
+                formControlName="name"
+                placeholder="Fee Cap Name"
+                cardValue>
+            </card-row>
+
+            <card-row label="Description" [labelWidth]="160" inputId="description" [control]="form.get('description')">
+              <textarea
+                id="description"
+                maxlength="1000"
+                class="form-control textarea-container w-100"
+                formControlName="description"
+                placeholder="Short description of the cap(e.g. from contact)"
+                cardValue>
+              </textarea>
+            </card-row>
+
+            <card-row
+            [marginTop]="10"
+            [maxContentWidth]="300"
+            [containerWidth]="750"
+            label="Award-based Cap?"
+            [labelWidth]="160"
+            inputId="awardBasedCap"
+            [control]="form.get('awardBasedCap')">
+            <label class="checkbox" [ngClass]="{'active': awardBasedCap}" cardValue>
+              <input type="checkbox" formControlName="awardBasedCap">
+            </label>
+            </card-row>
+
+            <ng-container *ngIf="awardBasedCap">
+              <card-row 
+              [maxContentWidth]="500" 
+              [containerWidth]="760"
+              [marginLeft]="awardBasedCap ? '25' : null" 
+              labelWidth="170"
+              inputId="settlementAmountRange"
+              [control]="form.get('settlementAmountRange')"
+              label="Settlement Amount">
+                <div cardValue class="range-container">
+                  <app-range-input class="range-input" formControlName="settlementAmountRange"></app-range-input>
+                </div>
+              </card-row>
+
+              <card-row 
+              label="Injury Category" 
+              inputId="injuryCategory" 
+              [maxContentWidth]="500" 
+              [containerWidth]="760" 
+              labelWidth="170"
+              [marginLeft]="awardBasedCap ? '25' : null">
+                  <app-select 
+                      cardValue
+                      id="injuryCategory"
+                      placeholder="Select Injury Category"
+                      optionAsValue
+                      [fullwidth]="true"
+                      class="w-100"
+                      formControlName="injuryCategory"
+                      (onKeyup)="onSearchInjuryCategory($event)"
+                      searchable
+                      [searchFn]="searchFn"
+                      [options]="injuryCategories$ | async">
+                  </app-select>
+              </card-row>
+            </ng-container>
+
+            <div class="unit-switcher-container">
+              <card-row
+                label="Capped Price"
+                inputId="cappedPrice"
+                [marginLeft]="awardBasedCap ? '25' : null"
+                labelWidth="170"
+                [maxContentWidth]="400"
+                required
+                [control]="form.get(!cappedPriceSwitcher ? 'cappedPrice' : 'cappedPricePct')" >
+                <input *ngIf="!cappedPriceSwitcher" placeholder="Price" type="text" class="form-control" formControlName="cappedPrice" id="cappedPrice" cardValue />
+                <input *ngIf="cappedPriceSwitcher" placeholder="Pecentage of GSV" type="text" class="form-control" formControlName="cappedPricePct" id="cappedPricePct" cardValue />
+
+                <label class="checkbox active" [ngClass]="{'active': cappedPriceSwitcher}" cardValue>
+                  <div class="unit-sign unit-sign__left">$</div>
+                  <input type="checkbox" name="cappedPriceSwitcher" [checked]="cappedPriceSwitcher" (change)="onCheck('cappedPriceSwitcher', $event)">
+                  <div class="unit-sign unit-sign__right">%</div>
+                </label>
+              </card-row>
+            </div>
+          </card-col>
+        </card>
+        <app-billing-rules-select-list 
+          [projectId]="projectId"  
+          [selectedEntities]="relatedContractRules"
+          (onEntitySelect)="onEntitySelect($event)"
+        ></app-billing-rules-select-list>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="cancel()">
+      Cancel
+    </button>
+    <button
+      asyncButton
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      [awaitedActionTypes]="awaitedSaveActionTypes"
+      [ngClass]="{ 'disabled': form.invalid }"
+      [disabled]="isSaveDisabled"
+      (click)="onSave()">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Save
+    </button>
+  </modal-footer>
+</modal>

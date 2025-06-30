@@ -1,0 +1,31 @@
+@import "src/styles/_colors.scss";
+
+.input-container {
+    position: relative;
+    display: block;
+
+    .form-control {
+        margin: 0;
+    }
+
+    .clear-button {
+        height: 100%;
+        display: flex;
+        align-content: center;
+        position: absolute;
+        top: 0;
+        right: 5px;
+        color: $custom-gray;
+        font-size: 14px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .clear-button:hover {
+        color: $button-danger-color;
+    }
+}
+
+.disabled {
+    opacity: 0.7;
+}

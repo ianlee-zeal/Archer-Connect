@@ -1,0 +1,7 @@
+<form [formGroup]="form" novalidate class="range">
+    <input id="lower" formControlName="lower" type="text" placeholder="Lower value" onlyNumbersEx [allowDecimal]="true"
+        [maxValue]="9999999999" class="form-control me-1" />
+
+    <input id="upper" formControlName="upper" type="text" placeholder="Upper value" onlyNumbersEx [allowDecimal]="true"
+        [maxValue]="9999999999" class="form-control" />
+</form>

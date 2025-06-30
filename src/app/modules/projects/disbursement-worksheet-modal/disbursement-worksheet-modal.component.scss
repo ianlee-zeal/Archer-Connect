@@ -1,0 +1,19 @@
+.select-container {
+    width: 500px;
+}
+
+.template-options {
+    margin-top: 25px;
+}
+
+.draft-or-publish-container {
+    display: flex;
+    width: 600px;
+    &__comment {
+        font-size: 13px;
+        margin-left: 20px;
+    }
+    &__toggle {
+        width: 300px;
+    }
+}

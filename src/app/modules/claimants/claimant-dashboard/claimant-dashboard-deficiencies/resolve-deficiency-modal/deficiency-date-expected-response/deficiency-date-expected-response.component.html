@@ -1,0 +1,32 @@
+<form [formGroup]="datesForm">
+  <div formArrayName="inputDates" class="dates-container">
+    <ng-container *ngFor="let dateControl of inputDates.controls; let i = index">
+      <div class="date-selector-wrapper">
+        <app-date-selector
+          class="date-range__date-selector"
+          id="date-picker"
+          [formControlName]="i"
+          maxWidth="115"
+          cardValue
+          [customPlaceholder]="DateFormatPipe.format.toUpperCase()"
+          (isValid)="validateValid($event)"
+        >
+        </app-date-selector>
+        <button *ngIf="i != 0" class="remove-date-button" (click)="removeDate(i)">
+          &#10006;
+        </button>
+      </div>
+    </ng-container>
+    <button
+      *ngIf="inputDates.length < MAX_DATES"
+      [disabled]="!isValid || hasDuplicateDates || !inputDates.valid"
+      class="btn dates-container__btn--primary"
+      (click)="addDate()">
+      + Add another date
+    </button>
+  </div>
+  <div class="errors">
+    <div *ngIf="hasDuplicateDates" class="validation-error">Error: Remove duplicate dates.</div>
+    <div *ngIf="!isValid" class="validation-error">Error: This is not a valid date format. Please enter a date in MM/DD/YYYY format.</div>
+  </div>
+</form>

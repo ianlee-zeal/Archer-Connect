@@ -1,0 +1,137 @@
+@use 'sass:color';
+@import "src/styles/variables.scss";
+@import "src/styles/_colors.scss";
+
+.modal-footer {
+  border-top: none;
+  min-height: $modal-footer-height;
+  padding: 5px $modal-footer-padding;
+  border-radius: $modal-border-radius;
+  background-color: $modal-bg;
+
+  & > :not(:last-child) {
+    margin-right: 0;
+  }
+
+  &__btn {
+    height: 30px;
+    min-width: 80px;
+    font-size: 14px;
+
+    &--primary {
+      background-color: $primary-blue !important;
+      color: $white !important;
+
+
+      &:hover, &:active {
+        color: $white !important;
+      }
+
+      &:hover {
+        background-color: $primary-blue !important;
+      }
+    }
+
+    &--secondary {
+      background-color: $secondary-gray;
+      color: $primary-blue;
+
+      &:hover, &:active {
+        color: $primary-blue;
+        background-color: $secondary-gray;
+      }
+    }
+
+    &--danger {
+      background-color: $button-danger-color;
+      color: $white;
+
+      &:hover, &:active {
+        color: $white;
+      }
+
+      &:hover {
+        background-color: $button-danger-color;
+      }
+    }
+
+    &--link {
+      background-color: $white;
+      color: $primary-blue;
+
+      &:focus {
+        box-shadow: none;
+      }
+
+      p {
+        text-decoration: underline;
+      }
+    }
+
+    &--success {
+      background-color: $button-success-color;
+      color: $white;
+
+      &:hover, &:active {
+        color: $white;
+      }
+
+      &:hover {
+        background-color: $button-success-color;
+      }
+      &:disabled {
+        background-color: $button-success-color !important;
+        color: $white;
+      }
+    }
+
+    &--primary {
+      &:active {
+        background-color: color.scale($primary-blue, $lightness: -10%);
+      }
+
+      &:focus {
+        box-shadow: 0 0 2px 3px color.scale($primary-blue, $lightness: -10%);
+      }
+    }
+
+    &--danger {
+      &:active {
+        background-color: color.scale($button-danger-color, $lightness: -10%);
+      }
+
+      &:focus {
+        box-shadow: 0 0 2px 3px color.scale($button-danger-color, $lightness: -10%);
+      }
+    }
+
+    &--success {
+      &:active {
+        background-color: color.scale($button-success-color, $lightness: -10%);;
+      }
+
+      &:focus {
+        box-shadow: 0 0 2px 3px color.scale($button-success-color, $lightness: -10%);
+      }
+    }
+  }
+
+  &__row {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-content: flex-end;
+    flex-wrap: nowrap;
+  }
+
+  &__autoHeight {
+    height: auto;
+    min-height: $modal-footer-height;
+  }
+
+  &__justifyContentSpaceBetween {
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: flex-end;
+    flex-wrap: nowrap;
+  }
+}

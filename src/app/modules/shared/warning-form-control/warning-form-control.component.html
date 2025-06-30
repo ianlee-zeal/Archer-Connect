@@ -1,0 +1,25 @@
+<div class="warning-form-control" *ngIf="isEditMode; else readOnlyModeTemplate">
+    <ng-container *ngIf="formGroup"[formGroup]="formGroup">
+      <div class="input-container">
+      <input type="text" class="form-control"  [formControlName]="formControlName" (ngModelChange)="onChange($event)" [appAutoFocus]="isApplyAutoFocus" />
+      <ng-container *ngIf="showWarning">
+        <i class="fas fa-exclamation-triangle"></i>
+      </ng-container>
+    </div>
+    </ng-container>
+</div>
+
+<ng-template #readOnlyModeTemplate>
+  <div class="warning-form-control">
+  <div class="input-container">
+    <span class="card-row__value form-control-plaintext">{{value ?? '-'}}</span>
+    <ng-container *ngIf="showWarning">
+      <i class="fas fa-exclamation-triangle"></i>
+    </ng-container>
+  </div>
+</div>
+</ng-template>
+
+<ng-template #noFormatTemplate>
+  {{ value || '-' }}
+</ng-template>

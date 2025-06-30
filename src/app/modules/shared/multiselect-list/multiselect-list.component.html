@@ -1,0 +1,18 @@
+<div class="multiselect-list" [ngClass]="{ 'w-100': !width }" [ngStyle]="{ 'width': width ? width + 'px' : null }">
+
+  <div class="multiselect-list__option" *ngIf="enableSelectAll && options && options.length > 1">
+    <label class="form-check-label">
+      <input type="checkbox" class="form-check-input" (change)="onSelectAll($event.target.checked)" [checked]="isSelectAllChecked">
+      <span>Select All</span>
+    </label>
+  </div>
+
+  <div class="multiselect-list__option" *ngFor="let option of options; let i = index">
+    <label class="form-check-label">
+      <input type="checkbox" class="form-check-input" (change)="onChange($event, option.id, i)" [checked]="option.checked" [disabled]="option.disabled">
+      <span>{{ option.name }}</span>
+    </label>
+  </div>
+
+  <span *ngIf="!options || !options.length">No results</span>
+</div>

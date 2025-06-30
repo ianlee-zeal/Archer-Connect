@@ -1,0 +1,8 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+  <app-context-bar [title]="title"></app-context-bar>
+  <!-- page header here -->
+  <div class="page-content">
+    <app-grid [gridOptions]="gridOptions" [skipSetContentHeight]="true" (gridReady)="gridReady($event)" [rowData]="index$ | async" (newRecord)="addNewRecord()" [gridId]="gridId" entityLabel="access policies"></app-grid>
+  </div>
+</div>

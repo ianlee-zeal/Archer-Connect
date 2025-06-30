@@ -1,0 +1,5 @@
+<div *ngIf="params.items && params?.items.length > 0" class="link-actions__container">
+  <div *ngFor="let item of params.items">
+    <a [ngClass]="{'error-link': hasError(item)}" class="btn btn-link m-0" (click)="onActionHandler(item)">{{ item.name }}</a>
+  </div>
+</div>

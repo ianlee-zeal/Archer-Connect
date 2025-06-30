@@ -1,0 +1,53 @@
+<app-info-card [state]="infoCardState">
+  <div (click)="onClick()" class="container cursor-pointer" *ngIf="qsfData" infoCardData>
+    <div class="section first-section">
+      <div class="title">QSF</div>
+        <ng-container *ngIf="!isFinalized; else Final">
+          <div class="status">IN PROGRESS</div>
+        </ng-container>
+      
+      <ng-template #Final>
+        <div class="status-final">FINALIZED</div>
+      </ng-template>
+    
+    </div>
+    <div class="section second-section">
+      <div class="summary-row">
+        <span class="property-name">Disbursements Made:</span>
+        <div class="dashed-line"></div>
+        <span data-test-id="dashboard-qsfAdmin-display-disbursementsMade" class="property-value"> {{ qsfData.disbursements | currency }} / {{ qsfData.allocation | currency }} </span>
+      </div>
+      <div class="summary-row">
+        <span class="property-name">Firm Paid:</span>
+        <div class="dashed-line"></div>
+        <div *ngIf="qsfData.firmPaid.status === 'Yes'; else FirmPaymentStatus" class="property-value-container">
+          <ng-container *ngIf="qsfData.firmPaid.amount">
+            <span data-test-id="dashboard-qsfAdmin-display-firmPaidStatus"> {{ qsfData.firmPaid.status }} </span>
+            <span data-test-id="dashboard-qsfAdmin-display-firmPaidAmount" class="property-value"> {{ qsfData.firmPaid.amount | currency }} </span>
+          </ng-container>
+        </div>
+        <ng-template #FirmPaymentStatus>
+          <span data-test-id="dashboard-qsfAdmin-display-firmPaidStatus" class="property-value"> {{qsfData.firmPaid.status}} </span>
+        </ng-template>
+      </div>
+    </div> 
+   
+    <div class="section third-section">
+      <div class="summary-row">
+        <span class="property-name">Claimant Paid:</span>
+        <div class="dashed-line"></div>
+        <div class="property-value-container" *ngIf="qsfData.claimantPaid.status === 'Yes'; else ClaimantPaymentStatus">
+          <span data-test-id="dashboard-qsfAdmin-display-claimantPaidStatus"> {{ qsfData.claimantPaid.status }} </span>
+          <span data-test-id="dashboard-qsfAdmin-display-claimantPaidAmount" class="property-value"> {{ qsfData.claimantPaid.amount | currency }} </span>
+        </div>
+        <ng-template #ClaimantPaymentStatus>
+          <span data-test-id="dashboard-qsfAdmin-display-claimantPaidStatus" class="property-value"> {{qsfData.claimantPaid.status}} </span>
+        </ng-template>
+      </div>
+      <div class="summary-row">
+        <span class="property-name">&nbsp;</span>
+        <span class="property-value">&nbsp;</span>
+      </div>
+    </div>
+  </div>
+</app-info-card> 

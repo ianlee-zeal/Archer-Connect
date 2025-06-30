@@ -1,0 +1,63 @@
+<form [formGroup]="form">
+  <div class="drop-container_multiple" [ngStyle]="{ 'width': componentWidth + 'px'}">
+    <app-drag-and-drop
+    (filesSelected)="onFilesSelectedInternal($event)"
+    [allowedFileTypes]="allowedFileTypes"
+    [selectedFiles]="selectedFiles"
+    multiple="true"
+    cardValue>
+  </app-drag-and-drop>
+  </div>
+  <div class="drop-container__selected-files"  *ngIf="!inProgress else spinner">
+    <div formArrayName="documents"> 
+      <div *ngFor="let doc of documents().controls; let i=index" [formGroupName]="i">  
+        <div class="file-item-container">
+          <div  class="file-item-row" [ngStyle]="{ 'width': componentWidth + 'px'}">
+            <div>
+              <label class="file-item-label">File Name:</label>
+              <span class="bold">{{getFileNameAt(i)}}</span>
+            </div>
+            <div class="file-item-row-empty"></div>
+          </div>
+          <div class="file-item-row" [ngStyle]="{ 'width': componentWidth + 'px'}">
+            <div class="file-item-container-first">
+              <div>
+                <label class="file-item-label" required>Name<span class="required-icon">*</span>:</label>
+              </div>
+              <input type="text" formControlName="description" class="form-control" cardValue>
+            </div>
+            <div class="file-item-container-second">
+              <div>
+                <label class="file-item-label" required>Type<span class="required-icon">*</span>:</label>
+              </div>
+              <app-select
+                id="typeSelector"
+                formControlName="documentTypeId"
+                placeholder="Type to search Document Types"
+                required
+                fullwidth
+                [options]="documentTypes"
+                (onKeyup) = "searchDocumentTypes($event)"
+                (onOpen) = "searchDocumentTypes('')"
+                [searchFn] = searchFn 
+                class="long-panel"
+                style="width: 285px"
+                searchable>
+                </app-select>
+                <div>
+                  <button type="button" class="btn btn-icon note__action-btn" title="Remove" (click)="removeFileRow(i)">
+                    <img src="assets/images/action_ic_delete.svg" />
+                  </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+      <div class="errorMessage" *ngIf="errorMessage">{{errorMessage}}</div>
+    </div>
+  </div>  
+  <ng-template #spinner>
+    <span class="spinner-border spinner-border-sm align-middle ms-1"></span>
+  </ng-template>
+</form>
+

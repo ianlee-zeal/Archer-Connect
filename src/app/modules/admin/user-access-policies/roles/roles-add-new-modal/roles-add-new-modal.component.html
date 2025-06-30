@@ -1,0 +1,43 @@
+<modal (close)="addNewOrgRoleModal.hide()">
+  <modal-header>Create Role</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="orgRoleForm" novalidate>
+        <card hideSeparator>
+          <card-col [width]="480" [labelWidth]="140">
+            <card-row label="Role Name" inputId="roleName" [control]="orgRoleForm.get('roleName')" required>
+              <input type="text" id="roleName" class="form-control" formControlName="roleName" appAutoFocus cardValue />
+            </card-row>
+            <ng-container *ngIf="isMaster && hasRoleLevelPermission(); else noPermission">
+              <card-row label="Level" inputId="isGlobal" [control]="orgRoleForm.get('level')" required>
+                <app-select id="levelId" class="modal-control__dropdown" (onModelChange)="onRoleLevelChange($event)" [options]="levelOptions" formControlName="level" cardValue required></app-select>
+              </card-row>
+            </ng-container>
+            <ng-template #noPermission>
+              <card-row label="Level" [value]="'Organization'"></card-row>
+            </ng-template>
+            <card-row label="Access Policy" inputId="accessPolicyId" [control]="orgRoleForm.get('accessPolicyId')" required>
+              <app-select id="accessPolicyId" class="modal-control__dropdown" [options]="orgAccessPolicyOptions" formControlName="accessPolicyId" cardValue required></app-select>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer [isFlexRow]="true">
+    <div *ngIf="error" class="text-danger me-auto">{{error}}</div>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="addNewOrgRoleModal.hide()">
+      Cancel
+    </button>
+    <button
+      type="submit"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      asyncButton
+      [awaitedActionTypes]="awaitedActionTypes"
+      (click)="onSave()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Save
+    </button>
+  </modal-footer>
+</modal>

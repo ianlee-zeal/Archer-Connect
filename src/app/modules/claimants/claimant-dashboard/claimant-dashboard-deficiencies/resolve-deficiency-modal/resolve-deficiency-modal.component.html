@@ -1,0 +1,163 @@
+<dialog (close)="modalService.hide()" class="modal-content">
+  <dialog-header>
+    <div class="title-container">
+      <span>{{title}}</span>
+      <app-step-tracker-badge
+      *ngIf="isMultipleDeficiencies"
+      class="step-tracker-badge"
+      [step]="currentDeficiencyIndex + 1"
+      [totalSteps]="deficiencies.length">
+      </app-step-tracker-badge>
+    </div>
+  </dialog-header>
+
+  <dialog-body>
+    <app-info-card>
+      <app-deficiency-summary-card [deficiencyItem]="currentDeficiency" infoCardData></app-deficiency-summary-card>
+      <div class="deficiency-type">
+        <span class="subtitle">{{currentDeficiency.deficiencyTypeDisplayName}}</span>
+        <span *ngIf="currentDeficiency.notes != currentDeficiency.deficiencyTypeDisplayName" class="deficiency-note">{{currentDeficiency.notes}}</span>
+      </div>
+
+      <button class="download-btn" *ngIf="currentDeficiency.documentsAttachedId && currentDeficiency.expectedResponseId === DeficiencyTypeExpectedResponse.DocumentReview"
+              (click)="downloadClaimantForm()">
+        <img src="assets/svg/download.svg" />
+        Download Related Document
+      </button>
+      <form [formGroup]="responseValuesForm" class="form-section">
+        <div class="subtitle-container">
+          <span>Resolve Deficiency</span>
+          <app-tooltip-info *ngIf="currentDeficiency?.extendedDescription"
+          inline="true"
+          [tooltipText]="currentDeficiency.extendedDescription"
+          placement="bottom"
+          [templateRef]="resolveDeficiencyTooltipTemplate"
+          tooltipClass="dark-mode-tooltip">
+          </app-tooltip-info>
+          <span *ngIf="currentDeficiencyFiles?.length >= maxFiles && currentDeficiencyDataType === DeficiencyExpectedDataType.File" class="info-message">
+            If you have more than 5 documents please use document batches.
+          </span>
+          <span style="font-size: 14px" *ngIf="inputDates?.length === 5">If you have more than 5 date values then please add them to the notes section.</span>
+        </div>
+        <ng-container [ngSwitch]="currentDeficiencyDataType">
+          <input *ngSwitchCase="DeficiencyExpectedDataType.Text" type="text"
+          class="form-control"
+          formControlName="textValue"
+          id="resolve-deficiency-text-input"
+          data-test-id="resolve-deficiency-text-input"
+          />
+          <input
+          *ngSwitchCase="DeficiencyExpectedDataType.Decimal"
+          type="text"
+          class="form-control input-amount"
+          formControlName="amountValue"
+          id="resolve-deficiency-amount-input"
+          data-test-id="resolve-deficiency-amount-input"
+          placeholder="0.00"
+          onlyNumbersEx
+          [allowDecimal]="true"
+          [maxValue]="1000000000"
+          [toFixed]="2"
+          [suppressPasteIfValueIsIncorrect]="true"
+          />
+
+            <app-files-selector-v2 *ngSwitchCase="DeficiencyExpectedDataType.File" [allowMultiple]="false" [selectButtonTitle]="'Upload Files Here'"
+            (filesSelected)="onFilesSelected($event)"
+            [isBtnDisabled]="currentDeficiencyFiles?.length >= maxFiles"
+            [maxFileSizeErrorMessage]="'The file size is too large. Please reduce the file size and try again.'"
+            [initialFiles]="currentDeficiencyFiles || []"
+            />
+          <app-deficiency-date-expected-response
+            *ngSwitchCase="DeficiencyExpectedDataType.Date"
+            (isSubmitValid)="onSubmitValidityChanged($event)"
+            formControlName="inputDates">
+          </app-deficiency-date-expected-response>
+        </ng-container>
+      </form>
+
+      <div class="form-section">
+        <span class="notes-subtitle">Notes</span>
+        <textarea id="resolve-deficiency-notes-textarea"
+        class="form-control textarea-container"
+        data-test-id="resolve-deficiency-notes-textarea"
+        [(ngModel)]="inputNote"
+        placeholder="Add a note for ARCHER"></textarea>
+      </div>
+    </app-info-card>
+  </dialog-body>
+
+  <ng-container *ngIf="!isMultipleDeficiencies; else multipleDeficiencies">
+    <dialog-footer>
+      <button type="button" class="btn dialog-footer__btn dialog-footer__btn--secondary" (click)="onCancel()">
+        Close
+      </button>
+      <button
+        type="submit"
+        data-test-id="resolve-deficiency-submit-btn"
+        class="btn dialog-footer__btn dialog-footer__btn--primary"
+        asyncButton
+        [awaitedActionTypes]="awaitedActionTypes"
+        (asyncFinished)="onSubmitActionFinished($event)"
+        [ngClass]="{ disabled: !isResponseValid }"
+        [disabled]="!isResponseValid"
+        (click)="onSubmit()"
+      >
+      Submit
+      <span class="spinner-border spinner-border-sm align-middle ms-2 hidden"></span>
+      </button>
+    </dialog-footer>
+  </ng-container>
+
+  <ng-template #multipleDeficiencies>
+    <dialog-footer [contentRight]="true" class="multiple">
+      <button  type="button"
+        data-test-id="resolve-deficiency-back-btn"
+        class="btn dialog-footer__btn dialog-footer__btn--link"
+        [disabled]="currentDeficiencyIndex === 0"
+        [hidden]="currentDeficiencyIndex === 0"
+        (click)="onBack()"
+        >
+        <i class="fas fa-arrow-left"></i>
+        Back
+      </button>
+      <button type="button"
+        data-test-id="resolve-deficiency-skip-btn"
+        class="btn dialog-footer__btn dialog-footer__btn--link"
+        [disabled]="currentDeficiencyIndex === deficiencies.length - 1 || isResponseValid"
+        (click)="onSkip()"
+        >Skip</button>
+      <button type="submit"
+        class="btn dialog-footer__btn dialog-footer__btn--secondary-submit"
+        data-test-id="resolve-deficiency-submit-btn"
+        [disabled]="!isResponseValid"
+        [ngClass]="{ disabled: !isResponseValid }"
+        asyncButton
+        [awaitedActionTypes]="awaitedActionTypes"
+        (asyncFinished)="onSubmitActionFinished($event)"
+        (click)="onSubmit()">
+        Submit <ng-container *ngIf="deficiencyResolvedCount > 0">({{ deficiencyResolvedCount }})</ng-container>
+        <span class="spinner-border spinner-border-sm align-middle ms-2 hidden"></span>
+      </button>
+      <button
+        type="button"
+        data-test-id="resolve-deficiency-next-btn"
+        class="btn dialog-footer__btn dialog-footer__btn--primary"
+        [ngClass]="{ disabled: !isResponseValid || currentDeficiencyIndex === deficiencies.length - 1 }"
+        (click)="onNext()"
+        [disabled]="!isResponseValid || currentDeficiencyIndex === deficiencies.length - 1"
+        >
+        Next
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </dialog-footer>
+  </ng-template>
+
+
+</dialog>
+
+<ng-template #resolveDeficiencyTooltipTemplate let-tooltipText="data">
+  <div class="tooltip-container">
+    <div class="title">Deficiency Info</div>
+    <div class="body">{{ tooltipText }}</div>
+  </div>
+</ng-template>

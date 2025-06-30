@@ -1,0 +1,29 @@
+<card hideSeparator [maxWidth]="750">
+    <card-col [width]="750" [labelWidth]="250">
+        <card-row label="Organization" inputId="organization" required [labelWidth]="250"
+            [control]="form.get('organization')" [maxContentWidth]="480" [containerWidth]="750">
+            <form [formGroup]="form" novalidate cardValue class="org-container">
+                <app-text-input-button
+                    class="org-select"
+                    (onClick)="openOrganizationSearchModal()"
+                    formControlName="org"
+                    id="organization"
+                    propertyNameForInputText="name"
+                    cardValue
+                    placeholder="Select Organization">
+                </app-text-input-button>
+
+                <input 
+                    id="feePercentage" 
+                    formControlName="feePercentage" 
+                    type="text" 
+                    placeholder="Fee Percentage"
+                    onlyNumbersEx 
+                    [allowDecimal]="true" 
+                    [maxValue]="9999999999" 
+                    class="form-control fee-percentage" /> 
+                <span>%</span>
+            </form>
+        </card-row>
+    </card-col>
+</card>

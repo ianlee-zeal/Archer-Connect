@@ -1,0 +1,161 @@
+<div>
+  <form [formGroup]="form" *ngIf="canEdit; else viewTemplate" novalidate>
+    <card header="Probate Service Information">
+
+    <card-col [width]="600" [labelWidth]="215">
+      <card-row label="Probate Stage" inputId="probateStage" [control]="form.get('probateStageId')" required>
+        <app-select 
+          id="probateStage" 
+          [options]="probateStages$ | async" 
+          formControlName="probateStageId" 
+          cardValue
+          (onModelChange)="onPobateStageChanged($event)">
+        </app-select>
+      </card-row>
+      <card-row label="Probate Service Type" inputId="productId" [control]="form.get('productId')" required >
+        <app-select id="productId" [options]="probateServiceTypes$ | async" formControlName="productId" cardValue > </app-select>
+      </card-row>
+      <card-row label="Assigned to" inputId="assignedTo" [control]="form.get('assignedTo')" alignContentVertically>
+        <app-clearable-input
+          cursorPointer
+          [form]="form"
+          controlName="assignedTo"
+          [isReadonly]="true"
+          id="assignedTo"
+          placeholder="Select"
+          cardValue
+          (click)="onOpenModal()"
+          (clear)="onClear('assignedTo')"
+          width="300">
+        </app-clearable-input>
+      </card-row>
+      <card-row label="Local Counsel Assigned" [value]="localCounselContacts"></card-row>
+      <card-row label="Private Counsel Assigned" [value]="privateCounselContacts"></card-row>
+      <card-row label="Local Counsel Invoice" inputId="localCounselInvoice" [control]="form.get('localCounselInvoice')">
+        <div cardValue class="probate-service-information__amount">
+          <span>$</span>
+          <input 
+            type="text"
+            placeholder="0.00"
+            class="form-control" 
+            formControlName="localCounselInvoice" 
+            id="localCounselInvoice" 
+            [allowDecimal]="true"
+            [maxValue]="99999999.99"
+            onlyNumbersEx 
+          />
+        </div>
+      </card-row>
+    </card-col>
+
+    <card-col [width]="400" [labelWidth]="215">
+      <card-row label="Death Certificate Received" inputId="isPrimary" [control]="form.get('deathCertificateReceived')">
+        <label class="form-check h-100" cardValue>
+          <input type="checkbox" class="form-check-input" formControlName="deathCertificateReceived" id="deathCertificateReceived" />
+          <span></span>
+        </label>
+      </card-row>
+      <card-row label="Decedent Has a Will" inputId="isPrimary" [control]="form.get('decendentHaveAWill')">
+        <label class="form-check h-100" cardValue>
+          <input type="checkbox" class="form-check-input" formControlName="decendentHaveAWill" id="decendentHaveAWill" (change)="decedentChanged()" />
+          <span></span>
+        </label>
+      </card-row>
+      <card-row label="Will Probated" inputId="isPrimary" [control]="form.get('willProbated')" >
+        <label class="form-check h-100" cardValue>
+          <input type="checkbox" class="form-check-input" formControlName="willProbated" id="willProbated" />
+          <span></span>
+        </label>
+      </card-row>
+      <card-row label="Estate Opened" inputId="isPrimary" [control]="form.get('estateOpened')">
+        <label class="form-check h-100" cardValue>
+          <input type="checkbox" class="form-check-input" formControlName="estateOpened" id="estateOpened" />
+          <span></span>
+        </label>
+      </card-row>
+      <ng-container *ngIf="hasEditProbateStatusPermission else readonlyProbateStatus">
+        <card-row 
+          label="Probate Status" 
+          inputId="statusId" 
+          [control]="form.get('statusId')">
+          <app-select 
+            id="statusId" 
+            [options]="probateStatuses$ | async" 
+            formControlName="statusId" 
+            cardValue
+            (onModelChange)="onProbateStatusChanged($event)"
+            [disabled]="!hasEditProbateStatusPermission">
+          </app-select>
+        </card-row>
+        <ng-container *ngIf="isInactiveStatusSelected">
+          <card-row 
+            label="Inactive Reason" 
+            inputId="inactiveReasons" 
+            [labelWidth]="215"
+            [control]="form.get('inactiveReasonId')"
+            [required]="isInactiveStatusSelected">
+            <app-select 
+              id="inactiveReasons" 
+              [options]="inactiveReasons$ | async" 
+              formControlName="inactiveReasonId" 
+              cardValue
+              [disabled]="!hasEditProbateStatusPermission">
+            </app-select>
+          </card-row>
+          <card-row 
+            label="Inactive Date" 
+            inputId="inactiveDate" 
+            [control]="form.get('inactiveDate')"
+            [labelWidth]="215"
+            [required]="isInactiveStatusSelected">
+            <app-date-selector 
+              maxWidth="185" 
+              id="inactiveDate" 
+              formControlName="inactiveDate" 
+              cardValue
+              [disabled]="!hasEditProbateStatusPermission">
+            </app-date-selector>
+          </card-row>
+        </ng-container>
+      </ng-container>
+      <ng-template #readonlyProbateStatus>
+        <card-row label="Probate Status" [value]="probateDetails?.status?.name"></card-row>
+        <ng-container *ngIf="isInactiveStatusSelected">
+          <card-row label="Inactive Reason" [value]="probateDetails?.inactiveReason?.name"></card-row>
+          <card-row label="Inactive Date" [value]="probateDetails?.inactiveDate | dateFormat"></card-row>
+        </ng-container>
+      </ng-template>
+    </card-col>
+
+    </card>
+  </form>
+
+  <ng-template #viewTemplate>
+    <div *ngIf="isInactiveStatusSelected" class="probate-service-information__notification">
+      Probate Status: {{probateDetails?.status?.name}}
+  </div>
+    <card header="Probate Service Information">
+      <card-col [width]="600" [labelWidth]="215">
+        <card-row label="Probate Stage" [value]="filterFromSelectOptions(probateStages$ | async, probateDetails?.probateStageId)?.name"></card-row>
+        <card-row label="Probate Service Type" [value]="filterFromSelectOptions(probateServiceTypes$ | async, probateDetails?.productId)?.name"></card-row>
+        <card-row label="Assigned to" [value]="form.get('assignedTo')?.value"></card-row>
+        <card-row label="Local Counsel Assigned" [value]="localCounselContacts"></card-row>
+        <card-row label="Private Counsel Assigned" [value]="privateCounselContacts"></card-row>
+        <card-row label="Local Counsel Invoice" [value]="probateDetails?.localCounselInvoice | extendedCurrency"></card-row>
+      </card-col>
+      <card-col [width]="600" [labelWidth]="215">
+        <card-row label="Death Certificate Received" [value]="probateDetails?.deathCertificateReceived | yesNoPipe"></card-row>
+        <card-row label="Decedent Has a Will" [value]="probateDetails?.decendentHaveAWill | yesNoPipe"></card-row>
+        <card-row label="Will Probated" [value]="probateDetails?.willProbated | yesNoPipe"></card-row>
+        <card-row label="Estate Opened" [value]="probateDetails?.estateOpened | yesNoPipe"></card-row>
+
+        <card-row label="Probate Status" [value]="probateDetails?.status?.name"></card-row>
+        <ng-container *ngIf="isInactiveStatusSelected">
+          <card-row label="Inactive Reason" [value]="probateDetails?.inactiveReason?.name"></card-row>
+          <card-row label="Inactive Date" [value]="probateDetails?.inactiveDate | dateFormat"></card-row>
+        </ng-container>
+
+      </card-col>
+    </card>
+  </ng-template>
+</div>

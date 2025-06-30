@@ -1,0 +1,32 @@
+<ng-container>
+  <div class="service-block">
+    <div *ngIf="qsfData$ | async as data" class="service-header">
+      <div>
+        <span class="service-link line-part">QSF Admin</span>
+
+        <span class="status line-part" [ngClass]="{
+          'status--pending': data.qsfStatus === 'Pending',
+          'status--finalized': data.qsfStatus === 'Final'
+        }">{{ data.qsfStatus }}</span>
+
+        <div class="finalized-info">
+          <span *ngIf="data.qsfServiceType" class="line-part">{{ data.qsfServiceType }}</span>
+          <span class="line-part">Allocation: {{ (data.allocation | extendedCurrency) || '-' }}</span>
+          <span class="line-part">Disbursements: {{ (data.disbursements | extendedCurrency) || '-' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <app-grid entityName="QSF Admin"
+              [gridId]="gridId"
+              [gridOptions]="gridOptions"
+              [canReorderColumns]="true"
+              [isContentAutoHeight]="true"
+              [enabledAutoHeight]="false"
+              hideTopStatusbar="true"
+              (gridReady)="onGridReady($event)"
+              hideBottomStatusbar="true"
+              [rowData]="items$ | async" >
+    </app-grid>
+  </div>
+</ng-container>

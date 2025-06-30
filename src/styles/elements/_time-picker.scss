@@ -1,0 +1,10 @@
+@import "../variables.scss";
+
+timepicker {
+  height: $controls-old-height;
+
+  td {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}

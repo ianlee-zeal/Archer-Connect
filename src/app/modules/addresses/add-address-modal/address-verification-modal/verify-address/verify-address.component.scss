@@ -1,0 +1,27 @@
+@import "../../../../../../styles/variables.scss";
+
+.verify-address {
+  &__card {
+    margin: 0;
+    padding: 20px 0 20px 0;
+  }
+  &__card--selected {
+    background-color: $light-yellow;
+  }
+  &__card-choice-input {
+    margin: 0 8px 0 20px;
+  }
+  &__card-choice-label {
+    margin: 0 6px;
+
+    &:first-child {
+      margin-left: 20px;
+    }
+  }
+  &__no-card-choice-label {
+    margin: 0 20px;
+  }
+  &__card--validation-formatting {
+    margin: 4px;
+  }
+}

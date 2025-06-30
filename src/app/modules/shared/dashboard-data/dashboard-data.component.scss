@@ -1,0 +1,194 @@
+@import "src/styles/variables.scss";
+
+:host {
+
+    $ac-dashboard-color-grey: $menu-color;
+    $ac-dashboard-font-color: #303030;
+    $ac-dashboard-icon-size: 16px;
+    $ac-dashboard-row-height: 40px;
+
+    @mixin ac-dashboard-row-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: $ac-dashboard-row-height;
+    }
+
+    @mixin ac-dashboard-row-height {
+        height: auto;
+        min-height: 30px;
+    }
+
+    .ac-dashboard {
+        color: $ac-dashboard-font-color;
+        padding-left: 20px;
+        &__header, &__no-data {
+            font-weight: bolder;
+        }
+        &__header, &__no-data, &__data {
+            .col {
+                text-align: center;
+            }
+            .last-col {
+                text-align: end;
+                padding-right: 25px;
+            }
+        }
+        &__header {
+            height: 60px;
+            &-value {
+                font-size: 18px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                letter-spacing: normal;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-transform: capitalize;
+            }
+        }
+        &__data {
+            height: $ac-dashboard-row-height;
+            &-item {
+                @include ac-dashboard-row-item;
+                .row {
+                    flex-wrap: nowrap;
+                }
+            }
+            &-row {
+                padding-left: 10px;
+                &-level-2 {
+                    @include ac-dashboard-row-height;
+                    .ac-dashboard__data-item {
+                        @include ac-dashboard-row-height;
+                    }
+                }
+                &-inner-section {
+                    margin-top: 20px;
+                }
+                &-level-0:hover {
+                    background-color: $ac-dashboard-color-grey !important;
+                }
+            }
+            &-row:hover {
+                background-color: $grid-hover-row-bg-color;
+            }
+        }
+        &__no-data {
+            padding: 20px;
+        }
+        &--grey {
+            background-color: $ac-dashboard-color-grey;
+        }
+        &__section-toggle, &__icon {
+            padding: 0px 5px 0px 5px;
+        }
+        &__section {
+            &-toggle {
+                cursor: pointer;
+                i {
+                    background-color: white;
+                    width: $ac-dashboard-icon-size;
+                    height: $ac-dashboard-icon-size;
+                    text-align: center;
+                    color: #707070;
+                }
+            }
+            &-level-0 {
+                letter-spacing: 1.6px;
+                border-radius: 4px;
+                background-color: $ac-dashboard-color-grey;
+                text-transform: uppercase;
+            }
+            &-level-2 {
+                font-size: 14px !important;
+                font-weight: normal !important;
+                font-stretch: normal !important;
+                font-style: normal !important;
+                line-height: 1.86 !important;
+                letter-spacing: normal !important;
+            }
+            &-name {
+                font-size: 16px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+            }
+        }
+        &__value {
+            cursor: pointer;
+            &--not-clickable {
+                cursor: auto;
+            }
+        }
+        &__value:hover {
+            text-decoration: underline;
+        }
+        &__value--not-clickable:hover {
+            text-decoration: none;
+        }
+        &__icon {
+            img {
+                width: $ac-dashboard-icon-size;
+                height: $ac-dashboard-icon-size;
+            }
+        }
+        &__column {
+            color: $ac-dashboard-font-color;
+            @include ac-dashboard-row-item;
+            &-level-0 {
+                font-size: 30px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                letter-spacing: normal;
+            }
+            &-level-1 {
+                font-size: 16px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.88;
+                letter-spacing: normal;
+                text-align: right;
+                @include ac-dashboard-row-height;
+            }
+            &-level-2 {
+                font-size: 14px;
+                @include ac-dashboard-row-height;
+            }
+        }
+        &__not-engaged {
+          font-size: 16px;
+          font-weight: bold;
+        }
+    }
+
+    table.ac-dashboard-by-phase {
+        border: #303030 1px solid;
+        width: 100%;
+        font-size: 14px;
+        font-weight: 400;
+        text-align: center;
+        table-layout: fixed;
+    }
+    .ac-dashboard-by-phase {
+        td, th {
+            border: #303030 1px solid;
+        }
+
+        th {
+            background-color: $gray;
+        }
+    }
+
+    .zebra-darker:nth-child(even) {
+        background-color: $grey-background;
+    }
+
+    .ac-dashboard__data-row-fixed{
+        margin: 0;
+        margin-bottom: 10px;
+    }
+}

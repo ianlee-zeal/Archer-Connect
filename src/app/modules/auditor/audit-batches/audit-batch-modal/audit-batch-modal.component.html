@@ -1,0 +1,134 @@
+<modal class="upload-audit-document-modal" (close)="onClose()" *ngIf="stage">
+  <modal-header>Audit Batch</modal-header>
+    <modal-body>
+      <div class="upload-audit-document-modal__body">
+        <app-stepper [stage]="stage">
+          <step label="Template" [isActive]="stage === stages.Template">
+            <div class="section-content" *ngIf="stage < stages.Review">
+              <app-audit-batch-template></app-audit-batch-template>
+            </div>
+          </step>
+
+          <step label="Settings" [isActive]="stage === stages.Settings">
+            <div class="section-content" *ngIf="stage < stages.Review">
+              <app-audit-batch-settings></app-audit-batch-settings>
+            </div>
+          </step>
+
+          <step label="Upload" [isActive]="stage === stages.Upload">
+            <div class="section-content" *ngIf="stage < stages.Review">
+              <app-audit-batch-upload></app-audit-batch-upload>
+            </div>
+          </step>
+
+          <step label="Review" [isActive]="stage === stages.Review">
+            <div class="section-content" *ngIf="stage === stages.Review">
+              <app-audit-batch-review></app-audit-batch-review>
+            </div>
+          </step>
+
+          <step label="Results" [isActive]="stage === stages.Results">
+            <div class="section-content" *ngIf="stage === stages.Results">
+              <app-audit-batch-results></app-audit-batch-results>
+            </div>
+          </step>
+        </app-stepper>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <div *ngIf="errorMessage$ | async as errorMessage" class="upload-audit-document-modal__error-message text-danger">{{ errorMessage }}</div>
+      <div *ngIf="statusMessage" class="upload-audit-document-modal__error-message text-danger">{{ statusMessage }}</div>
+      <button *ngIf="stage == stages.Template"
+              type="button"
+              class="btn modal-footer__btn modal-footer__btn--primary me-auto"
+              (click)="downloadTemplate()"
+              [ngClass]="{ disabled: !isValidTemplate }"
+              [disabled]="!isValidTemplate">
+        Download Template
+      </button>
+
+      <button *ngIf="stage == stages.Results"
+              type="button"
+              class="btn modal-footer__btn modal-footer__btn--primary"
+              (click)="downloadOriginalFile()"
+              [ngClass]="{ disabled: !isOriginalFileAvailable }"
+              [disabled]="!isOriginalFileAvailable">
+        Original File
+      </button>
+
+      <button *ngIf="stage == stages.Results"
+        type="button"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="downloadAuditPreview()"
+        [ngClass]="{ disabled: !isAuditPreviewAvailable }"
+        [disabled]="!isAuditPreviewAvailable">
+        Preview Audit Results
+      </button>
+
+      <button *ngIf="stage > stages.Upload"
+              type="button"
+              class="btn modal-footer__btn modal-footer__btn--primary"
+              (click)="downloadAuditResults()"
+              [ngClass]="{ disabled: !isAuditResultAvailable }"
+              [disabled]="!isAuditResultAvailable">
+        {{ stage == stages.Review ? 'Preview Audit Results' : 'Results File' }}
+      </button>
+
+      <div class="me-auto">
+        <button *ngIf="stage > stages.Template && stage < stages.Review"
+          type="submit"
+          class="btn modal-footer__btn modal-footer__btn--primary"
+          (click)="onBack()"
+          [ngClass]="{ disabled: stage == stages.Upload && previewStatus > previewStatuses.None }"
+          [disabled]="stage == stages.Upload && previewStatus > previewStatuses.None">
+          Back
+        </button>
+      </div>
+
+      <button *ngIf="canRerun && stage == stages.Review"
+        type="submit"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="onRerun()">
+        Rerun
+      </button>
+
+      <button 
+        class="btn modal-footer__btn modal-footer__btn--secondary"
+        (click)="onClose()">
+        Close
+      </button>
+
+      <button *ngIf="stage < stages.Upload"
+        type="submit"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="onNext()"
+        [ngClass]="{ disabled: !isValidTemplate }"
+        [disabled]="!isValidTemplate">
+        Next
+      </button>
+
+      <button *ngIf="stage == stages.Upload"
+        asyncButton
+        [awaitedActionTypes]="awaitedRunAditorActionTypes"
+        type="submit"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="onRunPreview()"
+        [ngClass]="{ disabled: !isValidUpload }"
+        [disabled]="!isValidUpload">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Run Preview
+      </button>
+
+      <button *ngIf="stage == stages.Review"
+        asyncButton
+        [awaitedActionTypes]="awaitedRunAditorActionTypes"
+        type="submit"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="onApprove()"
+        [ngClass]="{ disabled: !isApproveAvailable }"
+        [disabled]="!isApproveAvailable">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Approve
+      </button>
+    </modal-footer>
+</modal>

@@ -1,0 +1,17 @@
+<div class="page">
+  <div class="breadcrumb-title">
+    <ng-container *ngIf="issue.summary">
+      <img (click)="goToInbox()" src="assets/svg/andi-messaging-logo.svg" alt="Messaging Icon" class="breadcrumb-title-item">
+      <img src="assets/svg/chevron-right-grey.svg"/>
+      <span class="breadcrumb-title-summary">{{issue?.summary}}</span>
+    </ng-container>
+    <span></span>
+  </div>
+  <div>
+    <jira-message-preview
+      [data]="issue"
+      [comments]="comments"
+      [showFullScreenIcon]="showFullScreenIcon">
+    </jira-message-preview>
+  </div>
+</div>

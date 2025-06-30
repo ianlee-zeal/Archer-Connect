@@ -1,0 +1,58 @@
+<modal (close)="onCancel()" class="add-new-user-modal">
+  <modal-header>Assign User To The Team</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="form" novalidate>
+        <card hideSeparator>
+          <card-col [width]="620" [labelWidth]="140">
+              <card-row label="Team" inputId="teamId" [control]="form.get('teamId')" required>
+                  <app-select 
+                      id="teamId" 
+                      [options]="teams$ | async" 
+                      formControlName="teamId" 
+                      cardValue 
+                      required 
+                      fullwidth>
+                  </app-select>
+              </card-row>
+              <card-row label="Manager?" inputId="isManager" [control]="form.get('isManager')" required>
+                  <app-select 
+                      id="isManager" 
+                      [options]="isManagerValues" 
+                      formControlName="isManager" 
+                      cardValue 
+                      required 
+                      fullwidth>
+                  </app-select>
+              </card-row>
+              <card-row label="Active" inputId="isActive">
+                  <label class="form-check h-100" cardValue>
+                      <input 
+                          type="checkbox" 
+                          class="form-check-input" 
+                          formControlName="isActive"
+                          id="isActive" />
+                      <span></span>
+                  </label>
+              </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onCancel()">
+      Cancel
+    </button>
+    <button 
+      type="button" 
+      class="btn modal-footer__btn modal-footer__btn--primary" 
+      asyncButton
+      [awaitedActionTypes]="awaitedActionTypes"
+      (asyncFinished)="onSaveActionFinished($event)"
+      (click)="onSave()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Save
+    </button>
+  </modal-footer>
+</modal>

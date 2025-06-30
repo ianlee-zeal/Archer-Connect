@@ -1,0 +1,15 @@
+<div
+  data-test-id="grid-perpage"
+  class="grid-page-items-count">
+  <div class="grid-page-items-count__selector">
+    <app-select
+      [options]="pageItemsCountOptions"
+      [model]="pager.pageSize"
+      [orangeHighlight]="true"
+      [defaultOption]="false"
+      (onModelChange)="itemsPerPageChange.emit($event)"
+      fullwidth>
+    </app-select>
+  </div>
+  <span>Records Per Page</span>
+</div>

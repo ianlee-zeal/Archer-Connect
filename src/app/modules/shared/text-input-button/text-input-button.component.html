@@ -1,0 +1,12 @@
+<div class="input-container" [ngClass]="{disabled: disabled}">
+    <input 
+        (click)="emittClick()" 
+        type="text" 
+        class="form-control cursor-pointer w-100"
+        readonly
+        [(ngModel)]="displayedInputText" 
+        [id]="id" 
+        [placeholder]="placeholder" />
+
+    <span *ngIf="displayedInputText && isClearable" class="clear-button" (click)="onClear($event)">&times;</span>
+</div>

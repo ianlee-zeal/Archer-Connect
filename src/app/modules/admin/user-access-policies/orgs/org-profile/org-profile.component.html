@@ -1,0 +1,5 @@
+<div *ngIf="item$" style="height: 100%; width: 100%" [ngClass]="{ 'invisible' : (loadingInProgress$ | async) }">
+    <app-action-bar *ngIf="actionBar$ | async as actionBar" [actionHandlers]="actionBar"></app-action-bar>
+    <app-context-bar [title]="orgDetailsTitle" [subTitle]="orgDetailsSubTitle" [ratingIconClass]="ratingIconClass" [elements]="headerElements" ></app-context-bar>
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,223 @@
+<span class="payment-types-config-step__description">
+    Payment Requests will be generated for all claimants and related entities that are ready to be paid.  This will include any Ledger Entry Items with a status of 'Payment Authorized' or 'Payment Authroized-Partial'.
+</span>
+<card header="Payment Type" class="card-text">
+    <div>
+        <span class="payment-types-config-step__description" >Select all of the Payment Types you would like to include in this payment request. Lien Payment option cannot be combined with other payment type options.</span>
+    </div>
+</card>
+<card [hideSeparator]="true" [readonlyForm]="submitting" class="card-margin">
+    <card-col>
+        <card-row label="Payment Type" [hideText]="true">
+            <div class="payment-types-config-step__select-container" cardValue>
+                <app-multiselect-list
+                    *ngIf="paymentTypes"
+                    enableSelectAll
+                    [isSelectAllChecked]="isAllPaymentTypesChecked"
+                    [options]="paymentTypes"
+                    [width]="330"
+                    (select)="onSelectPaymentType($event)"
+                    (selectAll)="onSelectAllPaymentTypes($event)">
+                </app-multiselect-list>
+            </div>
+        </card-row>
+    </card-col>
+    <card-col *ngIf="canSelectFirms">
+        <card-row label="Select Firms">
+            <span
+            [title]="'Select one or more firms to be paid from selected ledgers. Only firms present in selected ledgers will be paid.'"
+            class="fa fa-info-circle ms-2" cardNextToLabel></span>
+            <div class="payment-types-config-step__select-container" cardValue>
+                <app-multiselect-list
+                    *ngIf="projectFirmsOptions"
+                    enableSelectAll
+                    [isSelectAllChecked]="isAllProjectFirmsChecked"
+                    [options]="projectFirmsOptions"
+                    [width]="330"
+                    (select)="onSelectProjectFirms($event)"
+                    (selectAll)="onSelectAllProjectFirms($event)">
+                </app-multiselect-list>
+            </div>
+        </card-row>
+    </card-col>
+</card>
+<form class="payment-types-config-step__options" [formGroup]="form" novalidate [readonlyForm]="submitting">
+    <card class="payment-types-config-step__attachment" header="Attachment Options">
+        <card-col width="700" labelWidth="680">
+            <!-- AC-7587
+                <card-row label="Attach Remittance to Payment"
+                      inputId="attachRemittance"
+                      [control]="form.get('attachRemittance')"
+                      [reversedOrder]="true"
+                      [hideText]="true"
+                      [hideColon]="true"
+                      [noLabelPadding]="true">
+                <label class="form-check h-100" cardValueBeforeLabel>
+                    <input type="checkbox" class="form-check-input" formControlName="attachRemittance" id="attachRemittance">
+                    <span></span>
+                </label>
+            </card-row>-->
+            <card-row label="Attach Closing Statement to Claimant Payment"
+                      inputId="attachClosingStatement"
+                      [control]="form.get('attachClosingStatement')"
+                      [reversedOrder]="true"
+                      [hideText]="true"
+                      [hideColon]="true"
+                      class="payment-types-config-step__container"
+                      [noLabelPadding]="true">
+                      <label class="form-check h-100" cardValueBeforeLabel>
+                        <input type="checkbox"
+                            class="form-check-input"
+                            formControlName="attachClosingStatement"
+                            id="attachClosingStatement"
+                            (change)="onToggleValidatorFor('attachClosingStatement', 'closingStatementTemplateId')">
+                        <span></span>
+                    </label>
+                <div class="payment-types-config-step__selector" cardNextToLabel>
+                    <app-select
+                        id="closingStatementTemplateId"
+                        class="w-100"
+                        placeholder="Select Template"
+                        [fullwidth]="true"
+                        formControlName="closingStatementTemplateId"
+                        [options]="documentTemplates"
+                        (onKeyup)="onSearchDocumentTemplates($event)"
+                        [searchFn]="searchFn"
+                        groupBy="group"
+                        searchable>
+                    </app-select>
+                </div>
+            </card-row>
+
+            <ng-container *ngIf="paymentRequestEntityType === entityTypeEnum.ClaimSettlementLedgerEntries">
+                <card-row label="Attach Check Table to Batch Lien Payments"
+                    inputId="attachCheckTable"
+                    [control]="form.get('attachCheckTable')"
+                    [reversedOrder]="true"
+                    [hideText]="true"
+                    [hideColon]="true"
+                    class="payment-types-config-step__container"
+                    [noLabelPadding]="true">
+                    <label class="form-check h-100" cardValueBeforeLabel>
+                        <input type="checkbox"
+                            class="form-check-input"
+                            formControlName="attachCheckTable"
+                            id="attachCheckTable"
+                            (change)="onToggleValidatorFor('attachCheckTable', 'checkTableTemplateId')">
+                            <span></span>
+                    </label>
+                    <div class="payment-types-config-step__selector" cardNextToLabel>
+                        <app-select
+                            id="checkTableTemplateId"
+                            class="w-100"
+                            placeholder="Select Template"
+                            [fullwidth]="true"
+                            formControlName="checkTableTemplateId"
+                            [options]="checkTableTemplateOptions">
+                        </app-select>
+                    </div>
+                </card-row>
+                <card-row label="Attach Payment Coversheet to Individual Lien Payments"
+                    inputId="attachPaymentCoversheet"
+                    [control]="form.get('attachPaymentCoversheet')"
+                    [reversedOrder]="true"
+                    [hideText]="true"
+                    [hideColon]="true"
+                    class="payment-types-config-step__container"
+                    [noLabelPadding]="true">
+                    <label class="form-check h-100" cardValueBeforeLabel>
+                        <input type="checkbox"
+                            class="form-check-input"
+                            formControlName="attachPaymentCoversheet"
+                            id="attachPaymentCoversheet"
+                            (change)="onToggleValidatorFor('attachPaymentCoversheet', 'paymentCoversheetTemplateId')">
+                            <span></span>
+                    </label>
+                    <div class="payment-types-config-step__selector" cardNextToLabel>
+                        <app-select
+                            id="paymentCoversheetTemplateId"
+                            class="w-100"
+                            placeholder="Select Template"
+                            [fullwidth]="true"
+                            formControlName="paymentCoversheetTemplateId"
+                            [options]="paymentCoversheetTemplateOptions$ | async">
+                        </app-select>
+                    </div>
+                </card-row>
+            </ng-container>
+
+            <!--AC-7587
+                <card-row label="Attach Letter for Liens"
+                      inputId="attachLetterForLiens"
+                      [control]="form.get('attachLetterForLiens')"
+                      [reversedOrder]="true"
+                      [hideText]="true"
+                      [hideColon]="true"
+                      [noLabelPadding]="true">
+                <label class="form-check h-100" cardValueBeforeLabel>
+                    <input type="checkbox"
+                        class="form-check-input"
+                        formControlName="attachLetterForLiens"
+                        id="attachLetterForLiens"
+                        (change)="onToggleValidatorFor('attachLetterForLiens', 'attachLetterForLiensTemplateId')">
+                    <span></span>
+                </label>
+                <div class="payment-types-config-step__selector" cardNextToLabel>
+                    <app-select
+                        id="attachLetterForLiensTemplateId"
+                        class="w-100"
+                        placeholder="Select Template"
+                        [fullwidth]="true"
+                        formControlName="attachLetterForLiensTemplateId"
+                        [options]="documentTemplatesForLiens$ | async"
+                        (onKeyup)="onSearchDocumentTemplates($event, documentTypes.LienLetter)"
+                        (onOpen)="onSearchDocumentTemplates('', documentTypes.LienLetter)"
+                        [searchFn]="searchFn"
+                        searchable>
+                    </app-select>
+                </div>
+            </card-row>-->
+        </card-col>
+    </card>
+    <!-- AC-7588
+        <card header="Memo Options">
+        <card-col width="400" labelWidth="400">
+            <card-row label="Lien ID for Lien Payments"
+                      inputId="memoLienId"
+                      [control]="form.get('memoLienId')"
+                      [reversedOrder]="true"
+                      [hideText]="true"
+                      [hideColon]="true"
+                      [noLabelPadding]="true">
+                <label class="form-check h-100" cardValueBeforeLabel>
+                    <input type="checkbox" class="form-check-input" formControlName="memoLienId" id="memoLienId">
+                    <span></span>
+                </label>
+            </card-row>
+            <card-row label="Claimant ID"
+                      inputId="memoClaimantId"
+                      [control]="form.get('memoClaimantId')"
+                      [reversedOrder]="true"
+                      [hideText]="true"
+                      [hideColon]="true"
+                      [noLabelPadding]="true">
+                <label class="form-check h-100" cardValueBeforeLabel>
+                    <input type="checkbox" class="form-check-input" formControlName="memoClaimantId" id="memoClaimantId">
+                    <span></span>
+                </label>
+            </card-row>
+            <card-row label="Claimant Name"
+                      inputId="memoClaimantName"
+                      [control]="form.get('memoClaimantName')"
+                      [reversedOrder]="true"
+                      [hideText]="true"
+                      [hideColon]="true"
+                      [noLabelPadding]="true">
+                <label class="form-check h-100" cardValueBeforeLabel>
+                    <input type="checkbox" class="form-check-input" formControlName="memoClaimantName" id="memoClaimantName">
+                    <span></span>
+                </label>
+            </card-row>
+        </card-col>
+    </card>-->
+</form>

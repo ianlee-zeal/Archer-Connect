@@ -1,0 +1,48 @@
+<form [formGroup]="templateAndAttachmentsForm">
+  <card header="Project and QSF Information">
+    <card-col>
+      <card-row label="Project Name" [value]="projectName" [labelWidth]="rightInputLabelWidth">
+      </card-row>
+    </card-col>
+    <card-col>
+      <card-row label="QSF" [value]="qsfName" [labelWidth]="rightInputLabelWidth">
+      </card-row>
+    </card-col>
+  </card>
+  <card header="Payment Details Options">
+    <card-col>
+      <span>Download the template and complete the required columns. The template import will require additional
+        user entry in the Payment Details step for wire or ACH if selected.</span>
+      <div class="upload-template-container">
+        <div class="upload-template-container__column">
+          <button type="button" class="btn manual-payment-request__btn manual-payment-request__btn--primary me-auto"
+            (click)="downloadTemplate()">
+            Download Template
+          </button>
+        </div>
+      </div>
+    </card-col>
+  </card>
+  <card header="Attachments">
+    <card-col>
+      <span>Upload Manual Payment Details template and add any additional backup documents that need to be included.
+      </span>
+      <div class="upload-template-container">
+        <div class="upload-template-container__column">
+          <span>Add Attachments:</span>
+        </div>
+        <div class="upload-template-container__column">
+          <app-files-selector [allowMultiple]="false" [selectButtonTitle]="'Upload Payment Details'"
+            (filesSelected)="onPaymentDetailsFileSelected($event)" [isBtnDisabled]="paymentDetailsFile != null"
+            [selectButtonClass]="'manual-payment-request__btn manual-payment-request__btn--primary'"></app-files-selector>
+        </div>
+        <div class="upload-template-container__column">
+          <app-files-selector [allowMultiple]="true" selectButtonTitle="Upload Additional Documents"
+            (filesSelected)="onAdditionalDocumentsFilesSelected($event)"
+            [selectButtonClass]="'manual-payment-request__btn manual-payment-request__btn--secondary'"></app-files-selector>
+        </div>
+      </div>
+    </card-col>
+  </card>
+  <p *ngIf="showError" class="text-danger small mb-0">{{ errorMessage }}</p>
+</form>

@@ -1,0 +1,10 @@
+<div class="page" *ngIf="entityId">
+  <app-grid 
+    [gridOptions]="gridOptions" 
+    (gridReady)="gridReady($event)" 
+    (loadData)="loadData($event)" 
+    [gridId]="gridId"
+    entityLabel="communications"
+    [skipSetContentHeight]="true"
+    (newRecord)="onCreateNewCommunication()"></app-grid>
+</div>

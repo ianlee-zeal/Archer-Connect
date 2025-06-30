@@ -1,0 +1,10 @@
+<div *ngIf="!params.bullets">
+    <div *ngFor="let s of services">
+        {{ s.name }}
+    </div>
+</div>
+<ul class="cell-ul" *ngIf="params.bullets">
+    <li *ngFor="let s of services">
+        {{ s.productCategory?.shortName }}{{!!s.product?.name ? ' - '+ s.product?.name : ''}}
+    </li>
+</ul>

@@ -1,0 +1,50 @@
+<modal (close)="onCancel()" class="switch-org-modal">
+  <modal-header>Switch Organization</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="form" novalidate>
+        <card hideSeparator class="mb-2">
+          <card-col [width]="370">
+            <div class="search-container">
+              <img src="assets\images\ic_find.png" class="search-container__icon">
+              <input id="filter" type="text" class="form-control search-container__input"
+                placeholder="Search for an Organization" formControlName="filter" maxlength="50" appAutoFocus
+                cardValue />
+            </div>
+          </card-col>
+        </card>
+        <ng-container *ngIf="user$ | async as user">
+          <ng-container *ngIf="user.organizations | includes : 'name' : form.value.filter as orgs">
+            <ng-container *ngIf="orgs.length > 0; else noResultTemplate">
+              <ul class="org-list">
+                <li *ngFor="let org of orgs" class="org-list__item"
+                  [ngClass]="{'org-list__item--selected': org.id === selectedOrgId, 'org-list__item--active': org.id === activeOrgId}"
+                  (click)="onSelectionChanged(org.id)">
+                  <i class="fas fa-check org-list__item-icon"
+                    [ngStyle]="{'visibility': activeOrgId !== org.id ? 'hidden' : ''}">
+                  </i>
+                  <span class="org-list__item-title">{{org.name}}</span>
+                </li>
+              </ul>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--primary" (click)="onSwitch()"
+      [disabled]="!selectedOrgId || activeOrgId === selectedOrgId">
+      Switch
+    </button>
+  </modal-footer>
+</modal>
+
+<ng-template #noResultTemplate>
+  <div class="no-records-template">
+    <span>No results found</span>
+  </div>
+</ng-template>

@@ -1,0 +1,35 @@
+<app-grid-status-bar
+  *ngIf="!hideTopStatusbar"
+  [pager]="pager"
+  [loading]="loading | async"
+  [selectedCount]="selected"
+  [isSelectedVisible]="isSelectedVisible"
+  [additionalPageItemsCountValues]="additionalPageItemsCountValues"
+  (navigate)="toPage($event)"
+  (itemsPerPageChange)="onItemsPerPageChange($event)" >
+</app-grid-status-bar>
+<ag-grid-angular
+  *ngIf="!hidden"
+  stickyHeader
+  stickyHorizontalScroll
+  gridAutoHeight
+  [enabledAutoHeight]="enabledAutoHeight"
+  [class]="'ag-grid-angular '+class"
+  [ngStyle]="{'height': height}"
+  [ngClass]="{ 'ag-grid-custom-height-72vh' : !isPagerEnabled && !isContentAutoHeight }"
+  [gridOptions]="options"
+  [rowData]="rowData"
+  [noRowsOverlayComponentParams]="noRowsOverlayComponentParams"
+  [getMainMenuItems]="getCustomizedMenuItems.bind(this)"
+  [postProcessPopup]="postProcessPopup"
+  [components]="options.components"
+  [defaultColDef]="options.defaultColDef">
+</ag-grid-angular>
+<app-grid-status-bar
+  *ngIf="!hideBottomStatusbar"
+  [pager]="pager"
+  [loading]="loading | async"
+  [additionalPageItemsCountValues]="additionalPageItemsCountValues"
+  (navigate)="toPage($event)"
+  (itemsPerPageChange)="onItemsPerPageChange($event)">
+</app-grid-status-bar>

@@ -1,0 +1,13 @@
+<div class="mt-4">
+    <span class="grid-title">     
+      The following ledger entries will be authorized.
+    </span>
+    <app-authorized-ledgers-review-grid [parentGridId]="parentGridId" [batchActionId]="batchActionId" [projectId]="projectId" [paymentQueueGridParams]="paymentQueueGridParams"></app-authorized-ledgers-review-grid>
+  </div>
+  <div>
+    <span class="grid-title text-danger">
+      <i class="grid-title__warning fas fa-exclamation-triangle exclamation-triangle"></i>
+      The following ledger entries will Not be authorized.
+    </span>
+    <app-unauthorized-ledgers-review-grid [parentGridId]="parentGridId" [batchActionId]="batchActionId" [projectId]="projectId" [paymentQueueGridParams]="paymentQueueGridParams"></app-unauthorized-ledgers-review-grid>
+  </div>

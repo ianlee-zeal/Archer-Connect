@@ -1,0 +1,27 @@
+<ng-container *ngIf="overviewBankruptcies">
+    <ng-container *ngIf="overviewBankruptcies.length > 0; else noRecords">
+        <card header="Bankruptcy Summary">
+            <div class="column-container">
+                <card-col [labelWidth]="215" [width]="600">
+                    <card-row label="Bankruptcy Stage" [value]="overviewBankruptcies[0].stage.name"></card-row>
+                    <card-row label="Allocation" [value]="allocation"></card-row>
+                    <card-row label="Final Date" [value]="finalDate"></card-row>
+                    <card-row label="Abandoned" [value]="abandoned"></card-row>
+                    <card-row label="Closing Statement Needed" [value]="closingStatementNeeded"></card-row>
+                </card-col>
+
+                <card-col [labelWidth]="215" [width]="600">
+                    <card-row label="Ready to Pay Trustee" [value]="readyToPayTrustee"></card-row>
+                    <card-row label="Trustee Amount" [value]="trusteeAmount"></card-row>
+                    <card-row label="Attorney Amount" [value]="attorneyAmount"></card-row>
+                    <card-row label="Claimant Amount" [value]="claimantAmount"></card-row>
+                    <card-row label="Bankruptcy Fee" [value]="bkFee"></card-row>
+                    <card-row label="Special Payment Instructions" [value]="spiExist"></card-row>
+                </card-col>
+            </div>
+        </card>
+    </ng-container>
+    <ng-template #noRecords>
+        <app-tab-placeholder-no-record></app-tab-placeholder-no-record>
+    </ng-template>
+</ng-container>

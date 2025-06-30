@@ -1,0 +1,97 @@
+$test-id-attr: 'data-test-id';
+$test-params-attr: 'data-test-params';
+$test-pseudo-attr: 'data-test-pseudo-id';
+$test-pseudo-name-attr: 'data-test-pseudo-name';
+$custom-prefix: '%';
+$pseudo-prefix: '%%';
+
+$custom-color: #ab88e3;
+$pseudo-color: #d865a9;
+$default-opacity: 0.3;
+$hover-opacity: 0.6;
+
+///
+
+.ela-active {
+
+  [#{$test-id-attr}],
+  [#{$test-pseudo-attr}] {
+    outline-width: 1px;
+    outline-offset: -1px;
+    outline-style: dashed;
+
+    &:hover { // :not(:has(&:hover))
+      overflow: visible;
+
+      &:before {
+        position: absolute !important;
+        z-index: 100 !important;
+        width: max-content !important;
+        padding: 4px !important;
+        line-height: 1 !important;
+        font: normal 12px "Open Sans" !important;
+        color: white !important;
+        cursor: copy;
+
+        transition: background-color 300ms;
+      }
+    }
+  }
+
+  [#{$test-id-attr}] {
+    outline-color: rgba($custom-color, $default-opacity);
+
+    &:hover {
+      outline-color: rgba($custom-color, $hover-opacity);
+
+      &:before {
+        content: $custom-prefix attr(#{$test-id-attr}) attr(#{$test-params-attr}) !important;
+        background-color: rgba($custom-color, $hover-opacity);
+      }
+    }
+
+    &:hover:not(:has([#{$test-id-attr}]:hover)) {
+      outline-color: $custom-color;
+      &:before {
+        background-color: $custom-color;
+      }
+    }
+  }
+
+  [#{$test-pseudo-attr}] {
+    outline-color: rgba($pseudo-color, $default-opacity);
+
+    &:hover {
+      outline-color: rgba($pseudo-color, $hover-opacity);
+
+      &:before {
+        content: $pseudo-prefix attr(#{$test-pseudo-attr}) attr(#{$test-params-attr}) !important;;
+        background-color: rgba($pseudo-color, $hover-opacity);
+      }
+
+      &[#{$test-pseudo-name-attr}]:before {
+        content:
+          $pseudo-prefix
+          attr(#{$test-pseudo-attr}) '=' attr(#{$test-pseudo-name-attr})
+          attr(#{$test-params-attr}) !important;
+      }
+    }
+
+    &:hover:not(:has([#{$test-pseudo-attr}]:hover)) {
+      outline-color: $pseudo-color;
+      &:before {
+        background-color: $pseudo-color;
+      }
+    }
+  }
+
+  &.ela-inverted {
+    [#{$test-id-attr}],
+    [#{$test-pseudo-attr}] {
+      &:before {
+        transform: translateY(-100%);
+      }
+    }
+  }
+
+}

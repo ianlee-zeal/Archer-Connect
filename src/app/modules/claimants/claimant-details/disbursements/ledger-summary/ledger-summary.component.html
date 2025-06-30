@@ -1,0 +1,11 @@
+<div class="page">
+    <div class="page-content">
+        <app-grid
+            [rowData]="ledgerSummaryGrid$ | async"
+            [gridOptions]="gridOptions" 
+            (gridReady)="gridReady($event)" 
+            [gridId]="gridId" 
+            entityLabel="Ledger Summary">
+        </app-grid>
+    </div>
+</div>

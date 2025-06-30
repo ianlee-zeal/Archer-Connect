@@ -1,0 +1,6 @@
+<ng-container *ngIf="(currentCommunicationRecord$ | async) as currentCommunicationRecord">
+  <app-projects-communication-details
+    [projectCommunicationRecord]="currentCommunicationRecord"
+    [canEdit]="canEdit">
+  </app-projects-communication-details>
+</ng-container>

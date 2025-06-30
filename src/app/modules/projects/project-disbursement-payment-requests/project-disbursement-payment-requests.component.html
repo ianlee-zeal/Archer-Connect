@@ -1,0 +1,15 @@
+<div class="page">
+  <div class="page-content">
+      <app-payment-requests-list
+          *ngIf="project && !(loadingInProgress$ | async) && !newRequestOpened"
+          [project]="project"
+          (newRequestOpened)="onNewRequestOpened()">
+      </app-payment-requests-list>
+
+      <app-manual-payment-request
+      *ngIf="newRequestOpened"
+      (cancel)="onRequestCancelled()"
+      >
+    </app-manual-payment-request>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div *ngIf="orgRole$ | async as orgRole">
+  <div class="role-details-tab">
+    <form [formGroup]="orgRoleForm" novalidate *ngIf='canEdit; else viewTemplate' (change)="onChange()">
+      <card hideSeparator>
+        <card-col [width]="500" [labelWidth]="130">
+          <card-row label="Name" inputId="name" [control]="orgRoleForm.get('name')" required>
+            <input type="text" id="name" class="form-control" formControlName="name" required appAutoFocus cardValue />
+          </card-row>
+          <card-row label="Access Policy" inputId="accessPolicyId" [control]="orgRoleForm.get('accessPolicyId')">
+            <app-select id="accessPolicyId" [options]="orgAccessPolicyOptions" formControlName="accessPolicyId" cardValue></app-select>
+          </card-row>
+          <card-row label="Level" [value]="orgRole.roleLevel.name"></card-row>
+        </card-col>
+      </card>
+    </form>
+  </div>
+  
+  <ng-template #viewTemplate>
+    <div class="page-content">
+      <card hideSeparator>
+        <card-col [width]="500" [labelWidth]="130">
+          <card-row label="Name" [value]="orgRole.name"></card-row>
+          <card-row label="Access Policy" [value]="orgRole.accessPolicy?.nameWithPolicyLevel"></card-row>
+          <card-row label="Level" [value]="orgRole.roleLevel.name"></card-row>
+        </card-col>
+      </card>
+    </div>
+  </ng-template>
+</div>

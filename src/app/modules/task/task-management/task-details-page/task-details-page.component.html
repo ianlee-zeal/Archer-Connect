@@ -1,0 +1,14 @@
+<app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+<app-context-bar [title]="title"></app-context-bar>
+<div class="page">
+  <div class="page-content">
+    <app-task-details-template
+      labelWidth="170"
+      [taskManagementEntity]="taskManagementEntityType"
+      [record]="taskDetails"
+      [attachedDocuments]="attachedDocuments"
+      [canEdit]="canEdit">
+    </app-task-details-template>
+    <router-outlet></router-outlet>
+  </div>
+</div>

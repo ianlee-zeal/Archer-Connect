@@ -1,0 +1,39 @@
+@import "src/styles/variables.scss";
+
+.chip-list {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    border: 1px solid $gray;
+    padding: 5px;
+    min-height: 70px;
+
+    .chip {
+        display: flex;
+        align-items: center;
+        padding: 5px 8px;
+        border-radius: 20px;
+        border: 1px solid $gray;
+        margin: 3px;
+
+        &__chip-name {
+            font-weight: bold;
+            font-size: 12px;
+        }
+    
+        &__remove-chip {
+            border-radius: 100%;
+            background: $dark-blue;
+            width: 16px;
+            height: 16px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $white;
+            cursor: pointer;
+            margin-left: 5px;
+            flex: 0 0 auto;
+        }
+    }
+}

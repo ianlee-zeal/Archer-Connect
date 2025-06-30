@@ -1,0 +1,21 @@
+<ng-container *ngIf="!editable else editor">
+  <span>{{displayValue}}</span>
+</ng-container>
+<ng-template #editor>
+  <div class="ag-input-wrapper multiselect-dropdown-editor">
+    <app-select 
+    [multiLabelTemplate]="filterMultiLabelTemplate" 
+    [class]="'multiselect-dropdown-editor__select-component' + (isWide ? ' is-wide' : '')"
+    [options]="options"    
+    [isMultiselectDropdown]="true"
+    [model]="values"
+    filterMultiselect
+    [appendTo]="'body'"
+    (onModelChange)="onChange($event)" 
+    multiple></app-select>
+  </div>
+  
+  <ng-template #filterMultiLabelTemplate let-items="items" let-clear="clear">
+    {{valuesCount}} Selected
+  </ng-template>
+</ng-template>

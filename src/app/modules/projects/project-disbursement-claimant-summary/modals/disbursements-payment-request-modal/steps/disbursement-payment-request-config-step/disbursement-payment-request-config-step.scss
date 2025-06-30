@@ -1,0 +1,77 @@
+.payment-request-form {
+  padding: 40px;
+
+  &__info-section{
+    margin-bottom: 0px;
+  }
+
+  &__container {
+      max-width: 300px;
+  }
+
+  &__attachments-containers {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  &__message {
+    font-size: 12px;
+    color: #303030;
+    line-height: 1.2;
+  }
+
+  &__attachments-section {
+    margin-bottom: 0px;
+  }
+
+  &__file-panel {
+    display: flex;
+    justify-content: space-between;
+    .btn-icon {
+        margin: 0;
+    }
+  }
+
+  &__uploaded-attachments-container {
+      display: flex;
+      flex-direction: column;
+  }
+
+  &__file-name {
+      font-weight: bold;
+      color: #1774de;
+      margin-right: 5px;
+      overflow-wrap: break-word;
+      max-width: 290px;
+  }
+
+  &__uploaded-attachment {
+      display: flex;
+      align-items: center;
+  }
+
+  &__download_btn {
+    max-width: 170px;
+    margin-top: 10px;
+  }
+}
+
+.text-box-editor {
+    input {
+      margin-left: 20px;
+      width: 280px;
+  }
+
+  &__currency {
+    font-size: 12px;
+    color: #707070;
+    margin-right: -5px;
+    position: absolute;
+    width: 20px;
+    background-color: #e6e6e6;
+    height: 20px;
+    border: 1px solid #c2c2c2;
+    border-right: none;
+    text-align: center;
+  }
+}

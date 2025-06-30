@@ -1,0 +1,256 @@
+<modal (close)="electionFormModal.hide()">
+    <modal-header>{{title}}</modal-header>
+
+    <modal-body>
+        <div class="modal-section">
+            <card hideSeparator>
+                <card-col [width]="650">
+                    <card-row label="Disbursement Group" [value]="electionForm?.disbursementGroup?.name" [labelWidth]="200"></card-row>
+
+                    <card-row label="Status" [value]="electionForm?.electionFormStatus?.name" [labelWidth]="200"></card-row>
+
+                    <card-row
+                        [labelWidth]="200"
+                        label="Date Received"
+                        [value]="electionForm?.receivedDate | dateFormat">
+                    </card-row>
+
+                    <card-row
+                        [labelWidth]="200"
+                        label="Format Received"
+                        [value]="electionForm?.documentChannel?.name">
+                    </card-row>
+
+                    <card-row
+                      [labelWidth]="200"
+                      label="Document Tracking ID"
+                      [value]="electionForm?.docusignId">
+                    </card-row>
+                </card-col>
+              </card>
+        </div>
+
+        <div class="modal-section">
+            <card [maxWidth]="470" hideSeparator>
+                <card-col>
+                    <card-row inputId="methodOfPayment">
+                        <ng-container cardLabel>
+                            <label class="label election-form__label-header">Method of Payment:</label>
+                            <label class="label election-form__radio-label">Claimant Net:</label>
+                            <span class="label election-form__radio-label">
+                                {{ electionForm?.netAllocation | extendedCurrency:'-' }}
+                            </span>
+                        </ng-container>
+                    </card-row>
+
+                    <card-row [labelWidth]="215" inputId="lumpSumPaymentMethod">
+                        <ng-container cardLabel>
+                            <input
+                                type="radio"
+                                [checked]="electionForm?.efPaymentMethodId == electionPaymentMethod.LumpSumPayment"
+                                disabled />
+                            <label class="label election-form__radio-label">
+                                Lump-Sum Payment
+                            </label>
+                        </ng-container>
+                        <div cardValue class="election-form__amount-field-container">
+                            <div class="election-form__amount-fields-value">{{ amountFields?.lumpSumAmount | extendedCurrency }}</div>
+                            <ng-container *ngIf="electionForm?.efPaymentMethodId == electionPaymentMethod.LumpSumPayment">
+                                <ng-container  *ngTemplateOutlet="paymentMethodTemplate"></ng-container>
+                            </ng-container>
+                        </div>
+                    </card-row>
+
+                    <card-row [labelWidth]="215" inputId="structuredSettlementMethod">
+                        <ng-container cardLabel>
+                            <input
+                                type="radio"
+                                [checked]="electionForm?.efPaymentMethodId == electionPaymentMethod.StructuredSettlement"
+                                disabled />
+                            <label class="label election-form__radio-label">
+                                Structured Settlement
+                            </label>
+                        </ng-container>
+                        <div cardValue class="election-form__amount-fields-value">{{ amountFields?.structuredSettlementAmount | extendedCurrency }}</div>
+                    </card-row>
+
+                    <card-row [labelWidth]="215" inputId="specialNeedsTrustMethod">
+                        <ng-container cardLabel>
+                            <input
+                                type="radio"
+                                [checked]="electionForm?.efPaymentMethodId == electionPaymentMethod.SpecialNeedsTrust"
+                                disabled />
+                            <label class="label election-form__radio-label">
+                                Special Needs Trust
+                            </label>
+                        </ng-container>
+                        <div cardValue class="election-form__amount-fields-value">{{ amountFields?.specialNeedsTrustAmount | extendedCurrency }}</div>
+                    </card-row>
+
+                    <card-row [labelWidth]="260" inputId="combinationMethod">
+                        <ng-container cardLabel>
+                            <input
+                                type="radio"
+                                [checked]="electionForm?.efPaymentMethodId == electionPaymentMethod.Combination"
+                                disabled />
+                            <label class="label election-form__radio-label">
+                                Combination per the following
+                            </label>
+                        </ng-container>
+                    </card-row>
+
+                    <div class="election-form__combination-fields" *ngIf="electionForm?.efPaymentMethodId === electionPaymentMethod.Combination">
+                        <card hideSeparator [maxWidth]="400">
+                            <card-col [labelWidth]="185">
+                                <card-row label="Lump Sum Amount">
+                                    <div cardValue class="election-form__amount-field-container">
+                                        <div class="election-form__amount-fields-value">{{ amountFields?.combinationLumpSumAmount | extendedCurrency }}</div>
+                                        <ng-container *ngTemplateOutlet="paymentMethodTemplate"></ng-container>
+                                    </div>
+                                </card-row>
+
+                                <card-row label="Structured Settlement">
+                                    <ng-container cardValue>
+                                        <div class="election-form__amount-fields-value">{{ amountFields?.combinationStructuredSettlementAmount | extendedCurrency }}</div>
+                                    </ng-container>
+                                </card-row>
+
+                                <card-row label="Special Needs Trust" [value]="">
+                                    <ng-container cardValue>
+                                        <div class="election-form__amount-fields-value">{{ amountFields?.combinationSpecialNeedsTrustAmount | extendedCurrency }}</div>
+                                    </ng-container>
+                                </card-row>
+
+                                <card-row label="Total" hideLabel>
+                                    <ng-container cardValue>
+                                        <div class="election-form__combination-fields-total">{{ (totalAmount | extendedCurrency) + ' TOTAL' }}</div>
+                                    </ng-container>
+                                </card-row>
+                            </card-col>
+                        </card>
+                    </div>
+                </card-col>
+              </card>
+        </div>
+
+        <div class="modal-section" *ngIf="electionForm?.doc">
+            <card hideSeparator>
+                <card-col [width]="650">
+                    <card-row alignContentVertically label="Attached File" [labelWidth]="175">
+                            <button
+                                cardValue
+                                type="button"
+                                class="btn btn-link"
+                                (click)="onDownloadDocument()"
+                                title="Download Document">
+                                {{ electionForm.doc.fileNameFull }}
+                            </button>
+                    </card-row>
+                </card-col>
+            </card>
+        </div>
+
+        <div class="modal-section">
+          <card header="Claimant's Primary Address" [maxWidth]="650" hideSeparator>
+                <card-col [labelWidth]="155">
+                  <card-row label="Address Line One" [value]="personAddress?.line1"></card-row>
+                  <card-row label="Address Line Two" [value]="personAddress?.line2"></card-row>
+                  <card-row label="City" [value]="personAddress?.city"></card-row>
+                  <card-row label="State" [value]="personAddress?.state"></card-row>
+              </card-col>
+              <card-col [labelWidth]="100">
+                  <card-row label="Zip Code" [value]="personAddress?.zip"></card-row>
+                  <card-row label="Country" [value]="personAddress?.country?.name"></card-row>
+                  <card-row label="Email" [value]="(primaryEmail$ | async)?.email"></card-row>
+              </card-col>
+          </card>
+      </div>
+
+        <div class="modal-section">
+            <card header="Address Change" [maxWidth]="700" hideSeparator>
+                <card-col>
+                    <card-row label="Address Change Needed">
+                        <ng-container cardValue>
+                            <label class="form-check-label" for="addressChangeNeeded">
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    id="addressChangeNeeded"
+                                    [checked]="electionForm?.addressChange"
+                                    disabled />
+                                <span></span>
+                            </label>
+                        </ng-container>
+                    </card-row>
+
+                    <card *ngIf="electionForm?.addressChange" class="election-form__address-container" hideSeparator>
+                        <card-col [labelWidth]="155">
+                            <card-row label="Address Line One" [value]="electionForm?.addressLineOne"></card-row>
+                            <card-row label="Address Line Two" [value]="electionForm?.addressLineTwo"></card-row>
+                            <card-row label="City" [value]="electionForm?.addressCity"></card-row>
+                            <card-row label="State" [value]="electionForm?.addressState"></card-row>
+                        </card-col>
+                        <card-col [labelWidth]="100">
+                            <card-row label="Zip Code" [value]="electionForm?.addressZip"></card-row>
+                            <card-row label="Country" [value]="electionForm.country"></card-row>
+                            <card-row label="Type" [value]="electionForm.addressType?.name"></card-row>
+                        </card-col>
+                    </card>
+                </card-col>
+            </card>
+        </div>
+
+        <div class="modal-section">
+            <form *ngIf="form" [formGroup]="form">
+                <card hideSeparator [maxWidth]="700">
+                    <card-col>
+                        <card-row 
+                            label="Note" 
+                            [valuePaddingTop]="5" 
+                            [control]="form.get('note')">
+                            <quill-editor 
+                                formControlName="note"
+                                cardValue
+                                readOnly="true">
+                            </quill-editor>
+                        </card-row>
+                    </card-col>
+                </card>
+            </form>
+        </div>
+
+        <div class="modal-section">
+          <app-change-history-list
+            [id]="electionFormId"
+            [availableDisbursementGroupsForElectionForm]="availableDisbursementGroupsForElectionForm$ | async"
+            [electionFormStatusOptions]="electionFormStatuses$ | async"
+            [documentChannels]="documentChannels$ | async">
+        </app-change-history-list>
+        </div>
+
+    </modal-body>
+
+    <modal-footer>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onClose()">Cancel</button>
+    </modal-footer>
+</modal>
+
+
+<ng-template #paymentMethodTemplate>
+    <ng-container>
+        <div class="election-form__amount-field-container__radio-container">
+            <input
+            type="radio"
+            [checked]="electionForm?.paymentMethodId == paymentMethod.Check"
+            disabled />
+            <label class="label election-form__radio-label">Check</label>
+        </div>
+        <div class="election-form__amount-field-container__radio-container">
+            <input
+            type="radio"
+            [checked]="electionForm?.paymentMethodId == paymentMethod.DigitalPayment"
+            disabled />
+            <label class="label election-form__radio-label">Digital Payment</label>
+        </div>
+    </ng-container>
+</ng-template>

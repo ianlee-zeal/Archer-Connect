@@ -1,0 +1,13 @@
+<div class="page">
+    <app-action-bar [actionHandlers]="actionBar$ | async"></app-action-bar>
+    <app-context-bar [title]="'Fees'"></app-context-bar>
+      <div class="page-content">
+        <app-grid 
+            entityLabel="Invoice Items" 
+            [gridId]="gridId" 
+            [gridOptions]="gridOptions" 
+            (gridReady)="gridReady($event)"
+            (loadData)="loadData($event)">
+        </app-grid>
+      </div>
+</div>

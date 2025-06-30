@@ -1,0 +1,69 @@
+@import 'src/styles/variables.scss';
+
+.form-check {
+  margin: 0;
+}
+
+tr {
+
+  th:last-child,
+  td:last-child {
+    text-align: center;
+  }
+}
+
+.table-row {
+  &__category {
+    width: 100px;
+  }
+
+  &__entity {
+    width: 300px;
+  }
+
+  &__basic-action {
+    width: 100px;
+  }
+
+  &__advanced {
+    width: 200px;
+  }
+}
+
+.tooltip-wrapper {
+  display: inline-block;
+  min-width: 26px;
+  min-height: 32px;
+  margin-bottom: 2px;
+  vertical-align: middle;
+}
+
+.ag-modern-grid{
+  table{
+    border-collapse: separate;
+  }
+  
+  th {
+    background-color: $info-card-background-info !important;
+    font-size: 12px;
+  }
+  
+  th:first-child, td:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  
+  th:last-child, td:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  
+  tr:nth-child(even){
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;    
+    td{
+      background-color: $info-card-background-info !important;
+    }
+  }
+  
+}

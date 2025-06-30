@@ -1,0 +1,23 @@
+@import "src/styles/variables.scss";
+
+.date-editor {
+    &__input, &__container {
+        width: 100%;
+        height: 32px;
+    }
+    &__container {
+        input {
+            width: 80%;
+        }
+        span {
+            padding-left: 5%;
+        }
+    }
+    &__button {
+        top: 8px;
+    }
+
+    &__input.ng-dirty.ng-invalid {
+        border: 1px $validation-invalid-color solid;
+    }
+}

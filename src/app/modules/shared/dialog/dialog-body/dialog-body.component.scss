@@ -1,0 +1,12 @@
+@import "src/styles/variables.scss";
+@import "src/styles.variables.scss";
+
+.dialog-body {
+  padding: 24px 32px;
+  background-color: $modal-bg;
+
+  &--text-blue {
+    color: $blue;
+  }
+}
+

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_access_policies" width="14" height="14" viewBox="0 0 14 14">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#0f0b46}
+        </style>
+    </defs>
+    <path id="prefix__ic_notes" d="M13.8 4L10.01.21a.712.712 0 0 0-.5-.21H1.4A1.4 1.4 0 0 0 0 1.4v11.2A1.4 1.4 0 0 0 1.4 14h11.2a1.4 1.4 0 0 0 1.4-1.4V4.487A.706.706 0 0 0 13.8 4zm-1.2 7.9a.7.7 0 0 1-.7.7H2.1a.7.7 0 0 1-.7-.7V2.1a.7.7 0 0 1 .7-.7h6.3v2.8a1.4 1.4 0 0 0 1.4 1.4h2.8z" class="prefix__cls-1"/>
+    <path id="prefix__Rectangle_212" d="M0 0H1.4V2H0z" class="prefix__cls-1" data-name="Rectangle 212" transform="translate(4 9)"/>
+    <path id="prefix__Rectangle_215" d="M0 0H1.4V2H0z" class="prefix__cls-1" data-name="Rectangle 215" transform="translate(4 5)"/>
+    <path id="prefix__Rectangle_219" d="M0 0H1.4V2H0z" class="prefix__cls-1" data-name="Rectangle 219" transform="translate(4 1)"/>
+    <path id="prefix__Rectangle_213" d="M0 0H1.4V2H0z" class="prefix__cls-1" data-name="Rectangle 213" transform="translate(5 11)"/>
+    <path id="prefix__Rectangle_217" d="M0 0H1.4V2H0z" class="prefix__cls-1" data-name="Rectangle 217" transform="translate(5 7)"/>
+    <path id="prefix__Rectangle_218" d="M0 0H1.4V2H0z" class="prefix__cls-1" data-name="Rectangle 218" transform="translate(5 3)"/>
+</svg>

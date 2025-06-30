@@ -1,0 +1,156 @@
+// fonts
+$open-sans-font-family: 'Open Sans';
+$font-awesome: 'Font Awesome 5 Free';
+$font-size-base: 16px;
+$font-size-m: 14px;
+$font-size-sm: 12px;
+
+$header-height: 58px;
+$table-header-height: 36px;
+
+// colors
+$white: #fff;
+$black: #303030;
+$custom-blue: #1774de;
+$tabs-color: #2384e5;
+$light-blue: #EAF1FB; // Used in Communication Hub
+$light-yellow: #fffbf1;
+$yellow: #fdba12;
+$light-orange: #f7e7bf;
+$gray-light: #f3f3f3;
+$gray-lighter: #f8f8f8;
+$gray-mid-light: #e6e6e6;
+$gray: #c2c2c2;
+$gray-dark: #9d9d9d;
+$gray-darker: #707070;
+$gray-color-text: #7b8a8b;
+$gray-dim: #696969;
+$green: #4ebf52;
+$green-900: #0E3F22;
+$green-800: #196636;
+$dark-blue: #0f0b46;
+$dark-grey: #535353;
+$grey-background: #f2f2f2;
+$red-orange: #f44336;
+$brand-navy: #141B4D;
+
+$validation-invalid-color: #d00;
+$validation-valid-color: #42A948;
+
+$pill-error-text-color: #af362f;
+$pill-error-box-color: #ffeceb;
+
+$table-header-bg: #e6e6e6;
+$table-header: #5d5d5d;
+
+$menu-color: #f2f2f2;
+$group-color: #ecf0f3;
+$form-separator-color: $menu-color;
+
+$modal-border-color: #dee2e6;
+
+$controls-height: 20px;
+$controls-font-size: 14px;
+
+// deprecated
+$controls-old-height: 26px;
+$controls-old-font-size: 12px;
+
+$field-font-size: 14px;
+
+$label-color: #585858;
+$label-color-gray-light: #8f8f8f;
+$control-text-color: $black;
+
+$primary-blue: #1774de;
+$secondary-gray: #ececec;
+$border-gray: #dee2e6;
+
+// buttons
+$button-height: 30px;
+$button-font-size: 14px;
+$button-border-radius: 2px;
+$button-min-width: 80px;
+
+// grid
+$grid-header-bg: #f3f3f3;
+$grid-header-color: #585858;
+$grid-header-first-row-height: 26px;
+$grid-header-second-row-height: 20px;
+$grid-header-second-row-top: 25px;
+$grid-header-filter-height: 18px;
+$grid-header-filter-h-padding: 6px;
+$grid-header-filter-color: #303030;
+$grid-header-filter-border-color: #c2c2c2;
+$grid-header-filter-border-radius: 2px;
+
+$grid-font-size: 12px;
+$grid-font-weight: 400;
+$grid-row-font-size: 14px;
+$grid-row-border-color: #f9f9f9;
+$grid-row-border-width: 2px;
+$grid-row-height: 40px;
+$grid-checkbox-border-color: #c2c2c2;
+$grid-cell-color: #303030;
+$grid-cell-padding-left: 6px;
+$grid-cell-padding-right: 6px;
+$grid-first-cell-padding-left: 14px;
+$grid-last-cell-padding-right: 14px;
+$grid-selected-row-bg-color: #fff1cf;
+$grid-hover-row-bg-color: #e8eefc;
+$grid-success-row: #d7e9d8;
+$grid-disabled-row: #fbd2d3;
+
+// pager
+$pager-color: #585858;
+$pager-font-size: 12px;
+
+// modals
+$modal-border-radius: 4px;
+$modal-bg: $white;
+$modal-section-indent: 2px;
+$modal-section-padding: 20px;
+$modal-header-height: 50px;
+$modal-footer-height: 50px;
+$modal-footer-padding: 10px;
+
+// advanced search
+$advanced-search-padding: 20px;
+$advanced-search-controls-indent: 10px;
+$advanced-search-name-control-width: 545px;
+$advanced-search-field-control-width: 325px;
+$advanced-search-condition-control-width: 210px;
+$advanced-search-search-term-short-control-width: 130px;
+
+// address colors
+$verified-date-bg: #f2f2f2;
+
+//mfa-code colors:
+$code-border-color: #b5b5b5;
+$code-line-color: #000000;
+
+//communication hub
+$communication-hub-primary: #050041;
+$communication-hub-secondary: #1774DE;
+
+$max-z-index: 99999;
+
+//Claimants Dashboard
+$claimant-dashboard-primary: #0E1931;
+$claimant-dashboard-secondary: #050041;
+$claimant-dashboard-alternative: #1344C7;
+$info-card-border-info: #B9D4F4;
+$info-card-border-success: #B2E5B4;
+$info-card-border-danger: #FF6060;
+$info-card-border-warning: #FED6A9;
+$info-card-background-info: #F7F9FF;
+$info-card-background-success: #F5FFF5;
+$info-card-background-danger: #FFF7F7;
+$info-card-background-warning: #FFF6EB;
+
+$lg-border-radius: 16px;
+$sm-border-radius: 10px;
+$md-border-radius: 12px;
+
+$border-alternate:         #d7d7d7;
+$border-terciary:         $gray-dim;

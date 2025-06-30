@@ -1,0 +1,52 @@
+<app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+<app-context-bar [title]="title"></app-context-bar>
+
+<div class="page">
+  <div class="page-content">
+    <card header="Proccess" headerAdditional="Activate Maintenance Mode" headerWidth="380">
+      <card-col [width]="800" [labelWidth]="400">
+        <ng-container *ngFor="let maintenance of maintenanceList">
+          <card-row [label]="maintenance.displayName" [labelWidth]="400">
+            <label class="form-check" [ngClass]="{'form-check__read-mode': !canEdit}" cardValue>
+              <input type="checkbox"
+                [disabled]="!canEdit"
+                [checked]="isChecked(maintenance.id)"
+                (change)="onCheck(maintenance.id, $event)" />
+              <span></span>
+            </label>
+          </card-row>
+        </ng-container>
+      </card-col>
+    </card>
+    
+    <card header="Notification Location" headerAdditional="Activate Notification" headerThird="Notification" headerWidth="380" class="banner-section">
+      <card-col [labelWidth]="400">
+        <ng-container *ngFor="let banner of maintenanceBannerList">
+          <card-row [label]="banner.name" [labelWidth]="400" class="banner-section__row" hideColon>
+              <button
+                *ngIf="canEdit"
+                cardNextToLabel
+                type="button"
+                class="btn-details-edit"
+                (click)="onEditClick(banner)"
+                title="Edit" >
+              </button>
+              <div class="custom-display" cardValue>
+                <label class="form-check custom-display__max-width" [ngClass]="{'form-check__read-mode': !canEdit }">
+                  <input type="checkbox"
+                    [disabled]="!canEdit || !banner.description"
+                    [checked]="banner.isActive && banner.description"
+                    (change)="onCheckBanner(banner.id, $event)" />
+                  <span [title]="!banner.description ? this.notificationNotSetTooltip : ' ' "></span>
+                </label>
+                <quill-view
+                  class="custom-display__width"
+                  [content]="banner.description">
+                </quill-view>
+              </div>
+          </card-row>
+        </ng-container>
+      </card-col>
+    </card>
+  </div>
+</div>

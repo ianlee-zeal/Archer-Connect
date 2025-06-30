@@ -1,0 +1,35 @@
+.batch-details {
+  &__label-container {
+    display: flex; 
+    justify-content: space-between;
+    margin: 0 0 20px 0;
+  }
+
+  &__label {
+    display: flex;
+    height: 100%;
+    align-items: flex-end;
+  }
+
+  &__header-text {
+    font-weight: 700;
+    padding-right: 20px;
+  }
+
+  &__docusign-sent {
+    font-weight: bold;
+  }
+
+  &__select-container {
+    display: flex;
+
+    span.spinner-border {
+      margin-top: 0.25rem !important;
+    }
+  }
+}
+
+button span.download-icon {
+  padding: 0px 0px 0px 25px;
+  background: url("../../../../../assets/svg/download-arrow-down.svg") left no-repeat;
+}

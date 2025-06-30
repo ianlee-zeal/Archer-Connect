@@ -1,0 +1,38 @@
+<modal (close)="cancel()">
+  <modal-header>Add New Organization</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="item">
+        <card hideSeparator>
+          <card-col [width]="420" [labelWidth]="140">
+            <card-row label="Name" inputId="name" [control]="item.get('name')"  max-height="150px">
+              <input type="text" class="form-control" formControlName="name" [ngbTypeahead]="search"
+              (input)="searchOrganizations($event.target.value)" id="name" (selectItem)="onItemClick($event)" cardValue />
+            </card-row>
+            <card-row label="Primary Type" inputId="primaryOrgTypeId" [control]="item.get('primaryOrgTypeId')" required>
+              <app-select id="orgType" [options]="orgTypesValues$ | async" formControlName="primaryOrgTypeId" cardValue></app-select>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <div *ngIf="error$ | async as error" class="text-danger me-auto">
+      {{ error }}
+    </div>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="cancel()">
+      Cancel
+    </button>
+    <button
+      asyncButton
+      [awaitedActionTypes]="awaitedActionTypes"
+      type="submit" 
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      (click)="save()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Add
+    </button>
+</modal-footer>
+</modal> 

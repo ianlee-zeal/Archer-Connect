@@ -1,0 +1,29 @@
+<app-action-bar 
+  *ngIf="activeTab == 'details'" 
+  [actionHandlers]="actionBarActionHandlersForDetails" 
+  [pager]="pager$ | async" 
+  (navigate)="toPage($event)">
+</app-action-bar>
+<app-action-bar 
+  *ngIf="activeTab == 'roles'" 
+  [actionHandlers]="actionHandlersForUserRoles" 
+  [pager]="pager$ | async" 
+  (navigate)="toPage($event)">
+</app-action-bar>
+
+<app-context-bar 
+  [title]="title" 
+  [elements]="elements">
+</app-context-bar>
+
+<app-tab-group (tabChanged)="onTabChanged($event)">
+  <app-tab-item 
+    title="Details" 
+    routerLink="./tabs/details">
+  </app-tab-item>
+  <app-tab-item 
+    title="Roles" 
+    routerLink="./tabs/roles"
+    [permission]="userRolesPermission">
+  </app-tab-item>
+</app-tab-group>

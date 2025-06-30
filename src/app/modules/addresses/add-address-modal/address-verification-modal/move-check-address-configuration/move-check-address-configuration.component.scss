@@ -1,0 +1,20 @@
+@import 'src/styles/variables.scss';
+
+.move-check-address-configuration {
+  &__header {
+    width: 165px;
+    height: 22px;
+    font-size: 16px;
+    font-weight: bold;
+    color: $black;
+  }
+  &__form-control {
+    width: 200px;
+    height: 22px;
+    font-size: 14px;
+    margin: 0 0 5px 15px;
+  }
+  .form-control {
+    height: 20px !important;
+  }
+}

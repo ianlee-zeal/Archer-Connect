@@ -1,0 +1,11 @@
+<div class="page-content" *ngIf="dataSourceIsLoaded$ | async">
+  <ng-container *ngIf="headerBlocks; else noRecords">
+    <app-key-value-list
+        [data]="headerBlocks"
+        [lastLoadedDate]="lastLoadedDate"
+    >
+    </app-key-value-list>
+  </ng-container>
+
+  <ng-template #noRecords><app-tab-placeholder-no-record></app-tab-placeholder-no-record></ng-template>
+</div>

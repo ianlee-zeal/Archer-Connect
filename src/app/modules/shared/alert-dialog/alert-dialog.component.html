@@ -1,0 +1,9 @@
+<modal (close)="ok()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">{{message}}</div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--primary" (click)="ok()">{{ buttonOkText || 'Ok' }}</button>
+  </modal-footer>
+</modal>

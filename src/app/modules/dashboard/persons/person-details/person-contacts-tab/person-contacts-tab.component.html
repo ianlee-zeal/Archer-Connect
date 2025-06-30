@@ -1,0 +1,1 @@
+<app-contact-list class="person-contacts-tab" *ngIf="claimant$ | async as claimant" [claimantId]="claimant.id" (newRecord)="addContact()"></app-contact-list>

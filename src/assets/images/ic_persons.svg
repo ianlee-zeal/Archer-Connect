@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14.4" height="14" viewBox="0 0 14.4 14">
+    <defs>
+        <style>
+            .prefix__cls-1,.prefix__cls-2{fill:none}.prefix__cls-2{stroke:#0f0b46;stroke-width:1.4px}
+        </style>
+    </defs>
+    <g id="prefix__i_persons" transform="translate(.2)">
+        <path id="prefix__Rectangle_117" d="M0 0H14V14H0z" class="prefix__cls-1" data-name="Rectangle 117"/>
+        <g id="prefix__Ellipse_16" class="prefix__cls-2" data-name="Ellipse 16" transform="translate(3)">
+            <circle cx="4" cy="4" r="4" style="stroke:none"/>
+            <circle cx="4" cy="4" r="3.3" class="prefix__cls-1"/>
+        </g>
+        <path id="prefix__Path_58" d="M13 3A6.5 6.5 0 010 3" class="prefix__cls-2" data-name="Path 58" transform="rotate(180 6.75 8.5)"/>
+    </g>
+</svg>

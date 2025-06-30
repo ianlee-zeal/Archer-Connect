@@ -1,0 +1,21 @@
+<div *ngIf="item$ | async as claimant" class="designation-bar">
+  <div class="designation-bar__container">
+    <div *ngIf="claimant?.pin" class="designation-bar__item text-danger fw-bold me-2">
+      <card-row  alignContentVertically>
+        <div cardValue class="card-row__content">
+          *PIN Required
+        </div>
+      </card-row>
+    </div>
+    <div class="designation-bar__item pt-1">
+        <card-row alignContentVertically label="Tort Phone" [value]="claimant?.project?.assignedPhoneNumber | phone"></card-row>
+    </div>
+    <div *ngIf="designatedNotes$ | async as designatedNotes" class="designation-bar__item">
+      <card-row  alignContentVertically>
+        <div cardValue class="card-row__content">
+          <a class="btn btn-link" (click)="openDesignatedNoteModal(designatedNotes)" title="View Designated Representative Notes">View Designated Representative Notes</a>
+        </div>
+      </card-row>
+    </div>
+  </div>
+</div>

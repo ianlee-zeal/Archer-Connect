@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14.899" height="14.9" viewBox="0 0 14.899 14.9">
+    <defs>
+        <style>
+            .prefix__cls-2,.prefix__cls-3{fill:none}.prefix__cls-3{stroke:#1774de}.prefix__cls-5{stroke:none}
+        </style>
+    </defs>
+    <g id="prefix__ic_edit" transform="translate(-255.636 -73.636)" style="opacity:.75">
+        <path id="prefix__bg" d="M0 0H14V14H0z" class="prefix__cls-2" transform="translate(256 74)"/>
+        <g id="prefix__Rectangle_111" class="prefix__cls-3" data-name="Rectangle 111">
+            <path d="M2 0a2 2 0 0 1 2 2v11H0V2a2 2 0 0 1 2-2z" class="prefix__cls-5" transform="rotate(-45 220.118 -270.348)"/>
+            <path d="M2 .5A1.5 1.5 0 0 1 3.5 2v10a.5.5 0 0 1-.5.5H1a.5.5 0 0 1-.5-.5V2A1.5 1.5 0 0 1 2 .5z" class="prefix__cls-2" transform="rotate(-45 220.118 -270.348)"/>
+        </g>
+        <g id="prefix__Polygon_2" data-name="Polygon 2" style="fill:none">
+            <path d="M2 0l2 5H0z" class="prefix__cls-5" transform="rotate(135 117.517 98.883)"/>
+            <path d="M2 2.693L1.477 4h1.046L2 2.693M2 0l2 5H0l2-5z" style="fill:#1774de;stroke:none" transform="rotate(135 117.517 98.883)"/>
+        </g>
+        <path id="prefix__Line_44" d="M0 0L14 0" class="prefix__cls-3" data-name="Line 44" transform="translate(256 87)"/>
+        <path id="prefix__Line_45" d="M0 2L2 0" class="prefix__cls-3" data-name="Line 45" transform="translate(258.5 76.5)"/>
+    </g>
+</svg>

@@ -1,0 +1,14 @@
+<div class="modal-section" *ngIf="this.runSettings">
+  <form [formGroup]="form" (change)="onChanges()">
+    <card hideSeparator>
+      <card-col [labelWidth]="215" [width]="660">
+        <card-row label="Enable Duplicate Detection" inputId="enableDuplicateDetection" [control]="form.get('enableDuplicateDetection')">
+          <label class="form-check h-100" cardValue>
+              <input type="checkbox" class="form-check-input" id="enableDuplicateDetection" formControlName="enableDuplicateDetection" >
+              <span></span>
+          </label>
+        </card-row>
+      </card-col>
+    </card>
+  </form>
+</div>

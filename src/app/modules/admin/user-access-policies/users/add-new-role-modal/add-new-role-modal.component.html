@@ -1,0 +1,40 @@
+<modal (close)="cancel()">
+  <modal-header>Add Roles</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <card hideSeparator>
+        <card-col [labelWidth]="74" [width]="370">
+          <card-row label="Roles" inputId="role">
+            <app-select 
+              id="role"
+              [options]="roleOptions"
+              [model]="selectedRoles"
+              (onModelChange)="updateSelectedRoles($event)"
+              cardValue
+              appAutoFocus
+              [optionAsValue]="true"
+              [isMultiselectDropdown]="true"
+              [multiple]="true"
+              filterMultiselect>
+            </app-select>
+          </card-row>
+        </card-col>
+      </card>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="cancel()">
+      Cancel
+    </button>
+    <button 
+      asyncButton
+      [awaitedActionTypes]="awaitedAddActionTypes"
+      type="submit" 
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      [disabled]="selectedRoles.length == 0" 
+      (click)="addRole()">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Add
+    </button>
+  </modal-footer>
+</modal>

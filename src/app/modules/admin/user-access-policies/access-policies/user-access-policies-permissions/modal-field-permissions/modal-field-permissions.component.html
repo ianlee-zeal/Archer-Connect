@@ -1,0 +1,48 @@
+<modal (close)="onCancel()">
+  <modal-header>Advanced Permissions - {{ entityType.name }}</modal-header>
+  <modal-body>
+      <ng-container *ngIf="allPermissions$ | async as allPermissions">
+
+        <!-- Advanced actions -->
+        <div class="modal-section" *ngIf="hasAdvancedPermissions(allPermissions)">
+          <card header="Action" hideSeparator>
+            <card-col [labelWidth]="100">
+              <app-advanced-permissions-grid [entityType]="entityType" [canEdit]="canEdit"></app-advanced-permissions-grid>
+            </card-col>
+          </card>
+        </div>
+
+        <!-- Field permissions -->
+        <div class="modal-section" *ngIf="hasFieldPermissions(allPermissions)">
+          <ng-container *ngIf="entityTypes$ | async as entityTypes">
+            <card header="Field Level" hideSeparator>
+              <card-col [labelWidth]="100">
+                <app-field-permissions-grid [entityTypes]="entityTypes" [canEdit]="canEdit"></app-field-permissions-grid>
+              </card-col>
+            </card>
+          </ng-container>
+        </div>
+
+      </ng-container>
+  </modal-body>
+  <modal-footer>
+    <div *ngIf="error$ | async as error" class="text-danger me-auto">
+      {{ error }}
+    </div>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onCancel()">
+      Cancel
+    </button>
+    <ng-container *permissions="editAccessPolicyPermissions">
+      <button
+        asyncButton
+        [awaitedActionTypes]="awaitedSaveActionTypes"
+        *ngIf="canEdit" 
+        type="submit" 
+        class="btn modal-footer__btn modal-footer__btn--primary" 
+        (click)="onSave()">
+          <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          Save
+      </button>
+    </ng-container>
+  </modal-footer>
+</modal>

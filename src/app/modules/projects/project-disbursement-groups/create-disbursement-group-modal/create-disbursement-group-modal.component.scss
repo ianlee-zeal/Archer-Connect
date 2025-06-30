@@ -1,0 +1,13 @@
+.read-only {
+    cursor: initial;
+}
+
+.create-disbursement-group-modal {
+    &-error {
+        max-width: 320px;
+    }
+}
+
+::ng-deep .electionFormRequired .card-row__label-container{
+    width: 310px !important;
+}

@@ -1,0 +1,26 @@
+<modal (close)="modalRef.hide()">
+    <modal-header>{{title}}</modal-header>
+
+    <modal-body>
+        <div class="modal-section">
+            <app-grid
+                [gridOptions]="gridOptions"
+                (gridReady)="gridReady($event)"
+                (loadData)="loadData($event)"
+                [entityLabel]="entityLabel"
+                [gridId]="gridId">
+            </app-grid>
+        </div>
+    </modal-body>
+
+    <modal-footer>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="modalRef.hide()">
+            Cancel
+        </button>
+        <button type="submit" class="btn modal-footer__btn modal-footer__btn--primary"
+            [ngClass]="{ disabled: isSaveDisabled }" [disabled]="isSaveDisabled" (click)="onSave()">
+            Save
+        </button>
+    </modal-footer>
+</modal>

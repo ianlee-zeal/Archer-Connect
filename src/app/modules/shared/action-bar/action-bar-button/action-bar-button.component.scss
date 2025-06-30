@@ -1,0 +1,105 @@
+@import "src/styles/variables.scss";
+
+.action {
+  position: relative;
+
+  &__control {
+    margin-right: 24px;
+  }
+
+  &__button {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+
+    &[disabled],
+    &.disabled {
+      opacity: 0.5;
+    }
+
+    &[hidden],
+    &.hidden {
+      display: none;
+    }
+
+    &:focus,
+    &:active {
+      outline: none;
+    }
+  }
+
+  &__action-name {
+    margin-left: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #585858;
+  }
+}
+
+.select {
+  &__toggle {
+    background-color: white;
+    margin-top: 4px;
+    margin-left: 4px;
+    position: relative;
+  }
+  &__link {
+    color: $tabs-color;
+    text-decoration: underline;
+  }
+
+  &__option {
+    font-size: 14px;
+
+    a {
+      display: block;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: none;
+        color: #fff;
+      }
+
+      &.disabled {
+        text-decoration: none;
+        cursor: default;
+        pointer-events: none;
+        opacity: 0.5;
+      }
+    }
+
+    &-flex {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &-flex:hover {
+      cursor: pointer;
+      a {
+        color: white;
+      }
+    }
+
+    &-delete {
+      margin-left: 5px;
+    }
+  }
+
+  &__options {
+    box-shadow: 2px 7px 17px 3px rgba(0, 0, 0, 0.1), inset 0px 0px 0px 1px rgba(0, 0, 0, .2);
+  }
+}
+
+:host {
+  @media screen and (max-width: 767px) {
+    .action {
+      &__control {
+        margin-right: 10px;
+      }
+
+      &__options {
+        margin-right: 24px;
+      }
+    }
+  }
+}

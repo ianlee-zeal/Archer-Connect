@@ -1,0 +1,9 @@
+<app-grid 
+  *ngIf="payment"
+  [gridOptions]="gridOptions" 
+  [enabledAutoHeight]="false"
+  (gridReady)="gridReady($event)" 
+  (loadData)="loadData($event)" 
+  [gridId]="gridId" 
+  entityLabel="Check Verification">
+</app-grid>

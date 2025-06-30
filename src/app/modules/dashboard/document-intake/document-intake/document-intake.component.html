@@ -1,0 +1,7 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBar$ | async"></app-action-bar>
+  <app-context-bar [title]="'Document Intake Review Queue'"></app-context-bar>
+  <div class="page-content">
+    <app-document-intake-list [gridId]="gridId"></app-document-intake-list>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="page" *ngIf="item$ | async">
+  <div *ngIf="error$ | async as error" class="text-danger mt-2 ms-3">
+    {{ error }}
+  </div>
+  <div class="page-content">
+    <app-advanced-search 
+        *ngIf="showAdvancedSearch"
+        (onSearch)="advancedSearchSubmit()"
+        [savedSearchOptions]="savedSearchOptions$ | async"
+        [fields]="searchFields"
+        [entityId]= "projectId"
+        [entityType]="entityType"
+        [gridId]="gridId"
+        [state]="searchState"
+        (markAsEdited)="markAsEdited()"
+        (onClear)="clearFilters()"></app-advanced-search>
+    <app-grid 
+      [gridId]="gridId"
+      entityLabel="claimants"
+      [gridOptions]="gridOptions"
+      [canReorderColumns]="true"
+      [skipSetContentHeight]="true"
+      (gridReady)="gridReady($event)"
+      (loadData)="loadData($event)"
+      (rowDoubleClicked)="onRowDoubleClicked($event)">
+    </app-grid>
+  </div>
+</div>

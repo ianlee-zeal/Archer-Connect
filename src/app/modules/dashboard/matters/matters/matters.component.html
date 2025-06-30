@@ -1,0 +1,7 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBar$ | async"></app-action-bar>
+  <app-context-bar [title]="'Torts Search'"></app-context-bar>
+  <div class="page-content">
+    <app-matters-list [gridId]="gridId"></app-matters-list>
+  </div>
+</div>

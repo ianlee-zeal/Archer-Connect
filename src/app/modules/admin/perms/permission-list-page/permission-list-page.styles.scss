@@ -1,0 +1,11 @@
+.permission-list-page {
+  &__content {
+    display: flex;
+    flex-direction: row;
+
+    &-grid {
+      overflow: hidden;
+      flex-grow: 1;
+    }
+  }
+}

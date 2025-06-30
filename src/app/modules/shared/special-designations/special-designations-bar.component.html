@@ -1,0 +1,9 @@
+<div *ngIf="items.length > 0" class="designation-bar">
+  <div class="designation-bar__title">Special Designations</div>
+  <div class="designation-bar__container">
+    <div *ngFor="let item of items" class="designation-bar__item">
+      <img [src]="item.icon" alt="">
+      {{item.label}}
+    </div>
+  </div>
+</div>

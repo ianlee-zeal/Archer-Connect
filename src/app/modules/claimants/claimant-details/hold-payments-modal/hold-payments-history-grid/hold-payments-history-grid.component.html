@@ -1,0 +1,10 @@
+<div class="hold-history-wrapper">
+  <app-grid
+    entityLabel="Payment Holds"
+    class="ag-grid-custom-height-300"
+    [gridId]="gridId"
+    [gridOptions]="gridOptions"
+    (gridReady)="gridReady($event)"
+    (loadData)="loadData($event)">
+  </app-grid>
+</div>

@@ -1,0 +1,37 @@
+<div
+  class="tooltip-info"
+  [ngClass]="{
+    'tooltip-info--inline': inline
+  }">
+  <button
+    #tooltip="ngbTooltip"
+    type="button"
+    class="tooltip-info__button btn btn-icon"
+    [ngbTooltip]="tooltipTemplate"
+    placement="right"
+    [placement]="placement"
+    [triggers] = "triggers"
+    [autoClose]="autoClose"
+    [tooltipClass]="tooltipClass"
+    (shown)="onTooltipShown()"
+    (hidden)="onTooltipHidden()">
+    <img *ngIf="!isOpenTooltip" src="assets/svg/info-circle-gray.svg" title="{{!!isScrollableContent ? 'Click to view the content.' : null}}" />
+    <img *ngIf="isOpenTooltip" src="assets/svg/info-circle-yellow.svg" />
+  </button>
+
+  <ng-template #tooltipTemplate>
+    <div [ngClass]="{'tooltip-scrollable': !!isScrollableContent}"
+        [ngStyle]="{
+          'max-height': !!isScrollableContent && maxContentHeight ? maxContentHeight+'px' : undefined,
+          'min-width': !!isScrollableContent && minContentWidth ? minContentWidth+'px' : undefined
+        }">
+      <ng-container *ngIf="!templateRef">
+        {{tooltipText}}
+      </ng-container>
+
+      <ng-container *ngIf="templateRef">
+        <ng-container [ngTemplateOutlet]="templateRef" [ngTemplateOutletContext]="{data: tooltipText}"></ng-container>
+      </ng-container>
+    </div>
+  </ng-template>
+</div>

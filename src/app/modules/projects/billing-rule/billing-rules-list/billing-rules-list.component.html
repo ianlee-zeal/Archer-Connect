@@ -1,0 +1,20 @@
+<div class="header-list-with-separator">
+    Contract Rules
+  </div>
+<div class="billing-rules-list-container">
+<app-grid 
+    entityLabel="Contract Rules" 
+    [gridId]="gridId" 
+    [gridOptions]="gridOptions" 
+    (gridReady)="gridReady($event)"
+    isContentAutoHeight="true"
+    hideTopStatusbar="true"
+    [additionalPageItemsCountValues]="additionalPageItemsCountValues"
+    (loadData)="loadData($event)">
+</app-grid>
+</div>
+
+<div class="header-list-with-separator">
+    Fee Caps
+  </div>
+<app-fee-caps-list (onSelectFeeCap)="onSelectFeeCap($event)" [filteredByContractRuleId]="filteredByContractRuleId"></app-fee-caps-list>

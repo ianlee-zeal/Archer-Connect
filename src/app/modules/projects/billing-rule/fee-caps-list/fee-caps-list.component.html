@@ -1,0 +1,14 @@
+<div class="fee-caps-list">
+<app-grid 
+    *ngIf="injuryCategories && injuryCategories.length > 0"
+    entityLabel="Fee Caps" 
+    [gridId]="gridId" 
+    [gridOptions]="gridOptions" 
+    (gridReady)="gridReady($event)"
+    [isContentAutoHeight]="true"
+    hideTopStatusbar="true"
+    hideBottomStatusbar="true"
+    isPagerEnabled="false"
+    (loadData)="loadData($event)">
+</app-grid>
+</div>

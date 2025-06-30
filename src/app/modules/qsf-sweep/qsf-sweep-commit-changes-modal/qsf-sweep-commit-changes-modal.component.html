@@ -1,0 +1,71 @@
+<modal (close)="onCancel()">
+    <modal-header>QSF Sweep Commit Changes</modal-header>
+  
+    <modal-body>
+      <div class="modal-section">
+        Select the disbursement group to add selected claimants to:
+      <form [formGroup]="form" novalidate>
+        <card hideSeparator>
+          <card-col [width]="620">
+            <card-row label="Disbursement Group" [labelWidth]="200" inputId="disbursmentGroupId" [control]="form.get('disbursmentGroupId')" maxContentWidth="420" containerWidth="620" required>
+                <app-select
+                  id="disbursmentGroupId"
+                  [options]="disbursementGroupOptions$ | async "
+                  formControlName="disbursmentGroupId"
+                  placeholder="Disbursement Group"
+                  fullwidth
+                  cardValue
+                  required>
+                </app-select>
+            </card-row>
+
+            <card-row label="Commit Changes for" [labelWidth]="200" maxContentWidth="420" containerWidth="620" required>
+              <ng-container cardValue>
+                <label class="form-check h-100" style="margin-right: 30px;">
+                  <input class="form-check-input" type="checkbox" formControlName="commitLiens" />
+                  <span></span>
+                  <span class="label">Liens</span>
+                </label>
+                <label class="form-check h-100">
+                  <input class="form-check-input" type="checkbox" formControlName="commitFees" />
+                  <span></span>
+                  <span class="label">Fees</span>
+                </label>
+            </ng-container>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+    </modal-body>
+  
+    <modal-footer [justifyContentSpaceBetween]="true">
+      <div  class="footer-error-messages">
+        <app-spinner *ngIf="isLoading$ | async" small></app-spinner>
+        <div class="error-message" [hidden]="(qsfCommitChangesResponse$ | async)?.success !== false">
+          <ng-container *ngIf="(qsfCommitChangesResponse$ | async)?.errors as errors">
+            <ng-container *ngFor="let error of errors">
+              <p>{{error}}</p>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+      <div class="footer-buttons">
+      <button
+        type="button"
+        class="btn modal-footer__btn modal-footer__btn--secondary"
+        (click)="onCancel()">
+        Close
+      </button>
+      <button
+        type="button"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        [disabled]="approveButtonDisabled"
+        (click)="onApprove()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          Approve
+      </button>
+  </div>
+    </modal-footer>
+  </modal>
+  

@@ -1,0 +1,277 @@
+<div *ngIf="item$ | async as item">
+<ng-container>
+  <div *ngIf="error$ | async as error" class="text-danger mt-2 ms-3">
+    {{ error }}
+  </div>
+
+  <form [formGroup]="fg" *ngIf='canEdit; else viewTemplate'>
+    <card hideSeparator>
+      <card-col [width]="530" [labelWidth]="225">
+        <card-row label="Name" inputId="name" [control]="fg.get('name')" hideColon="true">
+          <ng-container cardLabel>
+            <span class="card-row__asterisk">&nbsp;*</span>
+            <label class="label election-form__label-header">:</label>
+            <span title="Prints to Closing Statement & primary name displayed in Connect" class="fa fa-info-circle"></span>
+          </ng-container>
+          <input (input)="onChange()" type="text" class="form-control" formControlName="name" id="name" required appAutoFocus cardValue>
+        </card-row>
+
+        <card-row label="Legal Name" inputId="legalName" [control]="fg.get('legalName')" hideColon="true">
+          <ng-container cardLabel>
+            <label class="label election-form__label-header">:</label>
+            <span title="W-9 Line 1 Name" class="fa fa-info-circle"></span>
+          </ng-container>
+          <input (input)="onChange()" type="text" class="form-control" formControlName="legalName" id="legalName" cardValue>
+        </card-row>
+
+        <card-row *ngIf="canEditSatisfactionRating || canCreateSatisfactionRating"
+          label="Satisfaction Rating"
+          inputId="satisfactionRating"
+          [control]="fg.get('satisfactionRating')">
+            <app-select
+              id="satisfactionRating"
+              [options]="satisfactionRatingList"
+              formControlName="satisfactionRating"
+              class="primary-type__dropdown"
+              hasRatingIcon="true"
+              optionAsValue
+              cardValue
+              (change)="onChange()">
+            </app-select>
+        </card-row>
+
+        <card-row label="Alt Name" inputId="altName" [control]="fg.get('altName')" hideColon="true" >
+          <ng-container cardLabel>
+            <label class="label election-form__label-header">:</label>
+            <span title="Informational only" class="fa fa-info-circle"></span>
+          </ng-container>
+          <input (input)="onChange()" type="text" class="form-control" formControlName="altName" id="altName" cardValue>
+        </card-row>
+
+        <!-- Name On Check -->
+        <card-row *ngIf="hasEditNameOnCheckPermission" label="Name on Check" inputId="nameOnCheck" [control]="fg.get('nameOnCheck')"  hideColon="true">
+          <ng-container cardLabel>
+            <label class="label election-form__label-header">:</label>
+            <span title="Payee name in payment request" class="fa fa-info-circle"></span>
+          </ng-container>
+          <input (input)="onChange()" type="text" class="form-control" formControlName="nameOnCheck" id="nameOnCheck" cardValue>
+        </card-row>
+        <card-row *ngIf="!hasEditNameOnCheckPermission" label="Name on Check" [value]="item.nameOnCheck" containValue hideColon="true">
+          <ng-container cardLabel>
+            <label class="label election-form__label-header">:</label>
+            <span title="Payee name in payment request" class="fa fa-info-circle"></span>
+          </ng-container>
+        </card-row>
+
+        <!-- ERP Vendor Name -->
+        <card-row *ngIf="hasEditERPVendorNamePermission" label="ERP Vendor Name" inputId="erpVendorName" [control]="fg.get('erpVendorName')" >
+          <input (input)="onChange()" type="text" class="form-control" formControlName="erpVendorName" id="erpVendorName" cardValue>
+        </card-row>
+        <card-row *ngIf="!hasEditERPVendorNamePermission" label="ERP Vendor Name" [value]="item.erpVendorName" containValue></card-row>
+
+        <card-row label="Primary Type" inputId="orgType" [control]="fg.get('primaryOrgTypeId')">
+          <app-select 
+            id="orgType" 
+            [options]="orgTypesValues$ | async" 
+            formControlName="primaryOrgTypeId" 
+            class="primary-type__dropdown" 
+            cardValue
+            (change)="onChange()">
+          </app-select>
+        </card-row>
+
+        <card-row label="Active" inputId="active" [control]="fg.get('active')" >
+          <label class="form-check-label" for="active" cardValue>
+            <input (ngModelChange)="onChange()" type="checkbox" class="form-check-input" formControlName="active" id="active" />
+            <span></span>
+          </label>
+        </card-row>
+
+        <card-row
+          *ngIf="canEditAccountManager else readonlyAccountManager"
+          label="Account Manager"
+          inputId="accountManager"
+          [control]="fg.get('accountManager')"
+          alignContentVertically>
+            <app-clearable-input
+              cursorPointer
+              [form]="fg"
+              controlName="accountManager"
+              [isReadonly]="true"
+              id="accountManager"
+              placeholder="Select"
+              cardValue
+              (click)="onOpenModal('accountManager')"
+              (clear)="onClear('accountManager')"
+              (change)="onChange()"
+              width="300">
+            </app-clearable-input>
+        </card-row>
+
+        <ng-template #readonlyAccountManager>
+          <card-row label="Account Manager" [value]="item.accountManager?.displayName"></card-row>
+        </ng-template>
+
+        <card-row
+          *ngIf="canEditClientRelationshipSpecialist else readonlyClientRelationshipSpecialist"
+          label="Client Relationship Specialist"
+          inputId="clientRelationshipSpecialist"
+          [control]="fg.get('clientRelationshipSpecialist')"
+          alignContentVertically>
+          <app-clearable-input
+            cursorPointer
+            [form]="fg"
+            controlName="clientRelationshipSpecialist"
+            [isReadonly]="true"
+            id="clientRelationshipSpecialist"
+            placeholder="Select"
+            cardValue
+            (click)="onOpenModal('clientRelationshipSpecialist')"
+            (clear)="onClear('clientRelationshipSpecialist')"
+            width="300"
+            (change)="onChange()">
+          </app-clearable-input>
+        </card-row>
+        <ng-template #readonlyClientRelationshipSpecialist>
+          <card-row label="Client Relationship Specialist" [value]="item.clientRelationshipSpecialist?.displayName"></card-row>
+        </ng-template>
+
+      </card-col>
+
+      <card-col [width]="480" [labelWidth]="145">
+        <card-row label="Website" inputId="website" [control]="fg.get('website')" >
+          <input (input)="onChange()" type="text" class="form-control" formControlName="website" id="website" cardValue>
+        </card-row>
+
+        <card-row label="Tax ID" inputId="taxId" [control]="fg.get('taxId')" >
+          <input (input)="onChange()" type="text" class="form-control" formControlName="taxId" id="taxId" cardValue>
+        </card-row>
+        
+        <card-row *ngIf="canReadAccessPolicy" label="Access Policy"
+          inputId="accessPolicy" [control]="fg.get('accessPolicyId')">
+          <app-select 
+            id="accessPolicy" 
+            [options]="orgAccessPolicies$ | async" 
+            formControlName="accessPolicyId" 
+            cardValue
+            (change)="onChange()">
+          </app-select>
+        </card-row>
+
+        <card-row label="W-9 Date" inputId="w9Date" class="control-dropdown" hideColon="true" [control]="fg.get('w9Date')">
+          <ng-container cardLabel>
+            <span *ngIf="isRequired('w9Date')" class="card-row__asterisk">&nbsp;*</span>
+            <label class="label election-form__label-header">:</label>
+            <span title="The date when W-9 form was signed" class="fa fa-info-circle"></span>
+          </ng-container>
+          <app-date-selector
+            [maxDate]="todaysDate"
+            id="w9Date" 
+            formControlName="w9Date"
+            cardValue
+            (change)="onChange()">
+          </app-date-selector>
+        </card-row>
+        <card-row label="NetSuite ASLP Vendor Acct" inputId="aslpCashAcctNumber" [control]="fg.get('aslpCashAcctNumber')" hideColon="true">
+          <ng-container cardLabel>
+            <label class="label election-form__label-header">:</label>
+            <span title="This field shows the NetSuite Goldman ASLP-QSF Lienholder/collector GL Account Number" class="fa fa-info-circle"></span>
+          </ng-container>
+          <input (input)="onChange()" type="text" class="form-control" formControlName="aslpCashAcctNumber" id="aslpCashAcctNumber" cardValue>
+        </card-row>
+      </card-col>
+    </card>
+
+    <card hideSeparator>
+      <card-col [width]="800" [labelWidth]="100">
+        <app-emails-list 
+          [entityParams]="entityParams" 
+          [emails]="org.emails" 
+          (emailsChanged)="onEmailsChanged($event)">
+        </app-emails-list>
+      </card-col>
+    </card>
+
+    <card hideSeparator>
+      <card-col [width]="800" [labelWidth]="100">
+        <app-phones-list 
+          [entityParams]="entityParams" 
+          [phones]="org.phones" 
+          (phonesChanged)="onPhonesChanged($event)">
+        </app-phones-list>
+      </card-col>
+    </card>
+
+  </form>
+
+  <ng-template #viewTemplate>
+
+    <card hideSeparator>
+      <card-col [width]="530" [labelWidth]="225">
+        <card-row label="Name" [value]="item.name" containValue hideColon="true">
+          <ng-container cardLabel>
+            <label class="label election-form__label-header">:</label>
+            <span title="Prints to Closing Statement & primary name displayed in Connect" class="fa fa-info-circle"></span>
+          </ng-container>
+        </card-row>
+        <card-row label="Legal Name" [value]="item.legalName" hideColon="true">
+          <ng-container cardLabel>
+            <label class="label election-form__label-header">:</label>
+            <span title="W-9 Line 1 Name" class="fa fa-info-circle"></span>
+          </ng-container>
+        </card-row>
+        <card-row *ngIf="canReadSatisfactionRating" label="Satisfaction Rating" [value]="item.satisfactionRating?.name" containValue></card-row>
+        <card-row label="Alt Name" [value]="item.altName" hideColon="true">
+          <ng-container cardLabel>
+            <label class="label election-form__label-header">:</label>
+            <span title="Informational only" class="fa fa-info-circle"></span>
+          </ng-container>
+        </card-row>
+        <card-row label="Name on Check" [value]="item.nameOnCheck" containValue hideColon="true">
+          <ng-container cardLabel>
+            <label class="label election-form__label-header">:</label>
+            <span title="Payee name in payment request" class="fa fa-info-circle"></span>
+          </ng-container>
+        </card-row>
+        <card-row label="ERP Vendor Name" [value]="item.erpVendorName" containValue></card-row>
+        <card-row label="Primary Type" [value]="item.primaryOrgTypeName"></card-row>
+        <card-row label="Active" [value]="item.active | yesNoPipe"></card-row>
+        <card-row label="Account Manager" [value]="item.accountManager?.displayName"></card-row>
+        <card-row label="Client Relationship Specialist" [value]="item.clientRelationshipSpecialist?.displayName"></card-row>
+      </card-col>
+
+      <card-col [width]="480" [labelWidth]="145">
+        <card-row label="Website" [value]="item.website"></card-row>
+        <card-row label="Tax ID" [value]="item.taxId"></card-row>
+        <card-row *ngIf="canReadAccessPolicy" label="Access Policy" [value]="item.accessPolicyName"></card-row>
+        <card-row label="W-9 on File" [value]="item.w9OnFile | yesNoPipe"></card-row>
+        <card-row label="W-9 Date" [value]="item.w9Date | dateFormat : false : '' : '' : true" hideColon="true">
+          <ng-container cardLabel>
+            <label class="label election-form__label-header">:</label>
+            <span title="The date when W-9 form was signed" class="fa fa-info-circle"></span>
+          </ng-container>
+        </card-row>
+        <card-row label="NetSuite ASLP Vendor Acct" [value]="item.aslpCashAcctNumber" hideColon="true">
+          <ng-container cardLabel>
+            <label class="label election-form__label-header">:</label>
+            <span title="This field shows the NetSuite Goldman ASLP-QSF Lienholder/collector GL Account Number" class="fa fa-info-circle"></span>
+          </ng-container>
+        </card-row>
+      </card-col>
+    </card>
+
+    <card hideSeparator *ngIf="org.emails">
+      <card-col [width]="800">
+        <app-emails-list [entityParams]="entityParams" [emails]="org.emails"> </app-emails-list>
+      </card-col>
+    </card>
+
+    <card hideSeparator *ngIf="org.phones">
+      <card-col [width]="800">
+        <app-phones-list [entityParams]="entityParams" [phones]="org.phones"> </app-phones-list>
+      </card-col>
+    </card>
+
+  </ng-template>
+</ng-container>
+</div>

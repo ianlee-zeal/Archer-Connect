@@ -1,0 +1,16 @@
+@import "src/styles/variables.scss";
+
+.key-value-list {
+  &__warning-info {
+    margin-left: 80px;
+    color: $validation-invalid-color;
+  }
+
+  &__warning-icon{
+    vertical-align: baseline;
+  }
+
+  card {
+    margin-bottom: 0;
+  }
+}

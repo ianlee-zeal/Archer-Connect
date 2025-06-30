@@ -1,0 +1,29 @@
+<ng-container *ngIf="batchAction?.id">
+  <ng-container [ngSwitch]="tab">
+    <app-invoice-archer-fees-deficiency-summary
+      *ngSwitchCase="tabs.AllRecords"
+      [batchActionId]="batchAction.id"
+      [documentTypeId]="documentTypeId"
+      [tab]="tabs.AllRecords"
+    ></app-invoice-archer-fees-deficiency-summary>
+    <app-invoice-archer-fees-error-list
+      *ngSwitchCase="tabs.Errors"
+      [batchAction]="batchAction"
+      [documentTypeId]="documentTypeId"
+      [tab]="tabs.Errors"
+    ></app-invoice-archer-fees-error-list>
+    <app-invoice-archer-fees-error-list
+      *ngSwitchCase="tabs.Warnings"
+      [batchAction]="batchAction"
+      [documentTypeId]="documentTypeId"
+      [tab]="tabs.Warnings"
+    ></app-invoice-archer-fees-error-list>
+    <app-invoice-archer-fees-queued-list
+      *ngSwitchCase="tabs.Queued"
+      [batchAction]="batchAction"
+      [documentTypeId]="documentTypeId"
+      [tab]="tabs.Queued"
+      [resultDocId]="resultDocId"
+    ></app-invoice-archer-fees-queued-list>
+  </ng-container>
+</ng-container>

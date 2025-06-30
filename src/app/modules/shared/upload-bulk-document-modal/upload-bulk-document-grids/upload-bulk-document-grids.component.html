@@ -1,0 +1,17 @@
+<div class="modal-section">
+  <nav>
+    <div class="nav nav-tabs" id="review-nav-tab" role="tablist">
+      <a *ngFor="let item of tabsGroup" [ngClass]="navItemclass(item)" class="nav-item nav-link"  id="{{item.tab}}-tab"
+        (click)="onChangeTab(item.tab)" data-toggle="tab" data-target="#{{item.tab}}">{{item.title}} ({{item.count}})
+      </a>
+    </div>
+  </nav>
+
+  <div class="tab-content" id="review-nav-tab-content" *ngIf="documentImport">
+    <div *ngFor="let item of tabsGroup" class="tab-pane fade show" [class.active]="isActiveTab(item)" id="{{item.tab}}">
+      <app-upload-bulk-document-group-grid *ngIf="isActiveTab(item)" [tab]="activeTab" [documentImport]="documentImport"
+        [documentTypeId]="documentTypeId">
+      </app-upload-bulk-document-group-grid>
+    </div>
+  </div>
+</div>

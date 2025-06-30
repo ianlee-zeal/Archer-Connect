@@ -1,0 +1,17 @@
+<div class="page">
+    <img src="assets/svg/andi-messaging-logo.svg" alt="Messaging Icon" class="inbox-page-logo">
+    <ng-container *ngIf="tabs">
+      <app-tab-group-icon>
+        <ng-container *ngFor="let tab of tabs">
+          <app-tab-item 
+            [title]="tab.title" 
+            [routerLink]="tab.link" 
+            [permission]="tab.permission"
+            [count]="tab.count"
+            [countToolTip]="tab.countToolTip"
+            [iconPath]="tab.iconPath">
+          </app-tab-item>
+        </ng-container>
+      </app-tab-group-icon>
+    </ng-container>  
+  </div>

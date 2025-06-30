@@ -1,0 +1,243 @@
+<div class="page bank-account-details">
+  <div class="page-content">
+    <p *ngIf="errorMessage" class="text-danger small mb-0">{{ errorMessage }}</p>
+    <form [formGroup]="form" (change)="onChange()" novalidate *ngIf="canEdit; else viewTemplate">
+      <card hideSeparator>
+        <card-col [width]="570" [labelWidth]="265">
+          
+          <div *ngIf="(bankAccountSettings$ | async)?.w9FileRequired" class="w9-file">
+            <h1>Upload W9</h1>
+            <p>ARCHER does not have a current-year W-9 for your organization. This is required to make payments to an organization.</p>
+            <p>You can upload a current W-9 here. If you don't have the current document available, ARCHER will request it during account verification.</p>            
+            <div>
+              <p class="file-name"> Uploaded file name: <b>{{ dragAndDropComponent?.selectedFile?.name }}</b></p> 
+              <app-drag-and-drop [allowedFileTypes]="(bankAccountSettings$ | async)?.allowedFileExtensions"
+              (filesSelected)="selectFile($event)" class="label-font">
+              </app-drag-and-drop>
+            </div>            
+          </div>          
+
+          <card-row label="Bank Account Format" inputId="bankAccountFormat" [control]="form.get('bankAccountFormat')" required>
+            <div class="bank-account-details__radio-container" cardValue>
+              <div class="bank-account-details__radio-item">
+                  <input type="radio" [value]="bankAccountFormatEnum.US" formControlName="bankAccountFormat" />
+                  <label class="label bank-account-details__radio-label">United States</label>
+              </div>
+              <div class="bank-account-details__radio-item">
+                  <input type="radio" [value]="bankAccountFormatEnum.International" formControlName="bankAccountFormat" />
+                  <label class="label bank-account-details__radio-label">International</label>
+              </div>
+            </div>
+          </card-row>
+          <card-row [tooltip]="banksAccNameTooltip" [tooltipPosition]="tooltipPosition" label="Bank's Account Name" inputId="bankAccountName" [control]="form.get('bankAccountName')" required>
+            <input type="text" class="form-control" formControlName="bankAccountName" id="bankAccountName" required appAutoFocus cardValue (blur)="setBankAccountBankAccountName()" tabindex="1"/>
+          </card-row>
+          <card-row [tooltip]="connectAccNameTooltip" [tooltipPosition]="tooltipPosition" label="Connect Account Name" inputId="name" [control]="form.get('name')" required>
+            <input type="text" class="form-control" formControlName="name" id="name" required appAutoFocus cardValue tabindex="2" />
+          </card-row>
+          <card-row
+            label="Account Number"
+            [containerWidth]="462"
+            [maxContentWidth]="allowBankAccountNumberEditing ? 300 : 150"
+            [labelWidth]="162"
+            inputId="accountNumber"
+            [tooltip]="accNumberTooltip"
+            [tooltipPosition]="tooltipPosition"
+            [control]="form.get('accountNumber')"
+            required>
+            <app-hidable-form-control
+              id="accountNumber"
+              [formGroup]="form"
+              formControlName="accountNumber"
+              [isEditMode]="true"
+              [isFullValueLoaded]="allowBankAccountNumberEditing"
+              [formatFunction]="formatToHidableNumber.bind(this)"
+              [editPermissions]="accountNumberEditPermissions"
+              [isApplyAutoFocus]="!isCreatingNewBankAccount"
+              (onViewFull)="viewFullBankAccountNumber()"
+              cardValue>
+            </app-hidable-form-control>
+          </card-row>
+          <card-row label="Wire ABA Routing Number"
+            [tooltip]="wireRoutingNumberTooltip"
+            [tooltipPosition]="tooltipPosition"
+            inputId="wireABARoutingNumber"
+            [control]="form.get('wireABARoutingNumber')"
+            [required]="isBankAccountFormatUS">
+            <input type="text" class="form-control" formControlName="wireABARoutingNumber" id="wireABARoutingNumber" [required]="isBankAccountFormatUS" cardValue />
+          </card-row>
+          <card-row label="ACH ABA Routing Number" inputId="achabaRoutingNumber" [control]="form.get('achabaRoutingNumber')">
+            <input type="text" onlyNumbers class="form-control" formControlName="achabaRoutingNumber" id="achabaRoutingNumber" cardValue />
+          </card-row>
+          <card-row
+            label="FFC Account"
+            inputId="ffcAccount"
+            [control]="form.get('ffcAccount')"
+            [containerWidth]="462"
+            [maxContentWidth]="allowFfcAccountEditing ? 300 : 150"
+            [labelWidth]="162">
+            <app-hidable-form-control
+              id="ffcAccount"
+              [formGroup]="form"
+              formControlName="ffcAccount"
+              [isEditMode]="true"
+              [isFullValueLoaded]="allowFfcAccountEditing"
+              [formatFunction]="formatToHidableNumber.bind(this)"
+              [editPermissions]="ffcAccountEditPermissions"
+              [isApplyAutoFocus]="!isCreatingNewBankAccount"
+              (onViewFull)="viewFullFfcAccount()"
+              maxlength="100"
+              cardValue>
+            </app-hidable-form-control>
+          </card-row>
+          <card-row label="Account Type" inputId="accountType" [control]="form.get('accountType')" required>
+            <select class="form-control" formControlName="accountType" id="accountType" required cardValue>
+              <option *ngFor="let accountType of bankAccountTypes" value="{{ accountType.id }}">
+                {{ accountType.name }}
+              </option>
+            </select>
+          </card-row>
+          <card-row label="Active" inputId="status" [control]="form.get('status')">
+            <label class="form-check h-100" cardValue>
+              <input type="checkbox" class="form-check-input" formControlName="status" id="status" />
+              <span></span>
+            </label>
+          </card-row>
+          <card-row label="Next Check Number" inputId="nextCheckNumber" [control]="form.get('nextCheckNumber')" [required]="isQSF">
+            <input type="text" class="form-control" formControlName="nextCheckNumber" id="nextCheckNumber" cardValue />
+          </card-row>
+          <card-row label="Next Wire Number" inputId="nextWireNumber" [control]="form.get('nextWireNumber')" [required]="isQSF">
+            <input type="text" class="form-control" formControlName="nextWireNumber" id="nextWireNumber" cardValue />
+          </card-row>
+
+          <card-row label="Date Verified With Firm" inputId="dateVerifiedWithFirm" class="control-dropdown" hideColon="true" [control]="form.get('dateVerifiedWithFirm')">
+            <app-date-selector
+              id="dateVerifiedWithFirm"
+              [maxDate]="todaysDate"
+              formControlName="dateVerifiedWithFirm"
+              cardValue>
+            </app-date-selector>
+          </card-row>
+
+        <card-row label="Contact Providing Verification" inputId="firmContactProvidingVerification" [control]="form.get('firmContactProvidingVerification')">
+          <input type="text" class="form-control" formControlName="firmContactProvidingVerification" id="firmContactProvidingVerification" cardValue />
+        </card-row>
+        <card-row label="SWIFT Code" [tooltip]="swiftCodeTooltip" [tooltipPosition]="tooltipPosition" inputId="swift" [control]="form.get('swift')" [required]="!isBankAccountFormatUS">
+          <input type="text" class="form-control" formControlName="swift" id="swift" cardValue />
+        </card-row>
+          <card-row label="Clearing Bank Name" [tooltip]="clearingBankNameTooltip" [tooltipPosition]="tooltipPosition" inputId="clearingBankName" [control]="form.get('clearingBankName')"  [required]="clearingAccountsRequired">
+            <input type="text" class="form-control" formControlName="clearingBankName" id="clearingBankName" cardValue />
+          </card-row>
+          <card-row label="Clearing Account" [tooltip]="clearingAccountTooltip" [tooltipPosition]="tooltipPosition" inputId="clearingAccount" [control]="form.get('clearingAccount')"  [required]="clearingAccountsRequired">
+            <input type="text" class="form-control" formControlName="clearingAccount" id="clearingAccount" cardValue />
+          </card-row>
+        </card-col>
+      </card>
+
+      <card [maxWidth]="550" header="Bank Information (Beneficiary/Recipient bank)">
+        <card-col [width]="570" [labelWidth]="265">
+          <card-row label="Name" inputId="bankName" [control]="form.get('bankName')" required>
+            <input type="text" class="form-control" formControlName="bankName" id="bankName" maxLength="50" required cardValue />
+          </card-row>
+          <card-row label="Phone" inputId="bankPhone" [control]="form.get('bankPhone')" required>
+            <input id="bankPhone" maxLength="100" type="text" mask="(000) 000-0000" formControlName="bankPhone" class="form-control" required cardValue />
+          </card-row>
+          <card-row label="Address Line One" inputId="bankLineOne" [control]="form.get('bankLineOne')" required>
+            <input type="text" class="form-control" formControlName="bankLineOne" id="bankLineOne" required cardValue />
+          </card-row>
+          <card-row label="Address Line Two" inputId="bankLineTwo" [control]="form.get('bankLineTwo')">
+            <input type="text" class="form-control" formControlName="bankLineTwo" id="bankLineTwo" cardValue />
+          </card-row>
+          <card-row label="City" inputId="bankCity" [control]="form.get('bankCity')" required>
+            <input type="text" class="form-control" formControlName="bankCity" id="bankCity" maxLength="60" required cardValue />
+          </card-row>
+          <card-row label="State" inputId="bankState" [control]="form.get('bankState')" required>
+            <input type="text" class="form-control" formControlName="bankState" id="bankState" maxLength="10" required cardValue />
+          </card-row>
+          <card-row label="Zip" inputId="bankZip" [control]="form.get('bankZip')" required>
+            <input type="text" class="form-control" formControlName="bankZip" id="bankZip" maxLength="20" required cardValue />
+          </card-row>
+          <card-row label="Country" inputId="bankCountry" [control]="form.get('bankCountryName')">
+            <input type="text" class="form-control" formControlName="bankCountryName" [ngbTypeahead]="countrySearch" (change)="onCountryChange($event)" id="bankCountry" maxLength="100" cardValue />
+          </card-row>
+          <card-row label="Bank Contact Name" inputId="bankContactName" [control]="form.get('bankContactName')">
+            <input type="text" class="form-control" formControlName="bankContactName" id="bankContactName" cardValue />
+          </card-row>
+        </card-col>
+      </card>
+    </form>
+  </div>
+
+  <ng-template #viewTemplate>
+    <card hideSeparator>
+      <card-col [width]="800" [labelWidth]="265">
+        <card-row label="Bank Account Format" [value]="bankAccountFormatName" required></card-row>
+        <card-row label="Bank's Account Name" [tooltip]="banksAccNameTooltip" [tooltipPosition]="tooltipPosition" [value]="bankAccount.bankAccountName" required></card-row>
+        <card-row label="Connect Account Name" [tooltip]="connectAccNameTooltip" [tooltipPosition]="tooltipPosition" [value]="bankAccount.name" required></card-row>
+        <card-row label="Account Number" [tooltip]="accNumberTooltip" [tooltipPosition]="tooltipPosition" required [containerWidth]="462" [maxContentWidth]="150" [labelWidth]="162">
+          <app-hidable-form-control
+            [model]="bankAccount.accountNumber"
+            [isFullValueLoaded]="allowBankAccountNumberEditing"
+            [formatFunction]="formatToHidableNumber.bind(this)"
+            [readPermissions]="accountNumberReadPermissions"
+            (onViewFull)="viewFullBankAccountNumber()"
+            cardValue>
+          </app-hidable-form-control>
+        </card-row>
+        <card-row label="Wire ABA Routing Number" [tooltip]="wireRoutingNumberTooltip" [tooltipPosition]="tooltipPosition" [value]="bankAccount.wireABARoutingNumber" [required]="isBankAccountFormatUS"></card-row>
+        <card-row label="ACH ABA Routing Number" [value]="bankAccount?.achabaRoutingNumber"></card-row>
+        <card-row label="FFC Account" [containerWidth]="462" [maxContentWidth]="150" [labelWidth]="162">
+          <app-hidable-form-control
+            [model]="bankAccount.ffcAccount"
+            [isFullValueLoaded]="allowFfcAccountEditing"
+            [formatFunction]="formatToHidableNumber.bind(this)"
+            [readPermissions]="ffcAccountReadPermissions"
+            (onViewFull)="viewFullFfcAccount()"
+            cardValue>
+          </app-hidable-form-control>
+        </card-row>
+        <card-row label="Account Type" [value]="bankAccount.bankAccountType?.name" required></card-row>
+        <card-row label="Active" [value]="bankAccount.statusActive | yesNoPipe"></card-row>
+        <card-row label="Next Check Number" [containerWidth]="600" [maxContentWidth]="600" [labelWidth]="162">
+          <app-editable-form-control
+            fieldName="NextCheckNumber"
+            [model]="bankAccount.nextCheckNumber"
+            [editPermissions]="ffcAccountEditPermissions"
+            [saveField]="saveField"
+            [validate]="validateNumber(6)"
+            cardValue>
+          </app-editable-form-control>
+        </card-row>
+        <card-row label="Next Wire Number" [containerWidth]="600" [maxContentWidth]="600" [labelWidth]="162">
+          <app-editable-form-control
+            fieldName="NextWireNumber"
+            [model]="bankAccount.nextWireNumber"
+            [editPermissions]="ffcAccountEditPermissions"
+            [saveField]="saveField"
+            [validate]="validateNumber(7)"
+            cardValue>
+          </app-editable-form-control>
+        </card-row>
+        <card-row label="Date Verified With Firm" [value]="bankAccount?.dateVerifiedWithFirm | dateFormat"></card-row>
+        <card-row label="Contact Providing Verification" [value]="bankAccount?.firmContactProvidingVerification"></card-row>
+        <card-row label="SWIFT Code" [tooltip]="swiftCodeTooltip" [tooltipPosition]="tooltipPosition" [value]="bankAccount?.swift" [required]="!isBankAccountFormatUS"></card-row>
+        <card-row label="Clearing Bank Name" [tooltip]="clearingBankNameTooltip" [tooltipPosition]="tooltipPosition" [value]="bankAccount?.clearingBankName" [required]="clearingAccountsRequired"></card-row>
+        <card-row label="Clearing Account" [tooltip]="clearingAccountTooltip" [tooltipPosition]="tooltipPosition" [value]="bankAccount?.clearingAccount" [required]="clearingAccountsRequired" wordWrap></card-row>
+      </card-col>
+    </card>
+    <card [maxWidth]="500" header="Bank Information (Beneficiary/Recipient bank)">
+      <card-col [width]="570" [labelWidth]="265">
+        <card-row label="Name" [value]="bankAccount.bankName" required></card-row>
+        <card-row label="Phone" [value]="bankAccount.bankPhone | phone" required></card-row>
+        <card-row label="Address Line One" [value]="bankAccount.bankAddress?.line1" valueClass="d-inline-block" required></card-row>
+        <card-row label="Address Line Two" [value]="bankAccount.bankAddress?.line2" valueClass="d-inline-block"></card-row>
+        <card-row label="City" [value]="bankAccount.bankAddress?.city" required></card-row>
+        <card-row label="State" [value]="bankAccount.bankAddress?.state" required></card-row>
+        <card-row label="Zip" [value]="bankAccount.bankAddress?.zip" required></card-row>
+        <card-row label="Country" [value]="bankAccount.bankAddress?.country?.name"></card-row>
+        <card-row label="Bank Contact Name" [value]="bankAccount?.bankContactName"></card-row>
+      </card-col>
+    </card>
+  </ng-template>
+  <app-system-fields-section [item]="bankAccount"></app-system-fields-section>
+</div>

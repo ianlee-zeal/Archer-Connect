@@ -1,0 +1,5 @@
+<div *permissions="deficiencyConfigurationPermissions" class="grid-actions">
+  <button type="button" class="btn-grid-action btn-copy" (click)="onCopy()" title="Copy"></button>
+  <button *ngIf="canShowEditBtn()" type="button" class="btn-grid-action btn-edit" (click)="onEdit()" title="Edit"></button>
+  <button *ngIf="canShowSetDefaultBtn()" [disabled]="params.data.isDefault" [class.disabled]="params.data.isDefault" type="button" class="btn-grid-action btn-set-primary" (click)="setAsPrimary()" title="Set as Primary"></button>
+</div>

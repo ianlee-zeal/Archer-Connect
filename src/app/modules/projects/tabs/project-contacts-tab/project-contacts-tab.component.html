@@ -1,0 +1,19 @@
+<div class="page" *ngIf="project$ | async">
+  <div class="page-content">
+    <card isHeaderFlexRow="true">
+      <card-col>
+        <app-contacts-list
+          [projectId]="projectId">
+        </app-contacts-list>
+      </card-col>
+    </card>
+    
+    <card header="Product Scope Contacts" isHeaderFlexRow="true">
+      <card-col>
+        <app-product-scope-contacts-list
+          [projectId]="projectId">
+        </app-product-scope-contacts-list>
+      </card-col>
+    </card>   
+  </div>
+</div>

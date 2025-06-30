@@ -1,0 +1,64 @@
+<div class="global-deficiencies">
+  <div class="header">
+    <h2>Deficiencies</h2>
+    <div *ngIf="isExporting" class="export-loader-container"><span>Exporting Records</span><span class="loader"></span></div>
+  </div>
+  <ng-container *ngIf="!isDataLoading">
+    <div *ngIf="projectDeficienciesList.length > 0" class="first-row">
+      <form class="search-form col-5">
+        <div class="input-container">
+          <input data-test-id="global-deficiencies-project-search-input" type="text" class="input-container__input" placeholder="Search Projects" name="searchText"
+            [(ngModel)]="searchText" (ngModelChange)="filterProjects($event)" />
+          <button type="button" data-test-id="global-deficiencies-clear-search-btn" class="clear-btn" (click)="clearSearch()" [disabled]="!searchText">&#x2715;</button>
+        </div>
+      </form>
+      <div class="actions-container col-7">
+        <div *ngIf="getSelectedCount() > 0" class="selected-count">
+          {{ getSelectedCount() }} Selected
+        </div>
+        <div class="select-all-container">
+          <input type="checkbox" class="checkbox" [checked]="selectAll" [disabled]="isExporting" (change)="onSelectAllCheckboxChange()" data-test-id="global-deficiencies-select-all-checkbox"/>
+          <span class="select-all">Select All</span>
+        </div>
+        <button class="clear-selection" (click)="onClearAll()" [disabled]="isExporting || getSelectedCount() === 0" data-test-id="global-deficiencies-clear-selection-btn">
+          Clear Selection
+        </button>
+        <span class="tooltip-wrapper"
+          [ngbTooltip]="!hasSelectedProjects ? 'Select one or more projects to generate deficiency reports.' : null"
+          [tooltipClass]="'custom-tooltip'" placement="bottom">
+          <button class="btn btn-primary generate-report-btn" data-test-id="global-deficiencies-generate-reports-btn"
+            [disabled]="!hasSelectedProjects || isExporting"
+            (click)="onGenerateReports()">
+            Generate Reports
+            <img src="assets/svg/arrow-up-right-from-square.svg" alt="Generate Report Button"/>
+          </button>
+        </span>
+      </div>
+    </div>
+    <div class="row justify-content-between" *ngIf="projectDeficienciesList.length > 0; else noDeficienciesTemplate">
+      <ng-container *ngIf="projectDeficienciesListFiltered.length > 0; else noDataTemplate">
+        <app-info-card *ngFor="let item of projectDeficienciesListFiltered" [state]="InfoCardState.Warning" class="col-6 deficiency-info-card" [ngClass]="{'persist-border': item.checked}"
+          (click)="!isExporting && onCardClick(item.projectId)" data-test-id="global-deficiencies-project-deficiency-count-card">
+          <div style="height: 100%" class="card-content" [class.disabled]="isExporting" infoCardData>
+            <div class="primary-text-container">
+              <input type="checkbox" class="checkbox" [checked]="item.checked" (change)="onProjectCheckboxChange(item)" [disabled]="isExporting" (click)="$event.stopPropagation()"/>
+              <span ellipsisTooltip class="primary-text">{{ item.projectName }}</span>
+            </div>
+            <span class="card-count secondary-text">{{ item.deficiencyCount | number }}</span>
+          </div>
+        </app-info-card>
+      </ng-container>
+      <ng-template #noDataTemplate>
+        <div class="mx-4">
+          <span>No matching results.</span>
+        </div>
+      </ng-template>
+    </div>
+    <ng-template #noDeficienciesTemplate>
+      <div class="mx-4 empty-deficiencies">
+        <i class="fas fa-check-circle"></i>
+        <span>You are in great shape — there are no outstanding deficiencies at this time.</span>
+      </div>
+    </ng-template>
+  </ng-container>
+</div>

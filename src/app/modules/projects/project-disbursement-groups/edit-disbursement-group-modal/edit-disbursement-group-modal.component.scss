@@ -1,0 +1,6 @@
+.read-only {
+    cursor: initial;
+}
+::ng-deep .electionFormRequired .card-row__label-container{
+    width: 310px !important;
+}

@@ -1,0 +1,12 @@
+<div class="entity-types" *ngIf="documentLinks | entityTypeCleanedPipe as docLinks">
+    <ul class="entity-types__list" *ngIf="docLinks.length > 1; else entityType">
+        <li *ngFor="let docLink of docLinks">
+            <span>{{docLink?.entityType?.name}}</span>
+        </li>
+    </ul>
+    <ng-template #entityType>
+        <span *ngIf="docLinks?.length">
+            {{docLinks[0]?.entityType?.name}}
+        </span>
+    </ng-template>
+</div>

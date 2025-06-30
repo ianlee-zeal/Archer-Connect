@@ -1,0 +1,5 @@
+<div class="status-renderer" *ngIf="params.value as value">
+  <ng-container>
+    <span class="status-renderer__text">{{getText(value)}}</span> <img class="status-renderer__icon" [src]="getIcon(value)" />
+  </ng-container>
+</div>

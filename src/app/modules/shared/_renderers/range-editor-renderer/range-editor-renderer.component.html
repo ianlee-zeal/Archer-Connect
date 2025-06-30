@@ -1,0 +1,32 @@
+<ng-container *ngIf="!editable else editor" [ngSwitch]="value">
+  <ng-container *ngIf="lowerValue || upperValue">
+    <span>${{ lowerValue }}</span> - <span>${{ upperValue }}</span>
+  </ng-container>
+
+</ng-container>
+
+<ng-template #editor>
+  <span class="range-editor__container">
+    <input
+        data-value="lowerValue"
+        class="range-editor__percentage"
+        type="text"
+        onlyNumbersEx
+        [allowDecimal]="true"
+        [value]="lowerValue"
+        [suppressPasteIfValueIsIncorrect]="true"
+        (change)="onChange($event)" />
+
+    <span>-</span>
+
+    <input
+      data-value="upperValue"
+      class="range-editor__percentage"
+      type="text"
+      onlyNumbersEx
+      [allowDecimal]="true"
+      [value]="upperValue"
+      [suppressPasteIfValueIsIncorrect]="true"
+      (change)="onChange($event)" />
+</span>
+</ng-template>

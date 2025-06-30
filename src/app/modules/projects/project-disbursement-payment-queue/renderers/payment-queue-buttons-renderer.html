@@ -1,0 +1,7 @@
+<div class="payee" *ngIf="params.data.payeeName">
+  <div class="payee__icon">
+    <img class="me-2"
+     [src]="getSplitTypeIcon(params.data.splitTypeId)"/>
+  </div>
+  <div>{{payeeName}}</div>
+</div>

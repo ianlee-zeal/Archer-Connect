@@ -1,0 +1,9 @@
+.stop-payment-cell-renderer {
+    &__icon {
+        margin-right: 10px;
+
+        &--hidden {
+            visibility: hidden;
+        }
+    }
+}

@@ -1,0 +1,32 @@
+<div *ngIf="visible" class="d-flex flex-column sticky-wrapper"
+  [ngClass]="isExpanded ? 'nav--expanded' : 'nav--collapsed'">
+  <app-side-nav [items]="items" [collapsed]="!isExpanded" class="nav-items-container"></app-side-nav>
+
+  <span
+    data-test-id="side-footer"
+    class="nav-footer footer fixed-bottom" [ngClass]="{'nav-footer--collapsed' : !isExpanded}">
+    <div
+      *ngIf="isExpanded"
+      data-test-id="side-footer-terms"
+      class="terms-condition-container">
+      <a href="/terms">Terms and Conditions</a>
+      <a href="/privacy">Privacy Policy</a>
+      <span data-test-id="side-footer-copyright">© {{ currentDate | date:'yyyy'}} Archer Connect</span>
+      <span data-test-id="side-footer-version">Version: {{ env.version }}</span>
+    </div>
+
+    <div class="collapse-button-container">
+      <a
+        *ngIf="!isExpanded" data-test-id="side-footer-toggle-collapsed-btn"
+        class="collapsed" (click)="toggleMenu()" title="Expand menu">
+        <img src="assets/svg/chevrons-right.svg" />
+      </a>
+      <a
+        *ngIf="isExpanded" data-test-id="side-footer-toggle-expanded-btn"
+        class="expanded" (click)="toggleMenu()">
+        <span class="expandedText">Collapse Menu</span>
+        <img src="assets/svg/chevrons-left.svg" />
+      </a>
+    </div>
+  </span>
+</div>

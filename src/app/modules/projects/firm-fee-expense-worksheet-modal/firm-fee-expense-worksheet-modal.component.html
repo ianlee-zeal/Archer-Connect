@@ -1,0 +1,44 @@
+<modal (close)="modal.hide()">
+    <modal-header>Generate Firm Fee & Expense Worksheet</modal-header>
+
+    <modal-body>
+        <div class="modal-section">
+            <app-claimants-with-ledgers-list [projectId]="projectId"></app-claimants-with-ledgers-list>
+            <form [formGroup]="form">
+                <card class="template-options" header="Template Options"  maxWidth="500" hideSeparator>
+                    <card-col [width]="500">
+                        <card-row [marginTop]="10" [labelWidth]="180" label="Template"  inputId="templateId" [control]="form.get('templateId')" required>
+                            <div class="select-container" cardValue>
+                                <app-select
+                                    required 
+                                    id="templateId" 
+                                    [options]="templates$ | async"
+                                    formControlName="templateId" 
+                                    placeholder="Select Template">
+                                </app-select>
+                            </div>
+                        </card-row>
+                    </card-col>
+                </card>
+            </form>
+        </div>
+    </modal-body>
+
+    <modal-footer>
+        <span *ngIf="displayedError" class="text-danger small me-auto">{{ displayedError }}</span>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="modal.hide()">
+            Close
+        </button>
+        <button
+            asyncButton
+            [awaitedActionTypes]="awaitedActionTypes"
+            type="submit" 
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            [disabled]="!isValid || !isLoaded"
+            (click)="onGenerate()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Generate
+        </button>
+    </modal-footer>
+</modal>

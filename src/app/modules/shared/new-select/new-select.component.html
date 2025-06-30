@@ -1,0 +1,95 @@
+<div ngbDropdown #dropdown="ngbDropdown" class="dropdown">
+  <button
+    class="custom-dropdown-btn"
+    [ngStyle]=" { 'font-size': fontSize + 'px'}"
+    [ngClass]="{ 'custom-dropdown-btn--active': dropdownOpen }"
+    type="button"
+    (click)="toggleDropdown()"
+  >
+    <div class="btn-text">
+    {{ label }} 
+      <span style="font-size: 12px;"
+            *ngIf="required && selectedOptions.size == 0" 
+            class="text-danger">*</span> 
+      <span style="margin-left: 10px">{{ optionsText }}</span>
+      <span *ngIf="selectedOptions.size > 0 && !updatePlaceholder">
+        ({{ selectedOptions.size }})
+      </span>
+    </div>
+    <img src="assets/svg/chevron-down-{{ dropdownOpen ? 'white' : 'blue' }}.svg">
+  </button>
+  <div 
+    ngbDropdownMenu 
+    class="dropdown-menu"
+    [ngStyle]="{ 
+      'min-width': optionsWidth ?? '200px',
+      'max-width': optionsWidth ?? '250px'
+    }"
+  >
+    <!-- Search Bar -->
+    <div *ngIf="isSearchable" class="search-bar">
+      <img class="search-icon" src="assets/svg/search.svg">
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="searchQuery"
+        placeholder="Search"
+        (keyup)="onSearchKeyup($event)"
+        (keydown.space)="$event.stopPropagation()"
+      />
+      <button
+        type="button"
+        class="clear-btn"
+        (click)="clearSearhQuery()">
+        &#x2715;
+      </button>
+    </div>
+    <div class="dropdown-divider"></div>
+    <div class="options-menu">
+        <ng-container *ngIf="options?.length; else noOptionsTemplate">
+          <button
+            class="options-btn"
+            [title]="getOptionName(option)"
+            *ngFor="let option of getFilteredOptions()"
+            [ngStyle]="{
+              'margin': !isMultiSelect ? '4px 0' : null,
+              'background-color': !isMultiSelect && selectedOptions.has(option[identifierName]) ? '#EAF1FB' : null,
+              'color': !isMultiSelect && selectedOptions.has(option[identifierName]) ? '#080808' : null
+            }"
+            ngbDropdownItem
+            (click)="onOptionChange(option)"
+          >
+            <input
+              *ngIf="isMultiSelect"
+              type="checkbox"
+              [checked]="selectedOptions.has(option[identifierName])"
+            class="me-2"
+              readonly
+            />
+            <span>{{getOptionName(option)}}</span>
+          </button>
+        </ng-container>
+      <div #anchor class="loading-container">
+        <div *ngIf="!isFinalScroll" class="loading-text"></div>
+      </div>
+      
+      <ng-template #noOptionsTemplate>
+        <p class="p-3" [ngClass]="{ 'text-secondary fst-italic': !loading }">{{ loading ? 'Loading...' : 'No items found' }}</p>
+      </ng-template>
+
+    </div>
+    <div class="dropdown-divider"></div>
+    <button
+      *ngIf="isMultiSelect && options && clearOptionsBtnAvailable"
+      class="clear-all-btn options-btn"
+      [disabled]="selectedOptions.size === 0"
+      (click)="resetSearch()">
+      <div class="btn-content">
+        <span class="clear-txt">Clear selection</span> 
+        <span class="clear-count">
+          {{ selectedOptions.size }} of {{ Math.max(optionsSize, options.length) }}
+        </span>
+      </div>
+    </button>
+  </div>
+</div>

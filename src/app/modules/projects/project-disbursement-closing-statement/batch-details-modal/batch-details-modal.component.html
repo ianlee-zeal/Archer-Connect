@@ -1,0 +1,77 @@
+<modal (close)="onClose()">
+  <modal-header 
+    [headerStyle]="(isMaintanence$ | async) ? 'warning' : 'normal'"
+    [additionalInfo]="(isMaintanence$ | async) ? 'Maintenance Mode is active, Send DocuSign option temporarily disabled.' : null"
+    >Batch Details</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <div class="batch-details__label-container">
+        <div class="batch-details__label">
+          <div class="batch-details__header-text">
+            <span cardValue>Batch ID: {{batchId}}</span>
+          </div>
+          <div>
+            <form [formGroup]="form" novalidate>
+              <card-row label="QC Status" inputId="qcStatus" [control]="form.get('qcStatus')" required>
+                <div class="batch-details__select-container" cardValue>
+                    <app-select 
+                        required 
+                        id="qcStatus" 
+                        [options]="qcStatuses"
+                        formControlName="qcStatus" 
+                        optionAsValue 
+                        [disabled]="(batchDetailsLoading$ | async) || !canRejectBatch"
+                        (onModelChange)="onQCStatusChanges($event)"
+                        placeholder="Select Status">
+                    </app-select>
+                    <span *ngIf="batchDetailsLoading$ | async" class="spinner-border spinner-border-sm align-middle ms-1"></span>
+                </div>
+            </card-row>
+            </form>
+          </div>
+        </div>
+        <div class="batch-details__label">
+          <div class="batch-details__header-text">E-Delivery Account:</div>
+          <div>{{edpaName}}</div>
+        </div>
+      </div>
+      <app-project-disbursement-closing-statement-list
+        [isModal]="true"
+        [gridId]="gridId"
+        [projectId]="projectId"
+        [batchId]="batchId">
+      </app-project-disbursement-closing-statement-list>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <div class="d-flex me-auto">
+      <button type="button" (click)="downloadFile()" class="btn modal-footer__btn modal-footer__btn--success">
+        <span class="download-icon">Batch</span>
+      </button>
+      <button type="button" 
+        (click)="downloadLogFile()" 
+        [disabled]="downloadLogFileDisabled"
+        class="btn modal-footer__btn modal-footer__btn--success">
+        <span>Log File</span>
+      </button>
+    </div>
+    <span *ngIf="!!batchDetails?.sentByUser" class="batch-details__docusign-sent">E-Delivery statements sent {{batchDetails.sendActionDate | date:'MM/dd/yyyy'}} by {{batchDetails.sentByUser?.name}}</span>
+    <button
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--secondary"
+      (click)="onClose()">
+      Close
+    </button>
+    <button
+      type="submit"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      asyncButton
+      [awaitedActionTypes]="awaitedActionTypes"
+      [disabled]="sendDocuSignDocumentsDisabled || isQcStatusRejected || (isMaintanence$ | async) || (sendEDeliveryButtonDisabled$ | async)"
+      (click)="onSendDocuSignDocuments()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Send E-Delivery Documents
+      </button>
+    </modal-footer>
+</modal>
+

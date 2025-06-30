@@ -1,0 +1,12 @@
+<div *ngIf="!hidden" class="grid-actions">
+  <button
+    *ngIf="!inProgress else spinner"
+    type="button"
+    class="btn-grid-action far fa-redo"
+    title="Batch generate documents"
+    (click)="onDownload()">
+  </button>
+  <ng-template #spinner>
+    <span class="spinner-border spinner-border-sm align-middle ms-1"></span>
+  </ng-template>
+</div>

@@ -1,0 +1,11 @@
+<div class="page">
+    <div class="page-content">
+        <app-documents-list
+        #documents
+        [gridId]="gridId"
+        [entityTypeId]="entityTypeId"
+        (onActionBarUpdated)="onActionBarUpdated($event)">
+    </app-documents-list>
+    </div>
+</div>
+

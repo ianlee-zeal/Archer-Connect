@@ -1,0 +1,60 @@
+<modal (close)="onCancel()">
+  <modal-header>Contact Details</modal-header>
+  <modal-body>
+    <div class="modal-section">
+        <div class="project-contact">
+          <card header='Details' hideSeparator>
+            <card-col [width]="400" [labelWidth]="150">
+              <card-row label="Id" [value]="contact?.projectContact?.id"></card-row>
+              <card-row label="Email" [value]="contact?.projectContact?.email" wordWrap></card-row>
+              <card-row label="Name" [value]="contact?.projectContact?.fullName" wordWrap></card-row>
+              <card-row label="Organization" [value]="contact?.projectContact?.organizationResponse?.name" wordWrap></card-row>    
+              <card-row label="Notes" [value]="contact?.projectContact?.notes" wordWrap></card-row>
+              <card-row label="Active" [value]="contact?.projectContact.active | yesNoPipe">
+              </card-row>
+            </card-col>
+            <card-col [width]="400" [labelWidth]="150">
+              <card-row label="Username" [value]="contact?.projectContact?.user?.idUsername" wordWrap></card-row>
+              <card-row label="Email" [value]="contact?.projectContact?.user?.email" wordWrap></card-row>
+              <card-row label="Display Name" [value]="contact?.projectContact?.user?.displayName" wordWrap></card-row>
+              <card-row label="Organization" [value]="contact?.projectContact?.user?.organizationIdName" wordWrap></card-row>    
+              <card-row label="Active" [value]="contact?.projectContact?.user?.isActive | yesNoPipe">
+              </card-row>
+            </card-col>
+          </card>
+          <card header='Contact Information' hideSeparator>
+            <card-col [width]="400" [labelWidth]="150">
+              <card-row label="Primary Phone" [value]="contact?.projectContact?.primaryPhone"></card-row>
+              <card-row label="Alt Phone" [value]="contact?.projectContact?.directPhone"></card-row>      
+            </card-col>
+            <card-col [width]="80" [labelWidth]="80">
+              <card-row label="Address"
+                        [hideText]="true"
+                        [noLabelPadding]="true"></card-row>
+            </card-col>
+            <card-col [width]="280" [labelWidth]="110">
+              <card-row label="Address 1" [value]="contact?.projectContact?.address1"></card-row>
+              <card-row label="Address 2" [value]="contact?.projectContact?.address2"></card-row>
+              <card-row label="City" [value]="contact?.projectContact?.city"></card-row>
+              <card-row label="State" [value]="contact?.projectContact?.state"></card-row>
+              <card-row label="Zip" [value]="contact?.projectContact?.zip"></card-row>
+            </card-col>
+          </card>
+          <card header='Information Routing' hideSeparator>
+            <card-col [width]="880" [labelWidth]="220">
+            <card-row label="CC on Lien Status Report?" [value]='contact.reportCc| yesNoPipe'></card-row>
+            <card-row label="CC on Invoice?" [value]='contact.invoiceCc| yesNoPipe'></card-row>
+            <card-row label="Deficiency Report" [value]='contact.deficiencyReportCc| yesNoPipe'></card-row>
+            <card-row label="QSF Report" [value]='contact.qsfReport| yesNoPipe'></card-row>
+          </card-col>
+          </card>
+        </div>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onCancel()">
+      Close
+    </button>
+</modal-footer>
+</modal> 

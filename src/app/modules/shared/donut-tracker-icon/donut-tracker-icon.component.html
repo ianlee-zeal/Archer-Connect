@@ -1,0 +1,27 @@
+<div class="container" [ngSwitch]="status">
+
+    <ng-container *ngSwitchCase="LienServiceStatus.Finalized">
+      <svg width="99" height="104" viewBox="0 0 105 104" xmlns="http://www.w3.org/2000/svg">
+        <path d="M104.5 52.0001C104.5 23.2813 81.2188 9.15527e-05 52.5 9.15527e-05C23.7812 9.15527e-05 0.5 23.2813 0.5 52.0001C0.5 80.7189 23.7812 104 52.5 104C81.2188 104 104.5 80.7189 104.5 52.0001ZM8.82 52.0001C8.82 27.8763 28.3762 8.32009 52.5 8.32009C76.6238 8.32009 96.18 27.8763 96.18 52.0001C96.18 76.1239 76.6238 95.6801 52.5 95.6801C28.3762 95.6801 8.82 76.1239 8.82 52.0001Z" fill="#00A14B"/>
+        <g transform="translate(26,33)">
+          <path d="M53.1328 5.75781L50.4375 8.33594L21.9609 35.4062L19.3828 37.8672L16.8047 35.4062L3.44531 22.75L0.75 20.1719L5.90625 14.7812L8.60156 17.3594L19.3828 27.4375L45.2812 2.82812L47.9766 0.25L53.1328 5.75781Z" fill="#00A14B"/>
+        </g>
+      </svg>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="LienServiceStatus.Pending">
+      <svg class="donut-tracker progress-ring">
+        <circle class="progress-ring__background" stroke="#EAF1FB" stroke-width="8.5" fill="transparent" r="45" cx="52" cy="52" />
+        <circle *ngIf="percentComplete" [style.stroke-dashoffset]="circleOffset" class="progress-ring__circle" stroke="#141B4D" stroke-width="8" stroke-linecap="round" fill="transparent" r="45" cx="52" cy="52" />
+        <g class="donut-center"><image *ngIf="iconSrc" [attr.href]="iconSrc" x="34" y="32" width="40" height="39" /></g>
+      </svg>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="LienServiceStatus.NotEngaged">
+      <svg xmlns="http://www.w3.org/2000/svg" width="104" height="104" viewBox="0 0 104 104" fill="none">
+        <circle cx="52" cy="52.0001" r="52" fill="#F2F2F2"/>
+        <text style="display: block;" id="progress-text" x="50%" y="50%" text-anchor="middle" fill="#0B2775" font-size="36" dy=".35em" font-weight="800">N/A</text>
+      </svg>
+    </ng-container>
+
+</div>

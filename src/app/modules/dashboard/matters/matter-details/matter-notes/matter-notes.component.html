@@ -1,0 +1,3 @@
+<ng-container *ngIf="entityId">
+  <app-notes [entityTypeId]="entityTypeId" [entityId]="entityId" (actionBarUpdated)="onActionBarUpdated($event)"></app-notes>
+</ng-container>

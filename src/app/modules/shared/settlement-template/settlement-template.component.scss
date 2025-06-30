@@ -1,0 +1,18 @@
+.action {
+    &__button {
+        padding: 0;
+        background-color: transparent;
+        border: none;
+    }
+}
+
+button {
+    &:focus,
+    &:active {
+        outline: none !important;
+    }
+
+    img {
+        padding-bottom: 4px;
+    }
+}

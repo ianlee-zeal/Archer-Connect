@@ -1,0 +1,106 @@
+<div class="modal-hub">
+  <div class="modal-header">
+    <h4>Compose Message</h4>
+    <button
+      data-test-id="modal-close-btn"
+      type="button"
+      aria-label="Close"
+      (click)="onCancel()">
+      &#x2715;</button>
+  </div>
+  <div class="modal-body">
+      <div class="filters">
+        <app-input-box
+          [required]="true"
+          [label]="'Summary:'"
+          [fontSize]="15"
+          (onModelChange)="updateField(defaultFieldsForm, 'summary', JiraFieldRenderTypeEnum.TextInput, $event)"
+        ></app-input-box>
+        <app-new-select
+          [options]="participants$ | async"
+          [isMultiSelect]="true"
+          [isSearchable]="true"
+          [label]="'CC:'"
+          [optionName]="'name'"
+          [updatePlaceholder]="true"
+          [optionsWidth]="'100%'"
+          [fontSize]="16"
+          [customSearch]="true"
+          (onModelChange)="updateField(defaultFieldsForm, 'participants', JiraFieldRenderTypeEnum.MultiSelect , $event, 'id')"
+          (onSearch)="participantsFilterFetch($event)"
+        ></app-new-select>
+        <app-new-select
+          [required]="true"
+          [options]="requestTypes | async"
+          [isMultiSelect]="false"
+          [isSearchable]="false"
+          [label]="'Request Type:'"
+          [updatePlaceholder]="true"
+          [optionsWidth]="'100%'"
+          [fontSize]="16"
+          [unselectAvailable]="false"
+          (onModelChange)="onRequestTypeSelect($event)"
+        ></app-new-select>
+        <ng-container *ngFor="let field of listFields">
+          <app-input-box
+            *ngIf="JiraFieldRenderTypeHelper.getComponentType(field.jiraFieldType) === 'input'"
+            [fontSize]="16"
+            [format]="JiraFieldRenderTypeHelper.getInputConfig(field.jiraFieldType)"
+            [label]="field.label + ':'"
+            [required]="field.required"
+            (onModelChange)="updateField(requestTypeFieldsForm, field.id, field.jiraFieldType, $event)"
+          ></app-input-box>
+          <app-new-select
+            style="max-width: 100%;"
+            *ngIf="JiraFieldRenderTypeHelper.getComponentType(field.jiraFieldType) === 'dropdown'"
+            [options]="field.items"
+            [isMultiSelect]="JiraFieldRenderTypeHelper.getDropdownMultiselect(field.jiraFieldType)"
+            [isSearchable]="false"
+            [optionName]="'value'"
+            [label]="field.label + ':'"
+            [identifierName]="'key'"
+            [defaultOption]="getDefaultOption(field)"
+            [required]="field.required"
+            [unselectAvailable]="!field.required"
+            [updatePlaceholder]="true"
+            [optionsWidth]="'100%'"
+            [fontSize]="16"
+            (onModelChange)="updateField(requestTypeFieldsForm, field.id, field.jiraFieldType, $event)"
+          ></app-new-select>
+        </ng-container>
+        <app-new-select
+          [options]="projects$ | async"
+          [isMultiSelect]="false"
+          [isSearchable]="true"
+          label="Project :"
+          [updatePlaceholder]="true"
+          [optionsWidth]="'100%'"
+          [fontSize]="16"
+          [optionName]="'displayName'"
+          (onOpen)="projectFilterFetch($event)"
+          (onModelChange)="onSelectedProject($event)"
+          [customSearch]="true"
+          [loading]="loadingProjects$ | async"
+          (onSearch)="projectFilterFetch($event)"
+      ></app-new-select>
+      </div>
+    <ng-container [formGroup]="defaultFieldsForm">
+      <quill-editor
+        class="quill-editor_new"
+        formControlName="rawDescription"
+        sanitize
+        (onContentChanged)="updateDescriptionFormat()"
+        [modules]="editorModules"
+        bounds="self"
+        [placeholder]="''">
+      </quill-editor>
+    </ng-container>
+     <jira-file-uploader *ngIf="canAttachFiles" (filesChanged)="onFilesSelected($event)"></jira-file-uploader>
+  </div>
+  <div class="modal-footer">
+    <div class="validation-container">
+      <span *ngIf="false" class="validation-label">Form is not valid</span>
+    </div>
+    <button class="send-btn" [disabled]="!isValidForm" (click)="onSend()">Send</button>
+  </div>
+</div>

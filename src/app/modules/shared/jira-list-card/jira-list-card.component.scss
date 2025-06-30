@@ -1,0 +1,90 @@
+@import "src/styles/variables.scss";
+
+.custom-card {
+  padding: 16px 20px;
+  font-family: "Open Sans", sans-serif;
+  width: 100%;
+  gap: 20px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #303030;
+  cursor: default;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+}
+
+.header {
+  height: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.left-info {
+  width: 100%;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.title,
+.project-info,
+.user-info span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.title {
+  color: #050041;
+  width: 23%;
+  min-width: 23%;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.project-info{
+  max-width: 15%;
+  min-width: 15%
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  vertical-align: middle;
+  font-weight: 700;
+  max-width: 15%;
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.body {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 10px;
+  width: 90%;
+  font-size: 11px;
+  font-weight: 400;
+  color: #484848;
+}
+
+.actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
+}

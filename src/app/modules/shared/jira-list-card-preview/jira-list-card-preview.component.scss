@@ -1,0 +1,116 @@
+@import "src/styles/variables.scss";
+
+.custom-card {
+  padding: 10px 16px;
+  font-family: "Open Sans", sans-serif;
+  width: 100%;
+  gap: 20px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #303030;
+  cursor: default;
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+}
+
+.padding-top-5 {
+  padding-top: 5px;
+}
+
+.padding-top-8 {
+  padding-top: 8px;
+}
+
+.padding-top-10 {
+  padding-top: 10px;
+}
+
+.card-row-title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 77.5%;
+  gap: 5px;
+}
+
+.title {
+  color: #050041;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+}
+
+.card-row-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 17.5%;
+  gap: 5px;
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
+
+  div {
+    padding: 5px;
+    line-height: 11px;
+    cursor: pointer;
+  }
+
+  div:hover {
+    background-color: #BFD4F3;
+  }
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  width: 47.5%;
+
+  img {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.project-info {
+  width: 47.5%;
+  text-align: right;
+}
+
+.request-type {
+  width: 55%;
+}
+
+.last-updated {
+  width: 40%;
+  text-align: right;
+}
+
+.title,
+.project-info,
+.user-info span,
+.request-type,
+.last-updated,
+.description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.description {
+  font-size: 10px;
+  color: #484848;
+}

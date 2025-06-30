@@ -1,0 +1,16 @@
+<div class="grid-actions">
+  <button
+    type="button"
+    class="btn-grid-action btn-link"
+    (click)="goToClaimantSummaryHandler()"
+    title="Go To Ledger Summary">
+  </button>
+  <button
+    type="button"
+    class="btn-grid-action btn-history"
+    [disabled]="!isLedgerExist"
+    [ngClass]="{ 'disabled': !isLedgerExist }"
+    (click)="onOpenStageHistoryModalHandler()"
+    [title]="title">
+  </button>
+</div>

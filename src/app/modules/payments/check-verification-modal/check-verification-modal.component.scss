@@ -1,0 +1,75 @@
+@import "src/styles/variables.scss";
+
+.check-verification-modal {
+    &__file-panel {
+        display: flex;
+        justify-content: space-between;
+        .btn-icon {
+            margin: 0;
+            font-size: $font-size-m;
+        }
+    }
+
+    &__uploaded-attachments-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__file-name {
+        font-weight: bold;
+        margin-right: 5px;
+        overflow-wrap: break-word;
+        max-width: 290px;
+    }
+
+    &__uploaded-attachment {
+        display: flex;
+        align-items: center;
+    }
+
+    &__verify-address {
+        &__change-address-btn {
+            width: 200px;
+        }
+    }
+
+}
+
+.modal-header {
+    width: 100%;
+    display: block;
+    .modal-title {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.verify-address-header {
+    &__title {
+        font-weight: bold;
+    }
+    .container-with-edit-date__edit-made {
+        font-size: $font-size-m;
+        margin-right: 0;
+    }
+}
+
+.container-with-edit-date {
+    display: flex;
+    justify-content: space-between;
+    &__edit-made {
+        margin-right: 15px;
+        width: 250px;
+        color: $yellow;
+        background-color: rgba(253, 186, 18, 0.1);
+        padding: 6px 0px 6px 15px;
+    }
+    &__edited-value {
+        max-width: 600px;
+        color: $yellow !important;
+        &:after {
+            content: url("../../../../assets/svg/ic_alert.svg");
+            margin-left: 5px;
+          }
+    }
+}

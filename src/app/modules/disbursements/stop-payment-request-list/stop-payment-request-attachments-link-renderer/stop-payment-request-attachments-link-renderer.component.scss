@@ -1,0 +1,9 @@
+:host {
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .btn-link {
+    margin-left: 0;
+  }
+}

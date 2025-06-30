@@ -1,0 +1,28 @@
+<router-outlet></router-outlet>
+
+<!-- global error modal -->
+<div bsModal #error_modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary">
+                <h4 id="dialog-child-name" class="modal-title pull-left text-light">
+                    {{ error_title }}
+                </h4>
+                <button type="button" class="btn-close pull-right" aria-label="Close" (click)="error_modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    {{ error_description }}
+                </div>
+                <div class="text-danger p-2">
+                    {{ error_content }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-md bg-primary btn-outline-primary text-light" (click)="error_modal.hide()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<modal (close)="onCancel()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="form" *ngIf="canEdit; else viewTemplate">
+        <card hideSeparator>
+          <card-col [labelWidth]="140" [width]="660">
+            <card-row label="Organization" inputId="organization" [control]="form.get('organization')" alignContentVertically required>
+              <app-clearable-input
+                cursorPointer
+                [form]="form"
+                controlName="organization"
+                [isReadonly]="true"
+                id="organization"
+                (click)="onOpenOrgModal()"
+                placeholder="Select Organization"
+                cardValue
+                (clear)="onClear('organization')"
+                width="270">
+              </app-clearable-input>
+            </card-row>
+            <card-row label="Message Text" inputId="message" [control]="form.get('message')"  [containerWidth]="660" [maxContentWidth]="600" required>
+              <textarea id="message" class="form-control message-container" formControlName="message" cardValue> </textarea>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button *ngIf="canEdit" type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onCancel()">
+      Cancel
+    </button>
+    <button *ngIf="canEdit" type="submit"
+            asyncButton
+            [ngClass]="{ disabled: form.invalid }"
+            [disabled]="form.invalid"
+            [awaitedActionTypes]="awaitedActionTypes"
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            (click)="save()">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Save
+    </button>
+    <button *ngIf="!canEdit" type="button" class="btn modal-footer__btn modal-footer__btn--primary"
+            (click)="onCancel()">
+      Close
+    </button>
+</modal-footer>
+</modal>
+
+<ng-template #viewTemplate>
+  <card hideSeparator>
+    <card-col [labelWidth]="140" [width]="660">
+      <card-row 
+          label="Organization" 
+          [value]="primaryOrg.name">
+          <a 
+            [href]="'/admin/user/orgs/' + primaryOrg?.id + '/my-organization/tabs/details'"
+            class="btn btn-link fw-bold" 
+            target="_blank"
+            cardValue>
+              {{primaryOrg.name}}
+          </a>
+        </card-row>
+      <card-row label="Message Text" [value]="message"></card-row>
+    </card-col>
+  </card>
+</ng-template>
+

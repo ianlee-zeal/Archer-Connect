@@ -1,0 +1,335 @@
+@import "../variables.scss";
+
+.representative-modal {
+  width: 454px;
+  max-width: 454px;
+}
+
+.info-container {
+  display: flex;
+}
+
+.container-element {
+  padding: 0 15px;
+  font-size: $controls-old-font-size;
+
+  &__title {
+    color: $label-color;
+  }
+
+  &__value {
+    font-weight: bold;
+  }
+}
+
+.wide-modal {
+  width: 1100px;
+  max-width: 1100px;
+}
+
+.injury-events-modal {
+  width: 592px;
+  max-width: 592px;
+}
+
+.address-modal {
+  width: 970px;
+  max-width: 970px;
+}
+
+.address-verification-modal {
+  width: 820px;
+  max-width: 820px;
+}
+
+.edit-outcome-based-pricing-modal {
+  width: 920px;
+  max-width: 920px;
+}
+
+.contact-modal {
+  width: 1000px;
+  max-width: 1000px;
+}
+
+.add-person-modal {
+  width: 1000px;
+  max-width: 1000px;
+}
+
+.link-modal  {
+  width: 860px;
+  max-width: 860px;
+}
+
+.mfa-code-modal {
+  width: 380px;
+  max-width: 380px;
+}
+
+.bulk-results-modal {
+  top: -20px;
+  width: 640px;
+}
+
+.bulk-results-modal div.modal-body {
+  background-color: white !important;
+  height: 500px;
+}
+
+.add-role-modal {
+  width: 393px;
+  max-width: 393px;
+}
+
+.add-org-role-modal {
+  width: 465px;
+  max-width: 465px;
+}
+
+.add-access-policy-modal {
+  width: 436px;
+  max-width: 436px;
+}
+
+.add-new-org-modal {
+  width: 453px;
+  max-width: 453px;
+}
+
+.add-user-modal {
+  width: 640px;
+  max-width: 640px;
+}
+
+.duplicate-warn-modal {
+  width: 570px;
+  max-width: 570px;
+}
+
+.edit-disbursement-group-modal {
+  width: 1000px;
+  max-width: 1000px;
+}
+
+.modal-open .loading-indicator {
+  display: none !important;
+}
+
+.election-form-modal {
+  width: 800px;
+  max-width: 800px;
+}
+
+.edit-election-form-modal {
+  width: 800px;
+  max-width: 800px;
+}
+
+.additional-info-modal {
+  width: 1200px;
+  max-width: 1200px;
+}
+
+.claim-settlement-ledger-entry-modal {
+  width: 1540px;
+  max-width: 1540px;
+  min-height: 488px;
+  margin-top: 30px !important;
+  overflow: hidden;
+}
+
+.entity-selection-modal {
+  width: 1000px;
+  max-width: 1000px;
+
+  ag-grid-angular {
+    max-height: 300px;
+    overflow: auto;
+  }
+}
+
+.qsf-org-selection-modal {
+  width: 1350px;
+  max-width: 1350px;
+
+  ag-grid-angular {
+    max-height: 300px;
+  }
+}
+
+.edit-project-contact-form-modal{
+  width: 900px;
+  max-width: 900px;
+}
+
+.view-project-contact-form-modal{
+  width: 900px;
+  max-width: 900px;
+}
+
+.fee-expense-worksheet-modal {
+  width: 1000px;
+  max-width: 1000px;
+
+  ag-grid-angular, .ag-root-wrapper-body {
+    max-height: 450px;
+  }
+}
+
+.closing-statements-settings-modal {
+  width: 1500px;
+  max-width: 1500px;
+}
+
+.edit-billing-rule-modal {
+  width: 600px;
+  max-width: 600px;
+}
+
+.add-new-org-modal {
+  width: 453px;
+  max-width: 453px;
+}
+
+.disbursement-details-modal, .generate-payment-request-modal, .generate-transfer-request-modal {
+  width: 1400px;
+  max-width: 1400px;
+}
+
+.outcome-based-pricing-modal {
+  width: 800px;
+  max-width: 800px;
+}
+
+.create-disbursement-group-modal {
+  width: 530px;
+  max-width: 530px;
+}
+.add-document-type-modal {
+  width: 500px;
+  max-width: 500px;
+}
+
+.hold-payments-modal {
+  width: 1070px;
+  max-width: 1070px;
+}
+
+.payment-preference-modal, .organization-message-modal {
+  width: 700px;
+  max-width: 700px;
+}
+
+.update-disbursement-group-modal {
+  width: 900px;
+  max-width: 900px;
+}
+
+.history-modal {
+  width: 1000px;
+  max-width: 1000px;
+}
+
+.disbursement-payment-request-modal {
+  width: 1100px;
+  max-width: 1100px;
+}
+
+.batch-details-modal {
+  width: 1320px;
+  max-width: 1320px;
+}
+
+.user-selection-modal {
+  width: 900px;
+  max-width: 900px;
+}
+
+.claimant-messaging-modal {
+  position: fixed;
+  right: 0;
+  width: 500px;
+  max-width: 500px;
+  &__container {
+    position: fixed;
+    right: 0;
+    width: 0;
+  }
+}
+
+.claimant-messaging-modal .modal-body .modal-section {
+  max-height: 500px;
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.fee-cap-modal {
+  width: 850px;
+  max-width: 850px;
+}
+
+.update-lien-payment-stage-modal {
+  width: 1400px;
+  max-width: 1400px;
+}
+
+.copy-special-payment-instructions-modal {
+  width: 1400px;
+  max-width: 1400px;
+}
+
+.qsf-sweep-commit-changes-modal {
+  width: 900px;
+  max-width: 900px;
+}
+
+.invoice-archer-fees-modal {
+  width: 1000px;
+  max-width: 1000px;
+  .modal-section{
+  min-height: 500px;
+  }
+}
+
+.refund-transfer-request-modal {
+  width: 1000px;
+  max-width: 1000px;
+  .modal-section{
+    min-height: 500px;
+  }
+}
+
+.authorize-archer-fees-modal {
+  width: 1400px;
+  max-width: 1400px;
+}
+
+.compose-message-modal {
+  position: fixed;
+  bottom: 0;
+  right: 30%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  margin: 0;
+}
+
+.authorize-ledger-entries-modal {
+  width: 1400px;
+  max-width: 1400px;
+
+  .step-section-2 {
+    margin-left: 350px;
+    margin-right: 350px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+
+  .grid-title {
+    line-height: 3;
+  }
+
+  .text-danger {
+    font-weight: bold;
+  }
+}

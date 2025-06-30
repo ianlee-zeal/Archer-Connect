@@ -1,0 +1,26 @@
+<nav
+  data-test-id="tab-group"
+  class="nav-tabs-container">
+  <ul
+    *ngIf="tabs && tabs.length"
+    data-test-id="tab-group-tabs"
+    class="nav nav-tabs" role="tablist">
+    <ng-container *ngFor="let tab of tabs">
+      <li
+        *permissions="tab.permission"
+        data-test-id="tab-group-tab"
+        class="nav-item"
+        routerLinkActive="nav-item--active">
+        <a class="nav-link" routerLinkActive="nav-link--active" [routerLink]="tab.routerLink" [class.disabled]="tab.disabled">
+          {{tab.title}}
+          <ng-container *ngIf="tab.count | async as count">({{ count }})</ng-container>
+        </a>
+      </li>
+    </ng-container>
+  </ul>
+  <div
+    data-test-id="tab-group-content"
+    class="tab-content">
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
+  </div>
+</nav>

@@ -1,0 +1,27 @@
+<div>
+    <table class="deficiencies-widget-table">
+        <tr>
+            <th>Deficiencies - Firm Action Required</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="info">
+                    <span>{{claimantsWithDeficiencies | number}}</span>
+                    <span *ngIf="claimantsWithDeficiencies == 1"> Claimant has deficiencies. </span>
+                    <span *ngIf="claimantsWithDeficiencies != 1"> Claimants have deficiencies. </span>
+                    <span>Total of {{totalClaimants | number}}</span>
+                    <span *ngIf="totalClaimants == 1"> lien affected by missing information</span>
+                    <span *ngIf="totalClaimants != 1"> liens affected by missing information</span>
+                </div>
+                <div class="info">
+                    <span>Monthly Report Day: {{monthlyReportDay || 'TBD'}} </span>
+                    <app-tooltip-info
+                        inline="true"
+                        [tooltipText]="tooltipText">
+                    </app-tooltip-info>
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+</div>

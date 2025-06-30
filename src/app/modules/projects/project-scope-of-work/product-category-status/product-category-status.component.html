@@ -1,0 +1,28 @@
+<form novalidate class="product-category-status" *ngIf="form" [formGroup]="form" (change)="onChange()">
+  <card-col *ngIf="readOnly">
+    <card-row [hideLabel]="true">
+      <div cardValue>
+        <span class="product-category-status__value">{{ form.value.statusName }}</span>
+      </div>
+    </card-row>
+  </card-col>
+
+  <card-col *ngIf="!readOnly">
+    <card-row inputId="statusId" [control]="form.get('statusId')" [hideLabel]="true">
+      <div cardValue class="product-category-status__value">
+        <label>
+          <input type="radio" formControlName="statusId" id="statusId" [value]="projectScopeStatus.Yes" />
+          <span class="product-category-status__value--option">Yes</span>
+        </label>
+        <label>
+          <input type="radio" formControlName="statusId" id="statusId" [value]="projectScopeStatus.No" />
+          <span class="product-category-status__value--option">No</span>
+        </label>
+        <label>
+        <input type="radio" formControlName="statusId" id="statusId" [value]="projectScopeStatus.PendingConfirmation" />
+          <span class="product-category-status__value--option">Pending Confirmation</span>
+        </label>
+      </div>
+    </card-row>
+  </card-col>
+</form>

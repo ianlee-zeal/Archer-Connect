@@ -1,0 +1,21 @@
+@import "src/styles/variables.scss";
+
+.advanced-hold-client-group {
+  margin-top: 12px;
+  margin-left: 31px;
+
+  &__filter{
+    flex-grow: 1;
+    padding-left: $advanced-search-controls-indent;
+  }
+
+  &__row {
+    display: flex;
+    width: 633px;
+  }
+
+  &__label {
+    width: 120px;
+    margin-right:29px;
+  }
+}

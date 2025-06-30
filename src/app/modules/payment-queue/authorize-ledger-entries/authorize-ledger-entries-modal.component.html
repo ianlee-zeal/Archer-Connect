@@ -1,0 +1,103 @@
+<modal (close)="onClose()">
+    <modal-header>Batch Authorization</modal-header>  
+    <modal-body>
+      <div class="modal-section">
+        <app-stepper [stage]="step">
+          <step label="Selected Ledger Entries" [isActive]="step === steps.SelectedLegers">
+            <p>Selected entries need to be Payment Enabled and in the "Pending" or "Voided" statuses to be authorized.</p>
+            <div class="section-content">
+              <app-selected-payment-queue-list [entityLabel]="labelText" [parentGridId]="gridId" [projectId]="projectId" [paymentQueueGridParams]="gridParams$ | async"></app-selected-payment-queue-list>
+            </div>
+          </step>
+          <step label="Authorization Note" [isActive]="step === steps.AuthorizationNote">
+            <p>Prior to continuing with the authorization of the selected entries, please provide more information on why is this being done below.</p>
+            <div class="step-section-2" >
+                <form [formGroup]="form">
+                 <card [maxWidth]="600" hideSeparator>
+                     <card-col>
+                           <card-row  label="Add a Note" labelWeight="bold"  [valuePaddingTop]="5" inputId="note" [control]="form.get('note')" required>
+                             <quill-editor formControlName="note"
+                               placeholder="Enter text here..."
+                               cardValue>
+                             </quill-editor>
+                           </card-row>
+                     </card-col>
+                   </card>
+                 </form>
+               </div>
+          </step>
+          <step label="Review" [isActive]="step === steps.Review">
+            <div class="section-content">
+              <app-authorize-ledger-entries-review [batchActionId]="batchActionId" [parentGridId]="gridId" [projectId]="projectId" [paymentQueueGridParams]="gridParams$ | async" [searchOptions]="searchOptions"></app-authorize-ledger-entries-review>
+            </div>
+          </step>
+          <step label="Results" [isActive]="step === steps.Results">
+            <div class="section-content" *ngIf="step === steps.Results">
+              <app-authorize-ledger-entries-result [batchActionId]="batchActionId"  [parentGridId]="gridId" [projectId]="projectId" [paymentQueueGridParams]="gridParams$ | async" [searchOptions]="searchOptions"></app-authorize-ledger-entries-result>
+            </div>
+          </step>
+        </app-stepper>  
+      </div>
+    </modal-body>  
+    <modal-footer>
+      <span *ngIf="errorMessage" class="text-danger small me-auto">{{errorMessage}}</span>
+      <ng-container [ngSwitch]="step">
+        <ng-container *ngSwitchCase="steps.SelectedLegers" [ngTemplateOutlet]="entriesButtons"></ng-container>
+        <ng-container *ngSwitchCase="steps.AuthorizationNote" [ngTemplateOutlet]="authorizationNoteButtons"></ng-container>
+        <ng-container *ngSwitchCase="steps.Review" [ngTemplateOutlet]="reviewSelectionButtons"></ng-container>
+        <ng-container *ngSwitchCase="steps.Results" [ngTemplateOutlet]="resultsButtons"></ng-container>
+      </ng-container>
+    </modal-footer>
+  </modal>  
+  <ng-template #entriesButtons>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onClose()">
+      Cancel
+    </button>
+    <button class="btn modal-footer__btn modal-footer__btn--primary"
+      [disabled]="!(selectedPaymentQueueGrid$ | async)"
+      (click)="onChangeMode(steps.AuthorizationNote)">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Next
+    </button>
+  </ng-template>
+  <ng-template #authorizationNoteButtons>
+    <button class="btn modal-footer__btn modal-footer__btn--secondary me-auto"
+            (click)="onChangeMode(steps.SelectedLegers)">
+      Back
+    </button>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onClose()">
+      Cancel
+    </button>
+    <button asyncButton
+            type="button"
+            [awaitedActionTypes]="validateButtonAwaitedActions"
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            [ngClass]="{ disabled: form.invalid }"
+            [disabled]="!(selectedPaymentQueueGrid$ | async) || !isValid"
+            (click)="onValidate()">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Next
+    </button>
+  </ng-template>  
+  <ng-template #reviewSelectionButtons>
+    <button class="btn modal-footer__btn modal-footer__btn--secondary me-auto"
+            (click)="onChangeMode(steps.AuthorizationNote)">
+      Back
+    </button>
+     <button asyncButton
+            type="button"
+            [awaitedActionTypes]="loadButtonAwaitedActions"
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            [ngClass]="{ disabled: !(selectedAuthorizedPaymentQueueGrid$ | async)}"
+            [disabled]="isDisabled"
+            (click)="onSubmit()">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Submit
+    </button> 
+  </ng-template>  
+  <ng-template #resultsButtons>
+    <button class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onClose()">
+      Close
+    </button>
+  </ng-template>

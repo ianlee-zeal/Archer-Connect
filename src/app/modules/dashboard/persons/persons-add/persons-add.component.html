@@ -1,0 +1,23 @@
+<modal (close)="addNewPersonModal.hide()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <app-person-template></app-person-template>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="addNewPersonModal.hide()">
+      Cancel
+    </button>
+    <button
+      asyncButton
+      [awaitedActionTypes]="awaitedSaveActionTypes"
+      type="submit" 
+      class="btn modal-footer__btn modal-footer__btn--primary" 
+      (click)="onSave()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Save
+    </button>
+  </modal-footer>
+</modal>

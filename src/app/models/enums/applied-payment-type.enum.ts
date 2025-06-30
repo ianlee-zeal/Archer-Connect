@@ -1,0 +1,16 @@
+export enum AppliedPaymentTypeEnum {
+  Default = -1,
+  Lien = 1,
+  MDL = 22,
+  CBF = 23,
+  Feese = 28,
+  Expenses = 29,
+  Claimant = 4,
+  PrimaryFirmExpenses = 32,
+  PrimaryFirmFees = 12,
+  ReferringFirmExpenses = 33,
+  ReferringFirmFees = 30,
+  SettlementCounselExpenses = 34,
+  SettlementCounselFees = 31,
+  Vendor = 15,
+}

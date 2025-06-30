@@ -1,0 +1,7 @@
+<ng-container *ngIf="tabs" style="height: '100%';">
+  <app-tab-group>
+    <ng-container *ngFor="let tab of tabs">
+      <app-tab-item [title]="tab.title" [count]="tab.count" [routerLink]="tab.link" [permission]="tab.permission"></app-tab-item>
+    </ng-container>
+  </app-tab-group>
+</ng-container>

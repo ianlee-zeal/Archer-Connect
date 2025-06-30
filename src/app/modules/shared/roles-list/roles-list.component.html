@@ -1,0 +1,16 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+  <app-context-bar [title]="title"></app-context-bar>
+  <div class="page-content">
+    <app-grid 
+      [gridId]="gridId" 
+      [gridOptions]="gridOptions" 
+      entityLabel="roles" 
+      (gridReady)="gridReady($event)" 
+      (loadData)="loadData($event)"
+      [rowData]="orgRoles$ | async"
+      [skipSetContentHeight]="true"
+      (newRecord)="addNewRecord()">
+    </app-grid>
+  </div>
+</div>

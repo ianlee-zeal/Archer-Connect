@@ -1,0 +1,116 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+  <!-- page header here -->
+  <div class="page-content">
+    <form class="form-row page-filter-panel" novalidate [formGroup]="searchForm" [connectForm]="searchValue | async" (change)="updateSearchValue()">
+      <div class="col-2">
+        <select id="permissions-search-form__permission-type" class="form-control" formControlName="permissionTypeId" (change)="search()" appAutoFocus>
+          <option value="">Select Permission Type</option>
+          <option *ngFor="let permissionType of (dropDownValues | async).permissionTypes" [ngValue]="permissionType.id">
+            {{ permissionType.name }}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
+        <select id="permissions-search-form__entity-type" class="form-control" formControlName="entityId">
+          <option value="">Select Entity</option>
+          <option *ngFor="let entity of (dropDownValues | async).entities" [ngValue]="entity.id">
+            {{ entity.name }}
+          </option>
+        </select>
+      </div>
+      <div class="col">
+        <div class="input-group">
+          <input type="text" class="form-control input-sm"
+                 formControlName="search_term"
+                 (keyup.enter)="search()" />
+
+          <button class="input-group-append" (click)="clearSearch()">
+            <span class="input-group-text"><i class="fas fa-times"></i></span>
+          </button>
+        </div>
+      </div>
+      <div class="col-xs-auto">
+        <button type="button" class="btn btn-secondary btn-icon" (click)="search()"><span class="fa fa-search"></span></button>
+      </div>
+    </form>
+
+    <div class="permission-list-page__content">
+      <div class="permission-list-page__content-grid">
+        <app-grid [gridOptions]="permissionsGridOptions" [rowData]="permissions | async" [gridId]="gridId" entityLabel="permissions" (newRecord)="addNewRecord()" (gridReady)="gridReady($event)"></app-grid>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div bsModal #adminPermissionPopup="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="dialog-child-name">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content border-0">
+        <div class="modal-header bg-primary">
+          <h3 class="modal-title pull-left text-light">
+            Permission Management
+          </h3>
+
+          <button type="button" class="btn-close pull-right" aria-label="Close" (click)="closeEditPermissionPopup()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <form novalidate [formGroup]="permissionForm" [connectForm]="currentPermission | async" (ngSubmit)="savePermission()" (change)="updateCurrentPermission()">
+          <div class="modal-body">
+            <div class="form-group row">
+              <label for="admin-permission-popup__permission-type-selector" class="col-sm-3 col-form-label">Permission Type:</label>
+              <div class="col-sm-9">
+                <select id="admin-permission-popup__permission-type-selector" class="form-control" formControlName="permissionTypeId">
+                  <option *ngFor="let permissionType of (dropDownValues | async).permissionTypes" [ngValue]="permissionType.id">
+                    {{ permissionType.name }}
+                  </option>
+                </select>
+                <control-messages [control]="permissionForm.get('permissionTypeId')"></control-messages>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="admin-permission-popup__entity-selector" class="col-sm-3 col-form-label">Entity:</label>
+              <div class="col-sm-9">
+                <select id="admin-permission-popup__entity-selector" class="form-control" formControlName="entityId">
+                  <option *ngFor="let entity of (dropDownValues | async).entities" [ngValue]="entity.id">
+                    {{ entity.name }}
+                  </option>
+                </select>
+                <control-messages [control]="permissionForm.get('entityId')"></control-messages>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="admin-permission-popup__action" class="col-sm-3 col-form-label">Action:</label>
+              <div class="col-sm-9">
+                <input type="text" id="admin-permission-popup__action" class="form-control" formControlName="action" />
+                <control-messages [control]="permissionForm.get('action')"></control-messages>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="admin-permission-popup__description" class="col-sm-3 col-form-label">Description:</label>
+              <div class="col-sm-9">
+                <input type="text" id="admin-permission-popup__description" class="form-control" formControlName="description" />
+                <control-messages [control]="permissionForm.get('description')"></control-messages>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-md bg-primary btn-outline-primary text-light" [disabled]="permissionForm.invalid">
+              Save
+            </button>
+
+            <button type="button" class="btn btn-md bg-primary btn-outline-primary text-light"
+                    (click)="closeEditPermissionPopup()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

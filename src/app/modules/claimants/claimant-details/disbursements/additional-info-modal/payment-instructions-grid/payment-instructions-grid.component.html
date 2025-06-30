@@ -1,0 +1,21 @@
+<app-spinner 
+    *ngIf="isLoading && defaultPaymentInstructionIsValid">
+</app-spinner>
+<app-grid
+    [class]="gridClass"
+    [height]="isMaxRowsNumber ? rowHeight : 'auto'"
+    [gridId]="gridId"
+    [gridOptions]="gridOptions"
+    [saveGridDataOnModelUpdate]="true"
+    [isPagerEnabled]="false"
+    [enabledAutoHeight]="false"
+    (gridReady)="onGridReady($event)"
+    (loadData)="loadData($event)">
+</app-grid>
+<div class="payment-instructions__add">
+    <a *ngIf="!isLoading && paymentType === paymentTypes.Split && editEnabled"
+       class="nav-link" 
+       (click)="onAdd()">
+        Add payee
+    </a>
+</div>

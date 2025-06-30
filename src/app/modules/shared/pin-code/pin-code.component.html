@@ -1,0 +1,36 @@
+<form [formGroup]="form" *ngIf="canEdit; else viewTemplate" novalidate>
+    <card [maxWidth]="610" header="Pin Code">
+        <card-col [width]="500">
+            <card-row label="Pin Code" inputId="pin" [control]="form.get('pin')" >
+                <app-hidable-form-control
+                    id="pin"
+                    [formGroup]="form"
+                    formControlName="pin"
+                    [isEditMode]="true"
+                    [isFullValueLoaded]="isPinLoaded"
+                    [formatFunction]="formatPin.bind(this)"
+                    [editPermissions]="pinEditPermissions"
+                    (onViewFull)="onViewFull()"
+                    cardValue>
+                </app-hidable-form-control>
+            </card-row>
+        </card-col>
+    </card>
+</form>
+  
+<ng-template #viewTemplate>
+    <card [maxWidth]="610" header="Pin Code">
+        <card-col [width]="500">
+            <card-row label="Pin code" [labelWidth]="128">
+            <app-hidable-form-control
+                [model]="pin"
+                [isFullValueLoaded]="isPinLoaded"
+                [readPermissions]="pinReadPermissions"
+                [formatFunction]="formatPin.bind(this)"
+                (onViewFull)="onViewFull()"
+                cardValue>
+                </app-hidable-form-control>
+            </card-row>
+        </card-col>
+    </card>
+</ng-template>

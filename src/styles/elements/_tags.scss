@@ -1,0 +1,51 @@
+@import "../variables.scss";
+
+.tag {
+  color: $white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 2px;
+  padding: 1px 8px;
+  text-transform: uppercase;
+
+  &:before {
+    font-family: $font-awesome;
+  }
+
+  &--check {
+    background-color: $yellow;
+    letter-spacing: 1px;
+
+    &:before {
+      content: '\f00c';
+    }
+  }
+
+  &--yes {
+    background-color: $green;
+
+    &:before {
+      content: '\f00c';
+    }
+  }
+
+  &--no {
+    color: $gray;
+    background-color: $table-header-bg;
+    padding: 2px 10px;
+
+    &:before {
+      content: '\f00d';
+    }
+  }
+
+
+  &--error {
+    color: $validation-invalid-color;
+    font-size: 12px;
+
+    &:before {
+      content: '\f071';
+    }
+  }
+}

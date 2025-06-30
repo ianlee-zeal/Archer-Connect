@@ -1,0 +1,75 @@
+<div class="advanced-search-field-data">
+  <div class="advanced-search-field-data__type-container">
+    <app-select class="advanced-search-field-data__type"
+                [model]="condition"
+                (onModelChange)="onChangeCondition($event)"
+                [options]="conditionOptions"
+                placeholder="Select Condition"
+                fullwidth
+                searchable>
+    </app-select>
+  </div>
+  <div class="advanced-search-field-data__filter-container">
+    <div class="advanced-search-field-data__multiselect-container" *ngIf="condition === conditions.Contains && !showMultiselectWithChips()" [class.has-error]="hasError(entry?.errors.term)">
+      <app-multiselect-list
+        enableSelectAll
+        [isSelectAllChecked]="isAllOptionsSelected"
+        [options]="options"
+        (select)="onChangeCheckbox($event)"
+        (selectAll)="onSelectAllChange($event)"
+        [heightByCount]="heightByCount"
+        [width]="multiselectListWidth"
+      >
+      </app-multiselect-list>
+      <app-search-validation-messages [errors]="entry.errors.term"></app-search-validation-messages>
+    </div>
+    <div class="advanced-search-field-data__multiselect-with-chips-container" *ngIf="condition === conditions.Contains && showMultiselectWithChips()" [class.has-error]="hasError(entry?.errors.term)">
+      <app-multiselect-list-with-chips
+        enableSelectAll
+        [isSelectAllChecked]="isAllOptionsSelected"
+        [options]="options"
+        (select)="onChangeCheckbox($event)"
+        (selectAll)="onSelectAllChange($event)"
+        [heightByCount]="heightByCount"
+        [width]="multiselectListWidth"
+      >
+      </app-multiselect-list-with-chips>
+      <app-search-validation-messages [errors]="entry.errors.term"></app-search-validation-messages>
+    </div>
+    <div *ngIf="condition !== conditions.Contains && condition !== conditions.IsMissing" [class.has-error]="hasError(entry?.errors.term)">
+      <app-select *ngIf="entry.field.options || entry.options"
+                  [model]="entry.term"
+                  [options]="options"
+                  [disabled]="!condition"
+                  (onModelChange)="onChangeSearch($event)"
+                  placeholder="Select Value"
+                  fullwidth
+                  searchable>
+      </app-select>
+      <app-select *ngIf="entry.field.endpoint"
+                            [model]="entry.term"
+                            [options]="options"
+                            [disabled]="!condition"
+                            (onModelChange)="onChangeSearch($event)"
+                            placeholder="Select Value"
+                            fullwidth
+                            searchable>
+      </app-select>
+      <app-search-validation-messages [errors]="entry.errors.term"></app-search-validation-messages>
+    </div>
+  </div>
+  <div class="advanced-search-field-data__checkbox-container-wrapper">
+  <div class="advanced-search-field-data__checkbox-container">
+    <label *ngIf="showCheckbox" class="form-check-label advanced-search-field-data__checkbox">
+      <input
+            type="checkbox"
+            class="form-check-input"
+            [disabled]="!condition || additionalCheckboxDisabled"
+            (click)="additionalCheckboxChange($event)"
+            [checked]="entry.additionalInfo && entry.additionalInfo.isChecboxChecked">
+      <span>{{checkboxLabelText}}</span>
+    </label>
+  </div>
+  </div>
+  
+</div>

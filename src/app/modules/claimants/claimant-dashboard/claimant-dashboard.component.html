@@ -1,0 +1,67 @@
+<ng-container *ngIf="showMainDashboard">
+
+  <app-loading-indicator [loadingIndicatorInPage]="true" [loadingInProgress]="!(isLoadedClaimantOverview$ | async)"/>
+
+  <div class="dashboard-container">
+    <div class="info">
+      <div>
+        <h2>{{ title }}</h2>
+        <img *ngIf="!isPinned" (click)="pinPage()" src="assets/images/thumbtack-outlined.svg" alt="Pin Item"/>
+        <img *ngIf="isPinned" (click)="removePin()" src="assets/images/thumbtack-solid.svg" alt="Remove Pin"/>
+      </div>
+      <h3 (click)="goToProject()">{{ subTitle }}</h3>
+    </div>
+
+    <app-claimant-status
+      [showTitle]="false"
+      [claimant]="claimant$"
+      [probates]="claimantOverviewProbateItems$"
+      [releaseAdmin]="claimantOverviewReleaseAdmin$"
+      [releaseAdminItems]="claimantOverviewReleaseAdminItems$"
+      [lienData]="claimantOverviewLiensData$"
+      [bankruptcies]="claimantOverviewBankruptcyItems$"
+      [qsfData]="claimantOverviewQSFData$"
+      [engagedServicesIds]="engagedServicesIds$">
+    </app-claimant-status>
+    
+    <div class="dashboard-services-container">
+      <ng-container *ngIf="deficiencyPermission">
+        <app-claimant-dashboard-uncured-deficiencies-count *ngIf="(uncuredDeficienciesCount$ | async) > 0" [uncuredDeficienciesCount]="uncuredDeficienciesCount$ | async"></app-claimant-dashboard-uncured-deficiencies-count>
+      </ng-container>
+      
+      <ng-container *ngIf="isServiceEngaged(ProductCategory.Release) && (claimantOverviewReleaseAdmin$ | async) as releaseAdmin" >
+          <app-claimant-dashboard-release-admin *ngIf="releaseAdmin.items[0]" [releaseAdmin]="releaseAdmin" infoCardData>
+          </app-claimant-dashboard-release-admin>
+      </ng-container>
+      
+      <ng-container *ngIf="isServiceEngaged(ProductCategory.MedicalLiens) && (claimantOverviewLiensData$ | async) as lienData">
+        <app-claimant-dashboard-lien-resolution *ngIf="lienData.items[0]" [lienResolution]="lienData" infoCardData>
+        </app-claimant-dashboard-lien-resolution>
+      </ng-container>
+  
+      <ng-container *ngIf="isServiceEngaged(ProductCategory.Bankruptcy) && claimantOverviewBankruptcyItems$ | async as bankruptcyItem">
+        <app-claimant-dashboard-bankruptcy *ngIf="bankruptcyItem.length > 0" [bankruptcyItem]="bankruptcyItem[0]">
+        </app-claimant-dashboard-bankruptcy>
+      </ng-container>
+  
+      <ng-container *ngIf="isServiceEngaged(ProductCategory.Probate) && claimantOverviewProbateItems$ | async as probateItem">
+        <app-claimant-dashboard-probate *ngIf="probateItem.length > 0" [probateItem]="probateItem[0]">
+        </app-claimant-dashboard-probate>
+      </ng-container>
+  
+      <ng-container *ngIf="isServiceEngaged(ProductCategory.QSFAdministration) && claimantOverviewQSFData$ | async as qsfData">
+        <app-claimant-dashboard-qsfadmin *ngIf="qsfData.items.length > 0" [qsfData]="qsfData">
+        </app-claimant-dashboard-qsfadmin>
+      </ng-container>
+  
+      <app-info-card *ngIf="(claimantOverviewPaymentItems$ | async)?.length > 0">
+        <span class="card-grid-title" infoCardData>Payments</span>
+        <app-claimant-dashboard-payments-grid
+          [paymentItems]="claimantOverviewPaymentItems$">
+        </app-claimant-dashboard-payments-grid>
+      </app-info-card>
+    </div>
+  </div>
+</ng-container>
+
+<router-outlet></router-outlet>

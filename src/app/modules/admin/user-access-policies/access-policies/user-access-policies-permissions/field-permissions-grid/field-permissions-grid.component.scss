@@ -1,0 +1,17 @@
+.form-check {
+  margin: 0;
+}
+
+tr {
+
+  th:not(:first-child),
+  td:not(:first-child) {
+    text-align: center;
+    width: 100px;
+  }
+
+  td:first-child {
+    text-align: left;
+    width: 390px;
+  }
+}

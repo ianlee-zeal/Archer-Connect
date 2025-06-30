@@ -1,0 +1,7 @@
+<div class="page" *ngIf="settlementId">
+  <div class="page-content">
+    <app-financial-summary-charts [financialSummary]="financialSummary"></app-financial-summary-charts>
+    <br/>
+    <app-financial-summary-data [financialSummary]="financialSummary" [settlementId]="settlementId"></app-financial-summary-data>
+  </div>
+</div>

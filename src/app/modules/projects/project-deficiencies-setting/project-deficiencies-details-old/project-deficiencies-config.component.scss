@@ -1,0 +1,12 @@
+@import "src/styles/variables";
+
+.actions {
+  display: flex;
+  gap: 20px;
+
+  &__value {
+    margin-left: 4px;
+  }
+}
+
+

@@ -1,0 +1,21 @@
+<ng-container>
+  <div class="service-block">
+    <div class="service-header">
+      <div>
+        <span class="service-link line-part">Payment Details</span>
+      </div>
+    </div>
+
+    <app-grid entityName="payment"
+              [gridId]="gridId"
+              [gridOptions]="gridOptions"
+              [canReorderColumns]="true"
+              [isContentAutoHeight]="true"
+              [enabledAutoHeight]="false"
+              hideTopStatusbar="true"
+              [rowData]="paymentItems$ | async"
+              (gridReady)="gridReady($event)"
+              hideBottomStatusbar="true">
+    </app-grid>
+  </div>
+</ng-container>

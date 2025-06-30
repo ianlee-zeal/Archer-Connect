@@ -1,0 +1,486 @@
+<app-summary-bar></app-summary-bar>
+
+<form *ngIf="ledgerInfo; else loadingTemplate" class="page-content" [formGroup]="form" (change)="onChange()">
+  <ng-container *ngIf="hasAccGroups; else noRecordsTemplate">
+
+    <!-- Ledger Formula mode and common inputs -->
+    <div class="ledger-info-card mb-4">
+      <card hideSeparator class="mb-3 ms-3">
+        <card-row hideLabel>
+          <div cardValue class="ledger-info__container">
+            <ng-container *ngIf="canEdit">
+              <ng-container [ngTemplateOutlet]="editableTemplate" [ngTemplateOutletContext]="{ $implicit: form }"></ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="!canEdit" class="me-5">
+              <ng-container [ngTemplateOutlet]="readOnlyTemplate" [ngTemplateOutletContext]="{ $implicit: form }"></ng-container>
+            </ng-container>
+
+            <card-col [labelWidth]="145" [width]="250" class="me-5">
+              <card-row label="Primary Firm ID" [value]="attorneyReferenceId"></card-row>
+            </card-col>
+
+            <card-col [width]="325" class="me-5">
+              <card-row label="Settlement Counsel Firm ID" [value]="counselFirmId"></card-row>
+            </card-col>
+
+            <card-col [width]="280" class="me-5">
+              <card-row label="Stage" [value]="ledgerInfo.stageName"></card-row>
+            </card-col>
+
+            <card-col [width]="180" class="me-5">
+              <card-row label="Lien Status" [value]="lienFinalizedStatus"></card-row>
+            </card-col>
+
+            <card-col [width]="272">
+              <card-row
+                label="Probate SPI Sync'ed"
+                [value]="ledgerInfo?.probateSPISyncedStatusName"
+                labelTooltip="Special payment instructions that have been added to the claimants contacts are added to the claimant's net disbursement.">
+              </card-row>
+            </card-col>
+
+            <card-col [width]="180" class="me-5">
+              <card-row label="Firm Status" [value]="ledgerInfo.firmApprovedStatusName"></card-row>
+            </card-col>  
+          </div>
+          
+        </card-row>
+        
+      </card>
+    </div>
+
+    <card-row *ngIf="isInvalid" class="mb-3 validation-error" hideLabel>
+      <div *ngFor="let message of validationMessages" cardValue>
+        <span class="">{{message}}</span><br/>
+      </div>
+    </card-row>
+    <card-row *ngIf="isFormulaInvalid" class="mb-3 validation-error" hideLabel>
+      <span class="" cardValue>{{ formulaErrorString }}</span>
+    </card-row>
+
+    <!-- Groups Header -->
+    <div class="grid-expansion-panel-header-wrapper">
+      <app-grid-expansion-panel-header [elements]="groupHeaderElements" cardValue></app-grid-expansion-panel-header>
+    </div>
+
+    <!-- Ledger Account Groups -->
+    <div class="ledger-groups" [ngClass]="{ 'ledger-groups--summary-bar-collapsed' : !(isSummaryBarExpanded$ | async) }">
+      <div *ngFor="let group of ledgerInfo.accountGroups; index as i" class="ledger-groups__group">
+      <ng-container *ngIf="canDisplayGroup(group)"
+                      [ngTemplateOutlet]="expandableTemplate"
+                      [ngTemplateOutletContext]="{
+            $implicit: form,
+            group: group,
+            title: getGroupTitle(group),
+            elements: getGroupElements(group),
+            actions: getGroupActions(group.accountNo),
+            isExpanded: getExpandedState(group.accountNo)
+          }">
+        </ng-container>
+      </div>
+
+      <!-- Custom Closing Statements Fields -->
+      <div class="expansion-panel-container">
+        <div class="expansion-panel">
+          <span class="fa expansion-panel_expand-button fa-chevron-down" [ngClass]="getExpandedState('CCS') ? 'fa-chevron-down' : 'fa-chevron-right'" (click)="toggleGroup('CCS')"></span>
+
+          <!-- Header -->
+          <div class="expansion-panel__header">
+            <span class="expansion-panel__header--title" (click)="toggleGroup('CCS')">Custom Closing Statements Fields</span>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div [hidden]="!getExpandedState('CCS')" class="expansion-panel__content">
+          <app-custom-cs-fields [isEditable]="canEdit" (change)="onChange()"></app-custom-cs-fields>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <card hideSeparator class="mt-3">
+    <card-col>
+      <card-row label="Law Firm Note 1" [value]="ledgerInfo?.lawFirmNote1"></card-row>
+      <card-row label="Law Firm Note 2" [value]="ledgerInfo?.lawFirmNote2"></card-row>
+    </card-col>
+  </card>
+
+  <app-system-fields-section [item]="ledgerInfo" class="system-fields-section"></app-system-fields-section>
+</form>
+
+<ng-template #expandableTemplate let-form let-group="group" let-title="title" let-elements="elements" let-actions="actions" let-isExpanded="isExpanded">
+  <ng-container [formGroup]="form">
+    <div class="expansion-panel-container" [ngClass]="{ 'ledger-groups__group--disabled' : !hasActiveAccSettings(group.accountNo) }">
+      <div class="expansion-panel">
+        <span class="fa expansion-panel_expand-button fa-chevron-down" [ngClass]="isExpanded ? 'fa-chevron-down' : 'fa-chevron-right'" (click)="toggleGroup(group.accountNo)"></span>
+
+        <!-- Header -->
+        <div class="expansion-panel__header">
+          <div class="expansion-panel__header--sub-container">
+
+            <div class="expansion-panel__header">
+              <!-- Title -->
+              <span class="expansion-panel__header--title" (click)="toggleGroup(group.accountNo)">{{ title }}</span>
+
+              <!-- Actions -->
+              <ng-container *ngFor="let actionItem of actions">
+                <ng-container *ngIf="!actionItem.hidden()">
+                  <button *permissions="actionItem.permissions" type="button" class="btn btn-link expansion-panel__header--action" (click)="actionItem.action()">
+                    <span *ngIf="actionItem.icon" class="fa {{ actionItem.icon }}"></span>
+                    {{ actionItem.name }}
+                  </button>
+                </ng-container>
+              </ng-container>
+
+              <!-- Inputs on expandable groups -->
+              <div class="expansion-panel__header--input">
+                <ng-container *ngIf="group.accountGroupNo === ledgerAccountGroupEnum.CommonBenefit" [ngTemplateOutlet]="cbfFeeTemplate" [ngTemplateOutletContext]="{ $implicit: form }"></ng-container>
+                <ng-container *ngIf="group.accountGroupNo === ledgerAccountGroupEnum.MDL" [ngTemplateOutlet]="mdlFeeTemplate" [ngTemplateOutletContext]="{ $implicit: form }"></ng-container>
+                <ng-container *ngIf="group.accountGroupNo === ledgerAccountGroupEnum.AttyFees" [ngTemplateOutlet]="attyFeeTemplate" [ngTemplateOutletContext]="{ $implicit: form }"></ng-container>
+              </div>
+            </div>
+          </div>
+
+          <span *ngIf="isDeductionAccGroup(group.accountGroupNo)" class="expansion-panel__header--total-amount">({{ group.totalAmount | extendedCurrency }})</span>
+          <span *ngIf="!isDeductionAccGroup(group.accountGroupNo)" class="expansion-panel__header--total-amount">{{ group.totalAmount | extendedCurrency }}</span>
+
+          <span class="expansion-panel__header--description-placeholder"> <!-- Placeholder --> </span>
+          <span class="expansion-panel__header--total-paid-amount">{{ group.totalPaidAmount | extendedCurrency }}</span>
+        </div>
+
+        <!-- Elements -->
+        <div *ngFor="let element of elements">
+          <div class="expansion-panel-element" *ngIf="element.valueGetter()">
+            <span class="context-bar-element__column">{{ element.column ? element.column + ":" : "" }}</span>
+            <span class="expansion-panel-element__value {{element.class || ''}}">{{ element.valueGetter() }}</span>
+            <i *ngIf="element.errorTooltip" class="expansion-panel-element--error fas fa-exclamation-triangle" title="{{ element.errorTooltip }}"></i>
+            <i *ngIf="element.warningTooltip" class="expansion-panel-element--warning fas fa-exclamation-triangle" title="{{ element.warningTooltip }}"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div [hidden]="!isExpanded" class="expansion-panel__content">
+        <ng-container [ngTemplateOutlet]="accountGroupTemplate" [ngTemplateOutletContext]="{ $implicit: form, group: group }"></ng-container>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template #accountGroupTemplate let-form let-group="group">
+  <ng-container [formGroup]="form">
+    <card hideSeparator class="mb-0">
+      <ng-container [ngSwitch]="group.accountGroupNo">
+        <app-ledger-account-group *ngSwitchCase="ledgerAccountGroupEnum.MDL" [accountGroup]="group" (accountGroupChanged)="onAccountGroupChanged($event)"
+          [ledgerId]="ledgerInfo.id"
+          [projectId]="ledgerInfo.projectId"
+          [readOnly]="!canEdit"
+          [chartOfAccSettings]="chartOfAccSettings"
+          [entryOptions]="chartOfAccountExpenseMap.get(ledgerAccountGroupEnum.MDL)"
+          [creditOptions]="chartOfAccountCreditMap.get(ledgerAccountGroupEnum.MDL)"
+          [isRequired]="isMDLRequired"
+          [formulaSetId] ="ledgerInfo.formulaSetId"
+          canShowAccNoForEntry
+          isAccountless
+          canShowPercentage  
+          canEditPercentage
+          canEditEntry>
+        </app-ledger-account-group>
+
+        <app-ledger-account-group *ngSwitchCase="ledgerAccountGroupEnum.CommonBenefit" [accountGroup]="group" (accountGroupChanged)="onAccountGroupChanged($event)"
+          [ledgerId]="ledgerInfo.id"
+          [projectId]="ledgerInfo.projectId"
+          [readOnly]="!canEdit"
+          [chartOfAccSettings]="chartOfAccSettings"
+          [entryOptions]="chartOfAccountExpenseMap.get(ledgerAccountGroupEnum.CommonBenefit)"
+          [creditOptions]="chartOfAccountCreditMap.get(ledgerAccountGroupEnum.CommonBenefit)"
+          [isRequired]="isCBFRequired"
+          [formulaSetId] ="ledgerInfo.formulaSetId"
+          canShowAccNoForEntry
+          isAccountless
+          canShowPercentage  
+          canEditPercentage
+          canEditEntry>
+        </app-ledger-account-group>
+
+        <app-ledger-account-group *ngSwitchCase="ledgerAccountGroupEnum.AttyFees"
+        [accountGroup]="group"
+        (accountGroupChanged)="onAccountGroupChanged($event)"
+          [ledgerId]="ledgerInfo.id"
+          [projectId]="ledgerInfo.projectId"
+          [entryOptions]="orgAccessOptions"
+          [creditOptions]="chartOfAccountCreditMap.get(ledgerAccountGroupEnum.AttyFees)"
+          [readOnly]="!canEdit"
+          [chartOfAccSettings]="chartOfAccSettings"
+          [canShowPercentage]="attyFeesMode === chartOfAccountModeEnum.AttyFeePercent"
+          [canEditPercentage]="attyFeesMode === chartOfAccountModeEnum.AttyFeePercent"          
+          [canEditAmount]="attyFeesMode === chartOfAccountModeEnum.AttyFeeAmount"
+          [isRequired]="isAttyFeesRequired"
+          [formulaSetId] ="ledgerInfo.formulaSetId"
+          canEditEntry
+          checkEnabledSubAccounts>
+        </app-ledger-account-group>
+
+        <app-ledger-account-group *ngSwitchCase="ledgerAccountGroupEnum.AttyExpenses" [accountGroup]="group" (accountGroupChanged)="onAccountGroupChanged($event)"
+          [ledgerId]="ledgerInfo.id"
+          [projectId]="ledgerInfo.projectId"
+          [orgOptions]="orgAccessOptions"
+          [entryOptions]="attyExpenseEntryOptions"
+          [creditOptions] = "attyExpenseCreditOptions"
+          [nonGroupedOptions] ="attyExpenseNonGroupedOptions"
+          [readOnly]="!canEdit"
+          [chartOfAccSettings]="chartOfAccSettings"
+          [formulaSetId] ="ledgerInfo.formulaSetId"
+          canEditAmount
+          canEditEntry
+          canEditAccount
+          canShowAccNoForEntry>
+        </app-ledger-account-group>
+
+        <app-ledger-account-group *ngSwitchCase="ledgerAccountGroupEnum.ARCHERFees" [accountGroup]="group" (accountGroupChanged)="onAccountGroupChanged($event)"
+          [ledgerId]="ledgerInfo.id"
+          [projectId]="ledgerInfo.projectId"
+          [entryOptions]="chartOfAccountExpenseMap.get(ledgerAccountGroupEnum.ARCHERFees)"
+          [creditOptions]="chartOfAccountCreditMap.get(ledgerAccountGroupEnum.ARCHERFees)"
+          [readOnly]="!canEdit"
+          [chartOfAccSettings]="chartOfAccSettings"
+          [formulaSetId] ="ledgerInfo.formulaSetId"
+          canShowAccNoForEntry
+          isAccountless
+          canEditAmount
+          canEditEntry>
+        </app-ledger-account-group>
+
+        <app-ledger-account-group *ngSwitchCase="ledgerAccountGroupEnum.OtherFees" [accountGroup]="group" (accountGroupChanged)="onAccountGroupChanged($event)"
+          [ledgerId]="ledgerInfo.id"
+          [projectId]="ledgerInfo.projectId"
+          [entryOptions]="chartOfAccountExpenseMap.get(ledgerAccountGroupEnum.OtherFees)"
+          [creditOptions]="chartOfAccountCreditMap.get(ledgerAccountGroupEnum.OtherFees)"
+          [readOnly]="!canEdit"
+          [chartOfAccSettings]="chartOfAccSettings"
+          [formulaSetId] ="ledgerInfo.formulaSetId"
+          canShowAccNoForEntry
+          isAccountless
+          canEditAmount
+          canEditEntry>
+        </app-ledger-account-group>
+
+        <app-ledger-account-group *ngSwitchCase="ledgerAccountGroupEnum.AwardFunding" [accountGroup]="group" (accountGroupChanged)="onAccountGroupChanged($event)"
+          [ledgerId]="ledgerInfo.id"
+          [projectId]="ledgerInfo.projectId"
+          [entryOptions]="chartOfAccountExpenseMap.get(ledgerAccountGroupEnum.AwardFunding)"
+          [readOnly]="!canEdit"
+          [chartOfAccSettings]="chartOfAccSettings"
+          [formulaSetId] ="ledgerInfo.formulaSetId"
+          [canEditEntry]="allowUpdateAllocations()"
+          [canEditAmount]="allowUpdateAllocations()"
+          canShowAccNoForEntry
+          isAccountless>
+        </app-ledger-account-group>
+
+        <app-ledger-account-group *ngSwitchCase="ledgerAccountGroupEnum.Liens" [accountGroup]="group" (accountGroupChanged)="onAccountGroupChanged($event)"
+          [ledgerId]="ledgerInfo.id"
+          [projectId]="ledgerInfo.projectId"
+          [readOnly]="!canEdit"
+          [entryOptions]="chartOfAccountExpenseMap.get(ledgerAccountGroupEnum.Liens).concat(chartOfAccountCreditMap.get(ledgerAccountGroupEnum.Liens))"
+          [chartOfAccSettings]="chartOfAccSettings"
+          [formulaSetId] ="ledgerInfo.formulaSetId"
+          [validateLienCredits]="validateLienCredits"
+          canAddDuplicateEntries
+          canShowAccNoForEntry
+          isAccountless
+          canEditAmount
+          canEditEntry>
+        </app-ledger-account-group>
+
+        <app-ledger-account-group *ngSwitchCase="ledgerAccountGroupEnum.ThirdPartyPMTS" [accountGroup]="group" (accountGroupChanged)="onAccountGroupChanged($event)"
+          [ledgerId]="ledgerInfo.id"
+          [projectId]="ledgerInfo.projectId"
+          [entryOptions]="chartOfAccountExpenseMap.get(ledgerAccountGroupEnum.ThirdPartyPMTS)"
+          [creditOptions]="chartOfAccountCreditMap.get(ledgerAccountGroupEnum.ThirdPartyPMTS)"
+          [readOnly]="!canEdit"
+          [chartOfAccSettings]="chartOfAccSettings"
+          [formulaSetId] ="ledgerInfo.formulaSetId"
+          canShowAccNoForEntry
+          isAccountless
+          canEditAmount
+          canEditEntry>
+        </app-ledger-account-group>
+
+        <app-ledger-account-group *ngSwitchCase="ledgerAccountGroupEnum.ClaimantDisbursements" [accountGroup]="group" (accountGroupChanged)="onAccountGroupChanged($event)"
+          [ledgerId]="ledgerInfo.id"
+          [projectId]="ledgerInfo.projectId"
+          [defaultPayeeId]="defaultPayeeId"
+          [readOnly]="!canEdit"
+          [chartOfAccSettings]="chartOfAccSettings"
+          canShowAccNoForEntry
+          isAccountless>
+        </app-ledger-account-group>
+
+        <app-ledger-account-group *ngSwitchDefault [accountGroup]="group" (accountGroupChanged)="onAccountGroupChanged($event)" [readOnly]="!canEdit">
+          <!-- Read Only -->
+        </app-ledger-account-group>
+      </ng-container>
+    </card>
+  </ng-container>
+</ng-template>
+
+<ng-template #noRecordsTemplate>
+  <app-tab-placeholder-no-record></app-tab-placeholder-no-record>
+</ng-template>
+
+<ng-template #loadingTemplate>
+  <app-tab-placeholder 
+    *ngIf="!(error$ | async)" 
+    [text]="'Loading...'">
+  </app-tab-placeholder>
+</ng-template>
+
+<ng-template #editableTemplate let-form>
+  <ng-container [formGroup]="form">
+    <card-col [width]="550">
+      <card-row hideLabel>
+        <div cardValue class="card-row__content">
+          <card-col *ngIf="!ledgerInfo.isAnyLedgerEntryAuthorized" [width]="240"> 
+            <card-row *ngIf="formulaModes$ | async as formulaModes" label="Formula Mode" inputId="formulaMode" [control]="form.get('formulaMode')" required>
+              <app-select [disabled]="isQsfGrossFirm" id="formulaMode" [options]="formulaModes" formControlName="formulaMode" optionAsValue cardValue required></app-select>
+            </card-row>
+          </card-col>
+          <ng-container *ngIf="ledgerInfo.isAnyLedgerEntryAuthorized" [ngTemplateOutlet]="formulaModeReadOnlyTemplate" [ngTemplateOutletContext]="{ $implicit: form }"></ng-container>
+          
+          <card-col [width]="300"> 
+            <card-row *ngIf="qsfTypes$ | async as qsfTypes" label="QSF" inputId="product" [control]="form.get('product')" required>
+              <app-select id="product" [options]="qsfTypes" formControlName="product" optionAsValue cardValue required></app-select>
+            </card-row>
+          </card-col>
+        </div>
+      </card-row>
+    </card-col>
+  </ng-container>
+</ng-template>
+
+<ng-template #readOnlyTemplate let-form>
+  <ng-container [formGroup]="form">
+    <ng-container [ngTemplateOutlet]="formulaModeReadOnlyTemplate" [ngTemplateOutletContext]="{ $implicit: form }"></ng-container>
+
+    <card-col [width]="320">
+      <card-row label="QSF" [value]="ledgerInfo?.product?.name || 'Unknown'" class="ms-5"></card-row>
+    </card-col>
+  </ng-container>
+</ng-template>
+
+<ng-template #formulaModeReadOnlyTemplate let-form>
+  <ng-container [formGroup]="form">
+    <card-col [width]="180">
+      <card-row label="Formula Mode" [value]="ledgerInfo?.formulaMode?.name"></card-row>
+    </card-col>
+  </ng-container>
+</ng-template>
+
+<ng-template #mdlFeeTemplate let-form>
+  <ng-container [formGroup]="form">
+    <card-col class="mdl-percentage" *ngIf="canEdit && hasEditMDLFeePermission && hasActiveAccSettings(ledgerAccountGroupEnum.MDL) && ledgerInfo.canChangeMDL  && allowUpdateFee(ledgerAccountGroupEnum.MDL)" [labelWidth]="150" [width]="275">
+      <card-row label="Fee %" inputId="mdlFee" [control]="form.get('mdlFee')" errorOnTheRight [required]="isMDLRequired">
+        <div cardValue>
+          <div class="card-row__content">
+            <input id="mdlFee" formControlName="mdlFee" type='text' 
+              placeholder="0.00" 
+              onlyNumbersEx 
+              [allowDecimal]="true" 
+              [maxValue]="100" 
+              [toFixed]="percentFractionDigits"
+              [required]="isMDLRequired"
+              [suppressPasteIfValueIsIncorrect]="true"
+              class="form-control text-right">
+          </div>
+        </div>
+      </card-row>
+    </card-col>
+
+    <card-col class="mdl-percentage" *ngIf="!canEdit || !hasEditMDLFeePermission || !hasActiveAccSettings(ledgerAccountGroupEnum.MDL) || !ledgerInfo.canChangeMDL || !allowUpdateFee(ledgerAccountGroupEnum.MDL)" [width]="160"> 
+      <card-row label="Fee" [value]="form.value.mdlFee | fractionPercentage"></card-row>
+    </card-col>
+  </ng-container>
+</ng-template>
+
+<ng-template #cbfFeeTemplate let-form let-cbfMode="cbfMode">
+  <ng-container [formGroup]="form">
+
+    <!-- Amount Mode -->
+    <ng-container *ngIf="!isCBFPercentageMode">
+      <card-col class="cbf-percentage" *ngIf="canEdit && hasEditCBFFeePermission && hasActiveAccSettings(ledgerAccountGroupEnum.CommonBenefit) && allowUpdateFee(ledgerAccountGroupEnum.CommonBenefit)" [labelWidth]="150" [width]="275"> 
+        <card-row label="Fee Amount" inputId="cbfFeeAmount" [control]="form.get('cbfFeeAmount')" errorOnTheRight [required]="isCBFRequired">
+          <div cardValue>
+            <div class="card-row__content">
+              <input
+                id="cbfFeeAmount" formControlName="cbfFeeAmount" type='text'
+                placeholder="0.00" 
+                onlyNumbersEx 
+                [allowDecimal]="true" 
+                [maxValue]="99999999.99" 
+                [toFixed]="2"
+                [required]="isCBFRequired"
+                class="form-control text-right">
+            </div>
+          </div>
+        </card-row>
+      </card-col>
+    
+      <card-col class="cbf-percentage" *ngIf="!canEdit || !hasEditCBFFeePermission || !hasActiveAccSettings(ledgerAccountGroupEnum.CommonBenefit) || !allowUpdateFee(ledgerAccountGroupEnum.CommonBenefit)" [width]="160"> 
+        <card-row label="Fee" [value]="form.value.cbfFeeAmount | extendedCurrency"></card-row>
+      </card-col>
+    </ng-container>
+
+    <!-- Percentage Mode -->
+    <ng-container *ngIf="isCBFPercentageMode">
+      <card-col *ngIf="canEdit && hasEditCBFFeePermission && hasActiveAccSettings(ledgerAccountGroupEnum.CommonBenefit) && ledgerInfo.canChangeCBF && allowUpdateFee(ledgerAccountGroupEnum.CommonBenefit)" [labelWidth]="150" [width]="275">
+        <card-row label="Fee %" inputId="cbfFee" [control]="form.get('cbfFee')" errorOnTheRight [required]="isCBFRequired">
+          <div cardValue>
+            <div class="card-row__content">
+              <input id="cbfFee" formControlName="cbfFee" type='text' 
+                placeholder="0.00" 
+                onlyNumbersEx 
+                [allowDecimal]="true" 
+                [maxValue]="100" 
+                [toFixed]="percentFractionDigits"
+                [required]="isCBFRequired"
+                [suppressPasteIfValueIsIncorrect]="true"
+                class="form-control text-right">
+            </div>
+          </div>
+        </card-row>
+      </card-col>
+  
+      <card-col *ngIf="!canEdit || !hasEditCBFFeePermission || !hasActiveAccSettings(ledgerAccountGroupEnum.CommonBenefit) || !ledgerInfo.canChangeCBF || !allowUpdateFee(ledgerAccountGroupEnum.CommonBenefit)" [width]="160"> 
+        <card-row label="Fee" [value]="form.value.cbfFee | fractionPercentage"></card-row>
+      </card-col>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #attyFeeTemplate let-form>
+  <ng-container *ngIf="attyFeesMode === chartOfAccountModeEnum.AttyFeePercent" [formGroup]="form">
+    <card-col class="atty-percentage" *ngIf="canEdit && hasEditAttyFeesPermission && hasActiveAccSettings(ledgerAccountGroupEnum.AttyFees) && ledgerInfo.canChangeAttyFee && allowUpdateFee(ledgerAccountGroupEnum.AttyFees)" [labelWidth]="150" [width]="275">
+      <card-row label="Contract Fee %" inputId="contractFee" [control]="form.get('contractFee')" errorOnTheRight [required]="isAttyFeesRequired">
+        <div cardValue>
+          <div class="card-row__content">
+            <input id="contractFee" formControlName="contractFee" type='text'
+                   placeholder="0.00"
+                   onlyNumbersEx
+                   [allowDecimal]="true"
+                   [maxValue]="100"
+                   [toFixed]="percentFractionDigits"
+                   [required]="isAttyFeesRequired"
+                   [suppressPasteIfValueIsIncorrect]="true"
+                   class="form-control text-right">
+          </div>
+        </div>
+      </card-row>
+    </card-col>
+
+    <card-col class="atty-percentage" *ngIf="!canEdit || !hasEditAttyFeesPermission || !hasActiveAccSettings(ledgerAccountGroupEnum.AttyFees) || !ledgerInfo.canChangeAttyFee || !allowUpdateFee(ledgerAccountGroupEnum.AttyFees)" [width]="160">
+      <card-row label="Contract Fee" [value]="form.value.contractFee | fractionPercentage"></card-row>
+    </card-col>
+  </ng-container>
+</ng-template>

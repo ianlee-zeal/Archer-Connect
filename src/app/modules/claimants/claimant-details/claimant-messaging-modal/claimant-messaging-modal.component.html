@@ -1,0 +1,33 @@
+<modal class="claimant-messaging-modal__wrapper" (close)="onClose()">
+  <modal-header>Project Messaging</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <div
+        data-test-id="messages"
+        *ngIf="projectMessages" class="message-list">
+        <div
+          data-test-id="messages-item"
+          *ngFor="let item of projectMessages" class="message-container">
+          <div
+            data-test-id="messages-title"
+            class="message-title">
+            {{ item.sectionType.name }}
+          </div>
+          <div
+            data-test-id="messages-text"
+            class="message-text">
+            {{ item.customMessage || item.messageType.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--secondary"
+      (click)="onClose()">
+        Close
+    </button>
+  </modal-footer>
+</modal>

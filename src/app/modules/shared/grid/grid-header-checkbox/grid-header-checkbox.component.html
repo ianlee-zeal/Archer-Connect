@@ -1,0 +1,7 @@
+<div class="custom-header">
+  <div [ngClass]="{ 'custom-header__no-floating-filter': !floatingFilter, 'custom-header__pinned' : pinned }">
+    <input [(ngModel)]="selectAll" type="checkbox" (change)="onClick($event)" id="{{'checkboxInput-' + gridId}}" />
+    <label for="{{'checkboxInput-' + gridId}}"></label>
+  </div>
+  <div>{{ params.displayName }}</div>
+</div>

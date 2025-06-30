@@ -1,0 +1,126 @@
+<form [formGroup]="form" *ngIf="canEdit; else viewTemplate" novalidate>
+  <card hideSeparator>
+    <card-col [width]="470" [labelWidth]="128">
+      <card-row label="First Name" inputId="firstName" [control]="form.get('firstName')" required>
+        <input type="text" class="form-control" formControlName="firstName" id="firstName" maxLength="100" appAutoFocus cardValue />
+      </card-row>
+      <card-row label="Middle Name" inputId="middleName" [control]="form.get('middleName')">
+        <ng-container cardValue>
+          <input type="text" class="form-control" formControlName="middleName" id="middleName" maxLength="255" />
+        </ng-container>
+      </card-row>
+      <card-row label="Last Name" inputId="lastName" [control]="form.get('lastName')" required>
+        <input type="text" class="form-control" formControlName="lastName" id="lastName" maxLength="100" required cardValue />
+      </card-row>
+      <card-row label="Prefix" inputId="prefix" [control]="form.get('prefix')">
+        <input type="text" class="form-control" formControlName="prefix" id="prefix" maxLength="255" cardValue />
+      </card-row>
+      <card-row label="Suffix" inputId="suffix" [control]="form.get('suffix')">
+        <input type="text" class="form-control" formControlName="suffix" id="suffix" maxLength="255" cardValue />
+      </card-row>
+      <card-row label="Attention To" inputId="attentionTo" [control]="form.get('attentionTo')">
+        <input type="text" class="form-control" formControlName="attentionTo" id="attentionTo" maxLength="255" cardValue />
+      </card-row>
+    </card-col>
+    <card-col [labelWidth]="160" [width]="275">
+      <card-row label="Organization" inputId="organization" [control]="form.get('organizationName')" alignContentVertically>
+        <app-clearable-input
+          cursorPointer
+          [form]="form"
+          controlName="organizationName"
+          [isReadonly]="true"
+          id="organizationName"
+          placeholder="Select Organization"
+          cardValue
+          [width]="300"
+          (click)="onOpenOrganizationSearchModal()"
+          (clear)="onOrganizationClear()">
+        </app-clearable-input>
+      </card-row>
+      <card-row label="SSN" inputId="ssn" [control]="form.get('ssn')" >
+        <app-hidable-form-control
+          id="ssn"
+          [formGroup]="form"
+          formControlName="ssn"
+          mask="000-00-0000"
+          [isEditMode]="true"
+          [isFullValueLoaded]="isSsnLoaded"
+          [formatFunction]="formatSsn.bind(this)"
+          [editPermissions]="ssnEditPermissions"
+          (onViewFull)="viewFullSSN()"
+          cardValue>
+        </app-hidable-form-control>
+      </card-row>
+      <card-row label="Other Identifier" inputId="otherIdentifier" [control]="form.get('otherIdentifier')" >
+        <app-hidable-form-control
+          id="otherIdentifier"
+          [formGroup]="form"
+          formControlName="otherIdentifier"
+          mask="000-00-0000"
+          [isEditMode]="true"
+          [isFullValueLoaded]="isOtherIdentifierLoaded"
+          [formatFunction]="formatOtherIdentifier.bind(this)"
+          [editPermissions]="ssnEditPermissions"
+          (onViewFull)="viewFullOtherIdentifier()"
+          cardValue>
+        </app-hidable-form-control>
+      </card-row>
+      <card-row label="Date of Birth" inputId="dobSelector" [control]="form.get('dateOfBirth')">
+        <app-date-selector [maxDate]="todaysDate" id="dobSelector" formControlName="dateOfBirth" (onChange)="validateDateRange()" cardValue></app-date-selector>
+      </card-row>
+      <card-row label="Date of Death" inputId="dodSelector" [control]="form.get('dateOfDeath')">
+        <app-date-selector [maxDate]="todaysDate" id="dodSelector" formControlName="dateOfDeath" (onChange)="validateDateRange()" cardValue></app-date-selector>
+      </card-row>
+      <card-row label="Marital Status" inputId="maritalStatus" [control]="form.get('maritalStatus')">
+        <app-select [optionId]="person.maritalStatus?.id" optionAsValue id="maritalStatus" [options]="maritalStatuses$ | async" formControlName="maritalStatus" cardValue></app-select>
+      </card-row>
+      <card-row label="Gender" inputId="gender" [control]="form.get('gender')">
+        <app-select id="gender" [options]="genders$ | async" formControlName="gender" cardValue></app-select>
+      </card-row>
+    </card-col>
+  </card>
+</form>
+
+<ng-template #viewTemplate>
+  <card hideSeparator>
+    <card-col [width]="470" [labelWidth]="128">
+      <card-row class="text-break" label="First Name" [value]="person.firstName"></card-row>
+      <card-row class="text-break" label="Middle Name" [value]="person.middleName"></card-row>
+      <card-row class="text-break" label="Last Name" [value]="person.lastName"></card-row>
+      <card-row class="text-break" label="Prefix" [value]="person.prefix"></card-row>
+      <card-row class="text-break" label="Suffix" [value]="person.suffix"></card-row>
+      <card-row class="text-break" label="Attention To" [value]="person.attentionTo"></card-row>
+    </card-col>
+    <card-col [labelWidth]="160" [width]="300">
+      <card-row label="Organization" [value]="form.get('organizationName')?.value"></card-row>
+      <card-row label="SSN">
+        <app-hidable-form-control
+          [model]="person.ssn"
+          [isFullValueLoaded]="isSsnLoaded"
+          [formatFunction]="formatSsn.bind(this)"
+          [readPermissions]="ssnReadPermissions"
+          (onViewFull)="viewFullSSN()"
+          cardValue>
+        </app-hidable-form-control>
+      </card-row>
+      <card-row label="Other Identifier">
+        <app-hidable-form-control
+          [model]="person.otherIdentifier"
+          [isFullValueLoaded]="isOtherIdentifierLoaded"
+          [formatFunction]="formatOtherIdentifier.bind(this)"
+          [readPermissions]="ssnReadPermissions"
+          (onViewFull)="viewFullOtherIdentifier()"
+          cardValue>
+        </app-hidable-form-control>
+      </card-row>
+      <card-row label="Date of Birth" [value]="person.dateOfBirth | dateFormat"></card-row>
+      <card-row label="Date of Death" [value]="person.dateOfDeath | dateFormat"></card-row>
+      <card-row label="Marital Status">
+        <ng-container *ngIf="maritalStatuses$ | async as maritalStatuses" cardValue>
+          <span class="card-row__value form-control-plaintext">{{ person.maritalStatus ? person.maritalStatus.name : '-' }}</span>
+        </ng-container>
+      </card-row>
+      <card-row label="Gender" [value]="person.gender"></card-row>
+    </card-col>
+  </card>
+</ng-template>

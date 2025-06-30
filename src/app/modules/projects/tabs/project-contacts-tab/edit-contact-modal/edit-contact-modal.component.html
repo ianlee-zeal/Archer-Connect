@@ -1,0 +1,73 @@
+<modal (close)="onCancel()">
+  <modal-header>Edit Project Contact</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="form">
+        <div class="project-contact">
+          <card header='Contact Details' hideSeparator>
+            <card-col [width]="450" [labelWidth]="155">
+              <card-row label="Contact" [value]="contact?.projectContact?.fullName"></card-row>
+              <card-row label="User" [value]="contact?.projectContact?.user?.idName"></card-row>
+              <card-row class='project-contact__organization' maxContentWidth='280' label="Organization" [value]="contact?.organizationIdName"></card-row>
+              <card-row label="Primary Org Type" [value]="contact?.viewPrimaryOrgTypeName"></card-row>
+              <card-row label="Project Role" [value]="contact?.contactRole?.name"></card-row>
+              <card-row label="Status" inputId="status" [control]="form.get('status')" required>
+                <app-select id="status" [options]="statusOptions" formControlName="status" optionAsValue cardValue required fullwidth></app-select>
+              </card-row>
+            </card-col>
+          </card>
+          <card header='Information Routing' hideSeparator>
+            <card-col [width]="480" [labelWidth]="220">
+            <card-row label="CC on Lien Status Report?" inputId="ccOnLienStatusReport">
+            <label class="form-check h-100" cardValue>
+              <input type="checkbox" class="form-check-input" formControlName="ccOnLienStatusReport"
+                id="ccOnLienStatusReport" />
+              <span></span>
+            </label>
+          </card-row>
+          <card-row label="CC on Invoice?" inputId="ccOnInvoice">
+            <label class="form-check h-100" cardValue>
+              <input type="checkbox" class="form-check-input" formControlName="ccOnInvoice"
+                id="ccOnInvoice" />
+              <span></span>
+            </label>
+          </card-row>
+          <card-row label="Deficiency Report" inputId="ccOnDeficiencyReport">
+            <label class="form-check h-100" cardValue>
+              <input type="checkbox" class="form-check-input" formControlName="ccOnDeficiencyReport"
+                id="ccOnDeficiencyReport" />
+              <span></span>
+            </label>
+          </card-row>
+          <card-row label="QSF Report" inputId="ccOnQsfReport">
+            <label class="form-check h-100" cardValue>
+              <input type="checkbox" class="form-check-input" formControlName="ccOnQsfReport"
+                id="ccOnQsfReport" />
+              <span></span>
+            </label>
+          </card-row>
+          </card-col>
+          </card>
+        </div>
+      
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="submit" 
+            asyncButton
+            [ngClass]="{ disabled: form.invalid || !form.dirty}"
+            [disabled]="form.invalid || !form.dirty"
+            [awaitedActionTypes]="awaitedActionTypes"
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            (click)="save()"
+            (asyncFinished)="onCancel($event)">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Save
+    </button>
+</modal-footer>
+</modal> 

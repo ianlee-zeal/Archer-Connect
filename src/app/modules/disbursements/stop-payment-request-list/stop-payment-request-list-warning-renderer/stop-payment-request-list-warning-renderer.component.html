@@ -1,0 +1,4 @@
+<div class="stop-payment-cell-renderer" *ngIf="params.value as value">
+    <img class="stop-payment-cell-renderer__icon"
+        [ngClass]="{ 'stop-payment-cell-renderer__icon--hidden': !value }" [src]="getIcon(value)" *ngIf="value" />
+</div>

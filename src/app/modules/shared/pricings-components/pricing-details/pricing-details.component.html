@@ -1,0 +1,64 @@
+<ng-container *ngIf="variablePricingType === variablePricingTypeEnum.TieredPrice">
+    <ng-container *ngTemplateOutlet="tieredPricings; context:{pricing:details}"></ng-container>
+</ng-container>
+
+<ng-container *ngIf="variablePricingType === variablePricingTypeEnum.SlidingScale">
+    <ng-container *ngTemplateOutlet="slidingScalePricings; context:{pricing:details}"></ng-container>
+</ng-container>
+
+<ng-container *ngIf="variablePricingType === variablePricingTypeEnum.PercentageOfSavings">
+    <ng-container *ngTemplateOutlet="percentageOfSavingPricings; context:{pricing:details}"></ng-container>
+</ng-container>
+
+<card-row [maxContentWidth]="500" [containerWidth]="760" [labelWidth]="250" label="Default Price"
+    [value]="format.toPrice(details?.defaultPrice, details?.defaultPriceType)">
+</card-row>
+
+
+<ng-template #tieredPricings let-p="pricing">
+    <ng-container *ngFor="let t of p.tieredPricings">
+        <card-row [maxContentWidth]="500" [containerWidth]="760" [labelWidth]="250" label="Variable Pricing Type"
+            value="Tiered Pricing">
+        </card-row>
+
+        <card-row [maxContentWidth]="500" [containerWidth]="760" [labelWidth]="250" label="Range"
+            [value]="format.toPriceRange(t.lowerValue, t.upperValue)">
+        </card-row>
+
+        <card-row [maxContentWidth]="500" [containerWidth]="760" [labelWidth]="250" label="Tier Price"
+            [value]="format.toPrice(t.tierPrice, t.priceType)">
+        </card-row>
+    </ng-container>
+</ng-template>
+
+<ng-template #slidingScalePricings let-p="pricing">
+    <ng-container *ngFor="let s of p.slidingScalePricings">
+        <card-row [maxContentWidth]="500" [containerWidth]="760" [labelWidth]="250" label="Variable Pricing Type"
+            value="Sliding Scale">
+        </card-row>
+
+        <card-row [maxContentWidth]="500" [containerWidth]="760" [labelWidth]="250" label="Settlement Amount"
+            [value]="format.toPriceRange(s.lowerValue, s.upperValue)">
+        </card-row>
+
+        <card-row [maxContentWidth]="500" [containerWidth]="760" [labelWidth]="250" label="Tier Price"
+            [value]="format.toPrice(s.tierPrice, s.priceType)">
+        </card-row>
+
+        <card-row [maxContentWidth]="500" [containerWidth]="760" [labelWidth]="250" label="Injury Categories"
+            [value]="format.toInjuryCategoryTitles(s.injuryCategories) | join">
+        </card-row>
+    </ng-container>
+</ng-template>
+
+<ng-template #percentageOfSavingPricings let-p="pricing">
+    <ng-container *ngFor="let pos of p.percentageOfSavingsPricings">
+        <card-row [maxContentWidth]="500" [containerWidth]="760" [labelWidth]="250" label="Variable Pricing Type"
+            value="Percentage Of Savings">
+        </card-row>
+
+        <card-row [maxContentWidth]="500" [containerWidth]="760" [labelWidth]="250" label="Percentage Of Saving"
+            [value]="format.toPrice(pos.percentageOfSavings, priceTypeEnum.Percentage)">
+        </card-row>
+    </ng-container>
+</ng-template>

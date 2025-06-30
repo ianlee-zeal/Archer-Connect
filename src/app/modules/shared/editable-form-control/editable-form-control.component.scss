@@ -1,0 +1,38 @@
+
+.editable-form-control {
+    font-weight: bold;
+}
+
+.action-button {
+  font-size: 12px;
+  font-weight: 600;
+  background-color: transparent;
+  white-space: nowrap;
+
+  &-edit {
+    &:before {
+      content: url("../../../../assets/images/action_ic_edit.svg");
+      vertical-align: middle;
+      margin-right: 4px;
+      margin-left: 10px;
+    }
+  }
+
+  &-save {
+    &:before {
+      content: url("../../../../assets/images/action_ic_save.svg");
+      vertical-align: middle;
+      margin-right: 4px;
+      margin-left: 4px;
+    }
+  }
+
+  &-cancel {
+    &:before {
+      content: url("../../../../assets/images/action_cancel.svg");
+      vertical-align: middle;
+      margin-right: 4px;
+      margin-left: 4px;
+    }
+  }
+}

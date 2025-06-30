@@ -1,0 +1,16 @@
+@import "src/styles.variables.scss";
+
+.alert-archer {
+    background: linear-gradient(88.15deg, #050041 -31.96%, #090074 32.68%, #4174B1 65.1%, #050041 97.53%);
+    margin-bottom: 0;
+    padding: 18px;
+    min-height: 60px;
+    border-radius: 0;
+    align-content: center;
+}
+
+::ng-deep quill-view.alert-archer-content {
+    .ql-editor {
+        color: white;
+    }
+}

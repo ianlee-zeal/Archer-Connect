@@ -1,0 +1,56 @@
+<modal (close)="cancel()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="form" >
+        <card hideSeparator>
+          <card-col [width]="580" [labelWidth]="155">
+            <card-row label="Name" inputId="name" [control]="form.get('name')" required>
+              <input id="name" type="text"  class="form-control" formControlName="name" cardValue>
+            </card-row>
+            <card-row label="Description" inputId="description" [control]="form.get('description')">
+              <input id="description" type="text"  class="form-control" formControlName="description" cardValue>
+            </card-row>
+            <card-row *ngIf="!documentTypeId" label="Entity Type" [hideText]="true" required>
+              <div class="multiselect-container" cardValue>
+                <app-multiselect-list
+                    enableSelectAll
+                    [isSelectAllChecked]="isAllEntityTypesChecked"
+                    [options]="entityTypes"
+                    [width]="300"
+                    (select)="onSelectEntityType($event)"
+                    (selectAll)="onSelectAllEntityTypes($event)">
+                </app-multiselect-list>
+            </div>
+            </card-row>
+            <card-row *ngIf="documentTypeId" label="Entity Type" inputId="entityType" [control]="form.get('entityTypeId')" required>
+              <app-select id="entityType" [options]="entityTypes" formControlName="entityTypeId" cardValue fullwidth></app-select>
+            </card-row>
+            <card-row label="Product Category" inputId="productCategory" [control]="form.get('productCategoryId')">
+              <app-select id="productCategory" [options]="productCategories$ | async" formControlName="productCategoryId" cardValue fullwidth></app-select>
+            </card-row>
+            <card-row label="Status" inputId="status" [control]="form.get('isActive')">
+              <app-select id="status" [options]="statuses" formControlName="isActive" cardValue fullwidth></app-select>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="cancel()">
+      Cancel
+    </button>
+    <button
+      asyncButton
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      [awaitedActionTypes]="awaitedSaveActionTypes"
+      [ngClass]="{ 'disabled': form.invalid }"
+      [disabled]="form.invalid"
+      (click)="save()">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Save
+    </button>
+  </modal-footer>
+</modal>

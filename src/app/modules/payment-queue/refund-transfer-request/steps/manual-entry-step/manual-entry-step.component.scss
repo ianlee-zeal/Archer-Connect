@@ -1,0 +1,102 @@
+@import "src/styles/variables.scss";
+@import "src/styles/_mixins.scss";
+
+.manual-entry-header {
+  display: flex;
+  background-color: #f7f7f7;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.manual-entry-header__column {
+  flex: 1;
+  text-align: left;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+.lien-tooltip {
+  position: relative;
+  bottom: 4px;
+}
+
+.lien-tooltip ::ng-deep ngb-tooltip-window {
+  width: 250px !important;
+}
+
+.data-entry-container {
+  margin-top: 10px;
+}
+
+.data-entry-row {
+  display: flex;
+  align-items: flex-start;
+  margin-left: -15px;
+}
+
+.data-entry-column {
+  flex: 1;
+  padding: 5px;
+}
+
+.validation-error {
+  color: red;
+  font-size: 0.875rem;
+}
+
+.add-row-button {
+  float: right;
+  margin-right: 10px;
+}
+
+.pagination-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 8px;
+}
+
+.pager {
+  display: flex;
+  font-size: $pager-font-size;
+  color: $pager-color;
+
+  &__button {
+    min-width: 20px;
+    height: 20px;
+    border: none;
+    background-color: transparent;
+    color: inherit;
+
+    &:focus {
+      outline: none;
+    }
+
+    &--page {
+      line-height: 18px;
+    }
+
+    &--first {
+      background: url('/assets/images/pager-double-left.png') no-repeat center;
+    }
+
+    &--last {
+      background: url('/assets/images/pager-double-right.png') no-repeat center;
+    }
+
+    &--prev {
+      background: url('/assets/images/pager-angle-left.png') no-repeat center;
+    }
+
+    &--next {
+      background: url('/assets/images/pager-angle-right.png') no-repeat center;
+    }
+
+    &--selected {
+      color: $white;
+      background-color: $yellow;
+      font-weight: bold;
+      border-radius: 2px;
+    }
+  }
+}

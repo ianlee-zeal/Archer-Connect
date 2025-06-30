@@ -1,0 +1,8 @@
+<ng-container *ngIf="canEdit; else engagePreview">
+                 <app-select id="status" [options]="statusOptions" [model]="status"
+                (onModelChange)="onChangeStatus($event)" optionAsValue cardValue></app-select>
+</ng-container>
+  
+  <ng-template #engagePreview>
+    {{ this.status?.name }}
+  </ng-template>

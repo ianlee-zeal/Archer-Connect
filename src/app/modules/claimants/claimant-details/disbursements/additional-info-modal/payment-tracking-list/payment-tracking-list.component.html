@@ -1,0 +1,21 @@
+<div class="payment-tracking-list-container">
+    <div class="total-count" *ngIf="paymentTrackingTotalCount$ | async as paymentTrackingTotalCount">
+        <span> 
+            Showing <span class="fw-bold">{{paymentTrackingTotalCount}}</span> records
+        </span>
+    </div>
+<app-grid 
+    entityLabel="Payment Tracking" 
+    [gridId]="gridId" 
+    [gridOptions]="gridOptions" 
+    (gridReady)="gridReady($event)"
+    hideBottomStatusbar="true"
+    hideTopStatusbar="true"
+    class=""
+    [skipSetContentHeight]="skipSetContentHeight"
+    [enabledAutoHeight]="enabledAutoHeight"
+    [isContentAutoHeight]="isContentAutoHeight"
+    isPagerEnabled="false"
+    (loadData)="loadData($event)">
+</app-grid>
+</div>

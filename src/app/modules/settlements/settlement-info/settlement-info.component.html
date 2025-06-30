@@ -1,0 +1,11 @@
+<ng-container *ngIf="canEdit; else viewTemplate">
+  <form novalidate *ngIf="settlement$ | async as settlement" (change)="onChange()">
+    <app-settlement-template [settlement]="settlement"></app-settlement-template>
+  </form>
+</ng-container>
+
+<ng-template #viewTemplate>
+  <ng-container *ngIf="settlement$ | async as settlement">
+    <app-settlement-template [settlement]="settlement" [canEdit]="false"></app-settlement-template>
+  </ng-container>
+</ng-template>

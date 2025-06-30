@@ -1,0 +1,95 @@
+
+<div class="messages-container">
+  <div class="filters-container">
+    <search-box
+      #searchBox
+      [userId]="userId"
+      (onModelChange)="onSearchTermChange($event)">
+    </search-box>
+    <app-new-select
+      #projectSelect
+      [options]="availableJiraProjects"
+      [isMultiSelect]="true"
+      [isSearchable]="true"
+      [customSearch]="true"
+      [scrollableLoader]="true"
+      [label]="'Project'"
+      [isFinalScroll]="isAvailableJiraProjectsLastPage"
+      [loading]="availableProjectsLoading$ | async"
+      [clearOptionsBtnAvailable]="false"
+      (onModelChange)="onProjectChange($event)"
+      (onScrollLoad)="projectsFilterFetch($event)"
+      (onSearch)="onSearchTermProject($event)"
+    ></app-new-select>
+    <app-new-select
+      #statusSelect
+      [options]="statuses$ | async"
+      [isMultiSelect]="true"
+      [isSearchable]="false"
+      [label]="'Status'"
+      (onModelChange)="onStatusChange($event)"
+    ></app-new-select>
+    <app-new-select
+      #requestTypeSelect
+      [options]="requestTypes$ | async"
+      [isMultiSelect]="true"
+      [isSearchable]="true"
+      [label]="'Request Type'"
+      (onModelChange)="onRequestTypeChange($event)"
+    ></app-new-select>
+    <app-jira-date-range
+      #updatedDateRange
+      dropdownLabel="Date Updated"
+      (onModelChange)="onUpdatedDateChange($event)"
+    ></app-jira-date-range>
+    <app-jira-date-range
+      #createdDateRange
+      dropdownLabel="Date Created"
+      (onModelChange)="onCreatedDateChange($event)"
+    ></app-jira-date-range>
+    <button class="clear-filters-btn" [disabled]="!hasActiveFilters()" (click)="clearFilters()">Clear Filters</button>
+    <button *ngIf="canCompose" style="background-color: #050041; color: #FFFFFF; border-radius: 60px; padding: 8px 25px;" (click)="openComposeMessageModal()">Compose New Message</button>
+  </div>
+  <!-- List View -->
+  <div class="scroll-view list-view" *ngIf="showListView">
+    <div class="messages-list">
+      <div id="scrollable-container" class="grid-container">
+        <jira-list
+          [data]="messages">
+        </jira-list>
+      </div>
+      <div *ngIf="!isLastPage" #anchor class="loading-container">
+        <div class="loading-text">Loading...</div>
+      </div>
+    </div>
+    <div *ngIf="isLastPage && messages.length == 0" class="no-records">
+      <div>No records</div>
+    </div>
+  </div>
+  <!-- Preview View -->
+  <div class="preview-view-container" *ngIf="!showListView">
+    <div class="scroll-view preview-view-list">
+      <div class="messages-list">
+        <div id="scrollable-container_2" class="grid-container">
+          <jira-list-preview
+            (cardClick)="selectIssue($event)"
+            [data]="messages">
+          </jira-list-preview>
+        </div>
+        <div *ngIf="!isLastPage" #anchor class="loading-container">
+          <div class="loading-text">Loading...</div>
+        </div>
+      </div>
+      <div *ngIf="isLastPage && messages.length == 0" class="no-records">
+        <div>No records</div>
+      </div>
+    </div>
+    <div class="scroll-view preview-view-detail" *ngIf="messages.length > 0">
+      <jira-message-preview
+        [data]="selectedIssue"
+        [comments]="comments"
+        [showFullScreenIcon]="showFullScreenIcon">
+      </jira-message-preview>
+    </div>
+  </div>
+</div>

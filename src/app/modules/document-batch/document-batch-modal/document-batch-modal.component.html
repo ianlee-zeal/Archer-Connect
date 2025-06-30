@@ -1,0 +1,43 @@
+<div class="document-batch-modal">
+  <modal (close)="close()">
+    <modal-header>
+      <span>Document Batch Upload Progress</span>
+    </modal-header>
+    <modal-body>
+      <div class="modal-section modal-content" >
+        <div *ngIf="uploadTask.totalUploaded >= 0 && uploadTask.totalFiles">
+          <div>
+            <div>Uploading documents for Batch Id: {{ uploadTask.batchId }}</div>
+            <div>
+              Please do not close this window until the upload is complete.
+            </div>
+          </div>
+          <div class="upload-progress-text">
+            {{ uploadTask.totalUploaded }} / {{ uploadTask.totalFiles }}
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" [style.width]="getProgressBarWidth()"></div>
+          </div>
+        </div>
+      </div>
+    </modal-body>
+    <modal-footer class="modal-footer">
+      <div>
+        <button
+          [disabled]="!uploadTask.isUploading"
+          (click)="cancel()"
+          class="btn modal-footer__btn modal-footer__btn--secondary"
+        >
+          Cancel
+        </button>
+        <button
+          [disabled]="uploadTask.isUploading"
+          (click)="complete()"
+          class="btn modal-footer__btn modal-footer__btn--primary"
+        >
+          Complete
+        </button>
+      </div>
+    </modal-footer>
+  </modal>
+</div>

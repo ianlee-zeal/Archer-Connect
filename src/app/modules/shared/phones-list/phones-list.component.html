@@ -1,0 +1,64 @@
+<form novalidate class="phones-list" *ngIf="form && canEdit; else viewTemplate" [formGroup]="form" (change)="onChange()">
+  <card [maxWidth]="610" header="Phones">
+    <card-col [width]="550">
+      <ng-container formArrayName="phoneList" *ngFor="let group of phoneListGroup.controls; let i = index;">
+        <ng-container [formGroupName]="i">
+          <ng-container [ngTemplateOutlet]="phoneTemplate"
+                        [ngTemplateOutletContext]="{ form: group, index: i }">
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="newPhoneGroup"
+                    [ngTemplateOutlet]="phoneTemplate"
+                    [ngTemplateOutletContext]="{ form: newPhoneGroup }">
+      </ng-container>
+    </card-col>
+    <card-col [width]="90">
+      <button type="button" class="btn btn-secondary btn-add phones-list__add-btn" (click)="onAddNew()" [disabled]="phoneListGroup.length > 9">Add</button>
+    </card-col>
+  </card>
+</form>
+
+<ng-template #phoneTemplate let-form='form' let-index='index'>
+  <ng-container [formGroup]="form">
+    <card-row [inputId]="'phone' + (index + 1)" [control]="form.get('number')" [labelWidth]="128">
+      <ng-container cardLabel>
+        <select class="form-control phones-list__phone-type-selector" formControlName="phoneTypeId">
+          <option *ngFor="let phoneType of phoneTypes" [ngValue]="phoneType.id">
+            {{ phoneType.name }}
+          </option>
+        </select>
+      </ng-container>
+      <div class="card-row__content" cardValue>
+        <input type="text" mask="(000) 000-0000" formControlName="number" class="form-control phones-list__phone-input" placeholder="Phone number">
+        <label class="form-check-label">
+          <input type="checkbox" formControlName="isPrimary" class="form-check-input" (click)="onCheckPrimary(form.value)">
+          <span>Primary</span>
+        </label>
+        <button type="button" class="btn btn-secondary btn-icon btn-icon-remove btn-icon-remove-small phones-list__remove-btn" (click)="onDelete(index)"></button>
+      </div>
+    </card-row>
+  </ng-container>
+</ng-template>
+
+<ng-template #viewTemplate>
+  <card [maxWidth]="610" header="Phones">
+    <ng-container *ngIf="phones?.length > 0; else noRecordsTemplate">
+      <card-col [width]="500">
+        <ng-container *ngFor="let phone of phones">
+          <card-row [label]="phone.phoneType.name" [labelWidth]="128">
+            <div class="form-control-plaintext" cardValue>
+              {{ phone.number | phone }}
+              <span class="tag tag--check" *ngIf="phone.isPrimary">Primary</span>
+            </div>
+          </card-row>
+        </ng-container>
+      </card-col>
+    </ng-container>
+  </card>
+</ng-template>
+
+<ng-template #noRecordsTemplate>
+  <div class="col phones-list__no-records">No records</div>
+</ng-template>

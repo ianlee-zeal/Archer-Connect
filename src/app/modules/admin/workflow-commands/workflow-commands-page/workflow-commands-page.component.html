@@ -1,0 +1,74 @@
+<app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+<app-context-bar [title]="title"></app-context-bar>
+
+<div class="page">
+  <div class="page-content">
+        <form *ngIf="canEdit; else viewTemplate" [formGroup]="form" novalidate >
+          <card class="mb-0" header="Command Details">
+            <card-col [width]="500" [labelWidth]="labelWidth">
+              <card-row label="Name" inputId="name" [control]="form.get('name')" required>
+                <input type="text" class="form-control" formControlName="name" id="name" maxLength="50" cardValue />
+              </card-row>
+              <card-row label="Description" inputId="description" [control]="form.get('description')">
+                <div class="textarea-wrapper" cardValue>
+                  <textarea id="description" maxlength="1000" class="form-control textarea-container" formControlName="description" cardValue ></textarea>
+                </div>
+              </card-row>
+            </card-col>
+          </card>
+          <card hideSeparator>
+            <card-col [width]="600" [labelWidth]="labelWidth">
+              <card-row label="Product Type" inputId="productType" [control]="form.get('productType')" [maxContentWidth]="600">
+                <app-select cardValue optionAsValue id="productType" [options]="paymentTypes$ | async" formControlName="productType"
+                placeholder="Select Product Type"></app-select>
+              </card-row>
+              <card-row label="Begin Stage" inputId="beginStatus" [control]="form.get('beginStatus')" [maxContentWidth]="600" required>
+                <app-select cardValue optionAsValue id="beginStatus" [options]="beginStages$ | async" formControlName="beginStatus"
+                placeholder="Select Begin Stage"></app-select>
+              </card-row>
+              <card-row label="End Stage" inputId="endStatus" [control]="form.get('endStatus')" [maxContentWidth]="600" required>
+                <app-select cardValue optionAsValue id="endStatus" [options]="endStages$ | async" formControlName="endStatus"
+                placeholder="Select End Stage"></app-select>
+              </card-row>
+              <card-row label="Management Instructions" inputId="managementInstructions" [control]="form.get('managementInstructions')">
+                <div class="textarea-wrapper" cardValue>
+                  <textarea id="managementInstructions" maxlength="1000" class="form-control textarea-container" formControlName="managementInstructions" cardValue ></textarea>
+                </div>
+              </card-row>
+              <card-row label="Fields To Update" inputId="fieldsToUpdate" [control]="form.get('fieldsToUpdate')">
+                <div class="textarea-wrapper" cardValue>
+                  <textarea id="fieldsToUpdate" maxlength="1000" class="form-control textarea-container" formControlName="fieldsToUpdate" cardValue ></textarea>
+                </div>
+              </card-row>
+              <card-row label="Automatic Note" inputId="automaticNote" [control]="form.get('automaticNote')">
+                <div class="textarea-wrapper" cardValue>
+                  <textarea id="automaticNote" maxlength="1000" class="form-control textarea-container" formControlName="automaticNote" cardValue ></textarea>
+                </div>
+              </card-row>
+            </card-col>
+          </card>
+        </form>
+
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<ng-template #viewTemplate>
+  <card header="Command Details">
+    <card-col [width]="800" [labelWidth]="250">
+      <card-row label="ID" [value]="workflowCommandDetails?.id"></card-row>
+      <card-row label="Name" [value]="workflowCommandDetails?.name"></card-row>
+      <card-row label="Description" [value]="workflowCommandDetails?.description"></card-row>
+    </card-col>
+  </card>
+  <card>
+    <card-col [width]="800" [labelWidth]="250">
+      <card-row label="Product Type" [value]="workflowCommandDetails?.productType"></card-row>
+      <card-row label="Begin Stage" [value]="workflowCommandDetails?.beginStatus"></card-row>
+      <card-row label="End Stage" [value]="workflowCommandDetails?.endStatus"></card-row>
+      <card-row label="Management Instructions" [value]="workflowCommandDetails?.managementInstructions"></card-row>
+      <card-row label="Fields to Update" [value]="workflowCommandDetails?.fieldsToUpdate"></card-row>
+      <card-row label="Automatic Note" [value]="workflowCommandDetails?.automaticNote"></card-row>
+    </card-col>
+  </card>
+</ng-template>

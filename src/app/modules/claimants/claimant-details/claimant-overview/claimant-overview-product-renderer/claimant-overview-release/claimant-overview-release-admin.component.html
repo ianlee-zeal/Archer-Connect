@@ -1,0 +1,26 @@
+<ng-container>
+  <div class="service-block">
+    <div *ngIf="releaseAdmin$ | async as data" class="service-header">
+      <div>
+        <span class="service-link line-part">Release Admin</span>
+        <span class="status line-part"
+              [ngClass]="{
+           'status--pending': data.service?.status?.id === statuses.Pending,
+           'status--finalized': data.service?.status?.id === statuses.Finalized
+         }">{{ data?.service?.status?.name }}</span>
+      </div>
+    </div>
+
+    <app-grid entityName="ReleaseAdmin"
+              [gridId]="gridId"
+              [gridOptions]="gridOptions"
+              [canReorderColumns]="true"
+              [isContentAutoHeight]="true"
+              [enabledAutoHeight]="false"
+              hideTopStatusbar="true"
+              hideBottomStatusbar="true"
+              (gridReady)="onGridReady($event)"
+              [rowData]="items$ | async">
+    </app-grid>
+  </div>
+</ng-container>

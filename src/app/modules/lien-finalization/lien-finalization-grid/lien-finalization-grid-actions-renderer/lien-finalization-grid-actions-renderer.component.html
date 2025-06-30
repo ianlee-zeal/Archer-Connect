@@ -1,0 +1,31 @@
+<div class="grid-actions">
+  <div class="grid-actions__action-wrapper">
+    <button
+    *ngIf="startFinalizationButtonShow"
+    type="button"
+    class="btn-grid-action btn-run-process"
+    (click)="onStartFinalization()"
+    title="Run Finalization Tool"
+  ></button>
+    <button
+      *ngIf="downloadResultsButtonShow"
+      type="button"
+      class="btn-grid-action btn-download"
+      (click)="onDownloadResultsClick()"
+      title="Download Results"
+    ></button>
+    <button
+      *ngIf="cancelButtonShow"
+      type="button"
+      class="btn-grid-action btn-cancel"
+      (click)="onCancelClick()"
+      title="Cancel a Batch"
+    ></button>
+    <button 
+      *ngIf="goToLPMButtonShow"
+      type="button"
+      class="btn-grid-action btn-external-link"
+      (click)="onOpenInLPM()"
+      title="Open in LPM"></button>
+  </div>
+</div>

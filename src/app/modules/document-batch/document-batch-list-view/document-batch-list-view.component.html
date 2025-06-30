@@ -1,0 +1,13 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+  <app-context-bar [title]="'Document Batches'"></app-context-bar>
+  <div class="page-content">
+    <app-grid
+      [gridOptions]="gridOptions"
+      (gridReady)="gridReady($event)"
+      (loadData)="loadData($event)"
+      [gridId]="gridId"
+      entityLabel="Document Batches">
+    </app-grid>
+  </div>
+</div>

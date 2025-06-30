@@ -1,0 +1,270 @@
+
+    <form [formGroup]="form" *ngIf="canEdit; else viewTemplate" novalidate >
+      <card [header]="header" class="mb-0" [hideSeparator]="!header" >
+        <card-col [width]="500" [labelWidth]="labelWidth">
+           <card-row
+            *ngIf="!isTemplateEntityType"
+            label="Template"
+            [labelWidth]="labelWidth"
+            inputId="template"
+            [control]="form.get('createdFromTemplateId')"
+            [containerWidth]="600">
+            <app-select
+              cardValue id="template"
+              class="w-100"
+              [options]="templateOptions"
+              formControlName="createdFromTemplateId"
+              placeholder="Select Template"></app-select>
+          </card-row>
+          <card-row label="Task Name" inputId="name" [control]="form.get('name')" *ngIf="!isTemplateEntityType" required>
+            <input type="text" class="form-control" formControlName="name" id="name" maxLength="50" cardValue />
+          </card-row>
+          <ng-container *ngIf="!isTemplateEntityType" [ngTemplateOutlet]="categoryTemplate"></ng-container>
+          <card-row label="Assigned to" inputId="assigneeUser" [control]="form.get('assigneeUser')" alignContentVertically>
+            <app-clearable-input
+              cursorPointer
+              [form]="form"
+              controlName="assigneeUser"
+              [isReadonly]="true"
+              id="assigneeUser"
+              placeholder="Select"
+              class="w-100"
+              cardValue
+              (click)="openAssigneeModal()"
+              (clear)="onClear('assigneeUser')"
+              width="300">
+            </app-clearable-input>
+          </card-row>
+          <ng-container *ngIf="isTemplateEntityType" [ngTemplateOutlet]="priorityTemplate"></ng-container>
+          <ng-container *ngIf="!isTemplateEntityType" [ngTemplateOutlet]="stageTemplate"></ng-container>
+          <card-row label="Team" inputId="teamId" [control]="form.get('teamId')" [containerWidth]="300" required>
+            <app-select cardValue id="teamId" [options]="teams$ | async" formControlName="teamId"
+              placeholder="Select Team" class="w-100">
+            </app-select>
+          </card-row>
+          <card-row *ngIf="!isTemplateEntityType" [label]="isTemplateEntityType ? 'Task Due Date' : 'Due Date'" inputId="dueDate" [control]="form.get('dueDate')" required>
+            <app-date-selector [title]="dueDateTooltip" id="dueDate" formControlName="dueDate" cardValue></app-date-selector>
+          </card-row>
+          <card-row
+            *ngIf="isTemplateEntityType"
+            label="Associated Stage"
+            [labelWidth]="labelWidth"
+            inputId="associatedStageId"
+            [control]="form.get('associatedStageId')"
+            [containerWidth]="600">
+          <app-select cardValue id="associatedStage" title="Used specifically for LPM" [options]="lienStages$ | async" title="Used specifically for LPM" formControlName="associatedStageId"
+            placeholder="Select Stage" class="w-100"></app-select>
+        </card-row>
+         <card-row
+            *ngIf="isTemplateEntityType"
+            label="Standard SLA"
+            labelWidth="labelWidth"
+            inputId="standardSLA"
+            [control]="form.get('standardSLA')"
+            [maxContentWidth]="100"
+            required>
+            <input type="text" class="form-control" formControlName="standardSLA" id="standardSLA" placeholder="Days" maxLength="50" cardValue />
+        </card-row>
+
+        </card-col>
+        <card-col [width]="800" [labelWidth]="170">
+          <ng-container *ngIf="!isTemplateEntityType" [ngTemplateOutlet]="priorityTemplate"></ng-container>
+          <card-row *ngIf="!isTemplateEntityType" label="Project" inputId="project" [control]="form.get('project')" [labelWidth]="200" required alignContentVertically>
+            <app-clearable-input
+              id="project"
+              [form]="form"
+              controlName="project"
+              [isReadonly]="true"
+              placeholder="Select Project"
+              cardValue
+              (click)="openProjectModal()"
+              (clear)="onClear('project')"
+              width="300">
+            </app-clearable-input>
+          </card-row>
+          <card-row *ngIf="!isTemplateEntityType" label="Blocked" inputId="blocked" [control]="form.get('blocked')">
+            <label class="form-check h-100" cardValue>
+              <input type="checkbox" class="form-check-input" formControlName="blocked" id="blocked" />
+              <span></span>
+            </label>
+          </card-row>
+          <card-row
+            *ngIf="!isTemplateEntityType && isBlockingDate"
+            label="Blocking Date"
+            [labelWidth]="labelWidth"
+            [containerWidth]="600"
+            inputId="blockingDate"
+            [control]="form.get('blockingDate')">
+              <app-date-selector id="blockingDate" formControlName="blockingDate" cardValue></app-date-selector>
+          </card-row>
+          <card-row
+            *ngIf="!isTemplateEntityType && isBlockingDate"
+            [labelWidth]="labelWidth"
+            [containerWidth]="600"
+            label="Responsible Party"
+            inputId="responsibleParty"
+            [control]="form.get('responsibleParty')"
+            [required]="isBlockingDate">
+              <input type="text" class="form-control" formControlName="responsibleParty" id="responsibleParty" maxLength="50" cardValue />
+          </card-row>
+          <ng-container *ngIf="isTemplateEntityType" [ngTemplateOutlet]="categoryTemplate"></ng-container>
+        </card-col>
+      </card>
+      <card hideSeparator>
+        <card-col [labelWidth]="labelWidth">
+          <card-row [label]="isTemplateEntityType ? 'Task Description' : 'Description'" inputId="description" [control]="form.get('description')">
+            <textarea id="description" maxlength="1000" class="form-control textarea-container" formControlName="description" cardValue ></textarea>
+          </card-row>
+        </card-col>
+      </card>
+      <card
+        *ngIf="!isTemplateEntityType"
+        header="Resolution Details"
+        hideSeparator>
+        <card-col [labelWidth]="labelWidth">
+          <card-row
+            label="Completed Date"
+            [control]="form.get('completedDate')">
+            <app-date-selector
+              id="completedDate"
+              formControlName="completedDate"
+              cardValue>
+            </app-date-selector>
+          </card-row>
+          <card-row
+            label="Resolution Summary"
+            inputId="resolutionSummary"
+            [control]="form.get('resolutionSummary')">
+            <textarea
+              id="resolutionSummary"
+              maxlength="1000"
+              class="form-control textarea-container"
+              formControlName="resolutionSummary"
+              cardValue>
+            </textarea>
+          </card-row>
+        </card-col>
+      </card>
+      <card hideSeparator *ngIf="!isTemplateEntityType">
+        <card-col [labelWidth]="labelWidth">
+          <card-row label="Attached Files">
+            <app-drag-and-drop-multiple
+              cardValue
+              class="drag-drop-modal textarea-container"
+              [selectedDocuments]="attachedDocuments"
+              [allowedFileTypes]="allowedExtensions">
+            </app-drag-and-drop-multiple>
+          </card-row>
+        </card-col>
+      </card>
+    </form>
+
+    <ng-template #categoryTemplate>
+      <form [formGroup]="form">
+        <card-row
+          [label]="isTemplateEntityType ? 'Task Category' : 'Category'"
+          [labelWidth]="labelWidth"
+          inputId="taskCategory"
+          [control]="form.get('taskCategoryId')"
+          [containerWidth]="600"
+          required>
+          <app-select cardValue id="feeScope" [options]="categories$ | async" formControlName="taskCategoryId"
+            placeholder="Select category" class="w-100"></app-select>
+        </card-row>
+      </form>
+    </ng-template>
+
+    <ng-template #stageTemplate>
+      <form [formGroup]="form">
+        <card-row
+          [label]="isTemplateEntityType ? 'Task Stage' : 'Stage'"
+          [labelWidth]="labelWidth"
+          inputId="stages"
+          [control]="form.get('stageId')"
+          [containerWidth]="600">
+          <app-select cardValue id="stage" [options]="stages$ | async" formControlName="stageId"
+          placeholder="Select Stage" class="w-100"></app-select>
+        </card-row>
+      </form>
+    </ng-template>
+
+    <ng-template #priorityTemplate>
+      <form [formGroup]="form">
+        <card-row
+          [label]="isTemplateEntityType ? 'Task Priority' : 'Priority'"
+          [labelWidth]="labelWidth"
+          inputId="taskPriority"
+          [control]="form.get('taskPriorityId')"
+          required
+          [containerWidth]="600">
+          <app-select cardValue id="taskPriority" [options]="priorities$ | async" formControlName="taskPriorityId"
+            placeholder="Select priority" class="w-100"></app-select>
+        </card-row>
+      </form>
+    </ng-template>
+
+
+<ng-template #viewTemplate>
+  <card *ngIf="!isTemplateEntityType; else taskTemplateView" [header]="header" [hideSeparator]="!header" class="mb-0">
+    <card-col [width]="500" [labelWidth]="labelWidth">
+      <card-row label="Template" [value]="record?.createdFromTemplate?.templateName"></card-row>
+      <card-row label="Task Name" [value]="record?.name"></card-row>
+      <card-row label="Category" [value]="record?.taskCategory?.name"></card-row>
+      <card-row label="Assigned to" [value]="record?.assigneeUser?.displayName"></card-row>
+      <card-row label="Stage" [value]="record?.stage?.name"></card-row>
+      <card-row label="Team" [value]="record?.team?.name"></card-row>
+      <card-row label="Due Date" [value]="record?.dueDate | dateFormat"></card-row>
+    </card-col>
+    <card-col [width]="800" [labelWidth]="170">
+      <card-row label="Priority" [value]="record?.taskPriority?.name"></card-row>
+      <card-row label="Project" [value]="record?.project?.name"></card-row>
+      <card-row label="Blocked" [value]="record?.blocked | yesNoPipe"></card-row>
+      <ng-container *ngIf="record?.blocked">
+        <card-row label="Blocking Date" [labelWidth]="170" [value]="record?.blockingDate | dateFormat"></card-row>
+        <card-row label="Responsible Party" [labelWidth]="170" [value]="record?.responsibleParty"></card-row>
+      </ng-container>
+    </card-col>
+  </card>
+  <card hideSeparator>
+    <card-col [width]="800" [labelWidth]="labelWidth">
+      <card-row [label]="!isTemplateEntityType ? 'Description' : 'Task Description'" [value]="record?.description" class="textarea-container"></card-row>
+    </card-col>
+  </card>
+  <card
+    *ngIf="!isTemplateEntityType"
+    header="Resolution Details">
+    <card-col
+      [labelWidth]="175">
+      <card-row
+        label="Completed Date"
+        [value]="record?.completedDate | dateFormat">
+      </card-row>
+      <card-row
+        label="Resolution Summary"
+        [value]="record?.resolutionSummary"
+        class="textarea-container"
+        keepLineBreaks="true">
+      </card-row>
+    </card-col>
+  </card>
+
+</ng-template>
+
+
+<ng-template #taskTemplateView>
+  <card [header]="header" [hideSeparator]="!header" class="mb-0">
+    <card-col [width]="500" [labelWidth]="labelWidth">
+      <card-row label="Task Name" [value]="record?.name" *ngIf="!isTemplateEntityType"></card-row>
+      <card-row label="Assigned to" [value]="record?.assigneeUser?.displayName"></card-row>
+      <card-row label="Task Priority" [value]="record?.taskPriority?.name"></card-row>
+      <card-row label="Team" [value]="record?.team?.name"></card-row>
+      <card-row label="Task Due Date" [value]="record?.dueDate | dateFormat" *ngIf="!isTemplateEntityType"></card-row>
+      <card-row label="Associated Stage" [value]="getLienStageName(record?.associatedStageId)"></card-row>
+      <card-row label="Standard SLA" [value]="record?.standardSLA"></card-row>
+    </card-col>
+    <card-col [width]="800" [labelWidth]="170">
+      <card-row label="Task Stage" [value]="record?.stage?.name" *ngIf="!isTemplateEntityType"></card-row>
+      <card-row label="Task Category" [value]="record?.taskCategory?.name"></card-row>
+    </card-col>
+  </card>
+</ng-template>

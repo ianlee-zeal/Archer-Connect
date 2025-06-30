@@ -1,0 +1,7 @@
+<div class="page">
+    <div class="page-content">
+        <app-claimant-disbursements-list [claimantId]="currentClaimant.id"
+            *ngIf="(currentClaimant$ | async) as currentClaimant">
+        </app-claimant-disbursements-list>
+    </div>
+</div>

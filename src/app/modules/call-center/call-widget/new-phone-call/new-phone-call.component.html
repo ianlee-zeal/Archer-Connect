@@ -1,0 +1,73 @@
+<form [formGroup]="formGroup" class="form-group" novalidate>
+  <div class="row">
+    <div class="call-info-container">
+      <card hideSeparator>
+        <card-col [minWidth]="300" [labelWidth]="148">
+          <card-row label="Call ID" inputId="claimant" [control]="formGroup.get('callId')" required>
+            <input type="text" class="form-control" formControlName="callId" onlyNumbers id="callId" required cardValue>
+          </card-row>
+          <card-row label="Claimant" inputId="claimant" [control]="formGroup.get('claimant')" required>
+            <input type="text" class="form-control" formControlName="claimant" id="claimant" disabled required cardValue>
+          </card-row>
+          <card-row label="Caller Name" inputId="callerName" [control]="formGroup.get('callerName')" required>
+            <input type="text" class="form-control" formControlName="callerName" id="callerName" cardValue required>
+          </card-row>
+          <card-row label="Phone number" inputId="claimant" [control]="formGroup.get('phoneNumber')" required>
+            <input type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber" required cardValue>
+          </card-row>
+          <card-row label="Party Type" inputId="partyType" [control]="formGroup.get('partyType')" required>
+            <app-select id="partyType" [options]="(communicationPartyListSelector$ | async)" formControlName="partyType" cardValue required></app-select>
+          </card-row>
+          <card-row label="Direction" inputId="direction" [control]="formGroup.get('direction')" required>
+            <app-select id="direction" [options]="directionsSelector$ | async" formControlName="direction" (onModelChange)="onDirectionChange()" cardValue required></app-select>
+          </card-row>
+          <card-row label="Subject" inputId="subject" [control]="formGroup.get('subject')" required>
+              <app-select id="subject" [options]="communicationSubjectListSelector$ | async"
+                          (click)="markAsTouched(['subject', 'result'])"
+                          formControlName="subject"
+                          class="w-100"
+                          (onModelChange)="onSubjectChange($event)"
+                          cardValue fullwidth required></app-select>
+          </card-row>
+          <card-row *ngIf="isShowOtherSubjectField" [labelWidth]="148" label="Other Subject" inputId="otherSubject" [control]="formGroup.get('otherSubject')" required>
+            <input type="text" class="form-control" formControlName="otherSubject" id="otherSubject" cardValue required />
+          </card-row>
+          <card-row label="Result" inputId="result" [control]="formGroup.get('result')" required>
+              <app-select id="result" [options]="communicationResultListSelector$ | async"
+                          (click)="markAsTouched(['subject', 'result'])"
+                          formControlName="result"
+                          class="w-100"
+                          (onModelChange)="onResultChange($event)"
+                          cardValue fullwidth required></app-select>
+          </card-row>
+          <card-row *ngIf="isShowOtherResultField" [labelWidth]="148" label="Other Result" inputId="otherResult" [control]="formGroup.get('otherResult')" required>
+            <input type="text" class="form-control" formControlName="otherResult" id="otherResult" cardValue required />
+          </card-row>
+        </card-col>
+      </card>
+    </div>
+    <div class="col call-info-container">
+      <div class="notes">
+        <div class="row">
+          <label class="col col-form-label" for="notes">Notes</label>
+        </div>
+        <div class="row form-group">
+          <div class="col notes__value">
+            <quill-editor
+              data-test-id="log-call-notes"
+              id="notes"
+              class="notes__control"
+              formControlName="notes"
+              [sanitize]="true">
+            </quill-editor>
+            <control-messages
+              [control]="formGroup.get('notes')"
+              customErrorPropName="maxLength">
+              customErrorMessage="Text length exceeds maximum value of 32766 symbols. Please make it shorter or convert text into file and attach in the 'Related Documents' section.">
+            </control-messages>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

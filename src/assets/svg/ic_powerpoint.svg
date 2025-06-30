@@ -1,0 +1,17 @@
+<svg id="ic_Powerpoint" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #dd5b26;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <rect id="Rectangle_321" data-name="Rectangle 321" class="cls-1" width="16" height="16" rx="2"/>
+  <g id="ic_poverpoint" transform="translate(0 23)">
+    <path id="Path_143" data-name="Path 143" class="cls-2" d="M14.354,11.094a.978.978,0,0,0-.282-.736,1.367,1.367,0,0,0-.966-.276h-.759v2.052H13.1a1.332,1.332,0,0,0,1.006-.3,1.05,1.05,0,0,0,.248-.738m2.01-.021a2.68,2.68,0,0,1-.512,1.681,2.608,2.608,0,0,1-2.2.862h-1.3v2.621H10.337V8.6h3.278a2.775,2.775,0,0,1,2.123.775A2.373,2.373,0,0,1,16.365,11.073Z" transform="translate(-4.742 -27.139)"/>
+  </g>
+</svg>

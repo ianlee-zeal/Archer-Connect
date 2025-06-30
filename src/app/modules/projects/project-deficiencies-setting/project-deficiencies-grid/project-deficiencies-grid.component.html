@@ -1,0 +1,10 @@
+<app-grid 
+    *ngIf="projectItem$ | async"
+    [gridOptions]="gridOptions"
+    [gridId]="gridId" 
+    entityLabel="Project Deficiencies Templates"
+    (newRecord)="addNewRecord()"
+    [skipSetContentHeight]="true"
+    (gridReady)="gridReady($event)"
+    (loadData)="loadData($event)">
+</app-grid>

@@ -1,0 +1,26 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBar$ | async"></app-action-bar>
+  <app-context-bar [title]="'Probate Search'"></app-context-bar>
+    <div class="page-content">
+      <app-advanced-search
+        *ngIf="showAdvancedSearch"
+        [fields]="searchFields"
+        [state]="searchState"
+        (onSearch)="advancedSearchSubmit()"
+        [savedSearchOptions]="savedSearchOptions$ | async"
+        [entityType]="entityType"
+        [gridId]="gridId"
+        (markAsEdited)="markAsEdited()"
+        (onClear)="clearFilters()">
+      </app-advanced-search>
+      <app-grid
+        entityLabel="Probates"
+        [gridId]="gridId"
+        [gridOptions]="gridOptions"
+        [canReorderColumns]="true"
+        (gridReady)="gridReady($event)"
+        (loadData)="loadData($event)">
+      </app-grid>
+    </div>
+</div>
+

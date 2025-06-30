@@ -1,0 +1,36 @@
+@import "src/styles/variables.scss";
+
+:host {
+    $ac-info-blocks-block-border: 10px $menu-color solid;
+    .ac-info-blocks {
+        display: flex;
+        min-height: 80px;
+        border-left: $ac-info-blocks-block-border;
+        &__element {
+            display: flex;
+            justify-items: center;
+            align-items: center;
+            flex-direction: column;
+            min-width: 21vw;
+            border-top: $ac-info-blocks-block-border;
+            border-right: $ac-info-blocks-block-border;
+            border-bottom: $ac-info-blocks-block-border;
+            &__title {
+                padding: 15px 15px 0px 15px;
+                color: $label-color-gray-light;
+                font-size: 14px;
+            }
+            &__value {
+                padding: 0px 15px 15px 15px;
+                font-size: 30px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.2;
+                letter-spacing: normal;
+                text-align: center;
+                color: #303030;
+            }
+        }
+    }
+}

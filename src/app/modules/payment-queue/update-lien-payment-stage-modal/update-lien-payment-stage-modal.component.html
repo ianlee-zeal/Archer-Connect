@@ -1,0 +1,89 @@
+<modal (close)="modal.hide()">
+  <modal-header>Update Lien Payment Stage</modal-header>
+
+  <modal-body>
+    <div class="modal-section">
+      <app-stepper [stage]="step">
+        <step label="Selected Entries" [isActive]="step === steps.SelectedEntries">
+          <div class="section-content">
+            <app-selected-payment-queue-list [entityLabel]="labelText" [parentGridId]="gridId" [projectId]="projectId" [paymentQueueGridParams]="gridParams$ | async"></app-selected-payment-queue-list>
+          </div>
+        </step>
+        <step label="Select Stage" [isActive]="step === steps.SelectStage">
+          <div class="section-content">
+            <form [formGroup]="form">
+              <p>For all of the selected entries update lien payment stage to:</p>
+              <card hideSeparator>
+                <card-col [width]="650">
+                  <card-row [labelWidth]="150" label="Lien Payment Stage" inputId="stage" [control]="form.get('stage')" required>
+                    <app-select required id="stage" [options]="stages$ | async" formControlName="stage" optionAsValue cardValue></app-select>
+                  </card-row>
+                </card-col>
+              </card>
+            </form>
+          </div>
+        </step>
+        <step label="Results" [isActive]="step === steps.Results">
+          <div class="section-content" *ngIf="step === steps.Results">
+            <app-lien-payment-stage-validation-results [batchActionId]="batchAction?.id" [stageId]="stageId"></app-lien-payment-stage-validation-results>
+          </div>
+        </step>
+      </app-stepper>
+
+    </div>
+  </modal-body>
+
+  <modal-footer>
+    <ng-container [ngSwitch]="step">
+      <ng-container *ngSwitchCase="steps.SelectedEntries" [ngTemplateOutlet]="entriesButtons"></ng-container>
+      <ng-container *ngSwitchCase="steps.SelectStage" [ngTemplateOutlet]="stageSelectionButtons"></ng-container>
+      <ng-container *ngSwitchCase="steps.Results" [ngTemplateOutlet]="resultsButtons"></ng-container>
+    </ng-container>
+  </modal-footer>
+</modal>
+
+<ng-template #entriesButtons>
+  <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="modal.hide()">
+    Cancel
+  </button>
+  <button class="btn modal-footer__btn modal-footer__btn--primary"
+    [disabled]="!(selectedPaymentQueueGrid$ | async)"
+    (click)="onChangeMode(steps.SelectStage)">
+    <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+    Next
+  </button>
+</ng-template>
+
+<ng-template #stageSelectionButtons>
+  <button class="btn modal-footer__btn modal-footer__btn--secondary"
+          (click)="onChangeMode(steps.SelectedEntries)">
+    Back
+  </button>
+  <button asyncButton
+          type="button"
+          [awaitedActionTypes]="validateButtonAwaitedActions"
+          class="btn modal-footer__btn modal-footer__btn--primary"
+          [ngClass]="{ disabled: form.invalid }"
+          [disabled]="form.invalid"
+          (click)="onValidate()">
+    <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+    Validate
+  </button>
+</ng-template>
+
+<ng-template #resultsButtons>
+  <button *ngIf="validationResultDocId"
+          type="button"
+          asyncButton
+          [awaitedActionTypes]="validationResultsButtonAwaitedActions"
+          (click)="onValidationResultsClick()"
+          class="btn modal-footer__btn modal-footer__btn--success me-auto">
+    <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+    Download Results
+  </button>
+  <button class="btn modal-footer__btn modal-footer__btn--secondary"
+          (click)="modal.hide()">
+    Close
+  </button>
+</ng-template>
+

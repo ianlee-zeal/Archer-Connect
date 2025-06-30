@@ -1,0 +1,14 @@
+@import "src/styles/variables.scss";
+
+.advanced-search-field-text {
+  display: flex;
+
+  &__type-container {
+    width: $advanced-search-condition-control-width;
+    margin-right: $advanced-search-controls-indent;
+  }
+
+  &__input-container {
+    flex-grow: 1;
+  }
+}

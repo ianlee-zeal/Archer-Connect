@@ -1,0 +1,60 @@
+<form
+  data-test-id="search"
+  class="search-form">
+  <div class="input-container">
+    <input
+      data-test-id="search-input"
+      type="text"
+      class="input-container__input"
+      [placeholder]="activeDropdownOption.placeholder"
+      name="searchText"
+      [(ngModel)]="searchText"
+      (ngModelChange)="searchTextChanged$.next($event)"
+      (keyup.enter)="this.onEnter()"
+      (blur)="this.onBlur($event)"
+    />
+    <div ngbDropdown class="dropdown">
+      <div [ngStyle]="{ cursor: (searchDropdownOptions.length > 1 ? 'pointer' : 'default') }" ngbDropdownToggle class="active-option">
+        <span> {{ activeDropdownOption.name }} </span>
+        <span *ngIf="searchDropdownOptions.length > 1" class="fa fa-chevron-down"></span>
+      </div>
+      <div *ngIf="searchDropdownOptions.length > 1" ngbDropdownMenu
+        data-test-id="search-projects-results"
+        class="dropdown-options">
+        <a (click)="changeSearchByEntityType()" ngbDropdownItem> {{ inactiveDropdownOption.name }}</a>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="foundItems && searchText?.length"
+    data-test-id="search-projects-results"
+    class="search-results">
+    <div
+      *ngIf="foundItems.length === 0"
+      data-test-id="search-projects-empty-msg"
+      class="empty-message">
+      Nothing found
+    </div>
+    <a
+      *ngFor="let item of foundItems"
+      data-test-id="search-result-link"
+      [routerLink]="getRouterLink(item)">
+      <ng-container [ngSwitch]="activeDropdownOption.id">
+        <img
+          *ngSwitchCase="EntityTypeEnum.Projects"
+          class="result-icon"
+          src="assets/images/Project.svg" />
+        <img
+          *ngSwitchCase="EntityTypeEnum.Clients"
+          class="result-icon"
+          src="assets/images/Clients.svg" />
+        <img
+          *ngSwitchCase="EntityTypeEnum.ProjectClaimantSummary"
+          class="result-icon"
+          src="assets/images/Clients.svg" />
+      </ng-container>
+      {{ activeDropdownOption.displayField ? item[activeDropdownOption.displayField] : item.name }} ({{ item.id }})
+    </a>
+  
+  </div>
+</form>

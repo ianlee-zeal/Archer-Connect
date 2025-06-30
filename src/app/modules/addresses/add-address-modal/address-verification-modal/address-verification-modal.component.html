@@ -1,0 +1,92 @@
+<div class="address-verification-modal">
+  <div class="modal-window">
+    <!-- Header section, overridden for expanded functionality -->
+    <div class="modal-header">
+      <div class="modal-section__config p0" *ngIf="showingVerify">
+        <div class="modal-title__header">Address Verification</div>
+      </div>
+      <div class="modal-section__config p0" *ngIf="!(showingVerify) && (showingMoveCheck)">
+        <div class="modal-title__header">Move Check</div>
+      </div>
+      <button type="button" class="btn-close" aria-label="Close" (click)="onClose()">
+        <img src="assets/svg/ic_close.svg" />
+      </button>
+    </div>
+    <modal-body>
+      <div *ngIf="showingVerify">
+        <div
+        class="modal-section"
+          [ngClass]="{
+            'modal-section__height--half': (showingVerify) && !(showingMoveCheck),
+            'modal-section__height--partial': (showingVerify) && (showingMoveCheck)
+          }"
+        >
+          <app-verify-address
+            [originalAddress]="originalAddress$ | async"
+            [verifiedAddress]="verifiedAddress$ | async"
+            [name]="entityName"
+            [showName]="includeName"
+            [canEdit]="canEdit"
+          ></app-verify-address>
+        </div>
+      </div>
+      <div class="modal-section modal-section__config" *ngIf="(showingVerify) && (showingMoveCheck)">
+        <div class="modal-title__header">Move Check</div>
+      </div>
+      <div
+        *ngIf="showingMoveCheck"
+        class="modal-section"
+        [ngClass]="{
+          'modal-section__height--half': !(showingVerify) && (showingMoveCheck),
+          'modal-section__height--partial': (showingVerify) && (showingMoveCheck)
+        }">
+        <app-move-check-address [moveCheckResults]="moveCheckResults$ | async" [canEdit]="canEdit"></app-move-check-address>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <div class="d-flex me-auto align-items-center">
+        <ng-container  *permissions="personAddressesEditPermission">
+          <button
+          type="button"
+          *ngIf="!showingMoveCheck && canRunMoveCheck"
+          class="btn modal-footer__btn modal-footer__btn--secondary"
+          asyncButton
+          [awaitedActionTypes]="awaitedCheckActionTypes"
+          (click)="onMoveCheck()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Run Move Check
+        </button>
+        </ng-container>
+        <ng-container  *permissions="personAddressesEditPermission">
+          <button
+          type="button"
+          *ngIf="!showingVerify"
+          class="btn modal-footer__btn modal-footer__btn--secondary add-address-modal__verify-and-save-button"
+          asyncButton
+          [awaitedActionTypes]="awaitedCheckActionTypes"
+          (click)="onVerify()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Run Verify
+        </button>
+        </ng-container>
+        <div *ngIf="errorMessage" class="text-danger ms-2">{{ errorMessage }}</div>
+      </div>
+      <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onClose()">
+        {{ canEdit ? 'Cancel' : 'Close' }}
+      </button>
+
+      <button
+        *ngIf="canEdit"
+        type="button"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        asyncButton
+        [awaitedActionTypes]="awaitedSaveActionTypes"
+        [ngClass]="{ disabled: !(showingVerify) }"
+        [disabled]="!(showingVerify)"
+        (click)="onSave()">
+          <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          {{ isSprLocation() ? 'Submit' : 'Save' }}
+      </button>
+    </modal-footer>
+  </div>
+</div>

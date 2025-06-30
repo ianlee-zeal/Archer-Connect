@@ -1,0 +1,20 @@
+@import "src/styles/variables.scss";
+
+.progress-container {
+    text-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.progress {
+    height: 0.7rem;
+}
+
+.validation-grid {
+    height: 70px;
+}
+
+.btn-cancel {
+    font-size: $font-size-sm;
+    text-decoration: underline;
+}

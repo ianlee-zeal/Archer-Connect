@@ -1,0 +1,48 @@
+<div class="date-range-slider-container">
+  <div class="date-range-slider-header">Finalization Date Range</div>
+  <form [formGroup]="range"  class="date-range-slider-inline">
+    <div *ngIf="!minInputVisible" 
+      (click)="minInputVisible = true;" 
+      class="date-range-slider-date date-range-slider-date-r"
+    >{{currentMin | dateFormat}}</div>
+    <app-date-selector
+      *ngIf="minInputVisible"
+          class="date-range__date-selector"
+          id="from"
+          formControlName="from"
+          [minDate]="min"
+          [maxDate]="currentMax"
+          (ngModelChange)="startDateChanged()"
+          style="width: 108px; margin-top: -5px"
+          fullwidth>
+      </app-date-selector>
+    <div class="date-range-slider-center">
+      <div class="date-range">
+        <div id="slider" class="slider">
+          <div class="minValue" id="min" [attr.data-content]="currentMin | dateFormat" [style.width]="minValueWidth" >
+            <div ref="minValueDrag" id="min-drag" (mousedown)="changeMinValue($event)"></div>
+          </div>
+      
+          <div class="maxValue" id="max" [attr.data-content]="currentMax | dateFormat" [style.width]="maxValueWidth">
+            <div ref="maxValueDrag" id="max-drag" (mousedown)="changeMaxValue($event)" (touchStart)="changeMaxValue($event)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-date-selector
+      *ngIf="maxInputVisible"
+          class="date-range__date-selector"
+          id="to"
+          formControlName="to"
+          [minDate]="currentMin"
+          [maxDate]="max"
+          (ngModelChange)="endDateChanged()"
+          style="width: 108px; margin-top: -5px"
+          fullwidth>
+      </app-date-selector>
+    <div *ngIf="!maxInputVisible" 
+      (click)="maxInputVisible = true;" 
+      class="date-range-slider-date date-range-slider-date-l"
+    >{{currentMax | dateFormat}}</div>
+  </form>
+</div>

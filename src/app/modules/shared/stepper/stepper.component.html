@@ -1,0 +1,22 @@
+<div
+  data-test-id="steps"
+  class="stepper-container">
+  <div
+    data-test-id="steps-header"
+    class="stepper__header">
+    <ul *ngIf="stage" class="list-unstyled stepper__header-steps">
+      <li
+        data-test-id="steps-step-label"
+        class="stepper__header-step"
+        *ngFor="let step of steps; index as i"
+        [ngClass]="{'active': step.isActive}">
+        <span class="stepper__header-step-label">{{step.label}}</span>
+      </li>
+    </ul>
+  </div>
+  <div
+    data-test-id="steps-content"
+    class="stepper__content">
+    <ng-content></ng-content>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="editable-form-control">
+  <div class="card-row__content" *ngIf="!isEditingInProgress">
+    <span class="text-nowrap">
+      {{ value || '-' }}
+    </span>
+    <button *permissions="editPermissions" class="btn btn-link editable-form-control__icon action-button-edit" (click)="Edit()">
+      Edit
+    </button>
+  </div>
+  <span *ngIf="isEditingInProgress">
+    <input type="text" class="" [(ngModel)]="editedValue" (ngModelChange)="onChange($event)" [appAutoFocus]="isApplyAutoFocus" />
+    <button class="btn btn-link action-button-save " (click)="Save()">
+      Save
+    </button>
+    <button class="btn btn-link action-button-cancel" (click)="Cancel()">
+      Cancel
+    </button>
+  </span>
+</div>
+<div *ngIf="!!errMessage" class="control-message text-danger">{{errMessage}}</div>

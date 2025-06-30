@@ -1,0 +1,10 @@
+<span *ngIf="type && text"
+    [ngClass]="{
+        'badge-pill': true,
+        'badge-pill--success': type === 'success',
+        'badge-pill--warning': type === 'warning',
+        'badge-pill--error': type === 'error',
+        'badge-pill--light': type === 'light'}" 
+        >
+    {{ text }}
+</span>

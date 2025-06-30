@@ -1,0 +1,27 @@
+@import "src/styles/variables.scss";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+  }
+  
+  .donut-tracker {
+    width: 104px;
+    height: 104px;
+    min-width: 104px;
+    align-self: baseline;
+  }
+
+  .progress-ring__background {
+    stroke-dasharray: 283; /* 2 * PI * (radius) */
+  }
+
+  .progress-ring__circle {
+    stroke-dasharray: 283;
+    stroke-dashoffset: 283;
+    transition: stroke-dashoffset 0.35s;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }

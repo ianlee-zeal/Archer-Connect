@@ -1,0 +1,93 @@
+@use 'sass:color';
+@import "src/styles/variables.scss";
+@import "src/styles.variables.scss";
+
+.dialog-footer {
+  display: flex;
+  min-height: $modal-footer-height;
+  padding: 8px 32px 32px 32px;
+  gap: 16px;
+
+  & > :not(:last-child) {
+    margin-right: 0;
+  }
+
+  &__btn {
+    height: 40px;
+    font-size: 18px;
+    border-radius: $sm-border-radius;
+    color: $blue;
+    flex: 1;
+
+    &--primary {
+      font-weight: 600;
+      background-color: $primary-blue !important;
+      color: $white !important;
+
+      &:hover, &:active {
+        box-shadow: 1px 1px 10px 0px rgba(142, 156, 206, 0.7);
+      }
+
+      &:disabled {
+        background-color: #8094AC !important;
+        box-shadow: 1px 1px 10px 0px rgba(142, 156, 206, 0.13);
+      }
+
+      i {
+        margin-left: 6px;
+      }
+    }
+
+    &--secondary {
+      color: #4C4F55;
+      border: 1px solid #B0B6BE;
+
+      &:hover, &:active {
+        border: 1px solid #B0B6BE;
+        box-shadow: 1px 1px 6px 0px rgba(142, 156, 206, 0.4);
+      }
+    }
+
+    &--secondary-submit {
+      border: 1px solid $blue;
+
+      &:hover, &:active {
+        color: $blue;
+        border: 1px solid $blue;
+        box-shadow: 1px 1px 6px 0px rgba(142, 156, 206, 0.4);
+      }
+    }
+
+    &--link {
+      display: inline-flex;
+      align-items: center;
+      border: none;
+      border-radius: 0;
+      border-bottom: 1px solid $blue;
+      background-color: $white;
+      flex: 0;
+      padding: 0px;
+      height: 30px;
+
+      &:hover, &:active {
+        color: $blue;
+        box-shadow: none;
+        border-bottom: 2px solid;
+      }
+
+      i {
+        margin-right: 6px;
+      }
+    }
+
+    i {
+      font-size: 16px;
+    }
+  }
+
+  &__content-right {
+    justify-content: flex-end;
+    align-items: center;
+    width: 60%;
+  }
+}

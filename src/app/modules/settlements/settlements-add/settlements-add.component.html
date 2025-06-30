@@ -1,0 +1,26 @@
+<modal (close)="addNewSettlementModal.hide()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <app-settlement-template></app-settlement-template>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <div *ngIf="error$ | async as error" class="text-danger mt-2 ms-3">
+      {{ error }}
+    </div>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="addNewSettlementModal.hide()">
+      Cancel
+    </button>
+    <button
+     type="button" 
+     class="btn modal-footer__btn modal-footer__btn--primary" 
+     asyncButton
+     [awaitedActionTypes]="awaitedActionTypes" 
+     (click)="onSave()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Save
+    </button>
+  </modal-footer>
+</modal>

@@ -1,0 +1,18 @@
+<div class="records-list">
+    <div *ngIf="records && records.length; else empty" class="records-container">
+        <div *ngFor="let r of records; let i = index" class="record">
+            <div class="record-name">
+                {{ getDisplayProperty(r) }}
+            </div>
+            <div class="record-buttons">
+                <button type="button" class="btn btn-secondary btn-icon btn-icon-edit" (click)="onEditClick(i)"></button>
+                <button type="button" class="btn btn-secondary btn-icon btn-icon-remove" (click)="onDeleteClick(i)"></button>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-secondary btn-icon btn-icon-add" (click)="onAddClick()"></button>
+</div>
+
+<ng-template #empty>
+    <div class="empty">{{ placeholder }}</div>
+</ng-template>

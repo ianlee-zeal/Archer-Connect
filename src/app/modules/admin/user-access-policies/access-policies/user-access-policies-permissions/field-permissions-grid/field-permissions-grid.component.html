@@ -1,0 +1,30 @@
+<table class="table" *ngIf="selectedPermissions$ | async as selectedPermissions">
+  <ng-container *ngIf="allPermissions">
+    <thead>
+      <tr>
+        <th>Primary</th>
+        <th *ngFor="let actionType of actionTypes">
+          {{ actionType.name }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="entityTypes">
+        <ng-container *ngFor="let entityType of entityTypes">
+          <tr *ngIf="hasActions(allPermissions, entityType.id)">
+            <td>{{ entityType.name }}</td>
+            <td *ngFor="let actionType of actionTypes">
+              <label class="form-check" [ngClass]="{'form-check__read-mode': !canEdit}" *ngIf="isPermissionExist(allPermissions, entityType.id, actionType.id)">
+                <input type="checkbox"
+                  [disabled]="!canEdit || isDisabled(selectedPermissions, entityType.id, actionType.id)"
+                  [checked]="isPermissionChecked(selectedPermissions, entityType.id, actionType.id)"
+                  (change)="onCheck(allPermissions, entityType.id, actionType.id, $event)" />
+                <span></span>
+              </label>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </ng-container>
+</table>

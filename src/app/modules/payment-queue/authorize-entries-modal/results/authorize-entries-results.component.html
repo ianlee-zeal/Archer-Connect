@@ -1,0 +1,18 @@
+<div class="modal-section">
+    <nav>
+        <div class="nav nav-tabs copy-spi-tabs nav-tabs-auto" id="review-nav-tab" role="tablist">
+            <a *ngFor="let item of tabsGroup" [class.active]="isActiveTab(item)" class="nav-item nav-link"
+                id="{{item.tab}}-tab" (click)="onChangeTab(item.tab)" data-toggle="tab"
+                data-target="#{{item.tab}}">{{item.title}} ({{item.count}})
+                <i *ngIf="(item.tab == 'errors') && (item.count > 0)" class="fas fa-exclamation-triangle exclamation-triangle"></i>
+            </a>
+        </div>
+    </nav>
+
+    <div class="tab-content" id="review-nav-tab-content">
+        <div *ngFor="let item of tabsGroup" class="tab-pane fade show" [class.active]="isActiveTab(item)" id="{{item.tab}}">
+            <app-authorize-entries-results-grid *ngIf="isActiveTab(item)" [tab]="activeTab" [batchAction]="batchAction" [documentTypeId]="documentTypeId">
+            </app-authorize-entries-results-grid>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+.multiselect-container {
+  height: 90px;
+}
+
+.probate-service-information {
+  &__notification {
+    color: red;
+    font-weight: bold;
+    padding-bottom: 10px;
+  }
+
+  &__amount {
+    display: flex;
+    align-items: baseline;
+    :first-child {
+      margin-right: 5px;
+    }
+  }
+}

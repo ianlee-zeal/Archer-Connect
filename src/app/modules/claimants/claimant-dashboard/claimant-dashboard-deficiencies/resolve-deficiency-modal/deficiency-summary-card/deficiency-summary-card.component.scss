@@ -1,0 +1,15 @@
+
+.first-section {
+  max-width: 15%;
+}
+
+.property-name {
+  white-space: nowrap;
+}
+
+.property-value {
+  justify-content: flex-start;
+  max-width: 460px;
+  overflow-x: clip;
+  white-space: nowrap;
+}

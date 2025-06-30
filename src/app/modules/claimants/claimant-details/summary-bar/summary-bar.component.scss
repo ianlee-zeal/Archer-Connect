@@ -1,0 +1,70 @@
+@import "src/styles/variables.scss";
+
+.summary-bar-container {
+  border-bottom: 2px solid $menu-color;
+  padding-left: 5px;
+  &--title {
+    padding: 5px 0 5px 14px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.summary-bar {
+  margin: 0;
+  padding: 5px 0 6px 15px;
+  line-height: 24px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+
+  card {
+    margin-right: 30px;
+    margin-bottom: 0;
+
+    @media screen and (min-width: 1650px) {
+      margin-right: 60px;
+    }
+
+    .summary-bar__project-name {
+      .card-row__value-container {
+        a.btn-link {
+          display: initial;
+        }
+      }
+    }
+
+    .summary-bar-tooltip {
+      font-size: 14px;
+      min-height: 28px;
+      line-height: 2;
+      color: #fff;
+      &__key {
+        color: #c2c2c2;
+      }
+      &__value {
+        font-weight: 700;
+        padding-left: 15px;
+      }
+    }
+  }
+
+  card:last-child  {
+    margin-right: 20px;
+  }
+
+  card.project-column .card-col {
+    min-width: 300px !important;
+  }
+
+  card.allocation-column .card-col {
+    min-width: 210px !important;
+  }
+
+  .tooltip-info-container {
+    .tooltip-inner {
+      position: fixed;
+    }
+  }
+}
+
+

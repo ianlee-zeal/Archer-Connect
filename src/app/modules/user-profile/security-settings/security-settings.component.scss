@@ -1,0 +1,32 @@
+@import "src/styles/variables.scss";
+@import "src/styles/_mixins.scss";
+
+.btn-icon {
+  margin-right: 16px;
+}
+
+.security-settings {
+  position: relative;
+  &__user-name{
+    margin-right: 15px;
+  }
+}
+
+.phone {
+  &__add {
+    margin: 4px 15px 0px 15px;
+    padding: 0 18px 0 8px;
+  }
+}
+
+.mfa-removed {
+  height: 28px;
+
+  &__value {
+    font-weight: bold;
+  }
+
+  &__remove-btn {
+    margin-left: auto;
+  }
+}

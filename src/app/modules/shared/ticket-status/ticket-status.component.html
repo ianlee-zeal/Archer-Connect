@@ -1,0 +1,8 @@
+<span class="status"
+      [ngClass]="{
+           'status--light-yellow': status.color === statuses.LightYellow,
+           'status--yellow': status.color === statuses.Yellow,
+           'status--green': status.color === statuses.Green,
+         }">
+  {{ status.name }}
+</span>

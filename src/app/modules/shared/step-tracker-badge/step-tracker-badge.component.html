@@ -1,0 +1,9 @@
+<div class="container">    
+  <svg class="image progress-ring">
+    <circle class="progress-ring__background" stroke="#E8E8E8" stroke-width="7" fill="transparent" r="21" cx="25" cy="25" />
+    <circle [style.stroke-dashoffset]="circleOffset" class="progress-ring__circle" stroke="#1774DE" stroke-width="7" stroke-linecap="round" fill="transparent" r="21" cx="25" cy="25" />
+    <text style="display: block;" id="progress-text" x="50%" y="50%" text-anchor="middle" fill="black" font-size="13" dy=".35em" font-weight="bold">
+    {{step}}/{{totalSteps}}
+    </text>
+  </svg>
+</div>

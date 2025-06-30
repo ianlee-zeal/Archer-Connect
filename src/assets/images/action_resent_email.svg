@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+    <defs>
+        <style>
+            .prefix__cls-3{fill:#1774de}
+        </style>
+    </defs>
+    <g id="prefix__ic_resent" transform="translate(-256 -74)" style="opacity:.75">
+        <path id="prefix__bg" d="M0 0H14V14H0z" transform="translate(256 74)" style="fill:none"/>
+        <path id="prefix__Rectangle_51" d="M0 0H1V10H0z" class="prefix__cls-3" data-name="Rectangle 51" transform="translate(269 76)"/>
+        <path id="prefix__Rectangle_107" d="M0 0H1V10H0z" class="prefix__cls-3" data-name="Rectangle 107" transform="translate(256 76)"/>
+        <path id="prefix__Path_56" d="M-.4-.776l.862.442.74 7.753L0 8.371z" class="prefix__cls-3" data-name="Path 56" transform="rotate(-45 221.094 -271.873)"/>
+        <path id="prefix__Path_72" d="M-.4 9.148l.862-.442.745-7.753L0 0z" class="prefix__cls-3" data-name="Path 72" transform="rotate(-135 148.539 -13.126)"/>
+        <path id="prefix__Rectangle_52" d="M0 0H1V12H0z" class="prefix__cls-3" data-name="Rectangle 52" transform="rotate(90 96.5 172.5)"/>
+        <path id="prefix__Rectangle_106" d="M0 0H1V12H0z" class="prefix__cls-3" data-name="Rectangle 106" transform="rotate(90 92 177)"/>
+    </g>
+</svg>

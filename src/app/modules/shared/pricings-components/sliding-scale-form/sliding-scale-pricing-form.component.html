@@ -1,0 +1,43 @@
+<form [formGroup]="form" novalidate>
+    <card hideSeparator>
+        <card-col [width]="760" [labelWidth]="250">
+            <card-row [maxContentWidth]="500" [containerWidth]="760" label="Settlement Amount">
+                <div cardValue class="range-container">
+                    <app-range-input class="range-input" formControlName="range"></app-range-input>
+                    <button type="button" class="btn btn-secondary btn-icon btn-icon-remove" (click)="onDeleteClick()"></button>
+                </div>
+            </card-row>
+
+            <card-row [maxContentWidth]="500" [containerWidth]="760" [marginTop]="15" [labelWidth]="250">
+                <p cardValue>or</p>
+            </card-row>
+
+            <card-row label="Injury Categories" inputId="injuryCategories" [maxContentWidth]="500" [containerWidth]="760">
+                <app-select
+                    cardValue
+                    id="injuryCategories"
+                    placeholder="Select Injury Categories"
+                    optionAsValue
+                    [fullwidth]="true"
+                    class="w-100 custom-multiselect--standalone"
+                    formControlName="injuryCategories"
+                    (onKeyup)="onSearchInjuryCategory($event)"
+                    (onOpen)="onSearchInjuryCategory('')"
+                    multiple
+                    [filterMultiselect]="true"
+                    searchable
+                    [searchFn]="searchFn"
+                    [optionTemplate]="optionTemplate"
+                    [options]="injuryCategories$ | async">
+                    <ng-template #optionTemplate let-item="item">
+                      <span>{{ item | injuryCategoryTitle }}</span>
+                    </ng-template>
+                </app-select>
+            </card-row>
+
+            <card-row [maxContentWidth]="500" [containerWidth]="760" [marginTop]="15" label="Tier Price">
+                <app-price-input cardValue formControlName="price"></app-price-input>
+            </card-row>
+        </card-col>
+    </card>
+</form>

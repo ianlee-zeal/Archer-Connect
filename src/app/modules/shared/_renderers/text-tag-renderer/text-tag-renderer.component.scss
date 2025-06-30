@@ -1,0 +1,14 @@
+.tagged-text {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(100% - 25px);
+  min-width: calc(100% - 25px);
+}
+.text-tag {
+  display: inline-block;
+  vertical-align: top;
+  width: 20px;
+  height: 24px;
+  padding:  0px 4px 4px 5px;
+  margin-left: 5px
+}

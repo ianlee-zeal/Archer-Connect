@@ -1,0 +1,32 @@
+@import "src/styles/variables.scss";
+
+:host ::ng-deep {
+
+    .option {
+        border-radius: 40%;
+        margin-right: 10px;
+        border: none !important;
+        display: flex;
+        justify-content: center;
+        height: 2.3rem;
+        align-items: center;
+        font-weight: 600;
+        background-color: $gray !important;
+        color: $white;
+        width: 1rem;
+      }
+
+    .option-selected {
+      background-color: #1774de !important;
+    }
+    .btn-primary:focus {
+      box-shadow: none !important;
+    }
+    .card-col {
+      gap: 0.5rem;
+    }
+}
+
+.labels {
+  font-size: $font-size-sm;
+}

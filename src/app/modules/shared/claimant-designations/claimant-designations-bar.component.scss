@@ -1,0 +1,26 @@
+@import 'src/styles/variables.scss';
+
+:host {
+  display: flex;
+}
+
+.designation-bar {
+  min-width: 155px;
+  margin-right: 20px;
+  position: relative;
+  text-align: left;
+  font-size: $font-size-sm;
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    border: 2px solid $menu-color;
+  }
+
+  &__item {
+    padding-right: 20px;
+  }
+
+}

@@ -1,0 +1,23 @@
+<div style="height: 100%; width: 100%" [ngClass]="{ 'invisible' : (loadingInProgress$ | async) }">
+  <ng-container *ngIf="showInfoBar$ | async">
+    <app-action-bar
+      *ngIf="actionBar$ | async"
+      [actionHandlers]="actionBar"
+      [pager]="pager$ | async"
+      (navigate)="toPage($event)">
+    </app-action-bar>
+    <app-context-bar
+      *ngIf="title && subTitle && headerElements"
+      [title]="title"
+      [subTitle]="subTitle"
+      [elements]="headerElements"
+      [showSpecialDesignationsBar]="showSpecialDesignationsBar$ | async"
+      [showAdditionalButton]="true"
+      [expandable]="isContextBarExpandable"
+      (expand)="onDetailsExpand($event)"
+      (openModal)="onOpenClaimantMessagingModal()"
+      [status]='status'>
+    </app-context-bar>
+  </ng-container>
+  <router-outlet></router-outlet>
+</div>

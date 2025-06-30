@@ -1,0 +1,26 @@
+<modal (close)="onCancel()">
+    <modal-header>Final Status Letter</modal-header>
+
+    <modal-body>
+      <div class="modal-section">
+       <p class="py-5 px-4">Please review the Final Status Letter prior to sending to the recipient.  If, upon review, you come across any issues or discrepancies, refrain from sending the letter and instead reach out to ClientCare&#64;archersystems.com for assistance.</p>
+      </div>
+    </modal-body>
+
+    <modal-footer>
+      <span *ngIf="errorMessage" class="text-danger small me-auto">{{errorMessage}}</span>
+      <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onCancel()">
+        Cancel
+      </button>
+      <button type="submit"
+              asyncButton
+              [awaitedActionTypes]="awaitedActionTypes"
+              class="btn modal-footer__btn modal-footer__btn--primary"
+              (click)="onGenerate()"
+              (asyncFinished)="onCancel()">
+              <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+              Generate
+      </button>
+    </modal-footer>
+  </modal>
+

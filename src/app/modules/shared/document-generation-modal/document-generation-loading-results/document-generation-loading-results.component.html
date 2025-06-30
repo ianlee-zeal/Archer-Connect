@@ -1,0 +1,14 @@
+<div class="modal-section" *ngIf="state$ | async as state">
+    <div *ngIf="!state.progress.complete && !state.progress.error" style="padding:30px; padding-top:20px; text-align: center;">
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" [style.width]="state.progress.width + '%'" [attr.aria-valuenow]="state.progress.width" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+      <div *ngIf="state.progress.message">{{ state.progress.message }}</div>
+    </div>
+    <div *ngIf="state.progress.complete" style="padding:30px; padding-top:20px; text-align: center;">
+      Document downloaded.
+    </div>
+    <div *ngIf="state.progress.error" style="padding:30px; padding-top:20px; text-align: center;" class="text-danger">
+      There was an error: {{ state.progress.message }}
+    </div>
+</div>

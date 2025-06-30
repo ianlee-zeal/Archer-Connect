@@ -1,0 +1,174 @@
+<ng-container  *ngIf="financialSummary?.inflows || financialSummary?.outflows">
+<table class="financial-summary-data">
+    <tr class="header">
+        <th> Summary </th>
+        <th> Actual-to-date </th>
+        <th> Forecasted </th>
+        <th> Total </th>
+        <th> % of Total Inflows </th>
+        <th> % of Unfunded / Unpaid </th>
+    </tr>
+    <ng-container *ngIf="financialSummary?.inflows">
+        <tr class="accented">
+            <th colspan="4"> Inflows </th>
+            <th colspan="2"> &nbsp; </th>
+        </tr>
+        <ng-container *ngFor="let row of financialSummary.inflows.rows;">
+            <tr>
+                <td> {{row.label}} </td>
+                <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.actualToDate}"></ng-container></td>
+                <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.forecasted}"></ng-container></td>
+                <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.total}"></ng-container></td>
+                <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.percentOfTotalInflows, valueType: 'percent'}"></ng-container></td>
+                <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.percentOfUnfunded, valueType: 'percent'}"></ng-container></td>
+            </tr>
+        </ng-container>
+        <tr class="totals-row">
+            <th> Total Inflows </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.inflows.totalRow.actualToDate}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.inflows.totalRow.forecasted}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.inflows.totalRow.total}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.inflows.totalRow.percentOfTotalInflows, valueType: 'percent'}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.inflows.totalRow.percentOfUnfunded, valueType: 'percent'}"></ng-container> </th>
+        </tr>
+    </ng-container>
+    <ng-container *ngIf="financialSummary?.outflows">
+        <tr class="accented">
+            <th colspan="4"> Outflows </th>
+            <th colspan="2"> &nbsp; </th>
+        </tr>
+        <ng-container *ngFor="let row of financialSummary.outflows.rows;">
+            <tr>
+                <td> {{row.label}} </td>
+                <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.actualToDate}"></ng-container></td>
+                <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.forecasted}"></ng-container></td>
+                <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.total}"></ng-container></td>
+                <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.percentOfTotalInflows, valueType: 'percent'}"></ng-container></td>
+                <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.percentOfUnfunded, valueType: 'percent'}"></ng-container></td>
+            </tr>
+        </ng-container>
+        <tr class="totals-row">
+            <th> Total Outflows </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.outflows.totalRow.actualToDate}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.outflows.totalRow.forecasted}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.outflows.totalRow.total}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.outflows.totalRow.percentOfTotalInflows, valueType: 'percent'}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.outflows.totalRow.percentOfUnfunded, valueType: 'percent'}"></ng-container> </th>
+        </tr>
+        <tr class="totals-row">
+            <th> Net Cash (Book Bal) </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.netCashBookBal
+                .actualToDate, valueType: 'netCash'}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.netCashBookBal
+                .forecasted, valueType: 'netCash'}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.netCashBookBal
+                .total, valueType: 'netCash'}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.netCashBookBal
+                .percentOfTotalInflows}"></ng-container> </th>
+            <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.netCashBookBal
+                .percentOfUnfunded}"></ng-container> </th>
+        </tr>
+        <tr class="totals-row">
+            <th> Bank Balance </th>
+            <th><ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.bankBalance}"></ng-container></th>
+            <th></th><th></th><th></th><th></th>
+        </tr>
+        <tr class="totals-row">
+            <th> Unreconciled Difference </th>
+            <th><ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.unreconciledDifference}"></ng-container></th>
+            <th></th><th></th><th></th><th></th>
+        </tr>
+    </ng-container>
+</table>
+</ng-container>
+
+<!-- Net Cache here-->
+
+<ng-container  *ngIf="financialSummary?.overview">
+<table class="financial-summary-counts">
+    <tr class="header">
+        <th>KPIs</th>
+        <th>&nbsp;</th>
+    </tr>
+    <tr>
+        <td>Number of Active Claimants</td>
+        <td>{{financialSummary.overview.activeClaimantsCount}}</td>
+    </tr>
+    <tr>
+        <td># and % of Claimants Finalized</td>
+        <td>{{financialSummary.overview.claimantsFinalizedCount}} ({{financialSummary.overview.claimantsFinalizedPercent | number:'1.2-2'}}%)</td>
+    </tr>
+    <tr>
+        <td># of Projects</td>
+        <td>
+            <a 
+            [href]="'/settlements/' + settlementId + '/tabs/projects'"
+            class="btn btn-link fw-bold"
+            cardValue>
+            {{financialSummary.overview.projectsCount}} 
+          </a>
+        </td>
+    </tr>
+    <tr>
+        <td>% of Funds to be Submitted</td>
+        <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.overview.pendingPmtRequestPercent, valueType: 'percent'}"></ng-container></td>
+    </tr>
+    <tr>
+        <td>% Unpaid</td>
+        <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.overview.unpaidPercent, valueType: 'percent'}"></ng-container></td>
+    </tr>
+</table>
+</ng-container>
+
+<ng-container  *ngIf="financialSummary">
+
+<table class="financial-summary-data">
+    <tr class="header">
+        <th> Payment Efficiency </th>
+        <th> Total Allocated Outflows </th>
+        <th> Payment Requests </th>
+        <th> Payment Issued in NS </th>
+        <th> To-be Paid </th>
+    </tr>
+
+    <ng-container *ngFor="let row of financialSummary.rows;">
+        <tr>
+            <td> {{row.label}} </td>
+            <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.totalAllocatedOutflows}"></ng-container></td>
+            <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.paymentRequests}"></ng-container></td>
+            <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.paymentIssuedInNS}"></ng-container></td>
+            <td><ng-container *ngTemplateOutlet="tdTemplate; context:{value: row.toBePaid}"></ng-container></td>
+        </tr>
+    </ng-container>
+    <tr class="totals-row">
+        <th>Total</th>
+        <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.totalRow.totalAllocatedOutflows}"></ng-container> </th>
+        <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.totalRow.paymentRequests}"></ng-container> </th>
+        <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.totalRow.paymentIssuedInNS}"></ng-container> </th>
+        <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.totalRow.toBePaid}"></ng-container> </th>
+    </tr>
+    <tr>
+        <th>% Efficiency</th>
+        <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.efficiency.totalAllocatedOutflows, valueType: 'percent'}"></ng-container> </th>
+        <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.efficiency.paymentRequests, valueType: 'percent'}"></ng-container> </th>
+        <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.efficiency.paymentIssuedInNS, valueType: 'percent'}"></ng-container> </th>
+        <th> <ng-container *ngTemplateOutlet="tdTemplate; context:{value: financialSummary.efficiency.toBePaid, valueType: 'percent'}"></ng-container> </th>
+    </tr>
+</table>
+</ng-container>
+
+<ng-template #tdTemplate let-value="value" let-valueType="valueType">
+    <ng-container *ngIf="(value == null) || (value == 0) || almostZero(value)"><span>-&nbsp;&nbsp;</span></ng-container>
+    <ng-container *ngIf="!!value && !almostZero(value)">
+        <ng-container *ngIf="valueType == 'percent';else currency_span">
+            <span *ngIf="value >= 0">{{value | number:'1.2-2'}}%</span>
+            <span *ngIf="value < 0" style="color: red">({{(value) | absolutenumber | number:'1.2-2'}}%)</span>
+        </ng-container>
+        <ng-template #currency_span>
+            <span class="amount" *ngIf="value >= 0">{{value | number:'1.2-2'}}</span>
+            <span class="amount" *ngIf="value < 0" style="color: red">({{(value) | absolutenumber | number:'1.2-2'}})</span>
+        </ng-template>
+    </ng-container>
+    
+</ng-template>
+

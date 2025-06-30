@@ -1,0 +1,462 @@
+<form [formGroup]="form" novalidate class="billing-rule-form">
+        <card header="Contract Rule Details" [maxWidth]="750" collapsable>
+            <card-col [width]="750" [labelWidth]="250">
+                <card-row
+                    required
+                    label="Contract Rule Template"
+                    inputId="billingRuleTemplate"
+                    [control]="form.get('billingRuleTemplate')"
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                        <app-select
+                            cardValue
+                            [optionTemplate]="brtOptionTemplate"
+                            id="billingRuleTemplate"
+                            placeholder="Type to search Contract Rule Template"
+                            optionAsValue
+                            [fullwidth]="true"
+                            class="w-100"
+                            formControlName="billingRuleTemplate"
+                            [options]="billingRuleTemplates$ | async"
+                            (onKeyup) = "onSearchBillingRuleTemplates($event)"
+                            (onOpen) = "onSearchBillingRuleTemplates('')"
+                            (onModelChange)="onBillingRuleTemplateChange($event)"
+                            [searchFn] = searchFn
+                            searchable>
+                        </app-select>
+                </card-row>
+
+                <card-row
+                    label="Name"
+                    inputId="name"
+                    [control]="form.get('name')"
+                    required
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                    <input
+                        placeholder="Name this contract rule"
+                        type="text"
+                        class="form-control w-100"
+                        formControlName="name"
+                        id="name"
+                        maxLength="100"
+                        appAutoFocus
+                        cardValue />
+                </card-row>
+
+                <card-row
+                    label="Fee Scope"
+                    inputId="feeScope"
+                    [control]="form.get('feeScope')"
+                    required
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                    <app-select
+                      cardValue
+                      id="feeScope"
+                      [options]="feeScopes$ | async"
+                      formControlName="feeScope"
+                      optionAsValue
+                      placeholder="Select Fee Scope">
+                    </app-select>
+                </card-row>
+
+                <card-row
+                    label="QSF GL Account Code"
+                    inputId="chartOfAccount"
+                    [control]="form.get('chartOfAccount')"
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                    <app-select
+                      cardValue
+                      id="chartOfAccount"
+                      [options]="chartOfAccounts$ | async"
+                      formControlName="chartOfAccount"
+                      optionAsValue
+                      placeholder="Select QSF GL Account Code">
+                    </app-select>
+                </card-row>
+
+                <card-row
+                    label="Invoicing Item"
+                    inputId="invoicingItem"
+                    [labelWidth]="250"
+                    [marginTop]="5"
+                    [control]="form.get('invoicingItem')"
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                    <app-text-input-button
+                        (onClick)="onOpenInvoicingItemSearchModal()"
+                        (clear)="onInvoicingItemClear()"
+                        [isClearable]="true"
+                        formControlName="invoicingItem"
+                        id="invoicingItem"
+                        propertyNameForInputText="name"
+                        cardValue
+                        placeholder="Select Invoicing Item">
+                    </app-text-input-button>
+                </card-row>
+
+                <card-row
+                    label="Rev Rec Item"
+                    inputId="revRecItem"
+                    [labelWidth]="250"
+                    [marginTop]="5"
+                    [control]="form.get('revRecItem')"
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                    <app-text-input-button
+                        (onClick)="onOpenRevRecItemSearchModal()"
+                        (clear)="onRevRecItemClear()"
+                        [isClearable]="true"
+                        formControlName="revRecItem"
+                        id="revRecItem"
+                        propertyNameForInputText="name"
+                        cardValue
+                        placeholder="Select Rev Rec Item">
+                    </app-text-input-button>
+                </card-row>
+
+                <card-row
+                    required
+                    label="Rev Rec Method"
+                    inputId="revRecMethod"
+                    [maxContentWidth]="500"
+                    [containerWidth]="750"
+                    [control]="form.get('revRecMethod')">
+                    <app-select cardValue id="revRecMethod" [options]="revRecMethods$ | async" formControlName="revRecMethod" optionAsValue placeholder="Select Rev Rec Method"></app-select>
+                </card-row>
+
+                <card-row
+                    *ngIf="billingRule"
+                    label="Status"
+                    inputId="status"
+                    [control]="form.get('status')"
+                    required
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                    <app-select cardValue id="status" [options]="statuses$ | async" formControlName="status" optionAsValue placeholder="Select Status"></app-select>
+                </card-row>
+            </card-col>
+        </card>
+
+        <card header="Related Services" [maxWidth]="750" collapsable>
+            <card-col [width]="750" [labelWidth]="250">
+                <card-row
+                    [marginTop]="10"
+                    [maxContentWidth]="300"
+                    [containerWidth]="750"
+                    label="Collector Specific?">
+                    <label class="checkbox d-block" [ngClass]="{'active': isCollectorSpecific}" cardValue>
+                        <input type="checkbox" formControlName="isCollectorSpecific" />
+                        <app-tooltip-info
+                          [templateRef]="automatedTriggerTooltip">
+                        </app-tooltip-info>
+                    </label>
+                </card-row>
+
+                <card-row
+                    *ngIf="isCollectorSpecific"
+                    label="Collector"
+                    inputId="collector"
+                    required
+                    [labelWidth]="250"
+                    [marginTop]="10"
+                    [control]="form.get('collectorOrg')"
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                    <app-text-input-button
+                        (onClick)="onOpenCollectorSearchModal()"
+                        (clear)="onCollectorInputClear()"
+                        formControlName="collectorOrg"
+                        [isClearable]="true"
+                        id="collectorOrg"
+                        propertyNameForInputText="name"
+                        cardValue
+                        placeholder="Select Collector">
+                    </app-text-input-button>
+                </card-row>
+
+                <card-row required label="Related Services" inputId="relatedServices" [maxContentWidth]="500" [containerWidth]="750">
+                    <input
+                                (click)="onOpenRelatedServicesModal()"
+                                type="text"
+                                class="form-control cursor-pointer"
+                                readonly
+                                id="relatedServices"
+                                [disabled]="form.controls.services.disabled"
+                                cardValue
+                                placeholder="Select Related Services" />
+                </card-row>
+
+                <card hideSeparator>
+                    <card-col [width]="1600">
+                        <app-related-services-list [(relatedServices)]="relatedServices" [canEdit]="!form.controls.services.disabled" [additionalPageItemsCountValues]="additionalPageItemsCountValues" cardValue></app-related-services-list>
+                    </card-col>
+                </card>
+
+            </card-col>
+        </card>
+
+        <card header="Pricing Terms" [maxWidth]="750" collapsable>
+            <card-col [width]="750" [labelWidth]="250">
+                <card-row label="Minimum Fee" [maxContentWidth]="500" [containerWidth]="750">
+                    <app-price-input
+                        cardValue
+                        formControlName="minFee"
+                        [setPriceToZeroIfValueIsEmpty]="false"
+                        [placeholder]="minMaxFeePlaceholders[form.value.minFee?.type]">
+                    </app-price-input>
+                </card-row>
+
+                <card-row label="Maximum Fee" [maxContentWidth]="500" [containerWidth]="750" [marginTop]="10">
+                    <app-price-input
+                        cardValue
+                        formControlName="maxFee"
+                        [setPriceToZeroIfValueIsEmpty]="false"
+                        [placeholder]="minMaxFeePlaceholders[form.value.maxFee?.type]">
+                    </app-price-input>
+                </card-row>
+
+                <card-row label="Outcome Based Pricing?" inputId="minFeePct" [control]="form.get('outcomeBasedPricing')">
+                  <label class="checkbox d-block" [ngClass]="{'active': isOutcomeBasedPricing}" cardValue>
+                    <input type="checkbox" name="outcomeBasedPricing" [checked]="isOutcomeBasedPricing" (change)="onCheck('outcomeBasedPricing', $event)">
+                   <app-tooltip-info
+                     [inline]="true"
+                     [templateRef]="automatedTriggerTooltip">
+                   </app-tooltip-info>
+                  </label>
+                </card-row>
+                <card-row label="Variable Pricing Applies?" inputId="variablePricingApplies" [control]="form.get('variablePricingApplies')">
+                  <label class="checkbox" [ngClass]="{'active': isVariablePricingApplies}" cardValue>
+                    <input type="checkbox" name="variablePricingApplies" [checked]="isVariablePricingApplies" (change)="onCheck('variablePricingApplies', $event)">
+                  </label>
+                </card-row>
+
+                <card-row
+                    *ngIf="!isOutcomeBasedPricing && !isVariablePricingApplies"
+                    label="Price"
+                    required
+                    [control]="form.get('price')"
+                    [marginTop]="10"
+                    [maxContentWidth]="500"
+                    [containerWidth]="750"
+                    [labelWidth]="250">
+                    <app-price-input cardValue formControlName="price"></app-price-input>
+                </card-row>
+
+                <card *ngIf="isOutcomeBasedPricing" hideSeparator>
+                  <card-col [width]="1600">
+                    <app-outcome-based-pricing-list
+                      [tortId]="this.tortId"
+                      [canEdit]="true"
+                      [outcomeBasePricingList]="outcomeBasedPricings"
+                      (outcomeBasePricingListChange)="onOutcomeBasedListChanged($event)"
+                      cardValue>
+                    </app-outcome-based-pricing-list>
+                  </card-col>
+                </card>
+
+                <card *ngIf="isVariablePricingApplies" hideSeparator>
+                  <card-col [width]="1600">
+                    <app-pricing-types-list
+                      [tortId]="this.tortId"
+                      canEdit="true"
+                      [(variablePricing)]="variablePricing">
+                    </app-pricing-types-list>
+                  </card-col>
+                </card>
+            </card-col>
+        </card>
+
+        <card header="Invoicing" [maxWidth]="850" collapsable>
+            <card-col [width]="850" [labelWidth]="250">
+              <card-row
+                [marginTop]="10"
+                [maxContentWidth]="700"
+                label="Related Service Required?">
+                <label class="checkbox d-block" [ngClass]="{'active': isRelatedServiceRequired}" cardValue>
+                  <input type="checkbox" formControlName="relatedServiceRequired">
+                  <label class="related-service-required">{{relatedServiceRequiredMessage}}</label>
+                  <app-tooltip-info
+                    [inline]="true"
+                    [templateRef]="automatedTriggerTooltip">
+                  </app-tooltip-info>
+                </label>
+              </card-row>
+
+              <div class="generation-type-container">
+                <card-row
+                  label="Fee Generation Type"
+                  inputId="iliAutoGeneration"
+                  [control]="form.get('iliAutoGeneration')"
+                  [marginTop]="10"
+                  [labelWidth]="265"
+                  required>
+                  <label class="checkbox" [ngClass]="{'active': iliAutoGeneration}" cardValue>
+                    <div class="generation-type-title generation-type-title__left">Manual</div>
+                    <input type="checkbox" name="iliAutoGeneration" [checked]="iliAutoGeneration" (change)="onCheck('iliAutoGeneration', $event)">
+                    <div class="generation-type-title generation-type-title__right">Automated</div>
+                  </label>
+                </card-row>
+              </div>
+
+              <ng-container>
+                <div class="triggers">
+                  <div>
+                    <card-row
+                      label="Pricing Triggers"
+                      inputId="pricingTrigger"
+                      required
+                      [marginTop]="15"
+                      [labelWidth]="265"
+                      [containerWidth]="670"
+                      [maxContentWidth]="390">
+                        <app-select
+                          cardValue
+                          clearInputAfterSelection
+                          id="pricingTrigger"
+                          optionAsValue
+                          [fullwidth]="true"
+                          class="w-100"
+                          (onModelChange)="onPricingTriggersDropdownChange($event)"
+                          [isMultiselectDropdown]="true"
+                          [options]="pricingTriggerDropdownOpts">
+                        </app-select>
+                    </card-row>
+                    <app-billing-triggers-list
+                      [triggersList]="form.get('pricingTriggers').value"
+                      [gridId]="gridId.PricingTriggers">
+                    </app-billing-triggers-list>
+                  </div>
+                  <div>
+                    <card-row
+                      label="Billing Triggers"
+                      inputId="billingTrigger"
+                      required
+                      [marginTop]="15"
+                      [labelWidth]="265"
+                      [containerWidth]="670"
+                      [maxContentWidth]="390">
+                      <app-select
+                        cardValue
+                        clearInputAfterSelection
+                        id="billingTrigger"
+                        optionAsValue
+                        [fullwidth]="true"
+                        class="w-100"
+                        (onModelChange)="onBillingTriggersDropdownChange($event)"
+                        [isMultiselectDropdown]="true"
+                        [options]="billingTriggerDropdownOpts">
+                      </app-select>
+                    </card-row>
+                    <app-billing-triggers-list
+                      [triggersList]="form.get('billingTriggers').value"
+                      [gridId]="gridId.BillingTriggers">
+                    </app-billing-triggers-list>
+                  </div>
+                </div>
+              </ng-container>
+
+                <p class="bill-to">Bill To</p>
+
+              <card-row
+                [marginTop]="10"
+                [maxContentWidth]="300"
+                [containerWidth]="750"
+                label="Fee Split">
+                <label class="checkbox" [ngClass]="{'active': isFeeSplit}" cardValue>
+                  <input type="checkbox" formControlName="feeSplit">
+                </label>
+                </card-row>
+
+              </card-col>
+        </card>
+
+        <app-fee-split-list
+            #feeSplitList
+            class="fee-split"
+            [defaultOrg]="projectQsfOrg$ | async"
+            [canEdit]="true"
+            [isFeeSplitted]="isFeeSplit"
+            [(feeSplits)]="feeSplits">
+        </app-fee-split-list>
+
+        <card header="Fee Details" [maxWidth]="750" collapsable>
+            <card-col [width]="750" [labelWidth]="250">
+                <card-row
+                    label="Pricing Terms"
+                    inputId="pricingTerms"
+                    [control]="form.get('pricingTerms')"
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                    <textarea
+                        cardValue
+                        class="form-control"
+                        formControlName="pricingTerms"
+                        placeholder="Write or paste pricing terms as stated in contract"
+                        rows="3">
+                    </textarea>
+                </card-row>
+
+                <card-row
+                    label="Invoicing Terms"
+                    inputId="invoicingTerms"
+                    [control]="form.get('invoicingTerms')"
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                    <textarea
+                        cardValue
+                        class="form-control"
+                        formControlName="invoicingTerms"
+                        placeholder="Write or paste invoicing terms as stated in contract"
+                        rows="3">
+                    </textarea>
+                </card-row>
+
+                <card-row
+                    label="Payment Terms"
+                    inputId="paymentTerms"
+                    [control]="form.get('paymentTerms')"
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                    <textarea
+                        cardValue
+                        class="form-control"
+                        formControlName="paymentTerms"
+                        placeholder="Write or paste payment terms as stated in contract"
+                        rows="3">
+                    </textarea>
+                </card-row>
+
+                <card-row
+                    label="Rev Rec Terms"
+                    inputId="revRecTerms"
+                    [control]="form.get('revRecTerms')"
+                    [maxContentWidth]="500"
+                    [containerWidth]="750">
+                    <textarea
+                        cardValue
+                        class="form-control"
+                        formControlName="revRecTerms"
+                        placeholder="Write or paste rev rec terms as stated in contract"
+                        rows="3">
+                    </textarea>
+                </card-row>
+            </card-col>
+        </card>
+</form>
+
+<ng-template #brtOptionTemplate let-item="item">
+    <div class="brt-option">
+        <div class="brt-name" title="{{ item.name }}">{{ item.name }}</div>
+        <div class="brt-services">
+            <div class="brt-service" *ngFor="let s of item.relatedServices" title="{{ s.name }}">{{ s.name }}</div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #automatedTriggerTooltip>
+  Selecting this option with automated fee generation enabled will add two triggers to the Pricing and Billing Triggers list to ensure that a fee can be generated.
+  Deselecting the option will remove the triggers from the lists.
+</ng-template>

@@ -1,0 +1,53 @@
+<div class="row">
+  <ng-container *ngIf="this.allStages">
+    <div class="col-4 pie-chart">
+      <div class="pie-chart__header">
+        <span class="chart-name">Claimants by Bankruptcy Status</span>
+      </div>
+      <div class="row pie-chart__chart">
+        <ng-container *ngIf="stagesChart">
+          <fusioncharts width="100%" height="300" class="w-100" dataFormat="json" type="doughnut2d"
+            placeholder="Loading..." [dataSource]="stagesChart">
+          </fusioncharts>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="phasesChart">
+    <div class="col-4 pie-chart">
+      <div class="pie-chart__header">
+        <span class="chart-name">Bankruptcy Count by Phases</span>
+      </div>
+      <div class="row pie-chart__chart">
+        <fusioncharts width="100%" height="300" class="w-100" dataFormat="json" type="doughnut2d"
+          placeholder="Loading..." [dataSource]="phasesChart">
+        </fusioncharts>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="typesChart">
+    <div class="col-4 pie-chart">
+      <div class="pie-chart__header">
+        <span class="chart-name">Bankruptcy by Type</span>
+      </div>
+      <div class="row pie-chart__chart">
+        <fusioncharts width="100%" height="270" class="w-100" dataFormat="json" type="stackedcolumn2d"
+          placeholder="Loading..." [dataSource]="typesChart">
+        </fusioncharts>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<ng-container *ngIf="phasesSummary?.phases?.length > 0">
+  <div class="row mt-2">
+    <div class="col-12">
+      <div class="chart-combined-legend-container d-flex flex-wrap justify-content-center">
+        <div class="phase-legend-item" [class.legend-item-small]="getCombinedLegend().length > 6"
+          *ngFor="let item of getCombinedLegend()">
+          <span class="legend-icon" [ngStyle]="{ background: item.color }"></span>
+          <span class="legend-name" [title]="item.name">{{ item.name }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

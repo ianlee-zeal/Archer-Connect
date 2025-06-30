@@ -1,0 +1,19 @@
+<svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg"> 
+  <g clip-path="url(#clip0)">
+    <!-- Main briefcase structure -->
+    <path fill-rule="evenodd" clip-rule="evenodd"
+      d="M4.5 0.5H4V1V3.5H1H0V4.5V13.5V14.5H1H13H14V13.5V4.5V3.5H13H10V1V0.5H9.5H4.5ZM9 3.5V1.5H5V3.5H9ZM1 13.5V4.5H13V13.5H1Z"
+      fill="#F16522"/>
+      
+    <!-- Middle horizontal divider -->
+    <rect x="1" y="8" width="12" height="1" fill="#F16522"/>
+
+    <!-- Center latch -->
+    <rect x="6" y="8" width="2" height="2" fill="#F16522"/>
+  </g>
+  <defs>
+    <clipPath id="clip0">
+      <rect width="14" height="14" fill="white" transform="translate(0 0.5)"/>
+    </clipPath>
+  </defs>
+</svg>

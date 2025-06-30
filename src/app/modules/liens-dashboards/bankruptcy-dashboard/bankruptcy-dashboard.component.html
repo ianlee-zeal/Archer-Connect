@@ -1,0 +1,86 @@
+<div class="m-2">
+  <div class="row border-bottom">
+
+    <!-- STAGES -->
+    <ng-container *ngIf="this.allStages">
+      <div class="col-4 border-end pie-chart">
+        <div class="row pie-chart__header">
+          <div class="col-8">
+            <span class="chart-name">Claimants by Bankruptcy Status</span>
+          </div>
+          <div class="col-4">
+            <div class="legend float-end">
+              <div class="row" *ngFor="let stage of allStages">
+                <span class="fa fa-circle pe-1" [ngStyle]="{color: getStageColor(stage.id)}"></span>
+                <span>{{stage.name}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row pie-chart__chart">
+          <ng-container *ngIf="stagesChart">
+            <fusioncharts width="100%" height="300" class="w-100" dataFormat="json" type="doughnut2d"
+              placeholder="Loading..." [dataSource]="stagesChart" (dataplotClick)="stagesDataplotClick($event)">
+            </fusioncharts>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+
+
+    <ng-container *ngIf="this.allPhases">
+
+      <!-- PHASES -->
+      <div class="col-4 border-end pie-chart">
+        <div class="row pie-chart__header">
+          <span class="chart-name">Bankruptcy Count by Phases</span>
+        </div>
+        <div class="row pie-chart__chart">
+          <ng-container *ngIf="phasesChart">
+            <fusioncharts width="100%" height="300" class="w-100" dataFormat="json" type="doughnut2d"
+              placeholder="Loading..." [dataSource]="phasesChart" (dataplotClick)="phasesDataplotClick($event)">
+            </fusioncharts>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- TYPES -->
+      <ng-container *ngIf="typesChart">
+        <div class="col-4 column-chart">
+          <div class="row column-chart__header">
+            <div class="col-5">
+              <span class="chart-name">Bankruptcy by Type</span>
+            </div>
+            <div class="phase-legend float-end">
+              <div class="row phase-legend__item" *ngFor="let phase of allPhases">
+                <span class="fa fa-circle pe-1" [ngStyle]="{color: phase.hexColor}"></span>
+                <span>{{phase.name}}</span>
+                <span *ngIf="!!phase.shortName">&nbsp;({{phase.shortName}})</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row column-chart__chart">
+            <fusioncharts width="100%" height="270" class="w-100" dataFormat="json" type="stackedcolumn2d"
+              placeholder="Loading..." [dataSource]="typesChart" (dataplotClick)="typesDataplotClick($event)"
+              (dataLabelClick)="typesXAxisLabelClick($event)">
+            </fusioncharts>
+          </div>
+        </div>
+      </ng-container>
+
+    </ng-container>
+    
+  </div>
+
+  <div class="row">
+    <div class="col mt-3">
+      <app-bankruptcy-dashboard-claimants-list
+        [projectId]="projectId"
+        [rootProductCategoryId]="rootProductCategoryId"
+        (gridFiltersChanged)="onGridFiltersChanged()"
+        (goToDetails)="onGoToDetails($event)">
+      </app-bankruptcy-dashboard-claimants-list>
+    </div>
+  </div>
+</div>

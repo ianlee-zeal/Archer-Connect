@@ -1,0 +1,33 @@
+.form-check {
+    margin: 0;
+  }
+  table {
+    width: 600px;
+  }
+  tr {
+  
+    th:not(:first-child),
+    td:not(:first-child) {
+      text-align: center;
+    }
+  }
+.banner-section {
+  margin-top: 2rem;
+  
+  &__row {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.custom-display {
+  display: flex;
+  width: 100%;
+
+  &__max-width {
+    max-width: 375px;
+  }
+  &__width {
+    width: 375px;
+  }
+}

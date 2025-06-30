@@ -1,0 +1,14 @@
+<modal>
+  <modal-header class="progress-bar-modal">
+    <div class="progress-bar-modal__container">
+      <div>Validating Process</div>
+      <div class="progress-container">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" [style.width]="progressWidth" [attr.aria-valuenow]="progressValue"
+            aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="progress-container__count">{{progressWidth}}</div>
+      </div>
+    </div>
+  </modal-header>  
+</modal>

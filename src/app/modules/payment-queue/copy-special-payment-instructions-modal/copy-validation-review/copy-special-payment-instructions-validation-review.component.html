@@ -1,0 +1,26 @@
+<div class="modal-section">
+    <nav>
+        <div class="nav nav-tabs copy-spi-tabs nav-tabs-auto" id="review-nav-tab" role="tablist">
+            <a *ngFor="let item of tabsGroup" [class.active]="isActiveTab(item)" class="nav-item nav-link"
+                id="{{item.tab}}-tab" (click)="onChangeTab(item.tab)" data-toggle="tab"
+                data-target="#{{item.tab}}">{{item.title}} ({{item.count}})
+            </a>
+            <card hideSeparator>
+                <card-col *ngIf="paymentInstructions" [width]="700">
+                  <card-row [labelWidth]="350">
+                    <strong cardValue>Special Payment Instructions to be copied:</strong>
+                    <div *ngFor="let pi of paymentInstructions; index as i;" cardValue>{{pi.payee}} / {{pi.method}} /
+                      {{pi.percentage}}%</div>
+                  </card-row>
+                </card-col>
+              </card>
+        </div>
+    </nav>
+
+    <div class="tab-content" id="review-nav-tab-content">
+        <div *ngFor="let item of tabsGroup" class="tab-pane fade show" [class.active]="isActiveTab(item)" id="{{item.tab}}">
+            <app-copy-special-payment-instructions-id-grid *ngIf="isActiveTab(item)" [tab]="activeTab" [batchAction]="batchAction" [documentTypeId]="documentTypeId">
+            </app-copy-special-payment-instructions-id-grid>
+        </div>
+    </div>
+</div>

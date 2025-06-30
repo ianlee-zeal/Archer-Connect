@@ -1,0 +1,53 @@
+<app-info-card [state]="infoCardState">
+  <div (click)="onClick()" class="container cursor-pointer" *ngIf="bankruptcyItem as data" infoCardData>
+      <div class="section first-section">
+          <div class="title">Bankruptcy</div>
+          <ng-container *ngIf="!isBankruptcyInactive; else Inactive">
+              <ng-container *ngIf="!isFinalized; else Final">
+                  <div class="status">IN PROGRESS</div>
+                  <div class="sub-status">
+                      <img src="assets/svg/substatus-inprogress.svg">
+                      <span data-test-id="dashboard-bankruptcy-display-stage">{{ data.stage.name }}</span>
+                  </div>
+              </ng-container>
+          </ng-container>
+          
+          <ng-template #Final>
+              <div class="status-final">FINALIZED</div>
+          </ng-template>
+
+          <ng-template #Inactive>
+              <div class="status">N/A</div>
+              <div class="sub-status">
+                  <i class="fas fa-times"></i>
+                  <span data-test-id="dashboard-bankruptcy-display-stage">{{ data.stage.name }}</span>
+              </div>
+          </ng-template>
+          
+      </div>
+      <div class="section second-section">
+          <div class="summary-row">
+              <span class="property-name">Abandoned:</span>
+              <div class="dashed-line"></div>
+              <span data-test-id="dashboard-bankruptcy-display-abandoned" class="property-value"> {{ (data.abandoned | yesNoPipe) || '-' }} </span>
+          </div>
+          <div class="summary-row">
+              <span class="property-name">Closing Statement Needed:</span>
+              <div class="dashed-line"></div>
+              <span data-test-id="dashboard-bankruptcy-display-closingStatementNeeded" class="property-value"> {{ (data.closingStatementNeeded | yesNoPipe) || '-' }} </span>
+          </div>
+      </div>
+      <div class="section third-section">
+          <div class="summary-row">
+              <span class="property-name">Ready to Pay Trustee:</span>
+              <div class="dashed-line"></div>
+              <span data-test-id="dashboard-bankruptcy-display-readyToPayTrustee" class="property-value" > {{ (data.readyToPayTrustee | yesNoPipe) || '-' }} </span>
+          </div>
+          <div class="summary-row">
+              <span class="property-name">Final Date:</span>
+              <div class="dashed-line"></div>
+              <span data-test-id="dashboard-bankruptcy-display-finalDate" class="property-value"> {{ (data.finalDate | date:'MM/dd/yyyy') || '-' }} </span>
+          </div>
+      </div>                
+  </div>
+</app-info-card> 

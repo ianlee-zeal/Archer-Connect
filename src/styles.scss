@@ -1,0 +1,189 @@
+@import "./styles.variables.scss";
+
+// standard styles
+@import "../node_modules/bootswatch/dist/flatly/_variables";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "../node_modules/bootswatch/dist/flatly/_bootswatch";
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+@import "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";
+
+@import "./styles/index.scss";
+
+/* You can add global styles to this file, and also import other style files */
+.nav-item {
+  cursor: pointer;
+}
+
+.navbar {
+  background-color: $top-menu-bg !important;
+}
+
+.navbar .nav-link {
+  color: $top-menu !important;
+}
+
+.navbar .nav-link:hover, .navbar .nav-link:focus {
+  color: $top-menu !important;
+}
+
+.nav-tabs {
+  margin-bottom: 0;
+}
+
+.nav-tabs-auto {
+  height: auto;
+}
+
+.nav-item a {
+  color: #000;
+}
+
+.row-check {
+  margin-top: 36px;
+}
+
+.col-check .form-group {
+  text-align: center;
+}
+
+.fa {
+  cursor: pointer;
+}
+
+a {
+  color: $link-color;
+}
+
+a.nav-link {
+  color: $tabs-color;
+}
+
+a.nav-link:hover, a.nav-link:focus {
+  color: $tabs-color;
+}
+
+.btn-success {
+  background-color: $blue;
+  border-color: $blue;
+}
+
+.btn-success.active {
+  background-color: $orange !important;
+  border-color: $orange !important;
+}
+
+.btn-oval {
+  border-radius: 25px;
+}
+
+.page-item.disabled {
+  background-color: $light-blue !important;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+}
+
+.bottom-separator {
+  border-bottom: 2px solid $border-gray;
+}
+
+.hidden {
+  display: none;
+}
+
+.grid-hidden {
+  height: 0 !important;
+  overflow: hidden;
+}
+
+.invisible {
+  visibility: hidden !important;
+}
+
+.loading-in-progress {
+  .grid-pager__button, .grid-record-pager__button {
+    visibility: hidden !important;
+  }
+}
+
+.break-text {
+  word-break: break-word;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.orange {
+  color: orange;
+}
+
+.red-color {
+  color: $validation-invalid-color;
+}
+
+.dz-preview, .dz-file-preview {
+  display: none;
+}
+
+@media screen and (max-width: 992px) {
+  .navbar-toggle-button {
+    display: none;
+    &-responsive {
+      display: block;
+    }
+  }
+  .sidebar-wrapper {
+    display: none;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .sidebar-wrapper.show {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 993px) {
+  .navbar-toggle-button {
+    display: block;
+    &-responsive {
+      display: none;
+    }
+  }
+  .navbar-expand-lg .navbar-collapse {
+    flex: 1;
+  }
+
+  /* IE10+ specific styles for desktop */
+  @media screen and (min-width: 1800px) and (-ms-high-contrast: active), (-ms-high-contrast: none) {  
+    .navbar-expand-lg .navbar-collapse {
+      max-width: 63%;
+    } 
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  div.navbar-collapse,
+  .navbar-expand-lg .navbar-collapse {
+    display: flex;
+  }
+
+  div.sidebar-container.d-none.d-md-block {
+    display: block !important;
+  }
+}
+
+:root {
+  --primary-accent-color: #{$orange};
+  --tab-border-color: #{$orange};
+  --messaging-btn-color: #4ebf52;
+}
+
+.external-theme {
+  --primary-accent-color: #{$brand-orange};
+  --tab-border-color: #{$primary-blue};
+  --messaging-btn-color: #{$primary-blue};
+}

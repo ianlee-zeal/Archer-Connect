@@ -1,0 +1,11 @@
+<div class="wrapper" *ngIf="toggled$ | async as toggled">
+  <div id="sidebar" data-test-id="side-bar">
+    <app-side-nav [items]="items" (itemClick)="toggle($event)"></app-side-nav>
+  </div>
+
+  <div data-test-id="side-bar-overlay"  class="overlay" (click)="toggle($event)" [@fadeIn]>
+    <button data-test-id="side-bar-close-btn"  class="close-button" title="Close">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+</div>

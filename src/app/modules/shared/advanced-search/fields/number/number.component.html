@@ -1,0 +1,40 @@
+<div class="advanced-search-field-number">
+  <div class="advanced-search-field-number__type-container">
+    <app-select class="advanced-search-field-number__type"
+                [model]="condition"
+                [options]="conditionOptions"
+                (onModelChange)="onChangeCondition($event)"
+                placeholder="Select Condition"
+                fullwidth
+                searchable>
+    </app-select>
+  </div>
+  <div *ngIf="condition !== conditions.InRange && condition !== conditions.IsMissing" [class.has-error]="hasError(entry?.errors.term)">
+    <input class="form-control advanced-search-field-number__input"
+           type="text"
+           [(ngModel)]="entry.term"
+           [disabled]="!condition"
+           (ngModelChange)="markAsEdited.emit()" />
+    <app-search-validation-messages [errors]="entry.errors.term"></app-search-validation-messages>
+  </div>
+  <div class="advanced-search-field-number__range" *ngIf="condition === conditions.InRange">
+    <div class="advanced-search-field-number__range-controls" [class.has-error]="entry.errors.range">
+      <div class="advanced-search-field-number__term-container" [class.has-error]="hasError(entry?.errors.term)">
+        <input class="form-control advanced-search-field-number__input" 
+                type="text"
+                [(ngModel)]="entry.term"
+                (ngModelChange)="markAsEdited.emit()" />
+        <app-search-validation-messages [errors]="entry.errors.term"></app-search-validation-messages>
+      </div>
+      <div class="advanced-search-field-number__delimiter">to</div>
+      <div class="advanced-search-field-number__term-container" [class.has-error]="hasError(entry?.errors.termTo)">
+        <input class="form-control advanced-search-field-number__input" 
+                type="text" 
+                [(ngModel)]="entry.termTo" 
+                (ngModelChange)="markAsEdited.emit()" />
+        <app-search-validation-messages [errors]="entry.errors.termTo"></app-search-validation-messages>
+      </div>
+    </div>
+    <app-search-validation-messages [errors]="entry.errors.range"></app-search-validation-messages>
+  </div>
+</div>

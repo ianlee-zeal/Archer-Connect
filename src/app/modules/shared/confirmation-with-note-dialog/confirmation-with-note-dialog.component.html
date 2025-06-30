@@ -1,0 +1,26 @@
+<modal (close)="respond(false)">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <ng-container modalSection>
+      <div class="modal-section" [innerHTML]="message"></div>
+      <div class="modal-section">
+        <form [formGroup]="form">
+          <card hideSeparator>
+            <card-col>
+                <card-row [labelWidth]="90"  labelWeight="bold" label="Note" inputId="note" [control]="form.get('note')" required>
+                  <quill-editor formControlName="note" class="quill-editor-500"
+                    placeholder="Enter text here..."
+                    cardValue>
+                  </quill-editor>
+                </card-row>
+            </card-col>
+          </card>
+        </form>
+      </div>
+    </ng-container>
+  </modal-body>
+  <modal-footer>
+      <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="respond(false)">Cancel</button>
+      <button type="button" [disabled]="isOkBtnDisabled" class="btn modal-footer__btn modal-footer__btn--primary" (click)="respond(true)">{{ buttonOkText || 'Ok' }}</button>
+  </modal-footer>
+</modal>

@@ -1,0 +1,55 @@
+<modal (close)="modal.hide()">
+  <modal-header>Invoice Archer Fees</modal-header>
+
+  <modal-body>
+    <div class="modal-section">
+      <span class="invoice-archer-fees__description">
+        Only ARCHER fees in account group 52000 that pass payment deficiency validations and have an Overall Invoice
+        Approval Status of Ready to Invoice are included in queued results.
+      </span>
+      <nav>
+        <div class="nav nav-tabs" id="review-nav-tab" role="tablist">
+          <a *ngFor="let item of tabsGroup" class="nav-item nav-link" [class.active]="isActiveTab(item)"
+            id="{{item.tab}}-tab" (click)="onChangeTab(item.tab)" data-toggle="tab"
+            data-target="#{{item.tab}}">{{item.title}} <span *ngIf="item.count !== undefined">({{item.count}})</span>
+            <div *ngIf="item.title === 'Errors' && item.count > 0" class="error__icon">
+              <img src="assets/images/warning-icon.png" title="Error" />
+            </div>
+          </a>
+        </div>
+      </nav>
+      <div class="tab-content" id="review-nav-tab-content">
+        <div *ngFor="let item of tabsGroup" class="tab-pane fade show" [class.active]="isActiveTab(item)"
+          id="{{item.tab}}">
+          <app-invoice-archer-fees-grid *ngIf="isActiveTab(item)" [tab]="activeTab" [batchAction]="batchAction" [resultDocId]="resultDocId">
+          </app-invoice-archer-fees-grid>
+        </div>
+        <app-tab-placeholder *ngIf="!resultDocId" [text]="'Loading...'">
+        </app-tab-placeholder>
+      </div>
+    </div>
+  </modal-body>
+
+  <modal-footer>
+    <ng-container [ngTemplateOutlet]="invoiceArcherFeesButtons"></ng-container>
+  </modal-footer>
+</modal>
+
+<ng-template #invoiceArcherFeesButtons>
+  <button
+          type="button"
+          asyncButton
+          [awaitedActionTypes]="validationResultsButtonAwaitedActions"
+          (click)="onValidationResultsClick()"
+          [disabled]="!previewDocId"
+          class="btn modal-footer__btn modal-footer__btn--success me-auto">
+    <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+    Validation Results
+  </button>
+  <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="modal.hide()">
+    Cancel
+  </button>
+  <button class="btn modal-footer__btn modal-footer__btn--primary" [disabled]="!resultDocId" (click)="onSubmit()">
+    Submit
+  </button>
+</ng-template>

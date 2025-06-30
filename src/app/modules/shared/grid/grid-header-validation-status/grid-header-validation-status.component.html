@@ -1,0 +1,14 @@
+<div class="validation-status-header" [attr.class]="params?.column?.getColDef().headerClass">
+    <div>
+        {{ params.displayName }}
+    </div>
+    <div class="validation-status-header__icon">
+        <i *ngIf="(status$ | async) as status"
+           class="fas" 
+           [ngClass]="{
+                'hidden': status === statuses.Ok,
+                'fa-exclamation-triangle': status === statuses.Error
+            }">
+        </i>
+    </div>
+</div>

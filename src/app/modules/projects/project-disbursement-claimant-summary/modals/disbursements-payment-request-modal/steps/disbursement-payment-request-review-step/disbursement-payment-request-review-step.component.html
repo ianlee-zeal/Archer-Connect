@@ -1,0 +1,27 @@
+<div class="payments-review-step__container">
+  <app-context-bar
+      title="Payment Summary By Payee"
+      [elements]="headerElements">
+  </app-context-bar>
+  <app-grid
+      class="ag-grid-custom-height-150"
+      [gridId]="gridId"
+      idColumnName="rowId"
+      [gridOptions]="gridOptions"
+      (gridReady)="gridReady($event)">
+  </app-grid>
+</div>
+<div class="modal-section">
+ <form [formGroup]="form">
+  <card [maxWidth]="700" hideSeparator>
+      <card-col>
+            <card-row  label="Add a Note" [valuePaddingTop]="5" inputId="note" [control]="form.get('note')" required>
+              <quill-editor formControlName="note"
+                placeholder="Enter text here..."
+                cardValue>
+              </quill-editor>
+            </card-row>
+      </card-col>
+    </card>
+  </form>
+</div>

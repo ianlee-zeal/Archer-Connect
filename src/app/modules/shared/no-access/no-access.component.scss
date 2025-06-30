@@ -1,0 +1,19 @@
+@import "/src/styles/variables.scss";
+
+.access-denied {
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
+  height: 100%;
+
+  &__message {
+    font-size: $font-size-base;
+    color: $gray-dark;
+  }
+
+  &__description {
+    font-size: $font-size-sm;
+    color: $gray-dark;
+  }
+}

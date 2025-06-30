@@ -1,0 +1,5 @@
+<div class="document-type-cell-renderer">
+    <img class="document-type-cell-renderer__icon"
+        [ngClass]="{ 'document-type-cell-renderer__icon--hidden': !imageSrc }" [src]="imageSrc" *ngIf="imageSrc" />
+    <span class="document-type-cell-renderer__text">{{ type }}</span>
+</div>

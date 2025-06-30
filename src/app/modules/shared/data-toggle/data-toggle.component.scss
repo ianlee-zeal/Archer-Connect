@@ -1,0 +1,37 @@
+@import "src/styles/variables.scss";
+
+$ac-data-toggle-color: #cecece;
+
+.ac-data-toggle {
+    width: 100%;
+    text-align: end;
+    display: inline-block;
+    a {
+        color: $tabs-color;
+        font-weight: bolder;
+        cursor: pointer;
+    }
+    &__collapse {
+        margin-left: 15px;
+    }
+    &--inactive {
+        color: $ac-data-toggle-color !important;
+    }
+}
+
+.toggle-container {
+    &__control {
+        margin-right: 24px;
+    }
+    &__button {
+        padding: 0;
+        background-color: transparent;
+        border: none;
+    }
+    &__action-name {
+        margin-left: 6px;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: $label-color;
+    }
+}

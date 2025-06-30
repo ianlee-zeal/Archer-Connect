@@ -1,0 +1,21 @@
+.top-nav-breadcrumb {
+  display: flex;
+  list-style: none;
+
+  &__steps {
+    font-size: 14px;
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  &__disable-step {
+    font-size: 14px;
+    color: #a4a4a4 !important;
+  }
+
+  &__chevron-icon {
+    font-size: 12px;
+    color: #a4a4a4;
+    padding: 0px 10px;
+  }
+}

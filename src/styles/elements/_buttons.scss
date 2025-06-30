@@ -1,0 +1,206 @@
+@use "sass:color";
+@import "../variables.scss";
+@import "../_mixins.scss";
+
+.btn {
+  height: $button-height;
+  line-height: $button-height;
+  font-size: $button-font-size;
+  padding: 0 16px;
+  border: none;
+  border-radius: $button-border-radius;
+
+  & + & {
+    margin-left: 10px;
+  }
+
+  &-primary {
+    @include button($white, $custom-blue);
+  }
+
+  &-secondary {
+    @include button($custom-blue, $secondary-gray);
+  }
+
+  &-primary {
+    &:active {
+      background-color: color.scale($primary-blue, $lightness: -10%) !important;
+    }
+
+    &:focus {
+      box-shadow: 0 0 2px 3px color.scale($primary-blue, $lightness: -10%) !important;
+    }
+  }
+
+  &-icon {
+    color: $gray;
+    padding: 0;
+    vertical-align: top;
+    min-width: 0;
+
+    @include square($controls-old-height);
+
+    &:hover,
+    &:not(:disabled):not(.disabled):active {
+      color: $gray;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  &-icon-remove {
+    min-width: 0;
+    font-size: 10px;
+    color: $gray-darker;
+
+    &__blue {
+      color: $custom-blue;
+    }
+
+    &:hover,
+    &:not(:disabled):not(.disabled):active {
+      color: $gray-darker;
+    }
+
+    &:disabled,
+    &.disabled {
+      color: $gray-darker;
+      opacity: 0.5;
+    }
+
+    &-small {
+      @include square(20px);
+      line-height: 20px;
+    }
+
+    &:before {
+      content: '\f2ed';
+      font-family: $font-awesome;
+      font-weight: 600;
+    }
+  }
+
+  &-link {
+    color: $custom-blue;
+    padding: 0;
+    font-size: inherit;
+    text-decoration: none;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  &-add {
+    // TODO: move common styles to btn class when new design was applied
+    font-size: $controls-font-size;
+    height: $controls-height;
+    line-height: $controls-height;
+    font-weight: 600;
+    min-width: 0;
+    padding: 0 6px;
+
+    &:after {
+      content: '\f055';
+      margin-left: 6px;
+      font-family: $font-awesome;
+      font-size: 12px;
+      color: $custom-blue;
+    }
+  }
+
+  &-details-edit {
+    color: $primary-blue;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: transparent;
+    white-space: nowrap;
+
+    &:hover, &:focus, &:active {
+      color: $primary-blue;
+    }
+
+    &:before {
+      content: url("../../assets/svg/btn-edit.svg");
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+  }
+
+  &-icon-download {
+    min-width: 0;
+    font-size: 10px;
+    color: $gray-darker;
+
+    &:hover,
+    &:not(:disabled):not(.disabled):active {
+      color: $gray-darker;
+    }
+
+    &:disabled,
+    &.disabled {
+      color: $gray-darker;
+      opacity: 0.5;
+    }
+
+    &-small {
+      @include square(20px);
+      line-height: 20px;
+    }
+
+    &:before {
+      content: '\f56d';
+      font-family: $font-awesome;
+      font-weight: 600;
+    }
+  }
+
+  &-icon-edit {
+    min-width: 0;
+    font-size: 10px;
+    color: $gray-darker;
+
+    &:hover,
+    &:not(:disabled):not(.disabled):active {
+      color: $gray-darker;
+    }
+
+    &:disabled,
+    &.disabled {
+      color: $gray-darker;
+      opacity: 0.5;
+    }
+
+    &-small {
+      @include square(20px);
+      line-height: 20px;
+    }
+
+    &:before {
+      content: '\f044';
+      font-family: $font-awesome;
+      font-weight: 600;
+    }
+  }
+
+  &-icon-add {
+    font-size: $controls-font-size;
+    height: $controls-height;
+    line-height: $controls-height;
+    font-weight: bold;
+    min-width: 0;
+    padding: 0 6px;
+    width: auto;
+
+    &:after {
+      font-weight: bold;
+      content: 'Add \f055';
+      margin-left: 6px;
+      font-family: $font-awesome;
+      font-size: 12px;
+      color: $custom-blue;
+    }
+  }
+}

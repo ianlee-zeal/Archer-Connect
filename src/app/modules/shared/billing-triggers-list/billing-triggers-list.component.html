@@ -1,0 +1,12 @@
+<div *ngIf="triggersList && gridId" class="triggers-list-wrapper">
+  <app-grid
+    [gridOptions]="gridOptions"
+    (gridReady)="gridReady($event)"
+    (loadData)="loadData($event)"
+    [gridId]="gridId"
+    [hideTopStatusbar]="true"
+    [hideBottomStatusbar]="true"
+    isContentAutoHeight="true"
+    entityLabel="Billing Triggers">
+  </app-grid>
+</div>

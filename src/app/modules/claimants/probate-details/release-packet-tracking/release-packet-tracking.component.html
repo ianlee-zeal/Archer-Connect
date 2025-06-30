@@ -1,0 +1,35 @@
+<card header="Release Packets" isHeaderFlexRow="true" [actionBar]="actionBar" [ngClass]="canEdit ? 'release-packets-card' : ''">
+  <card-col>
+    <app-grid
+      *ngIf="canEdit && packetRequests && packetStatuses.length"
+      [gridOptions]="gridOptions"
+      (gridReady)="gridReady($event)"
+      (loadData)="loadData($event)"
+      [gridId]="gridId"
+      entityLabel="Release Packets"
+      isContentAutoHeight="true"
+      [hideTopStatusbar]="true"
+      [saveGridDataOnModelUpdate]="true">
+    </app-grid>
+    <app-grid
+      *ngIf="!canEdit && packetRequests?.length && packetStatuses.length"
+      [gridOptions]="gridOptionsReadonly"
+      (gridReady)="gridReady($event)"
+      (loadData)="loadData($event)"
+      [gridId]="gridId"
+      entityLabel="Release Packets"
+      isContentAutoHeight="true"
+      [hideTopStatusbar]="true"
+      [saveGridDataOnModelUpdate]="true">
+    </app-grid>
+  </card-col>
+</card>
+<div
+  data-test-id="release-packets-errors"
+  *ngIf="!isValid && canEdit && errorMessages.length>0" class="error-container text-danger">
+  <ng-container *ngFor="let errorMessage of errorMessages">
+    <i class="fas fa-exclamation-triangle"></i>
+    <span>{{ errorMessage }}</span>
+    <br/>
+  </ng-container>
+</div>

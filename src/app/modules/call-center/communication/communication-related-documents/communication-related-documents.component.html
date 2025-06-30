@@ -1,0 +1,13 @@
+<ng-container *ngIf="canReadDocuments">
+  <div *ngIf="communication$ | async as communication">
+    <app-documents-list
+      [isAutonomic]="!communication.id"
+      [documents]="relatedDocuments"
+      [class]="isProjectsPage ? 'ag-grid-custom-height-300' : ''"
+      [entityTypeId]="entityType"
+      [entityId]="communication.id"
+      [gridId]="gridId"
+      (onActionBarUpdated)="onActionBarUpdated($event)">
+    </app-documents-list>
+  </div>
+</ng-container>

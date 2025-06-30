@@ -1,0 +1,36 @@
+<form [formGroup]="form" (change)="onChanges()">
+    <card header="Closing Statement Settings">
+        <card-col [labelWidth]="360" [width]="660">
+
+            <!-- Default Closing Statement Template -->
+            <card-row label="Default Closing Statement Template" inputId="closingStatementTemplateId" [control]="form.get('closingStatementTemplateId')">
+                <app-select
+                  id="closingStatementTemplateId"
+                  class="dropdown"
+                  [options]="closingStatementTemplateOptions"
+                  formControlName="closingStatementTemplateId"
+                  groupBy="group"
+                  cardValue
+                  optionAsValue>
+                </app-select>
+            </card-row>
+
+            <!-- Firm has approved Template -->
+            <card-row label="Firm Approved Template" inputId="firmApprovedTemplate" [control]="form.get('firmApprovedTemplate')">
+                <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="firmApprovedTemplate" formControlName="firmApprovedTemplate" >
+                    <span></span>
+                </label>
+            </card-row>
+
+            <!-- Default Disbursement Worksheet Template -->
+            <card-row label="Default Disbursement Worksheet Template" inputId="exportDetailedDisbursementWorksheetTemplateId" [control]="form.get('exportDetailedDisbursementWorksheetTemplateId')"  >
+                <app-select id="exportDetailedDisbursementWorksheetTemplateId" class="dropdown" [options]="importDisbursementWorksheetTemplateOptions" formControlName="exportDetailedDisbursementWorksheetTemplateId" cardValue optionAsValue> </app-select>
+            </card-row>
+
+            <card-row label="Default Firm Fee & Expense Worksheet Template" inputId="exportFirmFeeAndExpenseTemplateId" [control]="form.get('exportFirmFeeAndExpenseTemplateId')"  >
+                <app-select id="exportFirmFeeAndExpenseTemplateId" class="dropdown" [options]="importFeeAndExpenseTemplateOptions" formControlName="exportFirmFeeAndExpenseTemplateId" cardValue optionAsValue> </app-select>
+            </card-row>
+        </card-col>
+    </card>
+</form>

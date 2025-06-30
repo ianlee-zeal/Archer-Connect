@@ -1,0 +1,14 @@
+<div class="grid-actions">
+  <button
+    type="button"
+    class="btn-grid-action btn-edit"
+    title="View Request"
+    (click)="onView()"
+  ></button>
+  <button type="button"
+    *ngIf="showLinkAttachmentsLink"
+    class="btn-grid-action btn-download"
+    (click)="onDownloadDocumentClick()"
+    title="Download Additional Documents">
+  </button>
+</div>

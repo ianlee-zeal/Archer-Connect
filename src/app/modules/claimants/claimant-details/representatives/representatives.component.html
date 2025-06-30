@@ -1,0 +1,9 @@
+<div *ngIf="item$ | async as claimant">
+  <app-grid
+    [gridOptions]="gridOptions"
+    (loadData)="loadData($event)"
+    (gridReady)="gridReady($event)"
+    [gridId]="gridId"
+    entityLabel="representatives">
+  </app-grid>
+</div>

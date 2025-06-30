@@ -1,0 +1,17 @@
+@import "src/styles/_mixins.scss";
+
+:host {
+  @include grid-column-tooltip(20px);
+}
+
+:host.ag-tooltip-hiding {
+  opacity: 0;
+}
+
+.html-tooltip {
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 4px;
+  padding: 10px 15px;
+  max-width: 300px;
+}

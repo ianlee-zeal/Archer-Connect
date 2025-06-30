@@ -1,0 +1,73 @@
+<div class="net-allocation-details" *ngIf="netAllocationDetails">
+  <card hideSeparator class="net-allocation-details__header-info">
+    <card-col [width]="200">
+      <card-row
+        label="Claimant ID"
+        [value]="netAllocationDetails.clientId"
+      ></card-row>
+    </card-col>
+    <card-col>
+      <card-row label="Net Allocation" [value]="netAllocation"></card-row>
+    </card-col>
+    <card-col [labelWidth]="220">
+      <card-row>
+        <label cardValue class="fas expand-button" [ngClass]="isExpandedAll ? 'fa-chevron-down' : 'fa-chevron-up'" (click)="toggleExpandAll()">
+          <span class="expand-button__text">{{isExpandedAll ? 'Collapse All': 'Expand All'}}</span>
+        </label>
+      </card-row>
+    </card-col>
+  </card>
+  <card class="net-allocation-details__panel-header">
+    <card-col>
+      <card-row class="net-allocation-details__formula-row" hideLabel>
+        <app-grid-expansion-panel-header
+          [elements]="getHeaderElements()"
+          cardValue
+        ></app-grid-expansion-panel-header>
+      </card-row>
+    </card-col>
+  </card>
+  <div class="net-allocation-details__table">  
+    <card *ngIf="netAllocationDetails.formulas" hideSeparator>
+      <card-col>
+        <card-row
+          *ngFor="let formula of netAllocationDetails.formulas"
+          class="net-allocation-details__formula-row"
+          hideLabel
+        >
+          <app-grid-expansion-panel-row
+            [elements]="getGroupElements(formula)"
+            [isExpanded]="getExpandedState(formula.step)"
+            (expanded)="onGroupExpanded(formula.step)"
+           
+            cardValue
+          >
+            <card hideSeparator>
+              <card-col>
+                <card-row class="net-allocation-details__formula-row" hideLabel>
+                  <app-grid-expansion-panel-header
+                    [elements]="getSubHeaderElements()"
+                    
+                    cardValue
+                  ></app-grid-expansion-panel-header>
+                </card-row>
+                <card-row
+                  *ngFor="let variable of formula.variables; let even = even"
+                  class="net-allocation-details__formula-row__child"
+                  hideLabel
+                >
+                  <app-grid-expansion-panel-row-child
+                    [elements]="getSubGroupElements(variable)"
+                   
+                    [alternateBackground]="even"
+                    cardValue
+                  ></app-grid-expansion-panel-row-child>
+                </card-row>
+              </card-col>
+            </card>
+          </app-grid-expansion-panel-row>
+        </card-row>
+      </card-col>
+    </card>
+  </div>
+</div>

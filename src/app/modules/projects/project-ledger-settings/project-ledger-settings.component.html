@@ -1,0 +1,232 @@
+<div *ngIf="claimantSettlementLedgerSettingState$ | async as claimantSettlementLedgerSettings">
+  <ng-container *ngIf="canEdit; else viewTemplate">
+    <card hideSeparator>
+      <card-col [width]="800">
+        <card-row>
+          <ng-container cardValue>
+            <app-common-settings (formChanged)="formChanged()" (formValid)="onFormValid($event)" [projectId]="projectId"></app-common-settings>
+          </ng-container>
+        </card-row>
+        <card-row>
+          <ng-container cardValue>
+            <app-formula-settings (formChanged)="formChanged()" (formValid)="onFormValid($event)"></app-formula-settings>
+          </ng-container>
+        </card-row>
+        <card-row>
+          <ng-container cardValue>
+            <app-closing-statement-settings (formChanged)="formChanged()" (formValid)="onFormValid($event)"></app-closing-statement-settings>
+            <app-delivery-settings (formChanged)="formChanged()" (formValid)="onFormValid($event)"></app-delivery-settings>
+          </ng-container>
+        </card-row>
+        <card-row>
+          <ng-container cardValue>
+            <app-digital-payment-settings (formChanged)="formChanged()" (formValid)="onFormValid($event)"></app-digital-payment-settings>
+          </ng-container>
+        </card-row>
+        <card-row>
+          <ng-container cardValue>
+            <app-firm-money-movement (formChanged)="formChanged()" (formValid)="onFormValid($event)"></app-firm-money-movement>
+          </ng-container>
+        </card-row>
+      </card-col>
+    </card>
+  </ng-container>
+
+  <ng-template #viewTemplate>
+    <card hideSeparator>
+      <card-col [width]="800">
+        <card-row>
+          <ng-container cardValue>
+            <card hideSeparator>
+              <card-col [labelWidth]="322" [width]="660">
+                  <card-row
+                    label="QSF Service"
+                    [value]="getQSFProductIdOption(claimantSettlementLedgerSettings.commonSettings.currentData.qsfProductId)?.name" required >
+                  </card-row>
+
+                  <card-row
+                    inputId="netAllocationThreshold"
+                    label="Minimum Disbursement Threshold"
+                    [value]="getPipedPercent(claimantSettlementLedgerSettings.commonSettings.currentData.netAllocationThreshold)"
+                    required>
+                  </card-row>
+
+                  <card-row
+                    label="Lien Payments Organization"
+                    [value]="claimantSettlementLedgerSettings.commonSettings.currentData.lienPaymentsOrganization?.name">
+                  </card-row>
+                  <card-row label="Enable Lien Transfers">
+                    <label class="form-check h-100" cardValue>
+                        <input type="checkbox" class="form-check-input" id="enableLienTransfers" [checked]="claimantSettlementLedgerSettings.commonSettings.currentData.enableLienTransfers" disabled >
+                        <span></span>
+                    </label>
+                  </card-row>
+                  <card-row label="Multiple Rounds of Funding">
+                    <label class="form-check h-100" cardValue>
+                        <input type="checkbox" class="form-check-input" id="multipleRoundsOfFunding" [checked]="claimantSettlementLedgerSettings.commonSettings.currentData.multipleRoundsOfFunding" disabled >
+                        <span></span>
+                    </label>
+                  </card-row>
+                  <card-row label="Defense Approval Required">
+                    <label class="form-check h-100" cardValue>
+                        <input type="checkbox" class="form-check-input" id="defenseApprovalRequired" [checked]="claimantSettlementLedgerSettings.commonSettings.currentData.defenseApprovalRequired" disabled >
+                        <span></span>
+                    </label>
+                  </card-row>
+                  <card-row label="Manual Payment Requests Allowed">
+                    <label class="form-check h-100" cardValue>
+                        <input type="checkbox" class="form-check-input" id="isManualPaymentRequestsAllowed" [checked]="claimantSettlementLedgerSettings.commonSettings.currentData.isManualPaymentRequestsAllowed" disabled >
+                        <span></span>
+                    </label>
+                  </card-row>
+              </card-col>
+            </card>
+          </ng-container>
+        </card-row>
+        <card-row>
+          <ng-container cardValue>
+            <card header="Automation">
+              <card-col [labelWidth]="322" [width]="865">
+                <card-row
+                    label="Enable Fee Automation"
+                    [value]="getFeeAutomationValueWithHint(claimantSettlementLedgerSettings.commonSettings.currentData.isFeeAutomationEnabled)"
+                    style="white-space: nowrap; overflow: hidden; font-weight: normal !important; font-size: 14px;">
+                </card-row>
+                <card-row label="Enable Closing Statements Automation">
+                  <label class="form-check h-100" cardValue>
+                      <input type="checkbox" class="form-check-input" id="isClosingStatementAutomationEnabled" [checked]="claimantSettlementLedgerSettings.commonSettings.currentData.isClosingStatementAutomationEnabled" disabled >
+                      <span></span>
+                  </label>
+                </card-row>
+                <card-col [labelWidth]="322" [width]="865"></card-col>
+                <card-row label="Enable Payment Automation"
+                  [labelWidth]="322"
+                  *ngIf="canViewPaymentAutomationPermission">
+                  <label class="form-check h-100" cardValue>
+                      <input type="checkbox" class="form-check-input" id="isPaymentAutomationEnabled" [checked]="claimantSettlementLedgerSettings.commonSettings.currentData.isPaymentAutomationEnabled" disabled >
+                      <span></span>
+                  </label>
+                </card-row>
+                <card-row label="Enable Lien Import Automation" [labelWidth]="322" *ngIf="canViewLienImportAutomationPermission">
+                  <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="isLienImportAutomationEnabled"
+                      [checked]="claimantSettlementLedgerSettings.commonSettings.currentData.isLienImportAutomationEnabled" disabled>
+                    <span></span>
+                  </label>
+                </card-row>
+              </card-col>
+            </card>
+          </ng-container>
+        </card-row>
+        <card-row>
+          <ng-container cardValue>
+            <card header="Default Formula Settings">
+              <card-col [labelWidth]="322" [width]="865">
+
+                  <!-- Formula Mode -->
+                  <card-row
+                    label="Formula Mode"
+                    inputId="formulaModeId"
+                    [value]="filterFromSelectOptions(claimantSettlementLedgerSettings.formulaSettings.formulaModeIdOptions, claimantSettlementLedgerSettings.formulaSettings.currentData.formulaModeId)?.name"
+                    required>
+                  </card-row>
+
+                  <!-- Formula Template -->
+                  <card-row
+                    label="Formula Template"
+                    inputId="formulaSetId"
+                    [value]="filterFromSelectOptions(claimantSettlementLedgerSettings.formulaSettings.data.formulaSetFormulas, claimantSettlementLedgerSettings.formulaSettings.currentData.formulaSetId)?.name"
+                    required>
+                  </card-row>
+              </card-col>
+            </card>
+          </ng-container>
+        </card-row>
+        <card-row>
+          <ng-container cardValue>
+            <card header="Closing Statement Settings">
+              <card-col [labelWidth]="360" [width]="660">
+
+                  <!-- Default Closing Statement Template -->
+                  <card-row label="Default Closing Statement Template" [value]="filterFromSelectOptions(claimantSettlementLedgerSettings.closingStatementSettings.data.closingStatementTemplateOptions, claimantSettlementLedgerSettings.closingStatementSettings.currentData.closingStatementTemplateId)?.name">
+                  </card-row>
+
+                  <!-- Firm has approved Template -->
+                  <card-row label="Firm Approved Template">
+                    <label class="form-check h-100" cardValue>
+                        <input type="checkbox" class="form-check-input" id="firmApprovedTemplate" [checked]="claimantSettlementLedgerSettings.closingStatementSettings.currentData.firmApprovedTemplate" disabled >
+                        <span></span>
+                    </label>
+                  </card-row>
+
+                  <!-- Default Disbursement Worksheet Template -->
+                  <card-row label="Default Disbursement Worksheet Template" [value]="claimantSettlementLedgerSettings.closingStatementSettings.currentData.exportDetailedDisbursementWorksheetTemplate?.name">
+                  </card-row>
+
+                  <card-row label="Default Firm Fee & Expense Worksheet Template" [value]="claimantSettlementLedgerSettings.closingStatementSettings.currentData.exportFirmFeeAndExpenseTemplate?.name">
+                  </card-row>
+              </card-col>
+            </card>
+            <card header="Delivery Settings">
+              <card-col [labelWidth]="322" [width]="660">
+
+                  <!-- Mail with Payment -->
+                  <card-row label="Election Form Required before Payment">
+                      <label class="form-check h-100" cardValue>
+                          <input type="checkbox" class="form-check-input" id="electionFormRequired"
+                          [checked]="checkedElectionFormRequired()" disabled>
+                          <span></span>
+                      </label>
+                  </card-row>
+
+                  <!-- Enable Postal -->
+                  <card-row label="Enable Postal">
+                      <label class="form-check h-100" cardValue>
+                          <input type="checkbox" class="form-check-input" id="closingStatementEnabledPostal"
+                          [checked]="claimantSettlementLedgerSettings.deliverySettings.currentData.closingStatementEnabledPostal" disabled>
+                          <span></span>
+                      </label>
+                  </card-row>
+
+                  <!-- Electronic Delivery Enabled -->
+                  <card-row label="Electronic Delivery Enabled">
+                      <label class="form-check h-100" cardValue>
+                          <input type="checkbox" class="form-check-input" id="closingStatementElectronicDeliveryEnabled"
+                          [checked]="claimantSettlementLedgerSettings.deliverySettings.currentData.closingStatementElectronicDeliveryEnabled" disabled>
+                          <span></span>
+                      </label>
+                  </card-row>
+
+                  <!-- Electronic Delivery Provider -->
+                  <card-row label="Electronic Delivery Provider" [value]="filterFromSelectOptions(claimantSettlementLedgerSettings.deliverySettings.electronicDeliveryProviderOptions, claimantSettlementLedgerSettings.deliverySettings.currentData.closingStatementElectronicDeliveryProviderId)?.name">
+                  </card-row>
+
+              </card-col>
+            </card>
+            <card header="Digital Payments Settings">
+              <card-col [labelWidth]="322" [width]="660">
+                <card-row label="Enable Digital Payments">
+                  <label class="form-check h-100" cardValue>
+                      <input type="checkbox" class="form-check-input" id="isDigitalPaymentsEnabled"
+                      [checked]="claimantSettlementLedgerSettings.digitalPaymentSettings.currentData.isDigitalPaymentsEnabled" disabled>
+                      <span></span>
+                  </label>
+              </card-row>
+              <card-row label="Digital Payment Vendor" [value]="filterFromSelectOptions(claimantSettlementLedgerSettings.digitalPaymentSettings.digitalPaymentProvidersOptions, claimantSettlementLedgerSettings.digitalPaymentSettings.currentData.digitalPaymentProviderId)?.name">
+              </card-row>
+              </card-col>
+            </card>
+            <card header="Firm Money Movement">
+              <card-col [labelWidth]="322" [width]="660">
+                  <card-row label="Settlement Counsel Payments" [value]="filterFromSelectOptions(claimantSettlementLedgerSettings.firmMoneyMovement.firmMoneyMovementOptions, claimantSettlementLedgerSettings.firmMoneyMovement.currentData.settlementCounselPaymentOrgTypeId)?.name" required> </card-row>
+                  <card-row label="Primary Firm Payments" [value]="filterFromSelectOptions(claimantSettlementLedgerSettings.firmMoneyMovement.firmMoneyMovementOptions, claimantSettlementLedgerSettings.firmMoneyMovement.currentData.primaryFirmPaymentOrgTypeId)?.name" required> </card-row>
+                  <card-row label="Referring Firm Payments" [value]="filterFromSelectOptions(claimantSettlementLedgerSettings.firmMoneyMovement.firmMoneyMovementOptions, claimantSettlementLedgerSettings.firmMoneyMovement.currentData.referingFirmPaymentOrgTypeId)?.name" required> </card-row>
+                  <card-row label="Special Instructions" [value]="claimantSettlementLedgerSettings.firmMoneyMovement.currentData.specialInstructions" containValue> </card-row>
+              </card-col>
+            </card>
+          </ng-container>
+        </card-row>
+      </card-col>
+    </card>
+  </ng-template>
+</div>

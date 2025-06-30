@@ -1,0 +1,9 @@
+<app-grid
+height="auto"
+[enabledAutoHeight]="false" 
+[gridOptions]="gridOptions" 
+(gridReady)="gridReady($event)"  
+[gridId]="gridId"
+[rowData]="(payment$ | async).checkVerifications" 
+entityLabel="Check Verification" 
+[disallowHighlighting]="true"></app-grid>

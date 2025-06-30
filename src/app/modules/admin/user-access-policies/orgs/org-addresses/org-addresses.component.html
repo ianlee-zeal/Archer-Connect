@@ -1,0 +1,3 @@
+<div class="page-content org-addresses-tab" *ngIf="item$ | async as organization">
+  <app-address-list [entityId]="organization.id" [entityName]="organization.name" [entityType]="entityType" [gridId]="gridId"></app-address-list>
+</div>

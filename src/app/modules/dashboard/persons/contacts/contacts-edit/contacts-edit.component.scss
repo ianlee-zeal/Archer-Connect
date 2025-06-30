@@ -1,0 +1,29 @@
+.modal-section {
+    margin-bottom: 0;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.textarea {
+  &__label {
+    padding: 0 5px;
+    position: absolute;
+    z-index: 1000;
+    top: -12px;
+    left: 10px;
+    background-color: white;
+    color: #585858;
+  }
+
+  &__container {
+    padding-top: 5px;
+    &__no-label {
+      margin-left: 15px;
+      white-space: pre-line;
+      line-break: anywhere;
+    }
+  }
+}
+
+.specialInstructions-container {
+  position: relative;
+}

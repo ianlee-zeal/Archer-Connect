@@ -1,0 +1,18 @@
+<form [formGroup]="form" (change)="onChanges()">
+  <card header="Firm Money Movement">
+      <card-col [labelWidth]="322" [width]="660">
+          <card-row label="Settlement Counsel Payments" inputId="settlementCounselPayments" [control]="form.get('settlementCounselPayments')" required >
+              <app-select class="dropdown" id="settlementCounselPayments" [options]="firmMoneyMovementOptions" formControlName="settlementCounselPayments" cardValue optionAsValue required> </app-select>
+          </card-row>
+          <card-row label="Primary Firm Payments" inputId="primaryFirmPayments" [control]="form.get('primaryFirmPayments')" required >
+              <app-select class="dropdown" id="primaryFirmPayments" [options]="firmMoneyMovementOptions" formControlName="primaryFirmPayments" cardValue optionAsValue required> </app-select>
+          </card-row>
+          <card-row label="Referring Firm Payments" inputId="referingFirmPayments" [control]="form.get('referingFirmPayments')" required >
+              <app-select class="dropdown" id="referingFirmPayments" [options]="firmMoneyMovementOptions" formControlName="referingFirmPayments" cardValue optionAsValue required> </app-select>
+          </card-row>
+          <card-row label="Special Instructions" inputId="specialInstructions" [control]="form.get('specialInstructions')" >
+            <input class="form-control" type="text" formControlName="specialInstructions" cardValue />
+          </card-row>
+      </card-col>
+  </card>
+</form>

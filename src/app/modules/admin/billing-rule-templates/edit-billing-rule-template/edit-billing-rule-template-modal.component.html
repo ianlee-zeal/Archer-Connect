@@ -1,0 +1,126 @@
+<modal (close)="modal.hide()">
+    <modal-header>{{title}}</modal-header>
+
+    <modal-body>
+        <form [formGroup]="form">
+            <div class="modal-section">
+                <card hideSeparator>
+                    <card-col [width]="650" [labelWidth]="160">
+                        <card-row label="Name" inputId="name" [control]="form.get('name')" required>
+                            <input
+                                type="text"
+                                class="form-control"
+                                formControlName="name"
+                                id="name"
+                                maxLength="200"
+                                cardValue/>
+                        </card-row>
+
+                        <card-row label="Description" inputId="description" [control]="form.get('description')">
+                            <input
+                                type="text"
+                                class="form-control"
+                                formControlName="description"
+                                id="description"
+                                maxLength="200"
+                                cardValue/>
+                        </card-row>
+
+                        <card-row label="Status" inputId="status" [control]="form.get('status')" required>
+                            <div class="select-container" cardValue>
+                                <app-select required id="status" [options]="statuses$ | async" formControlName="status" placeholder="Select Status" optionAsValue></app-select>
+                            </div>
+                        </card-row>
+
+                        <card-row label="Related Services" inputId="service">
+                            <input
+                                (click)="onOpenRelatedServicesModal()"
+                                type="text" 
+                                class="form-control cursor-pointer"
+                                readonly
+                                id="relatedServices" 
+                                [disabled]="form.controls.services.disabled"
+                                cardValue 
+                                placeholder="Select Related Services" />
+                        </card-row>
+
+                        <card-row inputId="services" [control]="form.get('services')" [marginTop]="10">
+                            <app-chip-list cardValue formControlName="services"></app-chip-list>
+                        </card-row>
+                    </card-col>
+                </card>
+           
+                <card [maxWidth]="600" hideSeparator header="Accounting Details">
+                    <card-col [width]="650" [labelWidth]="160">
+                        <card-row label="Invoicing Item" inputId="invoicingItem" [control]="form.get('invoicingItem')">
+                            <div class="select-container" cardValue>
+                                <app-select 
+                                    id="invoicingItem"
+                                    placeholder="Type to search Invoicing Item"
+                                    optionAsValue
+                                    [fullwidth]="true"
+                                    class="w-100"
+                                    formControlName="invoicingItem" 
+                                    [options]="invoicingItems$ | async" 
+                                    (onKeyup) = "searchInvoicingItems($event)"
+                                    (onOpen) = "searchInvoicingItems('')"
+                                    [searchFn] = searchFn
+                                    searchable>
+                                </app-select>
+                            </div>
+                        </card-row>
+
+                        <card-row label="Rev Rec Item" inputId="revRecItem" [control]="form.get('revRecItem')">
+                            <div class="select-container" cardValue>
+                                <app-select
+                                    id="revRecItem"
+                                    placeholder="Type to search Rev Rec Item"
+                                    optionAsValue
+                                    [fullwidth]="true"
+                                    class="w-100"
+                                    [options]="revRecItems$ | async" 
+                                    (onKeyup) = "searchRevRecItems($event)"
+                                    (onOpen) = "searchRevRecItems('')"
+                                    formControlName="revRecItem"
+                                    [searchFn] = searchFn
+                                    searchable>
+                                </app-select>
+                            </div>
+                        </card-row>
+
+                        <card-row label="Rev Rec Method" inputId="revRecMethod" [control]="form.get('revRecMethod')">
+                            <div class="select-container" cardValue>
+                                <app-select id="revRecMethod" [options]="revRecMethods$ | async" formControlName="revRecMethod" placeholder="Select Rev Rec Method" optionAsValue></app-select>
+                            </div>
+                        </card-row>
+                    </card-col>
+                </card>
+            </div>
+        </form>
+    </modal-body>
+
+    <modal-footer>
+        <ng-container *ngIf="billingRuleTemplateId">
+            <button
+                *permissions="deletePermission"
+                type="button" 
+                class="btn modal-footer__btn modal-footer__btn--secondary me-auto" 
+                (click)="onDelete()">
+                Delete
+            </button>
+        </ng-container>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="modal.hide()">Cancel</button>
+        <button
+            *ngIf="isAllowedToSave"
+            asyncButton
+            [awaitedActionTypes]="awaitedActionTypes"
+            type="submit" 
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            [ngClass]="{ disabled: form.invalid }" 
+            [disabled]="form.invalid" 
+            (click)="onSave()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Save
+        </button>
+    </modal-footer>
+</modal>

@@ -1,0 +1,21 @@
+<form [formGroup]="range" class="date-range">
+  <card-row label="Range" [labelWidth]="labelWidth">
+    <div class="card-row__content" cardValue>
+      <app-date-selector
+          class="date-range__date-selector"
+          [id]="fromFieldName"
+          [formControlName]="fromFieldName"
+          fullwidth
+          cardValue>
+      </app-date-selector>
+      <span class="date-range__divider">to:</span>
+      <app-date-selector
+          class="date-range__date-selector"
+          [id]="toFieldName"
+          [formControlName]="toFieldName"
+          fullwidth
+          cardValue>
+      </app-date-selector>
+    </div>
+  </card-row>
+</form>

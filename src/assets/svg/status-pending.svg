@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_dots" width="16" height="16" viewBox="0 0 16 16">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#fff}
+        </style>
+    </defs>
+    <rect id="prefix__Rectangle_121" width="16" height="16" fill="#fdba12" data-name="Rectangle 121" rx="2"/>
+    <circle id="prefix__Ellipse_19" cx="1.5" cy="1.5" r="1.5" class="prefix__cls-2" data-name="Ellipse 19" transform="translate(2 7)"/>
+    <circle id="prefix__Ellipse_20" cx="1.5" cy="1.5" r="1.5" class="prefix__cls-2" data-name="Ellipse 20" transform="translate(6.5 7)"/>
+    <circle id="prefix__Ellipse_21" cx="1.5" cy="1.5" r="1.5" class="prefix__cls-2" data-name="Ellipse 21" transform="translate(11 7)"/>
+</svg>

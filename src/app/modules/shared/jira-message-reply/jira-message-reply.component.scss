@@ -1,0 +1,66 @@
+@import "src/styles.variables.scss";
+@import "src/styles/variables.scss";
+
+.reply-container {
+  margin-top: 50px;
+}
+
+.reply-button {
+  background-color: #050041;
+  color: #FFFFFF;
+  border-radius: 60px;
+  font-size: 14px;
+  padding: 8px 30px 8px 30px;
+  margin-top: -50px;
+  float: right;
+
+  &:disabled {
+    font-weight: 700;
+    background: rgba(160, 160, 160, 0.71);
+    cursor: not-allowed;
+  }
+}
+
+.send-button {
+  background-color: #050041;
+  color: #FFFFFF;
+  border-radius: 60px;
+  font-size: 14px;
+  padding: 8px 30px 8px 30px;
+  float: right;
+  width: auto;
+  height: auto;
+
+  &:disabled {
+    font-weight: 700;
+    background: rgba(160, 160, 160, 0.71);
+    cursor: not-allowed;
+  }
+}
+
+.quill-wrapper {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 11px;
+
+  .quill-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    z-index: 10;
+    text-align: left;
+    border-radius: 11px;
+  }
+
+  .quill-description {
+    margin-top: 40px;
+  }
+
+  ::ng-deep quill-editor.quill-editor_new .ql-container.ql-snow {
+    border: 0px !important;
+    padding-bottom: 55px;
+  }
+}

@@ -1,0 +1,23 @@
+<app-advanced-search
+    *ngIf="showAdvancedSearch"
+    (onSearch)="advancedSearchSubmit()"
+    [entityId]= "projectId"
+    [fields]="searchFields"
+    [state]="searchState"
+    [showExpandBtn]="showExpandBtn$ | async"
+    [gridId]="gridId"
+    [savedSearchOptions]="savedSearchOptions$ | async"
+    [entityType]="entityType"
+    (markAsEdited)="markAsEdited()"
+    (onClear)="clearFilters()">
+</app-advanced-search>
+<app-grid 
+    idColumnName="ledgerEntryId"
+    [gridOptions]="gridOptions" 
+    (gridReady)="gridReady($event)" 
+    (loadData)="loadData($event)" 
+    [gridId]="gridId"
+    [defaultViewportHeight]="64"
+    [canReorderColumns]="true"
+    entityLabel="Payment Queue">
+</app-grid>

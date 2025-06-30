@@ -1,0 +1,29 @@
+@import "src/styles/variables.scss";
+
+.phones-list {
+  .form-check-label {
+    margin-left: 10px;
+    width: 115px;
+  }
+
+  &__phone-input {
+    margin-top: 0 !important;
+  }
+
+  &__add-btn {
+    margin-top: 4px;
+  }
+
+  &__remove-btn {
+    margin-left: auto;
+  }
+
+  &__phone-type-selector {
+    width: 100% !important;
+  }
+
+  &__no-records {
+    width: 500px;
+    color: $label-color;
+  }
+}

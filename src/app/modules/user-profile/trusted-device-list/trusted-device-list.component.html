@@ -1,0 +1,33 @@
+<form [formGroup]="form" novalidate *ngIf="canEdit; else viewTemplate">
+  <card header="Trusted Devices">
+    <ng-container *ngIf="devices && devices.length; else notFound">
+      <card-col [width]="width">
+        <ng-container formArrayName="deviceList" *ngFor="let group of deviceListGroup.controls; let ind = index;">
+          <ng-container [formGroup]="group">
+            <card-row [label]="'Device ' + (ind + 1)" [inputId]="'device' + (ind + 1)" [control]="form.get('deviceName')" [labelWidth]="labelWidth">
+              <div class="card-row__content" cardValue>
+                <input [id]="'device' + (ind + 1)" type="text" formControlName="deviceName" class="form-control device__device-input" placeholder="Device Name" required>
+                <button type="button" class="btn btn-secondary btn-icon btn-icon-remove btn-icon-remove-small device__remove-btn" (click)="deleteDevice(ind)"></button>
+              </div>
+            </card-row>
+          </ng-container>
+        </ng-container>
+      </card-col>
+    </ng-container>
+  </card>
+</form>
+
+<ng-template #viewTemplate>
+  <card header="Trusted Devices">
+    <ng-container *ngIf="devices && devices.length; else notFound">
+      <card-col [width]="width">
+        <card-row *ngFor="let device of devices; let i = index;" [labelWidth]="labelWidth" [label]="'Device ' + (i + 1)" [value]="device.deviceName">
+        </card-row>
+      </card-col>
+    </ng-container>
+  </card>
+</ng-template>
+
+<ng-template #notFound>
+  <div [ngStyle]="{width: width+'px'}" class="col not-found">No records</div>
+</ng-template>

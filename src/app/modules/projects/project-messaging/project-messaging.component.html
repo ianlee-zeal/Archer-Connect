@@ -1,0 +1,49 @@
+<div *ngIf="projectMessages$ | async">
+  <ng-container *ngIf="canEdit; else viewTemplate">
+    <div class="page-content">
+      <ng-container *ngFor="let item of projectMessagesModified$ | async; index as sectionIndex">
+        <card [maxWidth]="700" [header]="item.sectionType?.name">
+          <card-col class="column">
+            <card-row hideLabel [containerWidth]="300">
+              <div class="select-container" cardValue>
+                  <app-select
+                      [options]="projectMessagesTypes$ | async"
+                      [model]="item.messageType"
+                      [defaultOption]="false"
+                      optionAsValue
+                      placeholder="Select Type"
+                      (onModelChange)="onChange($event, sectionIndex)">
+                  </app-select>
+              </div>
+            </card-row>
+            <card-row hideLabel *ngIf="item.messageType?.id === projectMessageType.Custom">
+              <textarea
+                class="form-control"
+                [ngModel]="item.customMessage"
+                (ngModelChange)="onChangeText($event, sectionIndex)"
+                cardValue>
+              </textarea>
+            </card-row>
+          </card-col>
+        </card>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <ng-template #viewTemplate>
+    <div class="page-content">
+      <ng-container *ngFor="let item of projectMessages">
+        <card [maxWidth]="700" [header]="item.sectionType?.name">
+          <card-col [labelWidth]="130">
+            <card-row label="Message type" [value]="item.messageType?.name"></card-row>
+            <card-row *ngIf="item.messageType?.id === projectMessageType.Custom" label="Message text" [value]="item.customMessage" containValue></card-row>
+          </card-col>
+        </card>
+      </ng-container>
+    </div>
+    <app-project-messaging-list
+      *ngIf="projectId"
+      [projectId]="projectId">
+    </app-project-messaging-list>
+  </ng-template>
+</div>

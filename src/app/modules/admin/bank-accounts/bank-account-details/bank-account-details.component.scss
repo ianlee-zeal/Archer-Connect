@@ -1,0 +1,29 @@
+@import "src/styles/variables.scss";
+
+.bank-account-details__radio-container {
+    display: flex;
+    flex-direction: row;
+}
+.bank-account-details__radio-item {
+    padding-right: 15px;
+}
+.bank-account-details__radio-label {
+    padding-left: 5px;
+}
+
+.w9-file{
+    background: $gray-light;
+    padding: 20px;
+    border-radius: 5%;
+}
+
+.w9-file h1 {
+    display: flex;
+    font-size: 18px;
+    font-weight: bold;
+    word-break: break-all;
+}
+
+.w9-file .file-name{
+    margin-bottom: 0px;
+}

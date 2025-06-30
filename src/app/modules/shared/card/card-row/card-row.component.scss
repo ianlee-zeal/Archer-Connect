@@ -1,0 +1,143 @@
+@import "src/styles/variables.scss";
+
+$row-height: 28px;
+$input-width: 300px;
+
+.card-row {
+  margin-bottom: 0;
+  flex-wrap: nowrap;
+
+  label {
+    font-size: inherit;
+    min-height: $row-height;
+    line-height: 2;
+    width: inherit;
+
+    app-tooltip-info {
+      display: inline-block;
+      button.btn.btn-icon {
+        display: block;
+        margin-top: -5px;
+      }
+    }
+  }
+
+  &__label-with-tooltip {
+    display: inline-flex;
+    align-items: flex-start;
+  }
+
+  &__label-container {
+    padding-top: 3px;
+    padding-right: 20px !important;
+    height: $row-height;
+
+    &--no-padding {
+      padding-left: 0;
+    }
+
+    > label {
+      display: inline;
+      line-height: 1.4;
+    }
+  }
+
+  &__asterisk {
+    color: $custom-blue;
+    font-weight: 700;
+  }
+
+  &__value {
+    &--keep-line-breaks {
+      white-space: pre-line;
+    }
+    &--wrap {
+      word-wrap: break-word;
+    }
+    &:not(:first-child) {
+      display: none;
+    }
+    app-tooltip-info {
+      display: inline-block;
+    }
+    .warning {
+      color: $yellow;
+    }
+  }
+
+  &__error-message-right {
+    margin-left: 6px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+
+    &--editable {
+      max-width: $input-width;
+    }
+  }
+
+  .date-selector {
+    width: $input-width;
+  }
+
+  .form-control {
+    width: 100%;
+    height: $controls-height;
+    line-height: $controls-height;
+    font-weight: 400;
+    margin-top: 4px;
+  }
+
+  textarea.form-control {
+    width: 100%;
+    min-height: 80px;
+    margin-bottom: 14px;
+  }
+
+  .btn-link {
+    height: auto;
+
+    &:hover, &:focus {
+      text-decoration: none;
+    }
+  }
+
+  .form-control-plaintext {
+    font-weight: 700;
+    font-size: inherit;
+    height: auto;
+    min-height: $row-height;
+    line-height: 2;
+    border-width: 0;
+    &--pre-line {
+      white-space: pre-line;
+      line-height: 1;
+      padding-top: 5px;
+    }
+  }
+
+  .form-check-label {
+    & > span:first-of-type {
+      font-size: inherit;
+
+      &:before {
+        top: 2px;
+      }
+    }
+  }
+
+  .list__line-by-line {
+    display: flex;
+    flex-flow: column;
+    align-items: normal;
+  }
+}
+
+.row > * {
+  flex-shrink: initial;
+  width: initial;
+}

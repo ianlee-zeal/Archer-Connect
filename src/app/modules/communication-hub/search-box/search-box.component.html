@@ -1,0 +1,15 @@
+<form class="search-box-form">
+  <div class="input-container">
+    <input
+      type="text"
+      class="input-container__input"
+      placeholder="Search"
+      name="searchText"
+      [(ngModel)]="searchText"
+      (ngModelChange)="searchTextChanged$.next($event)"
+    >
+      <button type="button" class="clear-btn" [disabled]="searchText.trim()==''" (click)="resetSearch()">
+        &#x2715;
+      </button>
+  </div>
+</form>

@@ -1,0 +1,24 @@
+.related-services {
+    font-weight: bold;
+}
+
+.triggers, .fee-splits {
+    font-weight: bold;
+}
+
+.fee-split {
+  display: block;
+  width: 100%;
+  margin: 10px 0 30px;
+}
+
+.triggers-container {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+  div {
+    width: 390px;
+  }
+}

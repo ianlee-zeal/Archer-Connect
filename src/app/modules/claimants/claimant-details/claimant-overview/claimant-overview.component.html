@@ -1,0 +1,60 @@
+<!-- 
+  Order of grids https://archersystems.atlassian.net/browse/AC-18100
+    Release Admin (when claimant has service)
+    Medical Lien Resolution (when claimant has service)
+    Bankruptcy (when claimant has service)
+    Probate (when claimant has service)
+    QSF Admin
+    Payment Details
+    Invoicing Details
+ -->
+
+<div *ngIf="!(isLoadedClaimantOverview$ | async)" class="loading-spinner">
+  <app-spinner></app-spinner>
+</div>
+ 
+<ng-container *ngIf="services$ | async as services">
+  <app-claimant-status 
+    [claimant]="claimant$" 
+    [probates]="claimantOverviewProbateItems$"
+    [releaseAdmin]="claimantOverviewReleaseAdmin$"
+    [releaseAdminItems]="claimantOverviewReleaseAdminItems$"
+    [lienData]="claimantOverviewLiensData$"
+    [bankruptcies]="claimantOverviewBankruptcyItems$" 
+    [qsfData]="claimantOverviewQSFData$"
+    [engagedServicesIds]="engagedServicesIds$">
+  </app-claimant-status>
+  
+  <app-claimant-overview-release-admin *ngIf="(claimantOverviewReleaseAdminItems$ | async)?.length > 0"
+    [releaseAdmin]="claimantOverviewReleaseAdmin$"
+    [items]="claimantOverviewReleaseAdminItems$">
+  </app-claimant-overview-release-admin>
+  
+    <app-claimant-overview-liens-renderer *ngIf="(claimantOverviewLiensItems$ | async)?.length > 0"
+    [lienData]="claimantOverviewLiensData$" 
+    [items]="claimantOverviewLiensItems$" 
+    [activeClaimant]="claimant?.isActive">
+  </app-claimant-overview-liens-renderer>
+  
+  <app-claimant-overview-bankruptcy-renderer *ngIf="(claimantOverviewBankruptcyItems$ | async)?.length > 0"
+    [items]="claimantOverviewBankruptcyItems$"> 
+  </app-claimant-overview-bankruptcy-renderer>
+  
+  <app-claimant-overview-probate-renderer *ngIf="(claimantOverviewProbateItems$ | async)?.length > 0"
+    [items]="claimantOverviewProbateItems$"> 
+  </app-claimant-overview-probate-renderer>
+  
+  <app-claimant-overview-qsf-admin *ngIf="(claimantOverviewQSFItems$ | async)?.length > 0"
+    [items]="claimantOverviewQSFItems$" 
+    [qsfData]="claimantOverviewQSFData$">
+  </app-claimant-overview-qsf-admin>
+  
+  <app-claimant-overview-payments-renderer *ngIf="(claimantOverviewPaymentItems$ | async)?.length > 0"
+  [paymentItems]="claimantOverviewPaymentItems$">
+  </app-claimant-overview-payments-renderer>
+  
+  <app-claimant-overview-invoicing-details *permissions="viewInvoicingDetailsPermission"
+    [invoicingDetails]="claimantOverviewInvoicingDetails$"
+    [items]="claimantOverviewInvoicingDetailsItems$">
+  </app-claimant-overview-invoicing-details>
+</ng-container>

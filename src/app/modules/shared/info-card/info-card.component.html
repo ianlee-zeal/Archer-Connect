@@ -1,0 +1,19 @@
+<div class="info-card" [ngClass]="{
+  'info-card__info': state === InfoCardState.Pending,
+  'info-card__success': state === InfoCardState.Final,
+  'info-card__danger': state === InfoCardState.Error,
+  'info-card__warning': state === InfoCardState.Warning,
+  'no-border': !externalBorder}"
+  [class.square-info-card]="isSquareCard"
+>
+  <div class="inner-info-card" *ngIf="showInnerCard" [ngClass]="{
+    'inner-info-card__info': state === InfoCardState.Pending,
+    'inner-info-card__success': state === InfoCardState.Final,
+    'inner-info-card__danger': state === InfoCardState.Error,
+    'inner-info-card__warning': state === InfoCardState.Warning,
+    'inner-info-card__neutral': state === InfoCardState.Neutral,}"
+  >
+    <ng-content select="[infoCardData]"></ng-content>
+  </div>
+  <ng-content #children></ng-content>
+</div>

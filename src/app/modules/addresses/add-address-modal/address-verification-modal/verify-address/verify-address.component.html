@@ -1,0 +1,76 @@
+<div class="verify-address">
+  <card
+    hideSeparator
+    class="verify-address__card"
+    [ngClass]="{
+      'verify-address__card--selected': !useVerifiedAddress && canEdit
+    }"
+  >
+    <card-col [width]="200">
+      <div>
+        <div *ngIf="canEdit">
+          <input
+            *ngIf="canEdit"
+            type="radio"
+            name="useOriginalAddress"
+            value="original"
+            [checked]="!useVerifiedAddress"
+            [disabled]="verifiedAddress?.statusCode === -1"
+            class="verify-address__card-choice-input"
+            (click)="onUseVerifiedAddressChange(false)"
+          />
+          <label class="verify-address__card-choice-label">Original</label>
+        </div>
+        <div *ngIf="!canEdit">
+          <label class="verify-address__no-card-choice-label">Original</label>
+        </div>
+      </div>
+    </card-col>
+    <card-col>
+      <app-address-verification-original-line-item
+        [address]="originalAddress"
+        [name]="showName ? name : ''"
+      ></app-address-verification-original-line-item>
+    </card-col>
+    <card-col *ngIf="verifiedAddress?.statusCode == -1" [width]="405">
+      <div class="verify-address__card--validation-formatting">
+        No validation results available
+      </div>
+    </card-col>
+    <card-col *ngIf="verifiedAddress?.statusCode == 0" [width]="405">
+      <div class="verify-address__card--validation-formatting">
+        Address is valid
+      </div>
+    </card-col>
+  </card>
+
+  <card
+    hideSeparator
+    class="verify-address__card"
+    [ngClass]="{
+      'verify-address__card--selected': useVerifiedAddress && canEdit
+    }">
+    <card-col [width]="200" *ngIf="verifiedAddress?.statusCode != -1">
+      <div class="verify-address__card-choice">
+        <input
+          *ngIf="canEdit"
+          class="verify-address__card-choice-input"
+          type="radio"
+          name="useVerifiedAddress"
+          value="suggested"
+          [checked]="useVerifiedAddress"
+          (click)="onUseVerifiedAddressChange(true)"
+        />
+        <label class="verify-address__card-choice-label">Suggested</label>
+      </div>
+    </card-col>
+    <card-col [width]="205">
+      <app-address-verification-validated-line-item [address]="verifiedAddress"></app-address-verification-validated-line-item>
+    </card-col>
+    <card-col [width]="405">
+      <div *ngFor="let detail of verifiedAddress.resultDetails; let i = index, first as isFirst, last as isLast;">
+        <span *ngIf="isFirst">Changes made in address.</span> {{ detail.shortDescription }}<span *ngIf="!isLast">,</span><span *ngIf="isLast">.</span>
+      </div>
+    </card-col>
+  </card>
+</div>

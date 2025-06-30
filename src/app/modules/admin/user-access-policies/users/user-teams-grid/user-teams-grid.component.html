@@ -1,0 +1,13 @@
+<card header="Teams" isHeaderFlexRow="true" [actionBar]="actionBar">
+    <card-col>
+        <div class="form-check h-100" cardValue>
+            <app-grid 
+                [gridOptions]="gridOptions" 
+                [rowData]="userTeams$ | async" 
+                [gridId]="gridId" 
+                [isContentAutoHeight]="true"
+                entityLabel="user Teams">
+            </app-grid>
+        </div>
+    </card-col>
+</card>

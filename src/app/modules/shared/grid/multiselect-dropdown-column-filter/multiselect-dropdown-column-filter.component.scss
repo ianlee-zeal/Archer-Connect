@@ -1,0 +1,44 @@
+@import "src/styles/variables.scss";
+
+app-multiselect-dropdown-column-filter {
+  width: 100%;
+}
+
+.dropdown-column-filter {
+  width: 100%;
+  color: #303030;
+  border-color: #c2c2c2;
+  height: 18px;
+  border-width: 1px;
+  border-style: solid;
+  font-weight: 600;
+  &__select-component {
+    width: 100%;
+    .ng-select-container {
+      min-height: 18px !important;
+      height: 18px;
+    }
+    .ng-select.ac-select {
+      margin-top: 0;
+    }
+  }
+
+  &__selected_options {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.ng-dropdown-panel.dropdown-column-filter__select-component {
+  width: 300px !important;
+  .ng-dropdown-panel-items {
+    .ng-option {
+      padding: 0;
+      .multiselect-option__label {
+        padding: 8px 10px;
+      }
+    }
+  }
+}

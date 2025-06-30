@@ -1,0 +1,37 @@
+<ng-container *ngIf="!editable else editor" [ngSwitch]="value">
+    <span>{{ params.value }}</span>
+</ng-container>
+
+<ng-template #editor>
+    <ng-container>
+        <div class="date-selector" [ngStyle]="{ 'width': maxWidth + 'px'}">
+            <input class="date-editor__input" 
+                [ngModel]="value"
+                ngbDatepicker
+                [minDate]="internalMinDate"
+                [maxDate]="internalMaxDate"
+                [placeholder]="placeholder"
+                (dateSelect)="onDateSelect($event)"
+                (ngModelChange)="onChangeHandler($event)"
+                (closed)="onClosed()"
+                (focus)="onFocus()"
+                (blur)="onBlur()"
+                [disabled]="isDisabled"
+                #datepicker="ngbDatepicker"
+                container="body"
+                placement="bottom-right"
+                navigation="select"
+                firstDayOfWeek="7"
+                autocomplete="off"
+                #dateInput
+                (keyup)="onKeyUp($event)"
+            >
+        <button class="date-selector__button date-editor__button" (click)="toggle(datepicker)" [ngSwitch]="mode" [disabled]="isDisabled">
+            <img *ngSwitchCase="0" src="assets/svg/ic_calendar.svg" />
+            <img *ngSwitchCase="1" src="assets/svg/ic_calendar_yellow.svg" />
+            <img *ngSwitchCase="2" src="assets/svg/ic_calendar_gray.svg" />
+        </button> 
+        </div>
+    </ng-container>
+</ng-template>
+

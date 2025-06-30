@@ -1,0 +1,65 @@
+
+
+
+  <div ngbDropdown #dropdown="ngbDropdown" class="dropdown" [autoClose]="dropdownAutoClose">
+    <button
+      class="custom-dropdown-btn"
+      [ngClass]="{ 'custom-dropdown-btn--active': dropdownOpen }"
+      type="button"
+      (click)="toggleDropdown()"
+      >
+      {{ dropdownLabel }} 
+      <span *ngIf="submitted && !isEmpty">
+        : {{ dateRangeForm.value.from | date: 'MM/dd/yyyy' }} - {{ dateRangeForm.value.to | date: 'MM/dd/yyyy' }}
+      </span>
+      <img src="assets/svg/ic_calendar_{{ dropdownOpen ? 'white' : 'blue' }}.svg">
+    </button>
+    <div ngbDropdownMenu class="dropdown-menu">
+  
+        <form [formGroup]="dateRangeForm" class="date-range">
+          <span>Between</span>
+          <card-row [control]="dateRangeForm.get('to')" >
+            <div class="content-row" cardValue>
+              <app-date-selector
+                  class="date-range__date-selector"
+                  id="from"
+                  formControlName="from"
+                  maxWidth="115"
+                  (change)="onDateChange()"
+                  (onClear)="onDateChange()"
+                  (click)="onDatePickerClick($event)"
+                  (onClose)="onDatePickerClose()"
+                  [showClearButton]="true"
+                  [maxDate]="todaysDate"
+                  cardValue>
+              </app-date-selector>
+              <span class="date-range__divider">and</span>
+              <app-date-selector
+                  class="date-range__date-selector"
+                  id="to"
+                  formControlName="to"
+                  maxWidth="115"
+                  [maxDate]="todaysDate"
+                  (onChange)="onDateChange()"
+                  (onClear)="onDateChange()"
+                  (click)="onDatePickerClick($event)"
+                  (onClose)="onDatePickerClose()"
+                  [showClearButton]="true"
+                  cardValue>
+              </app-date-selector>
+            </div>
+          </card-row>
+        </form>
+
+      <div class="dropdown-divider"></div>
+
+      <button
+        type="submit"
+        class="btn btn-primary update-button"
+        [disabled]="isUpdateDisabled"
+        (click)="update()">
+        Update
+      </button>
+    </div>
+  </div>
+  

@@ -1,0 +1,26 @@
+<ng-container>
+<div class="custom-card">
+  <div class="header">
+    <div class="left-info">
+      <span [title]="data.summary" class="title">
+        {{ data.summary }}
+      </span>
+      <app-ticket-status class="status" [status]="data.status"></app-ticket-status>
+      <div class="user-info">
+        <img src="assets/svg/user-circle-unread.svg"/>
+        <span>{{ data.assignee?.name || 'Unassigned' }}</span>
+      </div>
+      <span class="project-info"
+            [ngStyle]="data.project.name === null ? 
+              { 'max-width': '5%', 'min-width': '5%' } : {}">
+        Project: {{ data.project.name || '-' }}
+      </span>
+      <span>Last updated: {{ data.lastUpdatedAt | dateFormat }}</span>
+      <span>Request Type: {{ data.requestType.name }}</span>
+    </div>
+  </div>
+  <div class="body">
+    <span> {{ data.description }} </span>
+  </div>
+</div>
+</ng-container>

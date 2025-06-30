@@ -1,0 +1,35 @@
+<ng-container *ngIf="canEdit; else viewTemplate">
+  <form novalidate *ngIf="person$ | async as person" (change)="onChange()">
+    <app-person-template [person]="person"></app-person-template>
+    <app-special-designations-section
+      *ngIf="specialDesignationsSection"
+      [person]="person"
+      (specialDesignationsChanged)="onSpecialDesignationsChanged($event)">
+    </app-special-designations-section>
+    <app-emails-list [entityParams]="entityParams" [emails]="person.emails" (emailsChanged)="onEmailsChanged($event)"></app-emails-list>
+    <app-phones-list 
+      [entityParams]="entityParams" 
+      [phones]="person.phones" 
+      [editPermissions]="canEditPhonesPermissions"
+      (phonesChanged)="onPhonesChanged($event)">
+    </app-phones-list>
+    <app-designated-notes [notes]="designatedNotes$ | async"></app-designated-notes>
+    <app-pin-code  [client]="claimantDetailsItem$ | async"></app-pin-code>
+  </form>
+</ng-container>
+
+<ng-template #viewTemplate>
+  <ng-container *ngIf="person$ | async as person">
+    <app-person-template [person]="person" [canEdit]="false" [editingSSN]="editingSSN"></app-person-template>
+    <app-special-designations-section
+      *ngIf="specialDesignationsSection"
+      [person]="person"
+      [canEdit]="false">
+    </app-special-designations-section>
+    <app-emails-list [entityParams]="entityParams" [emails]="person.emails"></app-emails-list>
+    <app-phones-list [entityParams]="entityParams" [phones]="person.phones"></app-phones-list>
+    <app-designated-notes [notes]="designatedNotes$ | async" [canEdit]="false"></app-designated-notes>
+    <app-pin-code [client]="claimantDetailsItem$ | async" [canEdit]="false"></app-pin-code>
+    <app-system-fields-section *ngIf="canViewAuditInfoPermission" [item]="personItem"></app-system-fields-section>
+  </ng-container>
+</ng-template>

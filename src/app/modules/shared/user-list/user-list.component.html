@@ -1,0 +1,7 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+  <app-context-bar [title]="title"></app-context-bar>
+  <div class="page-content">
+    <app-grid [gridOptions]="gridOptions" [skipSetContentHeight]="true" (gridReady)="gridReady($event)" (loadData)="loadData($event)" (newRecord)="addNewRecord()" [gridId]="gridId" entityLabel="users"></app-grid>
+  </div>
+</div>

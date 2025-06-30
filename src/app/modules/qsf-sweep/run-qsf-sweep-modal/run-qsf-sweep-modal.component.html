@@ -1,0 +1,46 @@
+<modal (close)="onCancel()">
+  <modal-header>Run QSF Sweep</modal-header>
+
+  <modal-body>
+    <div class="modal-section"  *ngIf="isLoading$ | async">
+      Checking the QSF Sweep Job status...
+    </div>
+    <ng-container   *ngIf="!(isLoading$ | async)">
+    <div class="modal-section"  *ngIf="(isQsfSweepInProgress$ | async) && step == 1">
+      The QSF Sweep process in currently in progress for this case.  Please go to the QSF Sweep tab to track progress and view results.
+    </div>
+    <div class="modal-section"  *ngIf="!(isQsfSweepInProgress$ | async) && step == 1">
+      The QSF Sweep will run for all claimants in this project.  Click 'Continue' if you would like to start the sweep process.
+    </div>
+    <div class="modal-section success" *ngIf="step == 2 && !isError">
+      Success! <br/>
+      QSF Sweep has been initiated for {{claimantsCount || 0}} claimants. <br/>
+      Go to the QSF Sweep tab to track progress and view results.
+    </div>
+    <div class="modal-section error" *ngIf="step == 2 && isError">
+      Error. <br/>
+      QSF Sweep has been finished with an error. <br/>
+      Go to the QSF Sweep tab to view results.
+    </div>
+    </ng-container>
+  </modal-body>
+
+  <modal-footer>
+    <button
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--secondary"
+      (click)="onCancel()">
+      Close
+    </button>
+    <button
+      *ngIf="!(isQsfSweepInProgress$ | async) && step == 1"
+      asyncButton
+      [awaitedActionTypes]="awaitedSaveActionTypes"
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      (click)="onContinue()">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Continue
+    </button>
+  </modal-footer>
+</modal>

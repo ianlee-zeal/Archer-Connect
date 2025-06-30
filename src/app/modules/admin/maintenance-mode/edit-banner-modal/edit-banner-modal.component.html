@@ -1,0 +1,44 @@
+<modal (close)="modalRef.hide()" class="">
+    <modal-header>Edit. {{this.maintenanceBanner.name}}</modal-header>
+
+    <modal-body>
+        <div class="modal-section">
+            <card header="Banner Text:" hideSeparator>
+                <card-col>
+                    <form [formGroup]="form" novalidate class="note__edit-control">
+                        <quill-editor
+                        formControlName="text"
+                        sanitize          
+                        bounds="self"
+                        [modules]="editorModules"
+                        placeholder="Enter text here...">
+                        </quill-editor>
+                        <control-messages
+                        [control]="form.get('text')"
+                        customErrorMessage="Text length exceeds maximum value of 32766 symbols. Please make it shorter"
+                        customErrorPropName="maxlength">
+                        </control-messages>
+                    </form>
+                </card-col>
+            </card>
+          </div>
+    </modal-body>
+
+    <modal-footer>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="modalRef.hide()">
+            Cancel
+        </button>
+        <button
+            asyncButton
+            [awaitedActionTypes]="awaitedActionTypes"
+            type="submit" 
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            [ngClass]="{ disabled: form.invalid }" 
+            [disabled]="this.form.pristine" 
+            (click)="onSave()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Save
+        </button>
+    </modal-footer>
+</modal>

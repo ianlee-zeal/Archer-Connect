@@ -1,0 +1,19 @@
+<form [formGroup]="form" *ngIf="canEdit; else viewTemplate" novalidate>
+    <card [maxWidth]="610" header="Designated Representative Notes">
+        <card-col [width]="500">
+            <textarea id="designatedNotes" maxlength="256" class="form-control textarea-container" formControlName="designatedNotes" cardValue ></textarea>
+        </card-col>
+    </card>
+</form>
+  
+<ng-template #viewTemplate>
+    <card [maxWidth]="610" header="Designated Representative Notes">
+        <card-col [width]="500">
+            <card-row class="ps-3" hideLabel>
+                <ng-container cardValue>
+                  <span class="card-row__value">{{ notes ? notes : '-' }}</span>
+                </ng-container>
+              </card-row>
+        </card-col>
+    </card>
+</ng-template>

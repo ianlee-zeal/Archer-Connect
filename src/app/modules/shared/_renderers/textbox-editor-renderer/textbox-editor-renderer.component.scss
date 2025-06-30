@@ -1,0 +1,20 @@
+.text-box-editor {
+    &__input, &__container {
+        width: 100%;
+    }
+    &__container {
+        input {
+            width: 80%;
+        }
+        span {
+            padding-left: 5%;
+        }
+    }
+    &__currency {
+        padding-left: 0 !important;
+        padding-right: 5%;
+    }
+    &__percentage {
+        text-align: right;
+    }
+}

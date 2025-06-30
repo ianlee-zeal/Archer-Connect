@@ -1,0 +1,25 @@
+<div class="lien-additional-info-renderer" *ngIf="params.value as value">
+  <button type="button" class="btn btn-icon lien-outcome-renderer__btn"
+          #tooltip="ngbTooltip"
+          [ngClass]="{ 'hidden': loading }"
+          [ngbTooltip]="tooltipTemplate"
+          [autoClose]="'outside'"
+          triggers="manual"
+          container="body"
+          placement="bottom-right top-right"
+          tooltipClass="grid-tooltip"
+          (click)="toggle()"
+          (shown)="onTooltipShown()"
+          (hidden)="onTooltipHidden()">
+    <img *ngIf="!isOpenTooltip" src="assets/svg/info-circle-gray.svg" />
+    <img *ngIf="isOpenTooltip" src="assets/svg/info-circle-yellow.svg" />
+  </button>
+  <app-spinner *ngIf="loading" small></app-spinner>
+
+  <ng-template #tooltipTemplate>
+    <button type="button" class="btn btn-icon close-btn" aria-label="Close" title="Close" (click)="close()">
+      <img src="assets/svg/ic_close-white.svg" />
+    </button>
+    <app-key-value-list *ngIf="data" [data]="data"></app-key-value-list>
+  </ng-template>
+</div>

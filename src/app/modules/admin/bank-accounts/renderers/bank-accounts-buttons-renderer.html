@@ -1,0 +1,17 @@
+<div class="grid-actions">
+  <button
+    *permissions="editBankAccountPermission"
+    type="button"
+    class="btn-grid-action btn-edit"
+    (click)="onEditBankAccountHandler()"
+    title="Edit">
+  </button>
+  <button
+    *permissions="setPrimaryBankAccountPermission"
+    type="button"
+    class="btn-grid-action btn-set-primary"
+    [class.disabled] = "params.data.isPrimary"
+    (click)="onSetPrimaryBankAccountHandler()"
+    title="Set Default"
+  ></button>
+</div>

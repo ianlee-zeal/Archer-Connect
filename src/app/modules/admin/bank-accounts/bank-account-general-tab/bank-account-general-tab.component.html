@@ -1,0 +1,15 @@
+<app-action-bar *ngIf="actionBar$ | async as actionBar" [actionHandlers]="actionBar">
+</app-action-bar>
+
+<app-context-bar [title]="title" [elements]="headerElements"></app-context-bar>
+
+<div class="position-relative">
+  <div class="content">
+    <app-tab-group>
+      <app-tab-item title="Details" routerLink="./tabs/details"></app-tab-item>
+      <app-tab-item title="Payments History" routerLink="./tabs/payments-history"></app-tab-item>
+      <app-tab-item title="Audit Logs" routerLink="./tabs/audit-logs"></app-tab-item>
+      <app-tab-item title="Notes" routerLink="./tabs/notes" [permission]="notesPermission"></app-tab-item>
+    </app-tab-group>
+  </div>
+</div>

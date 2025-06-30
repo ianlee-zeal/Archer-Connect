@@ -1,0 +1,35 @@
+@import "src/styles/variables.scss";
+
+.tickets-list {
+  border-radius: 10px;
+  border: 1px solid $light-blue;
+  width: 100%;
+}
+
+.issue {
+  border-bottom: 1px solid #CBCBCB;
+  
+  &--last-child{
+    border-bottom: none;
+  }
+}
+
+.issue:first-child:hover {
+  background-color: $light-blue;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.issue:last-child:hover {
+  background-color: $light-blue;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.issue:hover {
+  background-color: $light-blue;
+}
+
+.issue.selected {
+  background-color: $light-blue;
+}

@@ -1,0 +1,117 @@
+<div class="communication-details">
+<form [formGroup]="formGroup" novalidate *ngIf="canEdit; else viewTemplate">
+
+  <card hideSeparator>
+    <card-col [width]="500" [labelWidth]="230">
+      <card-row label="Call ID" inputId="claimant" [control]="formGroup.get('callId')" required>
+        <input type="text" class="form-control" formControlName="callId" onlyNumbers id="callId" required cardValue>
+      </card-row>
+      <card-row label="Party Name" inputId="callerName" [control]="formGroup.get('callerName')" required>
+        <input type="text" class="form-control" formControlName="callerName" id="callerName" maxLength="100"
+          appAutoFocus cardValue />
+      </card-row>
+      <card-row label="Phone number" inputId="claimant" [control]="formGroup.get('phoneNumber')" required>
+        <input type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber" required cardValue>
+      </card-row>
+      <card-row label="Direction" inputId="direction" [control]="formGroup.get('direction')" required>
+        <app-select id="direction" [options]="directionsSelector$ | async" formControlName="direction" cardValue
+          required></app-select>
+      </card-row>
+
+      <card-row label="Method" inputId="method" [control]="formGroup.get('method')" required>
+        <app-select id="method" [options]="(methodsSelector$ | async)" formControlName="method" cardValue required>
+        </app-select>
+      </card-row>
+
+      <card-row label="Party Type" inputId="partyType" [control]="formGroup.get('partyType')" required>
+        <app-select id="partyType" [options]="(communicationPartyListSelector$ | async)" formControlName="partyType"
+          cardValue required></app-select>
+      </card-row>
+    </card-col>
+    <card-col [width]="500" [labelWidth]="230">
+      <card-row label="Subject" inputId="subject" [control]="formGroup.get('subject')" required>
+        <app-select id="subject" [options]="communicationSubjectListSelector$ | async"
+          (click)="markAsTouched(['subject', 'result'])" formControlName="subject" cardValue required></app-select>
+      </card-row>
+      <card-row label="Subject Other" inputId="otherSubject" [control]="formGroup.get('otherSubject')"
+        [hidden]="!isShowOtherSubjectField">
+        <input type="text" class="form-control" formControlName="otherSubject" id="otherSubject"
+          [required]="isShowOtherSubjectField" cardValue />
+      </card-row>
+      <card-row label="E-mail Subject" inputId="emailSubject" [control]="formGroup.get('emailSubject')"
+        [hidden]="!hasAttachedEmail">
+        <input type="text" class="form-control" formControlName="emailSubject" id="emailSubject"
+          cardValue />
+      </card-row>
+
+      <card-row label="From" inputId="emailFrom" [control]="formGroup.get('emailFrom')" [hidden]="!hasAttachedEmail"
+        required>
+        <input type="text" class="form-control" formControlName="emailFrom" id="emailFrom" placeholder="Specify the Sender's Name/E-mail" [required]="hasAttachedEmail"
+          cardValue />
+      </card-row>
+
+      <card-row label="To" inputId="emailTo" [control]="formGroup.get('emailTo')" [hidden]="!hasAttachedEmail" required>
+        <input type="text" class="form-control" formControlName="emailTo" id="emailTo" placeholder="Specify the Recipient's Name/E-mail" [required]="hasAttachedEmail"
+          cardValue />
+      </card-row>
+
+      <card-row label="Body" inputId="emailBody" [control]="formGroup.get('emailBody')" [maxContentWidth]="600" [hidden]="!hasAttachedEmail">
+        <textarea class="form-control" formControlName="emailBody" id="emailBody" cardValue> </textarea>
+      </card-row>
+
+      <card-row label="Result" inputId="result" [control]="formGroup.get('result')" required>
+        <app-select id="result" [options]="communicationResultListSelector$ | async"
+          (click)="markAsTouched(['subject', 'result'])" formControlName="result" cardValue required></app-select>
+      </card-row>
+
+      <card-row label="Result Other" inputId="otherResult" [control]="formGroup.get('otherResult')"
+        [hidden]="!isShowOtherResultField" required>
+        <input type="text" class="form-control" formControlName="otherResult" id="otherResult"
+          [required]="isShowOtherResultField" cardValue />
+      </card-row>
+      <card-row label="Start Date" inputId="startDate" [control]="formGroup.get('startDate')">
+        <div class="card-row__content communication-details__datetimepicker" cardValue>
+          <app-date-selector id="startDate" formControlName="startDate" (ngModelChange)="startDateChanged()">
+          </app-date-selector>
+          <timepicker class="time-picker" formControlName="startDate" (ngModelChange)="timeRangeChanged()"
+            [mousewheel]="true" [arrowkeys]="true" [showSpinners]="false"></timepicker>
+        </div>
+      </card-row>
+
+      <card-row label="End Date" inputId="endDate" [control]="formGroup.get('endDate')">
+        <div class="card-row__content communication-details__datetimepicker" cardValue>
+          <app-date-selector id="endDate" formControlName="endDate" (ngModelChange)="endDateChanged()">
+          </app-date-selector>
+          <timepicker class="time-picker" formControlName="endDate" (ngModelChange)="timeRangeChanged()"
+            [mousewheel]="true" [arrowkeys]="true" [showSpinners]="false"></timepicker>
+        </div>
+      </card-row>
+    </card-col>
+  </card>
+</form>
+
+<ng-template #viewTemplate>
+  <card hideSeparator>
+    <card-col [width]="500" [labelWidth]="230">
+      <card-row label="Call ID" [value]="communicationRecord?.callId" containValue></card-row>
+      <card-row label="Party Name" [value]="communicationRecord?.callerName" containValue></card-row>
+      <card-row label="Phone number" [value]="communicationRecord?.phoneNumber" containValue></card-row>
+      <card-row label="Direction" [value]="communicationRecord?.direction?.displayName" containValue></card-row>
+      <card-row label="Method" [value]="communicationRecord?.method?.displayName" containValue></card-row>
+      <card-row label="Party Type" [value]="communicationRecord?.partyType?.displayName" containValue></card-row>
+    </card-col>
+    <card-col [width]="500" [labelWidth]="230">
+      <card-row label="Subject" [value]="communicationRecord?.subject?.displayName" containValue></card-row>
+      <card-row label="Subject Other" [value]="communicationRecord?.otherSubject" containValue [hidden]="!isShowOtherSubjectField"></card-row>
+      <card-row label="E-mail Subject" [value]="communicationRecord?.emailSubject" containValue [hidden]="!hasAttachedEmail"></card-row>
+      <card-row label="From" [value]="communicationRecord?.emailFrom" containValue [hidden]="!hasAttachedEmail"></card-row>
+      <card-row label="To" [value]="communicationRecord?.emailTo" containValue [hidden]="!hasAttachedEmail"></card-row>
+      <card-row label="Body" [value]="communicationRecord?.emailBody" containValue [hidden]="!hasAttachedEmail"></card-row>
+      <card-row label="Result" [value]="communicationRecord?.result?.displayName" containValue></card-row>
+      <card-row label="Result Other" [value]="communicationRecord?.otherResults" containValue [hidden]="!isShowOtherResultField"></card-row>
+      <card-row label="Start Date" [value]="communicationRecord?.startTime | dateFormat"></card-row>
+      <card-row label="End Date" [value]="communicationRecord?.endTime | dateFormat"></card-row>
+    </card-col>
+  </card>
+</ng-template>
+</div>

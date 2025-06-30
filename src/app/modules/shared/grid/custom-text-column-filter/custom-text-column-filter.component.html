@@ -1,0 +1,4 @@
+<div class="ag-input-wrapper" leftBorder>
+  <input class="ag-floating-filter-input search-input" [disabled]="disabled" (keyup.tab)="tabToNextInput($event)" [onlyNumbers]="onlyNumbers" [(ngModel)]="currentValue"
+    (ngModelChange)="valueChanged()" [appAutoFocus]="isAutofocused" />
+</div>

@@ -1,0 +1,67 @@
+<form [formGroup]="form" novalidate>
+    <card hideSeparator>
+        <card-col [width]="760" [labelWidth]="250">
+            <card-row
+                [labelWidth]="250"
+                [maxContentWidth]="500"
+                [containerWidth]="760"
+                label="Variable Pricing Type"
+                inputId="variablePricingType"
+                [control]="form.get('variablePricingType')">
+                <div cardValue class="variable-pricing-type-container">
+                    <app-select
+                        class="variable-pricing-type-select"
+                        id="variablePricingType"
+                        [options]="variablePricingTypes"
+                        formControlName="variablePricingType"
+                        optionAsValue>
+                    </app-select>
+                    <button class="btn btn-secondary btn-icon btn-icon-add" (click)="onAddPricing()"></button>
+                </div>
+            </card-row>
+
+            <ng-container *ngIf="form.value.variablePricingType?.id === variablePricingTypeEnum.TieredPrice">
+                <div *ngFor="let t of tieredPricings; let i = index" class="pricing-container">
+                    <app-tiered-pricing-form
+                        [pricing]="t"
+                        (pricingChange)="onChangeTieredPricing($event, i)"
+                        (deleteClick)="onDeleteTieredPricing(i)">
+                    </app-tiered-pricing-form>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="form.value.variablePricingType?.id === variablePricingTypeEnum.SlidingScale">
+                <div *ngFor="let s of slidingScalePricings; let i = index" class="pricing-container">
+                    <app-sliding-scale-pricing-form
+                        [tortId]="this.tortId"
+                        [pricing]="s"
+                        (pricingChange)="onChangeSlidingScalePricing($event, i)"
+                        (deleteClick)="onDeleteSlidingScalePricing(i)">
+                    </app-sliding-scale-pricing-form>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="form.value.variablePricingType?.id === variablePricingTypeEnum.PercentageOfSavings">
+                <div *ngFor="let p of percentageOfSavingsPricings; let i = index" class="pricing-container">
+                    <app-percentage-of-savings-pricing-form
+                        [pricing]="p"
+                        (deleteClick)="onDeletePercentageOfSavingsPricing(i)"
+                        (pricingChange)="onChangePercentageOfSavingsPricing($event, i)">
+                    </app-percentage-of-savings-pricing-form>
+                </div>
+            </ng-container>
+
+            <card-row
+                *ngIf="form.value.variablePricingType"
+                [labelWidth]="250"
+                [maxContentWidth]="500"
+                [containerWidth]="760"
+                [marginTop]="15"
+                label="Default Price"
+                inputId="defaultPrice"
+                [control]="form.get('defaultPrice')">
+                <app-price-input cardValue formControlName="defaultPrice"></app-price-input>
+            </card-row>
+        </card-col>
+    </card>
+</form>

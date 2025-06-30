@@ -1,0 +1,38 @@
+// theme colors
+$blue:                  #050041 !default;
+$blue-footer:           #151351 !default;
+$dark-blue:             #2f2a69 !default;
+$light-blue:            #3d3c47 !default;
+$orange:                #fdba12 !default;
+$brand-orange:          #F16522 !default;
+$primary-blue:          #1774DE !default;
+$white:                 #fff !default;
+$white-smoke:           whitesmoke;
+$success:               #329837;
+$error:                 #bb2e2e;
+$dark-gray:             #525252;
+$pale-navy:             #F7F9FF;
+$sky-blue:               #8DBAEE;
+$link-color:            $blue;
+$tab-link-color:        $blue;
+
+$top-menu-bg:              $blue;
+$top-menu:                 $white;
+
+$left-menu-bg:              $pale-navy;
+$left-menu:                 #fff;
+$left-menu-item-border:     $left-menu-bg;
+$left-menu-item-header-bg:     $left-menu-bg;
+$left-menu-item-header:     #535353;
+$left-menu-item-sub-header-bg: $left-menu-bg;
+$left-menu-item-sub-header:  #898989;
+$left-menu-item-sub-action-bg: $left-menu-bg;
+$left-menu-item-sub-action: #898989;
+$left-menu-disabled:        rgb(180, 180, 180);
+$left-menu-active-bg:       rgb(255, 255, 255);
+$left-menu-active:           $blue;
+$menu-bar-hover:             $sky-blue;
+
+$top-menu-bg:              $white;
+$top-menu:                 $white;
+$top-menu-border:          #d7d7d7;

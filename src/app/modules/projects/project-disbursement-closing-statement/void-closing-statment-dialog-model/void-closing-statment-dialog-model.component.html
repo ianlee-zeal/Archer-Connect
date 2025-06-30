@@ -1,0 +1,61 @@
+<modal (close)="onClose()">
+  <modal-header *ngIf="!onSubmitClicked">Confirm Closing Statement Void</modal-header>
+  <modal-header *ngIf="onSubmitClicked">Void Processing</modal-header>
+
+  <modal-body>
+      <div class="modal-section" *ngIf="!onSubmitClicked">
+          <p>Voiding a closing statement cannot be undone. If you would like to continue voiding the closing statement(s), click Submit. If you did not intend to take this action, please click Cancel</p>
+      </div>
+      
+      <div class="modal-section progress-display" *ngIf="onSubmitClicked && !isSelectAllclicked">
+          <p *ngIf="progress !== 100">Processing</p>
+          <p *ngIf="progress === 100">Processed</p>
+          <div class="progress-bar-container">
+              <div class="progress-bar" [style.width.%]="progress"></div>
+          </div>
+      </div>
+
+      <div class="modal-section" *ngIf="onSubmitClicked && isSuccess">
+        <div class="Sucess-message">
+            <button class="Sucess-close-btn">✅</button>
+            <p class="Sucess-text">
+                <strong style="font-size: large;">Success</strong><br>
+                <strong>• You have completed your void(s) successfully!</strong><br>
+                <strong *ngIf="isSuccessWithNoAction">• You have selected at least one file that is NOT E-Delivery, or is E-Delivery, but does not have a blank status, a status that is Sent, or a Status of Is Replaced. No action was taken for those files.</strong>
+            </p>
+        </div>
+     </div>
+      
+      <div class="modal-section" *ngIf="onSubmitClicked && isError">
+        <div class="error-message">
+            <button class="error-close-btn" (click)="closeError()">×</button>
+            <p class="error-text">
+                <strong style="font-size: large;">Error</strong><br>
+                <strong>• The Void Process has failed. Please Contact Product Support.</strong>
+            </p>
+        </div>
+     </div>
+
+      <div class="modal-section" *ngIf="onSubmitClicked && isSelectAllclicked">
+          <div class="error-message">
+              <button class="error-close-btn" (click)="closeError()">×</button>
+              <p class="error-text">
+                  <strong style="font-size: large;">Error</strong><br>
+                  <strong>• You have used the 'select all' option. This is not supported. Individually select which closing statements to void and try again.</strong>
+              </p>
+          </div>
+      </div>
+  </modal-body>
+
+  <modal-footer>
+      <button type="button" *ngIf="!onSubmitClicked" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onClose()">
+          Cancel
+      </button>
+      <button type="submit" *ngIf="!onSubmitClicked" class="btn modal-footer__btn modal-footer__btn--primary" (click)="onSubmit()">
+          Submit
+      </button>
+      <button type="submit" *ngIf="onSubmitClicked" [disabled]="isLoading" class="btn modal-footer__btn modal-footer__btn--primary" (click)="onClose()">
+          Close
+      </button>
+  </modal-footer>
+</modal>

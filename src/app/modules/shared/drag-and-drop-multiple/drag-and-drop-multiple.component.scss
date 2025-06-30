@@ -1,0 +1,65 @@
+.drop-container_multiple {
+  height: 195px;
+  width: 840px;
+}
+
+.errorMessage {
+  padding-top: 15px;
+  padding-left: 15px;
+  color: red;
+}
+
+.file-item-container {
+  display: flex; 
+  flex-direction: column;
+  padding-bottom: 15px;
+}
+
+.file-item-row {
+  display: flex; 
+  flex-direction: row; 
+  flex-wrap: wrap;
+}
+
+.file-item-row-empty {
+  flex-grow:1;
+  height: 1px;
+  width: 600px;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.file-item-label {
+  width: 105px;
+}
+
+.required-icon {
+  color: #1774de;
+  font-weight: 700;
+  position: static;
+  margin-left: 0;
+}
+
+.file-item-container-first {
+  display: flex; 
+  padding-right: 15px; 
+  width: 405px;
+}
+
+.file-item-container-first input{
+  color: #303030 !important;
+}
+
+.file-item-container-second {
+  display: flex; 
+  width: 415px;
+}
+
+.long-panel {
+  width: 500px;
+  padding: 0px !important;
+  margin: 0px !important;
+  border: 0px;
+}

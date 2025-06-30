@@ -1,0 +1,10 @@
+<div class="page-content">
+    <app-address-list
+    *ngIf="person$ | async as person"
+    class="person-addresses-tab"
+    [entityId]="person.id"
+    entityName="{{ person.firstName + ' ' + person.lastName }}"
+    [gridId]="gridId"
+    [entityType]="entityType">
+</app-address-list>
+</div>

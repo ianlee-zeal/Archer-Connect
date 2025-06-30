@@ -1,0 +1,173 @@
+<modal (close)="onClose()">
+  <div *ngIf="paymentTypesConfigStep?.submitting || stage === stages.ReviewDeficiencies || stage === stages.ReviewPayments" class="payment-request__progress-bar-section modal-section">
+    <app-top-payment-request-progress-bar [request]="request"></app-top-payment-request-progress-bar>
+  </div>
+  <modal-header>Payment Request</modal-header>
+  <modal-body>
+      <div class="modal-section">
+          <app-stepper [stage]="stage">
+              <step label="Payment Type" [isActive]="isPaymentTypeConfigStage">
+                <div class="section-content">
+                  <app-payment-types-config-step
+                    [paymentRequestEntityType]="paymentRequestEntityType"
+                    [projectId]="projectId"
+                    [isGlobal]="isGlobal"
+                    [searchOptions]="searchOptions"
+                    (fail)="onPaymentTypesConfigurationFailed($event)"
+                    (warning)="onPaymentTypesConfigurationWarning($event)"
+                    (finish)="onPaymentTypesConfigurationFinished($event)">
+                  </app-payment-types-config-step>
+                  <div *ngIf="request && request.Message">
+                    <button *ngIf="paymentsReviewStep?.processLogDocId else messageText"
+                            type="button"
+                            class="btn modal-footer__btn modal-footer__btn--link"
+                            (click)="downloadFile()">
+                      <p class="text-danger">{{request.Message}}</p>
+                    </button>
+                    <ng-template #messageText>
+                      <p class="text-danger">{{request.Message}}</p>
+                    </ng-template>
+                  </div>
+                </div>
+              </step>
+              <step label="Deficiency Summary" [isActive]="stage === stages.ReviewDeficiencies">
+                <div class="section-content">
+                  <p>
+                    Prior to continuing with your payment request, please review all of the deficiencies below. 
+                    Critical deficiencies must be addressed before individual payment items can be processed. 
+                    Warning deficiencies must have an acceptable reason entered to by-pass. 
+                    Entering a Reason for by-passing Deficiency will allow those claimants to be included in the payment request but will not cure the deficiency.
+                  </p>
+                  <p>
+                    Download the Deficiency Details file to view a detailed list of all deficiencies listed below.
+                  </p>
+                  <app-payments-deficiency-summary
+                    *ngIf="stage==stages.ReviewDeficiencies"
+                    #warningsList
+                    [projectId]="projectId"
+                    [paymentRequest]="request"
+                    (fail)="onPaymenReviewWarningsFailed($event)"
+                    (finish)="onPaymentsReviewWarningsFinished($event)">
+                  </app-payments-deficiency-summary>
+              </div>
+              </step>
+              <step label="Review Payments" [isActive]="stage === stages.ReviewPayments">
+                <div *ngIf="stage === stages.ReviewPayments" class="section-content">
+                  <app-payments-review-step
+                    [projectId]="projectId"
+                    [request]="request"
+                    [paymentRequestEntityType]="paymentRequestEntityType"
+                    [note]="form.get('note').value"
+                    [attachments]="attachments"
+                    (fail)="onPaymentsReviewFailed($event)"
+                    (finish)="onPaymentsReviewFinished()">
+                  </app-payments-review-step>
+                </div>
+              </step>
+              <step label="Results" [isActive]="stage === stages.Result">
+                <div *ngIf="stage === stages.Result"  class="section-content">
+                  <ng-template #processingTemplate>
+                      <app-payments-processing-bar
+                      [request]="request"
+                      ></app-payments-processing-bar>
+                  </ng-template>
+                  <app-payments-results-step  *ngIf="!(isPaymentRequestInProgress$ | async); else processingTemplate"></app-payments-results-step>
+                </div>
+              </step>
+            </app-stepper>
+      </div>
+      <div class="modal-section note-editor-container" *ngIf="stage === stages.ReviewPayments">
+          <form [formGroup]="form" novalidate>
+              <card hideSeparator>
+                  <card-col class="note-editor-container__col">
+                      <card-row [labelWidth]="160"  labelWeight="bold" label="Add a Note" inputId="note" [control]="form.get('note')" required>
+                          <quill-editor formControlName="note"
+                            placeholder="Enter text here..."
+                            cardValue>
+                          </quill-editor>  
+                        </card-row>
+                        <card-row [marginTop]="10" [containerWidth]="500"  label="Add Attachments" [labelWidth]="160" [marginTop]="15" [required]="!isValidAttachment">
+                          <app-drag-and-drop
+                          [isSelectButtonInside]="true"
+                          class="drag-drop-modal w-100"
+                          [valueClass]="'drop-container__drop-zone__grey'"
+                          (filesSelected)="onFileSelected($event[0])"
+                          [allowedFileTypes]="allowedExtensions$ | async"
+                          [selectedFile]="selectedFile"
+                          cardValue>
+                          </app-drag-and-drop>
+                      </card-row>
+                      <ng-container *ngIf="attachments && attachments.length; then selectedFileTemplate"></ng-container>
+                  </card-col>
+              </card>
+          </form>
+      
+      </div>
+  </modal-body>
+  <modal-footer>
+    <div *ngIf="(stage !== stages.PaymentTypeConfig)" class="d-flex me-auto align-items-center">
+      <button
+      *ngIf="stage === stages.ReviewDeficiencies"
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--secondary"
+      (click)="onBack()">Back</button>
+      <button *ngIf="stage === stages.ReviewPayments && paymentsReviewStep?.processLogDocId" type="button" (click)="downloadFile()" class="btn modal-footer__btn modal-footer__btn--secondary">
+        <p>Preview File</p>
+      </button>
+      <button *ngIf="stage === stages.Result && paymentsResultsStepComponent?.processLogDocId" type="button" (click)="downloadFile()" class="btn modal-footer__btn modal-footer__btn--secondary">
+        <p>Preview File</p>
+      </button>
+      <span *ngIf="stage === stages.ReviewPayments && paymentsReviewStep?.processLogDocId && topPaymentRequestProgressBarComponent.hasLedgerEntryErrors" class="text-danger small me-auto">Some payment items have been filtered out due to errors or critical deficiencies. Download Preview file and review the error tabs for details.</span>
+      <button *ngIf="stage === stages.ReviewDeficiencies && paymentTypesConfigStep?.reviewLogDocId" type="button" (click)="downloadFile()" class="btn modal-footer__btn modal-footer__btn--success">
+        <p>Download Deficiency Details</p>
+      </button>
+    </div>
+      <button
+          type="button"
+          class="btn modal-footer__btn modal-footer__btn--secondary"
+          (click)="onClose()">
+          {{ stage === stages.Result ? 'Close' : 'Cancel' }}
+      </button>
+      <button
+          *ngIf="stage !== stages.Result && stage !== stages.ReviewPayments"
+          asyncButton
+          [awaitedActionTypes]="getAwaitedActionTypes()"
+          type="submit"
+          class="btn modal-footer__btn modal-footer__btn--primary"
+          [disabled]="!valid || (isPaymentTypeConfigStage && request && request.Message)"
+          (click)="onSubmit()">
+              <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+              Next
+      </button>
+
+      <button
+      *ngIf="stage === stages.ReviewPayments"
+      asyncButton
+      [awaitedActionTypes]="getAwaitedActionTypes()"
+      type="submit"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      [disabled]="!valid"
+      (click)="onSubmit()">
+          <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          Submit
+  </button>
+  </modal-footer>
+</modal>
+
+<ng-template #selectedFileTemplate>
+<card-row label="Attached File(s)" [labelWidth]="160">
+  <div class="payment-request__file-panel" cardValue>
+    <div class="payment-request__uploaded-attachments-container w-100">
+      <div class="payment-request__uploaded-attachment" *ngFor="let attachment of attachments">
+        <a class="payment-request__file-name btn btn-link" href="javascript:void(0)" (click)="openAttachment(attachment)">{{ attachment.fileName }}</a>
+        <button
+            type="button"
+            class="btn btn-icon btn-icon-remove"
+            (click)="onRemoveSelectedFile(attachment)"
+            title="Delete Document">
+        </button>
+      </div>
+    </div>
+  </div>
+</card-row>
+</ng-template>

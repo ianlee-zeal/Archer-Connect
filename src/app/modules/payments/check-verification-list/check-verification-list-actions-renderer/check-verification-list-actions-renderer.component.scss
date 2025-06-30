@@ -1,0 +1,16 @@
+@import "src/styles/variables.scss";
+
+:host {
+  width: 100%;
+  button.fa-redo:disabled {
+    color: lighten($primary-blue, 20%);
+  }
+}
+
+.grid-actions {
+  display: flex;
+  &__action-wrapper {
+    width: 22px;
+  }
+}
+

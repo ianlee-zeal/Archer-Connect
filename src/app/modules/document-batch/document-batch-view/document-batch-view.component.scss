@@ -1,0 +1,194 @@
+@import 'src/styles/variables.scss';
+
+.upload-area {
+  display: flex;
+  justify-content: space-between;
+  height: 400px;
+}
+
+.drag-drop {
+  flex-basis: 40%;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.batch-info {
+  padding: 20px;
+  flex-basis: 60%;
+  margin-left: 10px;
+  display: flex;
+  .batch-title {
+    padding-bottom:30px;
+    font-size:16px;
+    font-weight:700;
+  }
+}
+
+.flex-left, .flex-right {
+  flex-basis: 50%;
+  height: 100%;
+}
+.flex-right {
+  margin-left: 20px;
+}
+.flex-left {
+  margin-right: 20px;
+}
+
+::ng-deep .document-batch-select .ng-select.ac-select.ng-select-single .ng-select-container {
+    height: 32.5px !important;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid $info-card-border-info;
+}
+
+::ng-deep .document-batch-select .ng-select-multiple {
+  .ng-select-container {
+    min-height: 32.5px !important;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid $info-card-border-info;
+  }
+}
+
+::ng-deep .document-batch-select .ng-select.ac-select .ng-arrow-wrapper {
+    height: 32.5px !important;
+    padding-top: 7px;
+    font-size: 14px;
+}
+
+.project-select, .document-types {
+  margin-bottom: 20px;
+  max-width: 350px;
+}
+
+.notes {
+  height: 90%;
+  margin-bottom: 10px;
+  label {
+    padding-bottom: 10px;
+  }
+}
+.notes textarea {
+  width: 100%;
+  height: 90%;
+  padding: 10px;
+  border: 1px solid $info-card-border-info;
+  border-radius: 5px;
+}
+
+.checkbox-group div {
+  margin-bottom: 10px;
+}
+
+.upload-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 100%;
+  button {
+    border-radius: 6px;
+  }
+}
+
+.required {
+  color: $custom-blue;
+}
+
+.file-list {
+  margin-top: 20px;
+}
+
+::ng-deep .document-batch-link .nav-link {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 4px !important;
+  margin-bottom: 10px;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  border-bottom: 4px solid rgb(253, 186, 18) !important;
+}
+
+::ng-deep .document-batch-link .nav-tabs .page-content{
+  padding: 0 0 0 0px !important;
+}
+
+.label-font {
+  font-size: 14px;
+}
+
+.document-batch-notes-flex-right {
+  margin-left: 20px;
+  flex-basis: 50%;
+  height: 105% !important;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 300;
+  padding-left: 48px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  color: $claimant-dashboard-primary;
+}
+
+::ng-deep .ng-placeholder {
+  margin: 5px;
+}
+
+::ng-deep .multiselect-option__checkbox {
+  border: 1px solid $primary-blue;
+  background-color: white;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
+}
+
+::ng-deep .multiselect-option__checkbox:checked {
+
+  border: 1px solid $primary-blue;
+  background-color: $primary-blue;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
+}
+
+::ng-deep .multiselect-option__checkbox:checked::after {
+  content: '✔';
+  color: white;
+  position: relative;
+  font-size: 8px;
+  bottom: 8px;
+  left: 2px;
+}
+
+::ng-deep .ng-arrow-wrapper {
+  background-color: $info-card-background-info !important;
+  border-radius: 3px;
+}
+
+::ng-deep .btn-grid-action.btn-remove {
+  color: #EF4343;
+}
+
+
+::ng-deep .document-types {
+  div .ng-value.ng-star-inserted {
+    background: $light-blue !important;
+    color: $communication-hub-primary;
+    border-radius: 5px;
+
+    span {
+      font-size: 12px;
+      margin: 5px;
+      color: $communication-hub-primary
+    }
+  }
+}
+
+label.label-font {
+  color: $gray-dim;
+}

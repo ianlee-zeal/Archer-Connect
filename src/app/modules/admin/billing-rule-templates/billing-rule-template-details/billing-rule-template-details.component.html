@@ -1,0 +1,410 @@
+<app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+<app-context-bar [title]="billingRuleTemplateTitle"></app-context-bar>
+<div class="page">
+  <div class="page-content">
+    <form [formGroup]="form" novalidate *ngIf="canEdit; else viewTemplate">
+      <card hideSeparator>
+        <card-col [width]="570" [labelWidth]="265">
+          <card-row label="Name" inputId="name" [control]="form.get('name')" required>
+            <input type="text" class="form-control" formControlName="name" id="name" maxLength="50" required cardValue />
+          </card-row>
+          <card-row label="Description" inputId="description" [control]="form.get('description')">
+            <input type="text" class="form-control" formControlName="description" id="description" cardValue />
+          </card-row>
+          <card-row label="Status" inputId="status" [control]="form.get('status')" required>
+            <div class="select-container" cardValue>
+              <app-select
+                required id="status"
+                [options]="statuses$ | async"
+                formControlName="status"
+                placeholder="Select Status"
+                optionAsValue>
+              </app-select>
+            </div>
+          </card-row>
+        </card-col>
+      </card>
+
+      <card header="Contract Rule Details" collapsable>
+        <card-col [width]="570" [labelWidth]="265">
+          <card-row label="Fee Scope" inputId="feeScope" [control]="form.get('feeScope')" required [maxContentWidth]="500"
+            [containerWidth]="750">
+            <app-select cardValue id="feeScope" [options]="feeScopes$ | async" formControlName="feeScope" optionAsValue
+              placeholder="Select Fee Scope"></app-select>
+          </card-row>
+
+          <card-row label="QSF GL Account Code" inputId="chartOfAccount" [control]="form.get('chartOfAccount')" [maxContentWidth]="500"
+            [containerWidth]="750">
+            <app-select cardValue id="chartOfAccount" [options]="chartOfAccounts$ | async" formControlName="chartOfAccount"
+             optionAsValue placeholder="Select QSF GL Account Code"></app-select>
+          </card-row>
+
+           <card-row label="Invoicing Item" inputId="invoicingItem" [control]="form.get('invoicingItem')" [maxContentWidth]="500"
+            [containerWidth]="750">
+            <div class="select-container" cardValue>
+              <app-select id="invoicingItem" placeholder="Type to search Invoicing Item" optionAsValue [fullwidth]="true"
+                class="w-100" formControlName="invoicingItem" [options]="invoicingItems$ | async"
+                (onKeyup)="searchInvoicingItems($event)" (onOpen)="searchInvoicingItems('')" [searchFn]=searchFn searchable>
+              </app-select>
+            </div>
+          </card-row>
+
+
+          <card-row label="Rev Rec Item" inputId="revRecItem" [control]="form.get('revRecItem')" [maxContentWidth]="500"
+            [containerWidth]="750">
+            <div class="select-container" cardValue>
+              <app-select id="revRecItem" placeholder="Type to search Rev Rec Item" optionAsValue [fullwidth]="true"
+                class="w-100" [options]="revRecItems$ | async" (onKeyup)="searchRevRecItems($event)"
+                (onOpen)="searchRevRecItems('')" formControlName="revRecItem" [searchFn]=searchFn searchable>
+              </app-select>
+            </div>
+          </card-row>
+
+          <card-row label="Rev Rec Method" inputId="revRecMethod" [maxContentWidth]="500" [containerWidth]="750"
+            [control]="form.get('revRecMethod')">
+            <app-select cardValue id="revRecMethod" [options]="revRecMethods$ | async" formControlName="revRecMethod"
+              optionAsValue placeholder="Select Rev Rec Method"></app-select>
+          </card-row>
+        </card-col>
+        </card>
+
+      <card header="Related Services" collapsable>
+        <card-col [width]="750" [labelWidth]="265">
+          <card-row
+              [marginTop]="10"
+              [maxContentWidth]="300"
+              [containerWidth]="750"
+              label="Collector Specific?">
+              <label class="checkbox d-block" [ngClass]="{'active': isCollectorSpecific}" cardValue>
+                <input type="checkbox" formControlName="isCollectorSpecific">
+                <app-tooltip-info
+                  [templateRef]="automatedTriggerTooltip">
+                </app-tooltip-info>
+              </label>
+          </card-row>
+
+          <card-row
+            *ngIf="isCollectorSpecific"
+            label="Collector"
+            [labelWidth]="265"
+            inputId="collector"
+            [control]="form.get('collectorOrgName')"
+            [required]="isCollectorSpecific"
+            alignContentVertically>
+              <app-clearable-input
+                cursorPointer
+                [form]="form"
+                controlName="collectorOrgName"
+                [isReadonly]="true"
+                id="collector"
+                (click)="onOpenCollectorSearchModal()"
+                placeholder="Select Collector"
+                cardValue
+                (clear)="onClear()"
+                width="300">
+              </app-clearable-input>
+          </card-row>
+
+          <card-row label="Related Services" inputId="relatedServices" [maxContentWidth]="300" [containerWidth]="750">
+            <input
+                        (click)="onOpenRelatedServicesModal()"
+                        type="text"
+                        class="form-control cursor-pointer"
+                        readonly
+                        id="relatedServices"
+                        [disabled]="form.controls.relatedServices.disabled"
+                        cardValue
+                        placeholder="Select Related Services" />
+          </card-row>
+
+          <card hideSeparator>
+            <card-col [width]="1600">
+              <app-related-services-list [(relatedServices)]="relatedServices" [canEdit]="canEdit" cardValue></app-related-services-list>
+            </card-col>
+          </card>
+      </card-col>
+      </card>
+      <card header="Pricing Terms" collapsable>
+        <card-col [width]="670" [labelWidth]="265">
+          <div class="unit-switcher-container">
+            <card-row
+              label="Maximum Fee"
+              inputId="maxFee"
+              [maxContentWidth]="400"
+              [control]="form.get(!maxFeeSwitcher ? 'maxFee' : 'maxFeePct')">
+              <input *ngIf="!maxFeeSwitcher" placeholder="Price" type="text" class="form-control" formControlName="maxFee" id="maxFee" cardValue />
+              <input *ngIf="maxFeeSwitcher" placeholder="Pecentage of GSV" type="text" class="form-control" formControlName="maxFeePct" id="maxFeePct" cardValue />
+
+              <label class="checkbox" [ngClass]="{'active': maxFeeSwitcher}" cardValue>
+                <div class="unit-sign unit-sign__left">$</div>
+                <input type="checkbox" name="maxFeeSwitcher" [checked]="maxFeeSwitcher" (change)="onCheck('maxFeeSwitcher', $event)">
+                <div class="unit-sign unit-sign__right">%</div>
+              </label>
+            </card-row>
+          </div>
+          <div class="unit-switcher-container">
+            <card-row
+              label="Minimum Fee"
+              inputId="minFee"
+              [maxContentWidth]="400"
+              [control]="form.get(!minFeeSwitcher ? 'minFee' : 'minFeePct')">
+              <input *ngIf="!minFeeSwitcher" placeholder="Price" type="text" class="form-control" formControlName="minFee" id="minFee" cardValue />
+              <input *ngIf="minFeeSwitcher" placeholder="Pecentage of GSV" type="text" class="form-control" formControlName="minFeePct" id="minFeePct" cardValue />
+
+              <label class="checkbox" [ngClass]="{'active': minFeeSwitcher}" cardValue>
+                <div class="unit-sign unit-sign__left">$</div>
+                <input type="checkbox" name="minFeeSwitcher" [checked]="minFeeSwitcher" (change)="onCheck('minFeeSwitcher', $event)">
+                <div class="unit-sign unit-sign__right">%</div>
+              </label>
+            </card-row>
+          </div>
+          <card-row label="Outcome Based Pricing?" inputId="minFeePct" [control]="form.get('isOutcomeBased')">
+            <label class="checkbox d-block" [ngClass]="{'active': isOutcomeBased}" cardValue>
+              <input type="checkbox" name="isOutcomeBased" [checked]="isOutcomeBased" (change)="onCheck('isOutcomeBased', $event)">
+              <app-tooltip-info
+                [templateRef]="automatedTriggerTooltip">
+              </app-tooltip-info>
+            </label>
+          </card-row>
+          <card-row label="Variable Pricing Applies?" inputId="isVariable" [control]="form.get('isVariable')">
+            <label class="checkbox" [ngClass]="{'active': isVariable}" cardValue>
+              <input type="checkbox" name="isVariable" [checked]="isVariable" (change)="onCheck('isVariable', $event)">
+            </label>
+          </card-row>
+          <div class="unit-switcher-container">
+            <card-row
+              label="Price"
+              inputId="price"
+              [maxContentWidth]="400"
+              [control]="form.get(!priceSwitcher ? 'price' : 'pricePct')">
+              <input *ngIf="!priceSwitcher" type="text" class="form-control" formControlName="price" id="price" cardValue />
+              <input *ngIf="priceSwitcher" type="text" class="form-control" formControlName="pricePct" id="pricePct" cardValue />
+
+              <label class="checkbox" [ngClass]="{'active': priceSwitcher}" cardValue>
+                <div class="unit-sign unit-sign__left">$</div>
+                <input type="checkbox" name="priceSwitcher" [checked]="priceSwitcher" (change)="onCheck('priceSwitcher', $event)">
+                <div class="unit-sign unit-sign__right">%</div>
+              </label>
+            </card-row>
+          </div>
+          <card *ngIf="isOutcomeBased" hideSeparator>
+            <card-col [width]="1600">
+              <app-outcome-based-pricing-list
+                [canEdit]="true"
+                [outcomeBasePricingList]="outcomeBasedScenarios"
+                (outcomeBasePricingListChange)="onOutcomeBasedListChanged($event)"
+                cardValue>
+              </app-outcome-based-pricing-list>
+            </card-col>
+          </card>
+          <card *ngIf="isVariable" hideSeparator>
+            <card-col [width]="1600">
+              <app-pricing-types-list
+                [canEdit]="canEdit"
+                [(variablePricing)]="variablePricing">
+              </app-pricing-types-list>
+            </card-col>
+          </card>
+        </card-col>
+      </card>
+
+
+
+      <card header="Invoicing" collapsable>
+        <card-col [width]="850">
+          <card-row
+            label="Related Service Required?"
+            inputId="relatedServiceRequired"
+            [control]="form.get('relatedServiceRequired')"
+            [marginTop]="10"
+            [labelWidth]="265"
+            required>
+            <label class="checkbox d-block" [ngClass]="{'active': isRelatedServiceRequired}" cardValue>
+              <input
+                type="checkbox"
+                name="relatedServiceRequired"
+                [checked]="isRelatedServiceRequired"
+                [disabled]="form.get('relatedServiceRequired')?.disabled"
+                (change)="onCheck('relatedServiceRequired', $event)">
+              <label class="related-service-required">{{relatedServiceRequiredMessage}}</label>
+              <app-tooltip-info
+                [inline]="true"
+                [templateRef]="automatedTriggerTooltip">
+              </app-tooltip-info>
+            </label>
+          </card-row>
+          <div class="generation-type-container">
+            <card-row
+              label="Fee Generation Type"
+              inputId="iliAutoGeneration"
+              [control]="form.get('iliAutoGeneration')"
+              [marginTop]="10"
+              [labelWidth]="265"
+              required>
+              <label class="checkbox" [ngClass]="{'active': iliAutoGeneration}" cardValue>
+                <div class="generation-type-title generation-type-title__left">Manual</div>
+                <input type="checkbox" name="iliAutoGeneration" [checked]="iliAutoGeneration" (change)="onCheck('iliAutoGeneration', $event)">
+                <div class="generation-type-title generation-type-title__right">Automated</div>
+              </label>
+            </card-row>
+          </div>
+          <ng-container>
+            <div class="triggers-container">
+              <div>
+                <card-row
+                  label="Pricing Triggers"
+                  inputId="pricingTrigger"
+                  [marginTop]="15"
+                  [labelWidth]="265"
+                  [containerWidth]="670"
+                  [maxContentWidth]="390">
+                    <app-select
+                      cardValue
+                      clearInputAfterSelection
+                      id="pricingTrigger"
+                      optionAsValue
+                      [fullwidth]="true"
+                      class="w-100"
+                      (onModelChange)="onPricingTriggersDropdownChange($event)"
+                      [isMultiselectDropdown]="true"
+                      [options]="pricingTriggerDropdownOpts">
+                    </app-select>
+                </card-row>
+                <app-billing-triggers-list
+                  [triggersList]="form.get('pricingTriggers').value"
+                  [gridId]="gridId.PricingTriggers">
+                </app-billing-triggers-list>
+              </div>
+              <div>
+                <card-row
+                  label="Billing Triggers"
+                  inputId="billingTrigger"
+                  [marginTop]="15"
+                  [labelWidth]="265"
+                  [containerWidth]="670"
+                  [maxContentWidth]="390">
+                  <app-select
+                    cardValue
+                    clearInputAfterSelection
+                    id="billingTrigger"
+                    optionAsValue
+                    [fullwidth]="true"
+                    class="w-100"
+                    (onModelChange)="onBillingTriggersDropdownChange($event)"
+                    [isMultiselectDropdown]="true"
+                    [options]="billingTriggerDropdownOpts">
+                  </app-select>
+                </card-row>
+                <app-billing-triggers-list
+                  [triggersList]="form.get('billingTriggers').value"
+                  [gridId]="gridId.BillingTriggers">
+                </app-billing-triggers-list>
+              </div>
+            </div>
+          </ng-container>
+        </card-col>
+      </card>
+    </form>
+  </div>
+
+  <ng-template #viewTemplate>
+    <div *ngIf="existingBillingRuleTemplate" class="view-template-wrapper">
+      <card hideSeparator>
+        <card-col [width]="600" [labelWidth]="265">
+          <card-row label="Name" [value]="existingBillingRuleTemplate.name" required></card-row>
+          <card-row label="Description" [value]="existingBillingRuleTemplate.description" containValue></card-row>
+          <card-row label="Status" [value]="existingBillingRuleTemplate.status?.name" required></card-row>
+        </card-col>
+        <card-col [width]="500" [labelWidth]="250">
+          <card-row label="Created By" [value]="existingBillingRuleTemplate.createdBy?.displayName || '-'"></card-row>
+          <card-row label="Created Date" [value]="(existingBillingRuleTemplate.createdDate | dateFormat) || '-'"></card-row>
+          <card-row label="Last Modified By" [value]="existingBillingRuleTemplate.lastModifiedBy?.displayName || '-'"></card-row>
+          <card-row label="Last Modified Date" [value]="(existingBillingRuleTemplate.lastModifiedDate | dateFormat) || '-'"></card-row>
+      </card-col>
+      </card>
+
+      <card header="Contract Rule Details" collapsable>
+        <card-col [width]="800" [labelWidth]="265">
+          <card-row label="Fee Scope" [value]="existingBillingRuleTemplate.feeScope?.name" required></card-row>
+          <card-row label="QSF GL Account Code" [value]="existingBillingRuleTemplate.chartOfAccount?.name"></card-row>
+          <card-row label="Invoicing Item" [value]="existingBillingRuleTemplate.invoicingItem?.name"></card-row>
+          <card-row label="Rev Rec Item" [value]="existingBillingRuleTemplate.revRecItem?.name"></card-row>
+          <card-row label="Rev Rec Method" [value]="existingBillingRuleTemplate.revRecMethod?.name"></card-row>
+        </card-col>
+      </card>
+
+      <card header="Related Services" collapsable>
+        <card-col [width]="750" [labelWidth]="265">
+          <card-row
+              [marginTop]="10"
+              [maxContentWidth]="300"
+              [containerWidth]="750"
+              label="Collector Specific?">
+              <label class="checkbox" [ngClass]="{'active': isCollectorSpecific}" cardValue>
+                <input type="checkbox" disabled>
+              </label>
+          </card-row>
+
+          <card-row *ngIf="isCollectorSpecific" label="Collector" [value]="form.controls.collectorOrgName.value"></card-row>
+
+          <card-row label="Related Services" [hideText]="true" [value]="form.controls.relatedServices.value"></card-row>
+
+          <card hideSeparator>
+            <card-col [width]="1600">
+              <app-related-services-list [relatedServices]="relatedServices" [canEdit]="canEdit" cardValue></app-related-services-list>
+            </card-col>
+          </card>
+        </card-col>
+      </card>
+
+      <card header="Pricing Terms" collapsable>
+        <card-col [width]="800" [labelWidth]="265">
+          <card-row label="Maximum Fee" [value]="existingBillingRuleTemplate.maxFeePct ? existingBillingRuleTemplate.maxFeePct + '%' : existingBillingRuleTemplate.maxFee | extendedCurrency"></card-row>
+          <card-row label="Minimum Fee" [value]="existingBillingRuleTemplate.minFeePct ? existingBillingRuleTemplate.minFeePct + '%' : existingBillingRuleTemplate.minFee | extendedCurrency"></card-row>
+          <card-row label="Outcome Based Pricing?" [value]="existingBillingRuleTemplate.isOutcomeBased | yesNoPipe"></card-row>
+          <card-row label="Variable Pricing Applies?" [value]="existingBillingRuleTemplate.isVariable | yesNoPipe"></card-row>
+          <card-row label="Price" [value]="existingBillingRuleTemplate.pricePct ? existingBillingRuleTemplate.pricePct + '%' : existingBillingRuleTemplate.price | extendedCurrency"></card-row>
+          <card *ngIf="isOutcomeBased" hideSeparator>
+            <card-col [width]="1600">
+              <app-outcome-based-pricing-list [outcomeBasePricingList]="outcomeBasedScenarios" (outcomeBasePricingListChange)="onOutcomeBasedListChanged($event)" cardValue></app-outcome-based-pricing-list>
+            </card-col>
+          </card>
+          <card *ngIf="isVariable" hideSeparator>
+            <card-col [width]="1600">
+              <app-pricing-types-list [canEdit]="canEdit" [(variablePricing)]="variablePricing"></app-pricing-types-list>
+            </card-col>
+          </card>
+        </card-col>
+      </card>
+
+      <card header="Invoicing" collapsable>
+        <card-col [width]="750" [labelWidth]="265">
+          <card-row label="Related Service Required?" [value]="existingBillingRuleTemplate.relatedServiceRequired | yesNoPipe"></card-row>
+          <card-row label="Fee Generation Type" [value]="existingBillingRuleTemplate.iliAutoGeneration ? 'Automated' : 'Manual'"></card-row>
+          <div class="triggers-container">
+            <div>
+              <span>Pricing Triggers:</span>
+              <app-billing-triggers-list
+                [triggersList]="form.get('pricingTriggers').value"
+                [gridId]="gridId.PricingTriggers">
+              </app-billing-triggers-list>
+            </div>
+            <div>
+              <span>Billing Triggers:</span>
+              <app-billing-triggers-list
+                [triggersList]="form.get('billingTriggers').value"
+                [gridId]="gridId.BillingTriggers">
+              </app-billing-triggers-list>
+            </div>
+          </div>
+        </card-col>
+      </card>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #automatedTriggerTooltip>
+  Selecting this option with automated fee generation enabled will add two triggers to the Pricing and Billing Triggers list to ensure that a fee can be generated.
+  Deselecting the option will remove the triggers from the lists.
+</ng-template>
+

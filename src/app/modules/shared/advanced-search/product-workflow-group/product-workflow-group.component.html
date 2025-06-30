@@ -1,0 +1,11 @@
+<div class="advanced-search-field-product-workflow-group">
+  <ng-container *ngFor="let entry of entry.additionalFields">
+    <div class="advanced-search-field-product-workflow-group__row">
+      <div class="advanced-search-field-product-workflow-group__label">
+        <label>and {{entry.field.name}}</label>
+      </div>
+        <app-advanced-search-filter class="advanced-search-field-product-workflow-group__filter" [entry]="entry" (markAsEdited)="markAsEdited.emit()" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (submit)="onSubmit.emit()"></app-advanced-search-filter>
+    </div>
+  </ng-container>
+</div>
+  

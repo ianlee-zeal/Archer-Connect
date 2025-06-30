@@ -1,0 +1,8 @@
+<div *ngIf="probateId" class="page-content">
+  <app-change-history-list 
+    [id]="probateId" 
+    [productCategory]="productCategory"
+    [showEntityTypeColumn]="true"
+    (actionBarUpdated)="onActionBarUpdated($event)">
+  </app-change-history-list>
+</div>

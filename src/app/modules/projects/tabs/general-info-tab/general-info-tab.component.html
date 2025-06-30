@@ -1,0 +1,252 @@
+<ng-container *ngIf="canEdit; else viewTemplate">
+  <div class="page-content">
+    <div *ngIf="error$ | async as error" class="text-danger mt-2 ms-3">
+      {{ error }}
+    </div>
+
+    <form [formGroup]="form" novalidate>
+      <card [maxWidth]="835" hideSeparator>
+        <card-col [width]="570" [labelWidth]="300">
+          <card-row label="ID" [value]="projectDetails?.id"></card-row>
+
+          <card-row label="Project Name" inputId="name" [control]="form.get('name')" required>
+            <input type="text" class="form-control" formControlName="name" id="name" maxLength="100" cardValue />
+          </card-row>
+
+          <card-row label="Project Code" inputId="projectCode" [control]="form.get('projectCode')">
+            <input type="text" class="form-control" formControlName="projectCode" id="projectCode" maxLength="100" cardValue />
+          </card-row>
+
+          <card-row label="Type" inputId="type" [control]="form.get('type')" required>
+            <div class="select-container" cardValue>
+                <app-select
+                    required
+                    id="type"
+                    [options]="types$ | async"
+                    formControlName="type"
+                    optionAsValue
+                    placeholder="Select Type">
+                </app-select>
+            </div>
+          </card-row>
+
+          <card-row label="Project Status" inputId="status" [control]="form.get('status')" required>
+            <div class="select-container" cardValue>
+                <app-select
+                    required
+                    id="status"
+                    [options]="statuses$ | async"
+                    formControlName="status"
+                    optionAsValue
+                    placeholder="Select Status">
+                </app-select>
+            </div>
+          </card-row>
+
+          <card-row label="Tort" [value]="projectDetails?.matter"></card-row>
+        </card-col>
+
+        <card-col [labelWidth]="210">
+          <card-row label="Settlement" inputId="settlement" [control]="form.get('settlement')" required alignContentVertically>
+            <app-clearable-input
+            cursorPointer
+            [form]="form"
+            controlName="settlement"
+            [isReadonly]="true"
+            id="settlement"
+            placeholder="Select Settlement"
+            cardValue
+            (click)="onOpenSettlementModal()"
+            (clear)="onClear('settlement')"
+            [width]="removableInputWidth">
+          </app-clearable-input>
+          </card-row>
+
+          <card-row label="Settlement ID" [value]="projectDetails?.settlementId"></card-row>
+          <card-row label="Settlement Status" [value]="projectDetails?.settlementStatus"></card-row>
+          <card-row label="Settlement Date" [value]="projectDetails?.settlementDate | dateFormat"></card-row>
+          <card-row label="Settlement Amount" [value]="projectDetails?.settlementAmount | extendedCurrency"></card-row>
+          <card-row label="Assigned Phone Number" inputId="assignedPhoneNumber" [control]="form.get('assignedPhoneNumber')">
+            <input type="text" class="form-control" formControlName="assignedPhoneNumber" id="assignedPhoneNumber" mask="(000) 000-0000" cardValue />
+          </card-row>
+        </card-col>
+      </card>
+
+      <card [maxWidth]="835" header="Related Parties">
+        <card-col [width]="570" [labelWidth]="300">
+          <card-row label="Primary Firm" inputId="primaryFirm" [control]="form.get('primaryFirm')" alignContentVertically>
+            <app-clearable-input
+              cursorPointer
+              [form]="form"
+              controlName="primaryFirm"
+              [isReadonly]="true"
+              id="primaryFirm"
+              placeholder="Select Primary Firm"
+              cardValue
+              (click)="onOpenFirmModal()"
+              (clear)="onClear('primaryFirm')"
+              [width]="removableInputWidth">
+            </app-clearable-input>
+          </card-row>
+
+          <card-row label="Primary Attorney" inputId="primaryAttorney" [control]="form.get('primaryAttorney')" [marginTop]="10" alignContentVertically>
+            <app-clearable-input
+              cursorPointer
+              [form]="form"
+              controlName="primaryAttorney"
+              [isReadonly]="true"
+              id="primaryAttorney"
+              placeholder="Select Primary Attorney"
+              cardValue
+              (click)="onOpenAttorneyModal()"
+              (clear)="onClear('primaryAttorney')"
+              [width]="removableInputWidth">
+            </app-clearable-input>
+          </card-row>
+        </card-col>
+      </card>
+
+      <card [maxWidth]="805" header="QSF details">
+        <card-col [width]="570" [labelWidth]="300">
+          <card-row label="QSF Administration Organization" inputId="qsfAdminOrg" [control]="form.get('qsfAdminOrg')" alignContentVertically>
+            <app-clearable-input
+              cursorPointer
+              [form]="form"
+              controlName="qsfAdminOrg"
+              [isReadonly]="true"
+              id="qsfAdminOrg"
+              (click)="onOpenQSFAdminModal()"
+              placeholder="Select QSF Administration Organization"
+              cardValue
+              (clear)="onClear('qsfAdminOrg')"
+              [width]="removableInputWidth">
+            </app-clearable-input>
+          </card-row>
+
+          <card-row label="Qualified Settlement Fund" inputId="qsfOrg" [control]="form.get('qsfOrg')" [marginTop]="10" alignContentVertically>
+            <app-clearable-input
+              cursorPointer
+              [form]="form"
+              controlName="qsfOrg"
+              [isReadonly]="true"
+              id="qsfOrg"
+              placeholder="Select Qualified Settlement Fund"
+              cardValue
+              (click)="onOpenQSFModal()"
+              (clear)="onClear('qsfOrg')"
+              [width]="removableInputWidth">
+            </app-clearable-input>
+          </card-row>
+          <card-row label="Tax ID Number" [value]="projectDetails.taxIdNumber"></card-row>
+          <card-row label="QSF Funded Date"
+            [value]="projectDetails.qsfFundedDate | dateFormat : false : '' : '' : true">
+          </card-row>
+          <card-row label="QSF Administrator" inputId="qsfAdministrator" [control]="form.get('qsfAdministrator')">
+            <input type="text" class="form-control" formControlName="qsfAdministrator" id="qsfAdministrator" cardValue />
+          </card-row>
+          <card-row label="Fund Name" inputId="fundName" [control]="form.get('fundName')">
+            <input type="text" class="form-control" formControlName="fundName" id="fundName" cardValue />
+          </card-row>
+          <card-row label="The project is being handled in AC" inputId="isManagedInAC" [control]="form.get('isManagedInAC')" >
+            <label class="form-check h-100" cardValue>
+              <input type="checkbox" class="form-check-input" formControlName="isManagedInAC" id="isManagedInAC" />
+              <span></span>
+            </label>
+          </card-row>
+          <card-row label="Send Final Status Letters" inputId="finalStatusLetters" [control]="form.get('finalStatusLetters')" >
+            <label class="form-check h-100" cardValue>
+              <input type="checkbox" class="form-check-input" formControlName="finalStatusLetters" id="finalStatusLetters" />
+              <span></span>
+            </label>
+          </card-row>
+          <card-row label="Send Payment Cover Sheets" inputId="paymentCoverSheets" [control]="form.get('paymentCoverSheets')" >
+            <label class="form-check h-100" cardValue>
+              <input type="checkbox" class="form-check-input" formControlName="paymentCoverSheets" id="paymentCoverSheets" />
+              <span></span>
+            </label>
+          </card-row>
+          <card-row label="Send Check Table" inputId="checkTable" [control]="form.get('checkTable')" >
+            <label class="form-check h-100" cardValue>
+              <input type="checkbox" class="form-check-input" formControlName="checkTable" id="checkTable" />
+              <span></span>
+            </label>
+          </card-row>
+        </card-col>
+      </card>
+
+      <card [maxWidth]="835" header="QSF Admin Address">
+        <card-col [width]="570" [labelWidth]="300">
+          <card-row label="QSF Admin Address 1" [value]="projectDetails.qsfcompanyAddress1"></card-row>
+          <card-row label="QSF Admin Address 2" [value]="projectDetails.qsfcompanyAddress2"></card-row>
+          <card-row label="City" [value]="projectDetails.qsfcompanyCity"></card-row>
+          <card-row label="State" [value]="projectDetails.qsfcompanyState"></card-row>
+          <card-row label="Zip Code" [value]="projectDetails.qsfcompanyZipCode"></card-row>
+        </card-col>
+      </card>
+    </form>
+  </div>
+</ng-container>
+
+<ng-template #viewTemplate>
+  <div class="page-content" *ngIf="projectDetails$ | async as projectDetails">
+    <div *ngIf="error$ | async as error" class="text-danger mt-2 ms-3">
+      {{ error }}
+    </div>
+
+    <form>
+      <card [maxWidth]="955" hideSeparator>
+        <card-col [width]="665" [labelWidth]="265">
+          <card-row label="ID" [value]="projectDetails.id"></card-row>
+          <card-row label="Project Name" [value]="projectDetails.name"></card-row>
+          <card-row label="Project Code" [value]="projectDetails.projectCode"></card-row>
+          <card-row label="Type" [value]="projectDetails.projectType?.name"></card-row>
+          <card-row label="Status" [value]="projectDetails.projectStatus?.name"></card-row>
+          <card-row label="Tort" [value]="projectDetails.matter"></card-row>
+        </card-col>
+
+        <card-col [width]="365" [labelWidth]="210" >
+          <card-row label="Settlement ID" [value]="projectDetails?.settlementId"></card-row>
+          <card-row label="Settlement Status" [value]="projectDetails.settlementStatus"></card-row>
+          <card-row label="Settlement Date" [value]="projectDetails.settlementDate | dateFormat : false : '' : '' : true">
+          </card-row>
+          <card-row label="Settlement Amount" [value]="projectDetails.settlementAmount |  currency"></card-row>
+          <card-row label="Assigned Phone Number" [value]="projectDetails?.assignedPhoneNumber | phone"></card-row>
+        </card-col>
+      </card>
+
+      <card [maxWidth]="955" header="Related Parties">
+        <card-col [width]="665" [labelWidth]="265">
+          <card-row label="Primary Firm" [value]="projectDetails.primaryFirm?.name"></card-row>
+          <card-row label="Primary Attorney" [value]="projectDetails.primaryAttorney?.name"></card-row>
+        </card-col>
+      </card>
+
+      <card [maxWidth]="955" header="QSF details">
+        <card-col [width]="665" [labelWidth]="265">
+          <card-row label="QSF Administration Organization" [value]="projectDetails.qsfAdminOrg?.name"></card-row>
+          <card-row label="Qualified Settlement Fund" [value]="qsfOrgName"></card-row>
+          <card-row label="Tax ID Number" [value]="projectDetails.taxIdNumber"></card-row>
+          <card-row label="QSF Funded Date"
+            [value]="projectDetails.qsfFundedDate | dateFormat : false : '' : '' : true"></card-row>
+          <card-row label="QSF Administrator" [value]="projectDetails.qsfAdministrator"></card-row>
+          <card-row label="Fund Name" [value]="projectDetails.fundName"></card-row>
+          <card-row label="The project is being handled in AC" [value]="projectDetails?.isManagedInAC | yesNoPipe"></card-row>
+          <card-row label="Send Final Status Letters" [value]="projectDetails?.finalStatusLetters | yesNoPipe"></card-row>
+          <card-row label="Send Payment Cover Sheets" [value]="projectDetails?.paymentCoverSheets | yesNoPipe"></card-row>
+          <card-row label="Send Check Table" [value]="projectDetails?.checkTable | yesNoPipe"></card-row>
+        </card-col>
+      </card>
+
+      <card [maxWidth]="955" header="QSF Admin Address">
+        <card-col [width]="665" [labelWidth]="265">
+          <card-row label="QSF Admin Address 1" [value]="projectDetails.qsfcompanyAddress1"></card-row>
+          <card-row label="QSF Admin Address 2" [value]="projectDetails.qsfcompanyAddress2"></card-row>
+          <card-row label="City" [value]="projectDetails.qsfcompanyCity"></card-row>
+          <card-row label="State" [value]="projectDetails.qsfcompanyState"></card-row>
+          <card-row label="Zip Code" [value]="projectDetails.qsfcompanyZipCode"></card-row>
+        </card-col>
+      </card>
+
+    </form>
+  </div>
+</ng-template>

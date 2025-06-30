@@ -1,0 +1,26 @@
+<ng-container *ngIf="projectId">
+  <ng-container>
+      <app-advanced-search 
+        *ngIf="showAdvancedSearch"
+        [fields]="searchFields"
+        [state]="searchState"
+        [savedSearchOptions]="savedSearchOptions$ | async"
+        [entityId]= "projectId"
+        [entityType]="entityType"
+        [gridId]="gridId"
+        (markAsEdited)="markAsEdited()"
+        (onSearch)="advancedSearchSubmit()"
+        (onClear)="clearFilters()">
+      </app-advanced-search>
+  </ng-container>
+  <app-grid 
+    idColumnName="disbursementGroupClaimantId"
+    [gridOptions]="gridOptions" 
+    (gridReady)="gridReady($event)" 
+    (loadData)="loadData($event)"
+    [canReorderColumns]="true"
+    [gridId]="gridId"
+    [defaultViewportHeight]="64"
+    entityLabel="Claimant Summary">
+  </app-grid>
+</ng-container>

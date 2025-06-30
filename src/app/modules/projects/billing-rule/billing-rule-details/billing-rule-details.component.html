@@ -1,0 +1,141 @@
+<div class="billing-rule-details" *ngIf="billingRule">
+    <app-billing-rule-form *ngIf="canEdit; else viewTemplate" [billingRule]="billingRule"></app-billing-rule-form>
+</div>
+
+<ng-template #viewTemplate>
+    <card header="Contract Rule Details" [maxWidth]="1150">
+        <card-col [width]="650" [labelWidth]="250">
+            <card-row label="Contract Rule Template" [value]="billingRule.template?.name"></card-row>
+            <card-row label="Name" [value]="billingRule.name"></card-row>
+            <card-row label="Fee Scope" [value]="billingRule.feeScope.name"></card-row>
+
+            <card-row label="QSF GL Account Code" [value]="billingRule.chartOfAccount?.name"></card-row>
+
+            <card-row label="Invoicing Item"
+                [value]="billingRule.invoicingItem?.name">
+            </card-row>
+
+            <card-row label="Rev Rec Item"
+                [value]=" billingRule.revRecItem?.name">
+            </card-row>
+
+            <card-row label="Rev Rec Method" [value]="billingRule.revRecMethod?.name"></card-row>
+            <card-row label="Status" [value]="billingRule.status.name"></card-row>
+        </card-col>
+        <card-col [width]="500" [labelWidth]="250">
+            <card-row label="Created By" [value]="billingRule.createdBy?.displayName || '-'"></card-row>
+            <card-row label="Created Date" [value]="(billingRule.createdDate | dateFormat) || '-'"></card-row>
+            <card-row label="Last Modified By" [value]="billingRule.lastModifiedBy?.displayName || '-'"></card-row>
+            <card-row label="Last Modified Date" [value]="(billingRule.lastModifiedDate | dateFormat) || '-'"></card-row>
+        </card-col>
+    </card>
+
+    <card header="Related Services" [maxWidth]="1150">
+        <card-col [width]="850" [labelWidth]="250">
+            <card-row label="Collector Specific?" [value]="billingRule.collectorOrg ? 'Yes' : 'No'"></card-row>
+            <card-row *ngIf="billingRule.collectorOrg"
+                label="Collector"
+                [value]="billingRule.collectorOrg.name"
+                [labelWidth]="250"
+                [maxContentWidth]="600"
+                [containerWidth]="850">
+            </card-row>
+            <card-row label="Related Services" [hideText]="true"></card-row>
+            <card hideSeparator>
+              <card-col [width]="1600">
+                <app-related-services-list [relatedServices]="relatedServices" [canEdit]="canEdit" [additionalPageItemsCountValues]="additionalPageItemsCountValues" cardValue></app-related-services-list>
+              </card-col>
+            </card>
+        </card-col>
+    </card>
+
+    <card header="Pricing Terms" [maxWidth]="850">
+        <card-col [width]="850" [labelWidth]="250">
+            <card-row label="Minimum Fee" [value]="format.toPrice(billingRule.minFee, billingRule.minFeeType)"></card-row>
+
+            <card-row label="Maximum Fee" [value]="format.toPrice(billingRule.maxFee, billingRule.maxFeeType)"></card-row>
+
+            <card-row label="Outcome Based Pricing?" [value]="billingRule.isOutcomeBased | yesNoPipe"></card-row>
+
+            <card-row [maxContentWidth]="600" [containerWidth]="850" [labelWidth]="250" label="Variable Pricing Applies?"
+                [value]="billingRule.isVariable | yesNoPipe"></card-row>
+
+            <card-row
+                *ngIf="!billingRule.isOutcomeBased && !billingRule.isVariable"
+                label="Price"
+                [labelWidth]="250"
+                [value]="format.toPrice(billingRule.price, billingRule.priceType)">
+            </card-row>
+
+            <card *ngIf="outcomeBasedPricings?.length > 0" hideSeparator>
+              <card-col [width]="1600">
+                <app-outcome-based-pricing-list
+                    *ngIf="this.tortId"
+                    [tortId]="this.tortId"
+                    [outcomeBasePricingList]="outcomeBasedPricings"
+                    cardValue>
+                </app-outcome-based-pricing-list>
+              </card-col>
+            </card>
+            <card *ngIf="variablePricing?.variablePricingTypeId" hideSeparator>
+              <card-col [width]="1600">
+                <app-pricing-types-list
+                  *ngIf="this.tortId"
+                  [tortId]="this.tortId"
+                  [(variablePricing)]="variablePricing">
+                </app-pricing-types-list>
+              </card-col>
+            </card>
+        </card-col>
+    </card>
+
+    <card header="Invoicing" [maxWidth]="850">
+        <card-col [width]="850" [labelWidth]="250">
+            <card-row label="Fee Generation Type" [value]="billingRule.iliAutoGeneration ? 'Automated' : 'Manual'"></card-row>
+
+            <card-row label="Related Service Required?" [value]="billingRule.isRelatedServiceRequired | yesNoPipe"></card-row>
+
+            <div class="triggers-container">
+                <div>
+                    <span>Pricing Triggers:</span>
+                    <app-billing-triggers-list
+                      [triggersList]="pricingTriggersList"
+                      [gridId]="gridId.PricingTriggers">
+                    </app-billing-triggers-list>
+                </div>
+                <div>
+                    <span>Billing Triggers:</span>
+                    <app-billing-triggers-list
+                      [triggersList]="billingTriggersList"
+                      [gridId]="gridId.BillingTriggers">
+                    </app-billing-triggers-list>
+                </div>
+            </div>
+        </card-col>
+    </card>
+
+    <card header="Bill To" [maxWidth]="850">
+        <card-col [width]="850" [labelWidth]="250">
+
+            <card-row label="Fee Split" [value]="billingRule.feeSplit | yesNoPipe"></card-row>
+
+        </card-col>
+    </card>
+
+    <app-fee-split-list
+        #feeSplitList
+        class="fee-split"
+        [canEdit]="false"
+        [isFeeSplitted]="billingRule.feeSplit"
+        [(feeSplits)]="billingRule.feeSplits">
+    </app-fee-split-list>
+
+    <card header="Fee Details" [maxWidth]="850">
+        <card-col [width]="850" [labelWidth]="250">
+            <card-row label="Pricing Terms" [value]="billingRule.pricingTerms"></card-row>
+            <card-row label="Invoicing Terms" [value]="billingRule.invoicingTerms"></card-row>
+            <card-row label="Payment Terms" [value]="billingRule.paymentTerms"></card-row>
+            <card-row label="Rev Rec Terms" [value]="billingRule.revRecTerms"></card-row>
+        </card-col>
+    </card>
+</ng-template>

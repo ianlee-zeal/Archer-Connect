@@ -1,0 +1,49 @@
+<app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+<app-context-bar [title]="title"></app-context-bar>
+
+<div class="page">
+  <div class="page-content">
+        <form *ngIf="canEdit; else viewTemplate" [formGroup]="form" novalidate >
+          <card class="mb-0" header="Template Details">
+            <card-col [width]="500" [labelWidth]="labelWidth">
+              <card-row label="Template Name" inputId="templateName" [control]="form.get('templateName')" required>
+                <input type="text" class="form-control" formControlName="templateName" id="templateName" maxLength="50" cardValue />
+              </card-row>
+              <card-row label="Template Status" inputId="status" [control]="form.get('active')" [containerWidth]="300">
+                <app-select cardValue id="status" [options]="statuses" formControlName="active"
+                placeholder="Select Status"></app-select>
+              </card-row>
+            </card-col>
+          </card>
+          <card hideSeparator>
+            <card-col [labelWidth]="labelWidth">
+              <card-row label="Template Description" inputId="templateDescription" [control]="form.get('templateDescription')">
+                <div class="textarea-wrapper" cardValue>
+                  <textarea id="templateDescription" maxlength="1000" class="form-control textarea-container" formControlName="templateDescription" cardValue ></textarea>
+                </div>
+              </card-row>
+            </card-col>
+          </card>
+        </form>
+
+    <app-task-details-template
+      [taskManagementEntity]="taskManagementEntityEnum"
+      [labelWidth]="labelWidth"
+      [record]="templateDetails"
+      [canEdit]="canEdit"
+      header="Template Details">
+    </app-task-details-template>
+
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<ng-template #viewTemplate>
+  <card header="Template Details">
+    <card-col [width]="800" [labelWidth]="190">
+      <card-row label="Template Name" [value]="templateDetails?.templateName"></card-row>
+      <card-row label="Template Status" [value]="templateDetails?.active | activeInactivePipe"></card-row>
+      <card-row label="Description" [value]="templateDetails?.templateDescription"></card-row>
+    </card-col>
+  </card>
+</ng-template>

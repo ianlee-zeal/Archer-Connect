@@ -1,0 +1,36 @@
+import { Pipe, PipeTransform } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { CurrencyHelper } from '@app/helpers/currency.helper';
+
+/*
+ * Same as currency pipe but additionally accepts fallback value.
+ * The fallback is displayed when the value is null or undefined.
+ * Example:
+ *   {{ null | extendedCurrencyLedger:'some fallback value' }}
+ *   {{ undefined | extendedCurrencyLedger:'some fallback value' }}
+ *   formats to: 'some fallback value'
+*/
+@Pipe({ name: 'extendedCurrencyLedger' })
+export class ExtendedCurrencyLedgerPipe extends CurrencyPipe implements PipeTransform {
+  transform(
+    value: number | null | undefined,
+    fallbackValue?: string,
+    currencyCode?: string,
+    display?: string | boolean,
+    digitsInfo?: string,
+    locale?: string,
+  ): any {
+    if (value === null || value === undefined) {
+      return fallbackValue ?? '';
+    }
+
+    const amount = CurrencyHelper.round(value);
+
+    let result = super.transform(amount, currencyCode, display, digitsInfo, locale);
+    if (value < 0) {
+      result = '(' + result + ')';
+    }
+
+    return result;
+  }
+}

@@ -1,0 +1,37 @@
+@import "src/styles/variables.scss";
+@import "src/styles/colors";
+
+.grid-expansion-panel-row-child {
+  margin-left: 8px;
+
+  &__alternateBackground {
+    background-color: rgba(23, 116, 222, 0.05);
+  }
+
+  &__background {
+    border-radius: 4px;
+    display: flex;
+  }
+}
+
+.grid-expansion-panel-row-child-element {
+  padding: 6px 8px 9px 8px;
+  height: 35px;
+
+  &__value {
+    text-align: left;
+    color: $gray-dim;
+  }
+
+  &:first-child {
+    margin-left: 50px;
+  }
+
+  &:last-child {
+    min-width: max-content;
+  }
+
+  &__right {
+    text-align: right;
+  }
+}

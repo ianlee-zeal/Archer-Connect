@@ -1,0 +1,3 @@
+<div class="page-content settlement-notes-tab" *ngIf="entityId">
+  <app-notes [entityTypeId]="entityTypeId" [entityId]="entityId" (actionBarUpdated)="onActionBarUpdated($event)"></app-notes>
+</div>

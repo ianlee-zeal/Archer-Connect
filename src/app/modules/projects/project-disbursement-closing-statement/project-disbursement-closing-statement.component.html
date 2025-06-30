@@ -1,0 +1,9 @@
+<div class="page">
+  <div class="page-content">
+      <app-project-disbursement-closing-statement-list
+          *ngIf="currentProject && !(loadingInProgress$ | async)"
+          [gridId]="gridId"
+          [projectId]="currentProject.id">
+      </app-project-disbursement-closing-statement-list>
+  </div>
+</div>

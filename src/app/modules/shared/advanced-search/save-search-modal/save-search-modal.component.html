@@ -1,0 +1,75 @@
+<modal (close)="onCancel()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="saveSearchForm">
+        <card hideSeparator>
+          <card-col [width]="585" [labelWidth]="140">
+            <card-row label="Name Search" inputId="nameSearch" [control]="saveSearchForm.get('nameSearch')" required>
+              <input type="text" class="form-control w-100" formControlName="nameSearch" id="nameSearch" maxLength="50" appAutoFocus required cardValue />
+            </card-row>
+            <card-row label="Share With"  inputId="isPrivateSearch" [control]="saveSearchForm.get('advancedSearchType')" required>
+              <div class="share-with-my-org w-100" cardValue>
+                <input
+                  [value]="searchTypes.Private"
+                  class="share-with-my-org__radio-button"
+                  (change)="onChangeType()"
+                  type="radio"
+                  formControlName="advancedSearchType"
+                />
+                <label class="label">Private</label>
+              </div>
+            </card-row>
+            <card-row  inputId="shareWithMyOrg" [control]="saveSearchForm.get('advancedSearchType')" required>
+              <div class="share-with-my-org w-100" cardValue>
+                <input
+                  [value]="searchTypes.OrgLevel"
+                  class="share-with-my-org__radio-button"
+                  type="radio"
+                  (change)="onChangeType()"
+                  formControlName="advancedSearchType"
+                />
+                <label class="label">My organization</label>
+              </div>
+            </card-row>
+            <card-row inputId="shareWith" [control]="saveSearchForm.get('shareWith')">
+              <div class="share-with w-100" cardValue>
+                <input
+                  [value]="searchTypes.Shared"
+                  class="share-with__radio-button"
+                  type="radio"
+                  (change)="onChangeType()"
+                  formControlName="advancedSearchType"
+                />
+                <app-select 
+                      id="shareWith"
+                      placeholder="Search for users"
+                      optionAsValue
+                      [fullwidth]="true"
+                      [disabled]="!isSharedChecked"
+                      class="w-100"
+                      [options]="users$ | async" 
+                      formControlName="shareWith"
+                      [multiple]="true"
+                      (onKeyup) = "fetch($event)"
+                      [searchFn] = searchFn
+                      searchable>
+              </app-select>
+              </div>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--primary"
+            (click)="onSave()">
+      Save
+    </button>
+  </modal-footer>
+</modal>

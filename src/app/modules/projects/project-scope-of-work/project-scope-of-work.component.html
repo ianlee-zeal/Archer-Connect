@@ -1,0 +1,176 @@
+<div class="scope-of-work page-content">
+  <div class="scope-of-work__engaged-services">
+    <div class="scope-of-work__engaged-services--with-separator">
+      Engaged Services
+    </div>
+    <div *ngIf="productCategories; else preparingTemplate">
+      <ng-container *ngIf="hasProductCategories; else noRecordsTemplate">
+        <table class="product-categories__header">
+          <tbody>
+            <tr>
+              <td class="product-categories__header--product-category">
+                <b>Product Category</b>
+              </td>
+              <td class="product-categories__header--status"><b>Status</b></td>
+              <td class="product-categories__header--service">
+                <b>Services</b>
+              </td>
+              <td class="product-categories__header--conditions">
+                <b>Conditions</b>
+              </td>
+              <td class="product-categories__header--date">
+                <b>Date</b>
+              </td>
+              <td class="product-categories__header--date">
+                <b>Handoff</b>
+              </td>
+              <td class="product-categories__header--user">
+                <b>Contact</b>
+              </td>
+              <td class="product-categories__header--status">
+                <b>Status</b>
+              </td>
+              <td [width]="30"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="product-categories__content">
+          <div
+            *ngFor="let group of productCategories; index as i"
+            class="product-categories__group"
+          >
+            <ng-container
+              *ngIf="!group.productCategory.parentId"
+              [ngTemplateOutlet]="expandableTemplate"
+              [ngTemplateOutletContext]="{
+                group: group,
+                index: i,
+                isExpanded: hasExpandedState(group.productCategoryId)
+              }"
+            >
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #noRecordsTemplate>
+  <app-tab-placeholder-no-record></app-tab-placeholder-no-record>
+</ng-template>
+
+<ng-template #preparingTemplate>
+  <div *ngIf="!canViewEngagedServices; else loadingTemplate">
+    <p class="scope-of-work__engaged-services--access-denied-description">
+      You don't have enough privileges to access this section. Fore more information contact your administrator.
+    </p>
+  </div>
+</ng-template>
+
+<ng-template #loadingTemplate>
+  <app-tab-placeholder [text]="'Loading...'"></app-tab-placeholder>
+</ng-template>
+
+<ng-template #expandableTemplate let-group="group" let-groupIndex="groupIndex" let-isExpanded="isExpanded">
+  <div class="expansion-panel-container">
+    <div class="expansion-panel">
+      <table class="expansion-panel__header">
+        <tbody>
+          <tr>
+            <td class="expansion-panel__header--product-category">
+              <span><b>{{ group.productCategory.shortName }}</b></span>
+            </td>
+            <td class="expansion-panel__header--status-service">
+              <app-product-category-status
+                [productCategory]="group"
+                (statusChanged)="onProductCategoryChanged($event)"
+                [readOnly]="!canEdit"
+              ></app-product-category-status>
+            </td>
+            <td class="expansion-panel__header--conditions">
+              <span
+                class="info-marker"
+                [ngClass]="
+                  !hasFurtherDetails(group) && 'info-marker--no-further-details'
+                "
+              ></span>
+            </td>
+            <td class="expansion-panel__header--date">
+                  <app-product-date
+                  *ngIf="group.statusId === projectScopeStatus.Yes"
+                  [canEdit]="canEdit"
+                  [productCategory]="group"
+                  control="engagedDate"
+                  (onChange)="onProductCategoryChanged($event)">
+                </app-product-date>
+            </td>
+            <td class="expansion-panel__header--date">
+                  <app-product-date
+                  *ngIf="group.statusId === projectScopeStatus.Yes"
+                  [canEdit]="canEdit"
+                  [productCategory]="group"
+                  control="handoff"
+                  (onChange)="onProductCategoryChanged($event)">
+                </app-product-date>
+            </td>
+            <td class="expansion-panel__header--user">
+              <app-assigned-user
+                *ngIf="group.statusId === projectScopeStatus.Yes"
+                [orgId]="archerId$ | async"
+                [canEdit]="canEdit"
+                control="assignedUserId"
+                [productCategory]="group"
+                (onChange)="onProductCategoryChanged($event)">
+              </app-assigned-user>
+            </td>
+            <td class="expansion-panel__header--status">
+              <app-project-scope-status
+                *ngIf="group.statusId === projectScopeStatus.Yes"
+                [canEdit]="canEdit"
+                [statusOptions]="statusOptions$ | async"
+                [productCategory]="group"
+                (onChange)="onProductCategoryChanged($event)">
+              </app-project-scope-status>
+            </td>
+            <td [width]="30">
+              <span
+                class="fas expansion-panel_expand-button"
+                [ngClass]="
+                  projectScopeStatus.Yes === group.statusId
+                    ? isExpanded
+                      ? 'fa-chevron-down'
+                      : 'fa-chevron-right'
+                    : 'invisible'
+                "
+                (click)="toggleGroup(group.productCategoryId)"
+              >
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div [hidden]="!isExpanded" class="expansion-panel__content">
+      <ng-container [ngTemplateOutlet]="productCategoryTemplate" [ngTemplateOutletContext]="{ group: group, groupIndex: 0 }"></ng-container>
+
+      <ng-container *ngIf="group.childs">
+        <ng-container *ngFor="let child of group.childs; index as productIndex">
+          <ng-container [ngTemplateOutlet]="productCategoryTemplate" [ngTemplateOutletContext]="{ group: child, groupIndex: !!group.products?.length ? productIndex + 1 : productIndex }"></ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #productCategoryTemplate let-group="group" let-groupIndex="groupIndex">
+  <app-engagement-products
+    [singleCheckedService]="group.productCategoryId === productCategoryEnum.QSFAdministration"
+    [productCategoryIndex]="groupIndex"
+    [productCategory]="group"
+    (productChanged)="onProductCategoryChanged($event)"
+    [readOnly]="!canEdit">
+  </app-engagement-products>
+</ng-template>

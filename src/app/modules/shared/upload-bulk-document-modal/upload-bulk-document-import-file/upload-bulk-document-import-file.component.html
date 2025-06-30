@@ -1,0 +1,13 @@
+<div class="modal-section">
+  <form [formGroup]="form" novalidate>
+    <card hideSeparator>
+      <card-col [labelWidth]="145">
+        <!-- File Box -->
+        <!-- <card-row label=""> -->
+          <app-drag-and-drop class="drag-drop-modal" (filesSelected)="onFilesSelected($event)"
+            [allowedFileTypes]="allowedExtensions" cardValue></app-drag-and-drop>
+        <!-- </card-row> -->
+      </card-col>
+    </card>
+  </form>
+</div>

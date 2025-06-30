@@ -1,0 +1,13 @@
+<app-spinner 
+    *ngIf="isLoading">
+</app-spinner>
+<app-grid
+    [class]="gridClass"
+    [height]="isMaxRowsNumber ? rowHeight : 'auto'"
+    [gridId]="gridId"
+    [gridOptions]="gridOptions"
+    [isPagerEnabled]="true"
+    [enabledAutoHeight]="true"
+    (gridReady)="onGridReady($event)"
+    (loadData)="loadData($event)">
+</app-grid>

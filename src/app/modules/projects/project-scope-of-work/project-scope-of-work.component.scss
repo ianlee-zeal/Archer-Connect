@@ -1,0 +1,160 @@
+@import "src/styles/variables";
+@import "src/styles/colors";
+
+.scope-of-work {
+  &__engaged-services {
+    font-size: $font-size-m;
+
+    &--with-separator {
+      font-weight: 700;
+      border-bottom: 2px solid $border-gray;
+      padding-bottom: 5px;
+    }
+
+    &--access-denied-description {
+      margin-top: 15px;
+      font-size: $font-size-sm;
+      color: $gray-dark;
+    }
+  }
+}
+
+$category-width: 12%;
+$status-width: 10%;
+$service-width: 20%;
+$conditions-width: 16%;
+$status-service-width: 30%;
+$date-width: 10%;
+$user-width: 10%;
+$info-marker-width: 16%;
+
+.product-categories {
+  &__content {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 54.9vh;
+    border-top: 2px solid $border-gray;
+  }
+
+  &__header {
+    width: 100%;
+
+    td {
+      padding: 5px 0;
+    }
+
+    &--product-category {
+      width: $category-width;
+      padding-left: 15px;
+    }
+
+    &--status {
+      width: $status-width;
+    }
+
+    &--conditions {
+      width: $conditions-width;
+    }
+
+    &--service {
+      width: $service-width;
+    }
+
+    &--date {
+      width: $date-width;
+    }
+
+    &--user {
+      width: $user-width;
+    }
+  }
+
+  &__group {
+    margin-bottom: 5px;
+  }
+}
+
+.info-marker {
+  display: inline-block;
+  margin: 3px 15px 0 10px;
+  width: 10px;
+  height: 10px;
+
+  &--no-further-details {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background: $yellow;
+  }
+}
+
+// --- Expansion panel ---
+$panel-font-size: 14px;
+
+.expansion-panel-container {
+  display: flex;
+  flex-direction: column;
+  color: $custom-navy;
+  font-size: $panel-font-size;
+}
+
+.expansion-panel {
+  width: 100%;
+  padding: 5px 0px;
+  align-items: center;
+  background-color: $menu-color;
+  border-bottom: 2px solid $border-gray;
+
+  &__header {
+    width: 100%;
+
+    &--product-category {
+      width: $category-width;
+      padding-left: 15px;
+    }
+
+    &--status-service {
+      width: $status-service-width;
+    }
+
+    &--conditions {
+      width: $conditions-width;
+      text-align: right;
+    }
+
+    &--date {
+      width: $date-width;
+      padding-left: 8px;
+    }
+
+    &--status {
+      width: $status-width;
+      padding-left: 8px;
+    }
+
+    &--user {
+      width: $user-width;
+      padding-left: 8px;
+    }
+  }
+
+  &_expand-button {
+    cursor: pointer;
+    width: 10px;
+    height: 10px;
+    color: $custom-navy;
+  }
+}
+.expansion-panel ::ng-deep .ng-select.ac-select {
+  margin-top: 0px;
+
+  .ng-select-container {
+    height: 26px;
+    .ng-arrow-wrapper {
+      height: 22px;
+      .ng-arrow{
+        top: 3px
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+<div
+  data-test-id="grid-table"
+  class="grouped-grid">
+  <table class="table grouped-grid-table">
+    <colgroup>
+      <ng-container *ngFor="let colDef of gridOptions.columnDefs">
+        <col [ngStyle]="{ width: colDef.width + 'px' }" />
+      </ng-container>
+    </colgroup>
+    <thead
+      data-test-id="grid-table-head">
+      <tr class="grouped-grid-table__header-row">
+        <ng-container *ngFor="let colDef of gridOptions.columnDefs">
+          <th
+            data-test-id="grid-table-th"
+            class="grouped-grid-table__header-col"
+            [ngClass]="colDef.headerClass || ''" [title]="colDef.headerTooltip || ''">
+            {{ colDef.headerName }}
+          </th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody
+      *ngIf="data"
+      data-test-id="grid-table-body">
+      <ng-container *ngFor="let row of data">
+        <ng-container *ngIf="row.children">
+          <tr
+            data-test-id="grid-table-row"
+            class="grouped-grid-table__row" *ngFor="let childRow of row.children; first as firstRow; last as lastRow">
+            <td *ngIf="firstRow" class="grouped-grid-table__col grouped-grid-table__col--is-in-first-row" [attr.rowspan]="row.children.length">
+              <span #groupRenderer></span>
+              <!-- cellRenderer component will be here -->
+            </td>
+            <ng-container *ngFor="let colDef of gridOptions.columnDefs; let firstCol = first">
+              <ng-container *ngIf="!firstCol" [ngTemplateOutlet]="columnTemplate" [ngTemplateOutletContext]="{ row: childRow, colDef: colDef, isInFirstRow: firstRow, isInLastRow: lastRow }"></ng-container>
+            </ng-container>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="!row.children">
+          <tr
+            data-test-id="grid-table-row"
+            class="grouped-grid-table__row">
+            <ng-container *ngFor="let colDef of gridOptions.columnDefs">
+              <ng-container [ngTemplateOutlet]="columnTemplate" [ngTemplateOutletContext]="{ row: row, colDef: colDef }"></ng-container>
+            </ng-container>
+          </tr>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="!data.length">
+        <tr class="grouped-grid-table__row">
+          <td
+            data-test-id="grid-table-empty-msg"
+            class="grouped-grid-table__col grouped-grid-table__col--no-items"
+            [attr.colspan]="gridOptions.columnDefs.length">
+            No items to show
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #columnTemplate let-row="row" let-colDef="colDef" let-isInFirstRow="isInFirstRow" let-isInLastRow="isInLastRow">
+  <td
+    data-test-id="grid-table-cell"
+    class="grouped-grid-table__col"
+      [ngClass]="{
+          'grouped-grid-table__col--is-in-first-row': isInFirstRow,
+          'grouped-grid-table__col--is-in-last-row': isInLastRow
+        }">
+    <ng-container *ngIf="!isCellRendererComponent(colDef.cellRenderer)">
+      {{ cellRenderer(row, colDef) }}
+    </ng-container>
+    <ng-container *ngIf="isCellRendererComponent(colDef.cellRenderer)">
+      <span #renderer></span>
+      <!-- cellRenderer component will be here -->
+    </ng-container>
+  </td>
+</ng-template>

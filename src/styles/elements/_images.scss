@@ -1,0 +1,36 @@
+@import "../variables.scss";
+
+.img-thmb {
+  position: relative;
+}
+
+.img-thmb img {
+  object-fit: contain; 
+  width: 50px; 
+  height: 50px;  
+  border: 2px solid #C0C0C0; 
+  padding: 2px; 
+  cursor: pointer;
+}
+
+.img-thmb:hover img {
+  background: #ffffff;;
+  box-shadow: 5px 4px 10px #9c9c9c;
+}
+
+.img-thmb a {
+  display: none;
+}
+
+.img-thmb:hover a {
+  color: #fff;
+  font-weight: bolder;
+  font-size: smaller;
+  display: inline-block;
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  cursor: pointer;
+}
+
+

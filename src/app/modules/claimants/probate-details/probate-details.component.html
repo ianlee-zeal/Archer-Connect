@@ -1,0 +1,57 @@
+<ng-container *ngIf="probateDetails">
+  <ng-container *ngIf="canEdit; else viewTemplate">
+    <form [formGroup]="form" novalidate>
+      <app-probate-service-information
+        [probateDetails]="probateDetails"
+        (probateStageChanged)="onProbateStageChanged($event)">
+      </app-probate-service-information>
+      <app-additional-claimant-information
+        [probateDetails]="probateDetails"
+        [claimantSummaryTotalAllocation]="claimantSummaryTotalAllocation">
+      </app-additional-claimant-information>
+      <ng-container *permissions="editNotesPermission">
+        <app-probate-notes
+        *ngIf="probateDetails"
+        [id]="probateDetails?.id"
+        [isEditEnabled]="isEditNotesEnabled"
+        [isProbateEditMode]="canEdit">
+      </app-probate-notes>
+      </ng-container>
+      <app-release-packet-tracking
+        [clientId]="claimant?.id"
+        [packetRequestsOriginal]="probateDetails.packetRequests"
+        [probateId]="probateDetails.id"
+        (packetRequestsSave)="onPacketRequestsSave($event)">
+      </app-release-packet-tracking>
+      <app-probate-payment-information [probateDetails]="probateDetails"></app-probate-payment-information>
+      <app-system-fields-section [item]="probateDetails"></app-system-fields-section>
+    </form>
+  </ng-container>
+  <ng-template #viewTemplate>
+    <ng-container *ngIf="!isNewProbate; else noRecords">
+      <app-probate-service-information [probateDetails]="probateDetails" [canEdit]="false" [claimant]="claimant"></app-probate-service-information>
+      <app-additional-claimant-information
+        [probateDetails]="probateDetails"
+        [claimantSummaryTotalAllocation]="claimantSummaryTotalAllocation"
+        [canEdit]="false">
+      </app-additional-claimant-information>
+      <ng-container *permissions="readNotesPermission">
+        <app-probate-notes
+        *ngIf="probateDetails"
+        [id]="probateDetails?.id"
+        [isEditEnabled]="isEditNotesEnabled"
+        [isProbateEditMode]="canEdit">
+        </app-probate-notes>
+      </ng-container>
+      <app-release-packet-tracking
+        [clientId]="claimant?.id"
+        [packetRequestsOriginal]="probateDetails.packetRequests"
+        [probateId]="probateDetails.id"
+        (packetRequestsSave)="onPacketRequestsSave($event)">
+      </app-release-packet-tracking>
+      <app-probate-payment-information [probateDetails]="probateDetails" [canEdit]="false" [claimant]="claimant"></app-probate-payment-information>
+      <app-system-fields-section [item]="probateDetails"></app-system-fields-section>
+    </ng-container>
+    <ng-template #noRecords><app-tab-placeholder-no-record></app-tab-placeholder-no-record></ng-template>
+  </ng-template>
+</ng-container>

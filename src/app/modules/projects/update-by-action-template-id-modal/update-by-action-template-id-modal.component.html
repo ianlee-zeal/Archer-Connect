@@ -1,0 +1,70 @@
+<modal (close)="onCancel(stage)">
+    <modal-header [ngSwitch]="actionTemplateId">
+      <span *ngSwitchCase="batchActionTemplates.UpdateLedgerLienData">Update Lien Data</span>
+      <span *ngSwitchCase="batchActionTemplates.SyncProbateSpiWithLedger">Sync Contact Special Payment Instructions Data</span>
+    </modal-header>
+
+    <modal-body>
+        <div  class="modal-section">
+            <app-stepper [stage]="stage">
+                <step label="Selected Claimants" [isActive]="stage === stages.SelectedClaimants">
+                  <div class="section-content">
+                    <app-update-by-action-template-id-ledgers-list [projectId]="projectId" [actionTemplateId]="actionTemplateId"></app-update-by-action-template-id-ledgers-list>
+                  </div>
+                </step>
+                <step label="Review" [isActive]="stage === stages.Review">
+                  <div class="section-content">
+                    <app-update-by-action-template-id-review *ngIf="validationResultDocId" [tabsGroup]="tabsPreviewGroup" [batchAction]="batchAction" [actionTemplateId]="actionTemplateId"></app-update-by-action-template-id-review>
+                  </div>
+                </step>
+                <step label="Results" [isActive]="stage === stages.Results">
+                  <div class="section-content">
+                    <app-update-by-action-template-id-results *ngIf="resultDocId" [tabsGroup]="tabsResultsGroup" [batchAction]="batchAction" [actionTemplateId]="actionTemplateId"></app-update-by-action-template-id-results>
+                  </div>
+                </step>
+              </app-stepper>
+        </div>
+    </modal-body>
+
+    <modal-footer>
+      <div *ngIf="errorText" class="text-danger small w-100">{{ errorText }}</div>
+      <button *ngIf="validationResultDocId"
+      type="button"
+      asyncButton
+      [awaitedActionTypes]="validationResultsButtonAwaitedActions"
+      (click)="onValidationResultsClick()"
+      class="btn modal-footer__btn modal-footer__btn--success me-auto">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Validation Results
+  </button>
+      <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onCancel(stage)">
+        {{ stage === stages.Results ? "Close" : "Cancel" }}
+      </button>
+        <ng-container [ngSwitch]="stage">
+            <ng-container *ngSwitchCase="stages.SelectedClaimants" [ngTemplateOutlet]="selectedClaimantsButtons"></ng-container>
+            <ng-container *ngSwitchCase="stages.Review" [ngTemplateOutlet]="reviewButtons"></ng-container>
+        </ng-container>
+    </modal-footer>
+</modal>
+
+<ng-template #selectedClaimantsButtons>
+    <button
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="onChangeMode(stages.Review)"
+        [disabled]="!!errorText">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Validate
+    </button>
+</ng-template>
+
+<ng-template #reviewButtons>
+
+  <button
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      (click)="onChangeMode(stages.Results)"
+      [disabled]="disabledUpdateButton">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Update
+  </button>
+</ng-template>
+

@@ -1,0 +1,22 @@
+<div class="audit-details-header-container">
+  <div class="container-fluid audit-details-header row" 
+    *ngIf="auditDetailsHeader$ | async as auditDetailsHeader">
+    <card hideSeparator>
+      <card-col [labelWidth]="150">
+        <card-row label="Status" [value]="auditDetailsHeader.runStatus.name"></card-row>
+        <card-row label="Collector" [value]="auditDetailsHeader.auditDocImportTemplate.collector.name"></card-row>
+        <card-row label="Uploaded By" [value]="auditDetailsHeader.createdBy.displayName"></card-row>
+        <card-row label="Uploaded Date" [value]="dateTransform(auditDetailsHeader.createdDate)"></card-row>
+      </card-col>
+    </card>
+
+    <card hideSeparator>
+      <card-col [labelWidth]="146">
+        <card-row label="Lien Count" [value]="getCount(auditDetailsHeader.liensCount)"></card-row>
+        <card-row label="Success" [value]="getCount(auditDetailsHeader.successCount)"></card-row>
+        <card-row label="Warnings" [value]="getCount(auditDetailsHeader.warningsCount)"></card-row>
+        <card-row label="Errors" [value]="getCount(auditDetailsHeader.errorsCount)"></card-row>
+      </card-col>
+    </card>
+  </div>
+</div>

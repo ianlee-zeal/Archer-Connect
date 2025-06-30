@@ -1,0 +1,146 @@
+@import "./variables.scss";
+
+@mixin full-screen {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content
+  }
+
+  &:-moz-placeholder {
+    @content
+  }
+
+  &::-moz-placeholder {
+    @content
+  }
+
+  &:-ms-input-placeholder {
+    @content
+  }
+}
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin square($size) {
+  @include size($size, $size);
+}
+
+@mixin ac-grid-button($icon) {
+  font-family: $font-awesome;
+  position: relative;
+  width: 35px;
+  height: 35px;
+  font-size: 1.33em;
+  padding: 0;
+  font-weight: 900;
+
+  &:before {
+    content: $icon;
+  }
+
+  &:hover:before {
+    content: $icon;
+  }
+}
+
+@mixin grid-column-tooltip($sidePadding: 85px) {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 1s;
+  padding: 5px $sidePadding;
+}
+
+@mixin button($color, $bgColor) {
+  color: $color;
+  background-color: $bgColor;
+  min-width: $button-min-width;
+
+  &.disabled,
+  &:disabled {
+    color: $color;
+    background-color: $bgColor;
+  }
+
+  &:hover, &:not(:disabled):not(.disabled):active {
+    color: $color;
+    background-color: $bgColor;
+  }
+
+  &:focus {
+    box-shadow: none;
+    outline: 1px dotted;
+  }
+}
+
+@mixin label {
+  font-size: $field-font-size;
+  min-height: $controls-old-height;
+  line-height: $controls-old-height;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  color: $label-color;
+
+  &.required:after {
+    color: #d00;
+    content: "*";
+    position: absolute;
+    margin-left: 5px;
+  }
+}
+
+@mixin uploadDocumentModal {
+  .upload-document-modal {
+    &__footer {
+      display: flex;
+      justify-content: space-between;
+      flex-grow: 1;
+    }
+
+    &__actions {
+      display: flex;
+
+      &--left {
+        justify-content: space-between;
+      }
+
+      &--right {
+        justify-content: flex-end;
+      }
+    }
+
+    &__error {
+      padding: 0 10px;
+    }
+  }
+
+  .modal-window {
+    background-color: white;
+  }
+
+  .form-group {
+    display: flex;
+  }
+
+  .field-label {
+    width: 80px;
+    margin-right: 15px;
+    margin-left: 10px;
+  }
+
+  .drag-drop-modal {
+    height: 200px;
+    margin: 10px 0;
+    display: block
+  }
+}

@@ -1,0 +1,67 @@
+<div class="document-generation-modal" *ngIf="state$ | async as state">
+  <modal (close)="onClose()">
+    <modal-header>
+      <span *ngIf="state.isSingleExportMode" >Single </span>
+      <span *ngIf="!state.isSingleExportMode" >Batch </span>
+      Document Generation
+    </modal-header>
+    <modal-body>
+      <div *ngIf="state.entityValidationErrors && state.entityValidationErrors.length > 0">
+        <div style="min-height: 25px; margin-bottom: 2px; padding-bottom: 8px; background-color: #ffffff;">
+          <div class="section-content">
+            <div class="section-header">Warnings:</div>
+            <div *ngFor="let error of state.entityValidationErrors">
+              <span style="font-weight: normal;">{{ error }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="min-height: 177px; margin-bottom: 2px; background-color: #ffffff;" *ngIf="!state.disable">
+        <div *ngIf="state.stage == 1" class="section-content">
+          <div class="section-header">Settings:</div>
+          <app-document-generation-select></app-document-generation-select>
+        </div>
+        <!-- Temporarily removed
+        <div *ngIf="state.stage == 2" class="section-content">
+          <div class="section-header">Custom Settings:</div>
+          <app-document-generation-configure></app-document-generation-configure>
+        </div>
+        -->
+        <div *ngIf="state.stage == 2" class="section-content">
+          <div class="section-header">Generating Documents:</div>
+          <app-document-generation-loading-results></app-document-generation-loading-results>
+        </div>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <div *ngIf="state.errorMessage" class="text-danger me-auto">{{ state.errorMessage }}</div>
+      <!-- Temporarily removed
+      <button class="btn modal-footer__btn modal-footer__btn--primary" (click)="onClose()">Cancel</button>
+      <button *ngIf="state.stage > 1" type="submit" class="btn modal-footer__btn modal-footer__btn--primary" (click)="onBack()">Back</button>
+      -->
+      <button *ngIf="state.stage == 1" type="submit" class="btn modal-footer__btn modal-footer__btn--secondary"
+        (click)="onClose()">
+        Cancel
+      </button>      
+      <button *ngIf="state.stage == 1" type="submit" class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="onGenerate()"
+        [ngClass]="{ disabled: !state.isValidSelect }"
+        [disabled]="!state.isValidSelect">
+        Generate
+      </button>
+      <button *ngIf="state.stage == 2" type="submit" class="btn modal-footer__btn modal-footer__btn--secondary"
+        (click)="onClose()">
+        Close
+      </button>
+      <!-- Temporarily removed
+      <button *ngIf="state.stage == 2" type="submit" class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="onGenerate()"
+        [ngClass]="{ disabled: false && !state.isValidConfigure && state.stage == 2 }"
+        [disabled]="false && !state.isValidConfigure && state.stage == 2"
+        >
+        Generate
+      </button>
+      -->
+    </modal-footer>
+  </modal>
+</div>

@@ -1,0 +1,120 @@
+@import "../../../../styles/variables.scss";
+
+.stop-payment-modal {
+    &__file-panel {
+        display: flex;
+        justify-content: space-between;
+        .btn-icon {
+            font-size: $font-size-m;
+        }
+    }
+
+    &__uploaded-attachments-container {
+        width: 70%;
+    }
+
+    &__file-name {
+        font-weight: bold;
+        margin-right: 5px;
+        max-width: 90%;
+    }
+
+    &__uploaded-attachment {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__verify-address {
+        &__change-address-btn {
+            width: 200px;
+        }
+    }
+
+}
+
+.modal-section {
+    &__title {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+}
+
+.modal-header {
+    width: 100%;
+    display: block;
+    .modal-title {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.verify-address-header {
+    &__title {
+        font-weight: bold;
+    }
+    .container-with-edit-date__edit-made {
+        font-size: $font-size-m;
+        margin-right: 0;
+    }
+}
+
+.container-with-edit-date {
+    display: flex;
+    justify-content: space-between;
+    &__edit-made {
+        margin-right: 15px;
+        width: 250px;
+        color: $yellow;
+        background-color: rgba(253, 186, 18, 0.1);
+        padding: 6px 0px 6px 15px;
+    }
+    &__edited-value {
+        max-width: 600px;
+        overflow-wrap: break-word;
+        color: $yellow !important;
+        &:after {
+            content: url("../../../../assets/svg/ic_alert.svg");
+            margin-left: 5px;
+          }
+    }
+    &__comments {
+        max-width: 850px;
+        overflow-wrap: break-word;
+    }
+}
+
+.stop-payment-info-container {
+    display: flex;
+}
+
+.stop-payment-info {
+    display: flex;
+    flex-direction: column;
+    margin-right: 40px;
+    min-height: 55px;
+    justify-content: flex-end;
+  
+    &__label {
+      text-align: left;
+      margin-bottom: 2px;
+      color: $label-color;
+      font-size: 14px;
+    }
+  
+    &__value {
+      text-align: left;
+      font-size: 14px;
+      font-weight: bold;
+      color: $black;
+    }
+}
+
+.textarea-wrapper {
+    position:relative;
+}
+.char-count {
+    position:absolute;
+    bottom: 10px;
+    right:10px;
+}

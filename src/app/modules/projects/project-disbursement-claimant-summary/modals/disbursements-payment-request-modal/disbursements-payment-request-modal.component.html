@@ -1,0 +1,154 @@
+<modal (close)="onClose()">
+  <modal-header>New Payment Request</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <app-stepper [stage]="stage">
+        <step label="Upload Payment" [isActive]="isUploadPaymentStage">
+          <app-disbursement-payment-request-config-step
+          [projectId]="projectId"
+          [projectName]="projectName"
+          [selectedSpreadSheetFile]="selectedSpreadSheetFile"
+          [spreadSheetAttachments]="spreadSheetAttachments"
+          [attachments]="attachments"
+          [allowedExtensions]="allowedExtensions"
+          (fail)="onFailed($event)"
+          (finish)="onSuccess($event)">
+        </app-disbursement-payment-request-config-step>
+        </step>
+        <step label="Review" [isActive]="isReviewStage">
+          <app-disbursement-payment-request-review-step
+          [projectId]="projectId"
+          [projectName]="projectName"
+          [attachments]="attachments"
+          (reviewIsCompleted)="onReviewIsCompleted()"
+          [jobId]="jobId">
+          </app-disbursement-payment-request-review-step>
+        </step>
+        <step label="Result" [isActive]="isResultStage">
+          <app-disbursement-payment-request-result-step
+          [projectId]="projectId"
+          [projectName]="projectName">
+          </app-disbursement-payment-request-result-step>
+        </step>
+      </app-stepper>
+    </div>
+
+    <div *ngIf="isUploadPaymentStage" class="modal-section">
+      <card header="Attachments" class="payment-request-form__attachments-section" hideSeparator>
+        <card-col>
+          <div class="payment-request-form__message">
+            Attach the Payment Request spreadsheet and any payment related documents (attached document name must match the Document Name column in the Payment Request spreadsheet)
+          </div>
+        </card-col>
+      </card>
+      <card [maxWidth]="700" class="payment-request-form__upload-file-section" hideSeparator>
+        <card-col [width]="400">
+          <card-row label="Add Attachments" [labelWidth]="155">
+            <app-drag-and-drop
+                [isSelectButtonInside]="true"
+                class="drag-drop-modal"
+                [valueClass]="'drop-container__drop-zone__blue drop-container__drop-zone__test'"
+                btnValueClass="drop-container__drop-zone__blue"
+                (filesSelected)="onSpreadsheetFileSelected($event[0])"
+                [allowedFileTypes]="allowedExtensions"
+                [selectedFile]="selectedFile"
+                title="Add Spreadsheet"
+                cardValue>
+              </app-drag-and-drop>
+          </card-row>
+            <ng-container
+                *ngIf="spreadSheetAttachments && spreadSheetAttachments.length"
+                [ngTemplateOutlet]="selectedFileTemplate"
+                [ngTemplateOutletContext]="{ attachments: spreadSheetAttachments, fileType: 'spreadsheet', labelWidth: '160' }">
+            </ng-container>
+        </card-col>
+
+        <card-col [width]="300">
+          <card-row>
+            <app-drag-and-drop
+              [isSelectButtonInside]="true"
+              class="drag-drop-modal"
+              [valueClass]="'drop-container__drop-zone__grey'"
+              (filesSelected)="onFileSelected($event[0])"
+              [allowedFileTypes]="allowedExtensions"
+              [selectedFile]="selectedFile"
+              title="Add Additional Documents"
+              cardValue>
+          </app-drag-and-drop>
+          </card-row>
+            <ng-container
+            *ngIf="attachments && attachments.length"
+            [ngTemplateOutlet]="selectedFileTemplate"
+            [ngTemplateOutletContext]="{ attachments: attachments, fileType: 'addDocument', labelWidth: '5' }">
+          </ng-container>
+        </card-col>
+      </card>
+    </div>
+
+  </modal-body>
+  <modal-footer>
+    <span *ngIf="errors && isReviewStage" class="warning">See Warnings/Errors in the Preview file</span>
+    <div *ngIf="!isUploadPaymentStage" class="d-flex me-auto">
+      <button
+        *ngIf="isReviewStage"
+        type="button"
+        (click)="onPreviousStep()"
+        class="btn modal-footer__btn modal-footer__btn--secondary">
+        Previous Step
+      </button>
+      <button
+        *ngIf="errors && !isUploadPaymentStage"
+        type="button"
+        (click)="downloadFile()"
+        class="btn modal-footer__btn modal-footer__btn--success">
+        Preview File
+      </button>
+    </div>
+  <button
+    type="button"
+    class="btn modal-footer__btn modal-footer__btn--secondary"
+    (click)="onClose()">
+    {{ !isResultStage ? 'Cancel' : 'Close'}}
+  </button>
+  <button
+    *ngIf="isUploadPaymentStage"
+    asyncButton
+    [awaitedActionTypes]="awaitedActionTypesForUploadPaymentStage"
+    type="button"
+    class="btn modal-footer__btn modal-footer__btn--primary"
+    [disabled]="!valid"
+    (click)="onValidate()">
+    Validate
+  </button>
+  <button
+    *ngIf="isReviewStage"
+    asyncButton
+    [awaitedActionTypes]="awaitedActionTypesForReviewPaymentStage"
+    type="button"
+    class="btn modal-footer__btn modal-footer__btn--primary"
+    [disabled]="!valid"
+    (click)="onValidate()">
+    Submit
+  </button>
+  </modal-footer>
+</modal>
+
+<ng-template #selectedFileTemplate let-files='attachments' let-fileType='fileType' let-labelWidth='labelWidth'>
+  <card-row [labelWidth]="labelWidth">
+      <div class="payment-request-form__file-panel" cardValue>
+        <div class="payment-request-form__uploaded-attachments-container">
+          <div class="payment-request-form__uploaded-attachment" *ngFor="let file of files">
+            <span class="payment-request-form__file-name">{{ file.name }}</span>
+            <button
+                type="button"
+                class="btn btn-icon btn-icon-remove btn-icon-remove__blue"
+                (click)="onRemoveSelectedFile(file, fileType)"
+                title="Delete Document">
+            </button>
+          </div>
+        </div>
+      </div>
+  </card-row>
+</ng-template>
+
+

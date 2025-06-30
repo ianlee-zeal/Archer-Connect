@@ -1,0 +1,31 @@
+<div class="advanced-search-field-date">
+  <div class="advanced-search-field-date__type-container">
+    <app-select class="advanced-search-field-date__type"
+                [model]="condition"
+                [options]="conditionOptions"
+                (onModelChange)="onChangeCondition($event)"
+                placeholder="Select Condition"
+                fullwidth
+                searchable>
+    </app-select>
+  </div>
+
+  <div [class.has-error]="hasError(entry?.errors.term)" *ngIf="condition !== conditions.InRange && condition !== conditions.IsMissing">
+    <app-date-selector [(ngModel)]="entry.term" (ngModelChange)="markAsEdited.emit()" [disabled]="!condition" required></app-date-selector>
+    <app-search-validation-messages [errors]="entry.errors.term"></app-search-validation-messages>
+  </div>
+  <div class="advanced-search-field-date__range" *ngIf="condition === conditions.InRange">
+    <div class="advanced-search-field-date__range-controls" [class.has-error]="entry.errors.range">
+      <div class="advanced-search-field-date__term-container" [class.has-error]="hasError(entry?.errors.term)">
+        <app-date-selector [(ngModel)]="entry.term" (ngModelChange)="markAsEdited.emit()"></app-date-selector>
+        <app-search-validation-messages [errors]="entry.errors.term"></app-search-validation-messages>
+      </div>
+      <div class="advanced-search-field-date__delimiter">to</div>
+      <div class="advanced-search-field-date__term-container" [class.has-error]="hasError(entry?.errors.termTo)">
+        <app-date-selector [(ngModel)]="entry.termTo" (ngModelChange)="markAsEdited.emit()"></app-date-selector>
+        <app-search-validation-messages [errors]="entry.errors.termTo"></app-search-validation-messages>
+      </div>
+    </div>
+    <app-search-validation-messages [errors]="entry.errors.range"></app-search-validation-messages>
+  </div>
+</div>

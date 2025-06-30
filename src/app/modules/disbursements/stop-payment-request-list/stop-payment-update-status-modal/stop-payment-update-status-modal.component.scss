@@ -1,0 +1,34 @@
+@import 'src/styles/variables.scss';
+
+.update-stop-payemnt-status-modal {
+    .error-text {
+        margin-right: auto;
+    }
+
+    &__file-panel {
+        display: flex;
+        justify-content: space-between;
+        .btn-icon {
+            margin: 0;
+            font-size: $font-size-m;
+        }
+    }
+
+    &__uploaded-attachments-container {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    &__file-name {
+        max-width: 90%;
+        font-weight: bold;
+        margin-right: 5px;
+        word-break: break-all;
+    }
+
+    &__uploaded-attachment {
+        margin: 0px 5px 5px 0px;
+        justify-content: space-between;
+    }
+}

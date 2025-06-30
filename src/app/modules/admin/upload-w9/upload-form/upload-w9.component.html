@@ -1,0 +1,53 @@
+<div class="page">
+  <app-context-bar [title]="'Upload a New W-9'" class="mt-2"></app-context-bar>
+
+  <ng-container *ngIf="w9Settings$ | async">
+    <div class="upload-w9-info">
+      <img src="/assets/svg/circle-{{isW9Current ? 'checkmark-green' : 'dash-red'}}.svg" alt="upload w-9 info" class="h-50">
+      <p *ngIf="isW9Current; else w9NotCurrentMessage" class="m-0">The W-9 on file is for the current year.  No further action is required. </p>
+      <ng-template #w9NotCurrentMessage>
+        <div>
+          <p class="m-0 fw-bold">Please upload a W-9. </p>
+          <p class="m-0">ARCHER does not have a current year W-9 for your organization. This is required to make payments to an organization.</p>
+          <p class="m-0">If you've recently submitted a W-9, please allow up to 7 days for review. </p>
+        </div>
+      </ng-template>
+    </div>
+    <div class="upload-area">
+      <div class="instructions-box">
+        <p class="fw-semibold">ARCHER requires a current-year W-9 to send payments to an organization.</p>
+    
+        <p>
+          The IRS maintains the current Form W-9 revision and instructions:
+          <a href="https://www.irs.gov/formw9" target="_blank">About Form W-9 (IRS)</a>
+        </p>
+    
+        <p>Here are some additional tips for successfully submitting your W-9 to ARCHER:</p>
+    
+        <ul>
+          <li>Please only include the initial page of the W-9 document. Subsequent pages are not necessary.</li>
+          <li>The file type must be a PDF or an image file.</li>
+          <li>The content must be legible. Typed responses are preferred.</li>
+          <li>Line 1 must match the legal name associated with your TIN. Please refer to your IRS Form SS-4 to ensure the W-9 matches IRS records.</li>
+          <li>
+            ARCHER will send 1099s to the address provided in Lines 5-6. ARCHER will
+            also use this address to direct check-based payments, if applicable.
+          </li>
+          <li>The signature date must be the current year ({{ currentYear }}).</li>
+        </ul>
+      </div>
+      <div class="drag-drop">
+        <app-drag-and-drop
+          [selectedFile]="selectedFile"
+          (filesSelected)="selectFile($event)"
+          class="label-font"
+          [allowedFileTypes]="allowedExtensions"
+        >
+          <button name="submit" (click)="submitW9Document()" [disabled]="!isValid()" class="btn btn-primary">
+            Upload
+          </button>
+        </app-drag-and-drop>
+      </div>
+    </div>
+  </ng-container>
+</div>

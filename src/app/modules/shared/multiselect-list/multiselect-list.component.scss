@@ -1,0 +1,30 @@
+@import "src/styles/variables.scss";
+
+.multiselect-list {
+  padding: 10px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  border: 1px solid $gray;
+  margin-top: 4px;
+  
+  &__option {
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
+
+    .form-check-label {
+      display: block;
+      height: auto;
+      line-height: 15px;
+
+      & > span:first-of-type:before {
+        top: 3px;
+      }
+
+      & > span:first-of-type:after {
+        top: 5px;
+      }
+    }
+  }
+}

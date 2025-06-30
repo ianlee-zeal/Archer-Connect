@@ -1,0 +1,42 @@
+@import 'src/styles.variables.scss';
+
+.ag-modern-grid .ag-theme-balham {
+
+  .ag-header {
+    background-color: white !important;
+
+    &-row {
+      font-weight: 600 !important;
+      color: #303030 !important;
+      font-size: 14px !important;
+    }
+  }
+
+  .ag-row {
+    color: #303030 !important;
+
+    &:not(.ag-first-row) {
+      border: none;
+    }
+  }
+
+  .ag-cell {
+    padding: 5px;
+  }
+
+  .ag-row-even {
+    background-color: white !important;
+  }
+
+  .ag-row-odd {
+    background-color: white !important;
+  }
+
+  .ag-row-odd-dark {
+    background-color: white !important;
+  }
+
+  .ag-full-width-container {
+    border-bottom: none;
+  }
+}

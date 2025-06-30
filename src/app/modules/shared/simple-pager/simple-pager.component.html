@@ -1,0 +1,41 @@
+<div
+  *ngIf="pager.totalCount" class="grid-record-pager"
+  data-test-id="grid-pages">
+  <button
+    data-test-id="grid-pages-first-btn"
+    [style.visibility]="isPrevButtonsShow ? 'visible' : 'hidden'"
+    class="grid-record-pager__button grid-record-pager__button--first"
+    (click)="toFirstPageClick()">
+  </button>
+  <button
+    data-test-id="grid-pages-prev-btn"
+    preventDoubleClick
+    [style.visibility]="isPrevButtonsShow ? 'visible' : 'hidden'"
+    class="grid-record-pager__button grid-record-pager__button--prev"
+    (throttleClick)="toPrevPageClick()">
+  </button>
+  <span
+    data-test-id="grid-pages-current"
+    class="fw-bold">
+    {{ pager.currentPage | number }}
+  </span>
+  <span class="grid-record-pager__separator">of</span>
+  <span
+    data-test-id="grid-pages-total"
+    class="fw-bold">
+    {{ getLastPageNumber() | number }}
+  </span>
+  <button
+    data-test-id="grid-pages-next-btn"
+    preventDoubleClick
+    [style.visibility]="isNextButtonsShow ? 'visible' : 'hidden'"
+    class="grid-record-pager__button grid-record-pager__button--next"
+    (throttleClick)="toNextPageClick()">
+  </button>
+  <button
+    data-test-id="grid-pages-last-btn"
+    [style.visibility]="isNextButtonsShow ? 'visible' : 'hidden'"
+    class="grid-record-pager__button grid-record-pager__button--last"
+    (click)="toLastPageClick()">
+  </button>
+</div>

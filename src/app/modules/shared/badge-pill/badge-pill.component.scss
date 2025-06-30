@@ -1,0 +1,48 @@
+@import "../../../../styles/variables";
+
+.badge-pill {
+    display: inline-block;
+    letter-spacing: 1px;
+    border-radius: 10px;
+    font-size: 10px;
+    color: $black;
+    white-space: nowrap;
+    padding: 0;
+
+    &--success {
+      background-color: $green;
+      color: $white;
+    }
+    
+    &--warning {
+      background-color: $yellow;
+      color: $white;
+    }
+    
+    &--light {
+      background-color: $white;
+      color: $black;
+    }
+
+    &--error {
+      background-color: $pill-error-box-color;
+      color: $pill-error-text-color;
+    }
+    
+    &:before,
+    &:after {
+        content: '\200B';
+        display: inline-block;
+        line-height: 0px;
+        padding-top: 15%;
+        padding-bottom: 15%;
+    }
+    
+    &:before {
+        padding-left: 2px;
+    }
+    
+    &:after {
+        padding-right: 2px;
+    }
+}

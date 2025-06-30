@@ -1,0 +1,52 @@
+@import '../../../../styles.variables.scss';
+@import '../../../../styles/variables.scss';
+
+:host {
+  .help-menu {
+    padding: 0 17px 17px 0;
+    font-weight: 600;
+    border: 1px solid $light-blue;
+    border-radius: 0;
+    box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.1);
+
+    &__item {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      padding: 17px 0 0 17px;
+      color: $blue;
+      cursor: pointer;
+
+      &:hover,
+      &--selected,
+      &--hovered {
+        background-color: $white;
+        cursor: pointer;
+      }
+    }
+    .dropdown-item {
+      font-weight: 600;
+    }
+
+    &__envelope-icon {
+      margin-right: 7px;
+    }
+
+    &__folders-icon {
+      margin-right: 5px;
+    }
+
+    &__link {
+      color: $blue;
+      text-decoration: none;
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    .help-menu {
+      margin-top: 0;
+      position: relative;
+      top: 0;
+    }
+  }
+}

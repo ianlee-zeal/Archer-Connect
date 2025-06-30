@@ -1,0 +1,29 @@
+<ng-container>
+    <div class="custom-card">
+      <div class="card-row padding-top-5">
+        <div class="card-row-title">
+          <span [title]="data?.summary" class="title">
+            {{ data?.summary }}
+          </span>
+          <app-ticket-status class="status" [status]="data?.status"></app-ticket-status>
+        </div>
+        <div class="card-row-actions">
+          <div (click)="viewMessage()"><img src="assets/svg/arrows-maximize-blue.svg"/></div>
+        </div>
+      </div>
+      <div class="card-row padding-top-5">
+        <div class="user-info">
+            <img src="assets/svg/user-circle-unread.svg"/>
+            <span>{{ data?.assignee?.name || 'Unassigned' }}</span>   
+        </div>
+        <span class="project-info">Project: {{ data?.project.name || '-' }}</span>
+      </div>
+      <div class="card-row padding-top-8">
+        <span class="request-type">Request Type: {{ data?.requestType.name }}</span>
+        <span class="last-updated">Last updated: {{ data?.lastUpdatedAt | dateFormat }}</span>
+      </div>
+      <div class="card-row padding-top-10">
+        <span class="description"> {{ data?.description }} </span>
+      </div>
+    </div>
+</ng-container>

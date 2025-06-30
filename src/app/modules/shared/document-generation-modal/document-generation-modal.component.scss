@@ -1,0 +1,21 @@
+@import 'src/styles/variables.scss';
+
+.document-generation-modal {
+  .document-generation-modal__height {
+    min-height: 300px;
+    background-color: $white;
+  }
+  &__link {
+    color: $primary-blue;
+  }
+}
+
+.section-content {
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.section-header {
+  padding-top: 13px;
+  font-weight: bold;
+}

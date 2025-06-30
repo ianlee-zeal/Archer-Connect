@@ -1,0 +1,51 @@
+@import "src/styles/variables.scss";
+@import "src/styles.variables.scss";
+
+.container {
+    display: flex;
+    width: 180px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    padding: 5px;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+
+    &.selected {
+      transform: scale(1.02);
+    }
+
+    &.faded {
+      opacity: 0.4;
+    }
+
+    &.not-engaged {
+      pointer-events: none;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    max-width: 160px;
+  }
+
+.text {
+  font-weight: 600;
+
+  &--title {
+    font-size: 20px;
+    color: $blue;
+  }
+
+  &--subtitle {
+    color: $brand-navy;
+  }
+
+  &--bottom {
+    color: $dark-grey;
+  }
+}
+

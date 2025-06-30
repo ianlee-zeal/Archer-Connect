@@ -1,0 +1,15 @@
+<app-blur-background *ngIf="!(isDashboardStatisticsLoaded$ | async)">
+    <app-spinner></app-spinner>
+</app-blur-background>
+
+<app-info-charts [projectId] = "projectId"></app-info-charts>
+<app-dashboard-data
+    [data]="dashboardData"
+    [dataByPhase]="dashboardDataByPhase"
+    [recentFinalizationsCounts]="recentFinalizationsCounts"
+    [deficienciesWidgetData]="deficienciesWidgetData"
+    [onFinalizationWidgetChange]="onFinalizationWidgetChange"
+    [config]="config"
+    (valueClick)="onDashboardValueClick($event)"
+    (toggleSection)="onToggleSection($event)">
+</app-dashboard-data>

@@ -1,0 +1,9 @@
+<dialog (close)="modal.hide()" class="modal-content" dismissable>
+  <dialog-header [hideCloseButton]="true" class="dialog-title--text-blue">{{title}} <img src="assets/svg/check.svg"/></dialog-header>
+  <dialog-body>
+    <div class="dialog-body--text-blue" [innerHTML]="message"></div>
+  </dialog-body>
+  <dialog-footer [contentRight]="true" class="footer-container">
+      <button type="button" data-test-id="info-dialog-ok-btn" class="btn dialog-footer__btn dialog-footer__btn--link" (click)="modal.hide()">{{ buttonText || 'Ok' }}</button>
+  </dialog-footer>
+</dialog>

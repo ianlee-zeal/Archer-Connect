@@ -1,0 +1,35 @@
+<form
+  data-test-id="quick-search"
+  class="quick-search-form">
+  <div class="input-container">
+    <input
+      data-test-id="quick-search-input"
+      type="text"
+      class="input-container__input"
+      placeholder="Search"
+      name="searchText"
+      [(ngModel)]="searchText"
+      (ngModelChange)="searchTextChanged$.next($event)"
+      (keyup.enter)="this.onEnter()"
+      (blur)="this.onBlur($event)"
+    />
+  </div>
+  <div
+    *ngIf="foundItems && searchText?.length"
+    data-test-id="quick-search-results"
+    class="search-results">
+    <div
+      *ngIf="foundItems.length === 0"
+      data-test-id="quick-search-empty-msg"
+      class="empty-message">
+      Nothing found
+    </div>
+    <a
+      *ngFor="let item of foundItems"
+      data-test-id="quick-search-result-link"
+      routerLink="claimants/{{item.id}}">
+      <img class="result-icon" src="assets/images/Clients.svg">
+      {{item.name}} ({{item.id}})
+    </a>
+  </div>
+</form>

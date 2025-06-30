@@ -1,0 +1,9 @@
+<ng-container *ngIf="!(loadingInProgress$ | async)">
+  <app-grid 
+    [gridOptions]="gridOptions" 
+    (gridReady)="gridReady($event)" 
+    (loadData)="loadData($event)"
+    [gridId]="gridId" 
+    entityLabel="Medical Liens">
+  </app-grid>
+</ng-container>

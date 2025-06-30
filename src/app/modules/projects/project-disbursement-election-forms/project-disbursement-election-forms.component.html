@@ -1,0 +1,9 @@
+<div class="page">
+    <div class="page-content">
+        <app-election-forms-list 
+            *ngIf="currentProject && !(loadingInProgress$ | async)"
+            [projectId]="currentProject.id">
+        </app-election-forms-list>
+    </div>
+  </div>
+  

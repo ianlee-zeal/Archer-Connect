@@ -1,0 +1,22 @@
+@import "src/styles/variables.scss";
+
+$nested-group-indent: 10px;
+
+.advanced-search-fields-group {
+  margin-top: 12px;
+  margin-left: $nested-group-indent;
+
+  &__filter{
+    flex-grow: 1;
+    padding-left: $advanced-search-controls-indent;
+  }
+
+  &__row {
+    display: flex;
+  }
+
+  &__label {
+    width: ($advanced-search-field-control-width - $nested-group-indent - $advanced-search-controls-indent);
+    margin-right: $advanced-search-controls-indent;
+  }
+}

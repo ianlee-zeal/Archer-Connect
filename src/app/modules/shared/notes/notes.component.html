@@ -1,0 +1,10 @@
+<app-notes-list 
+    *ngIf="entityId" 
+    [entityTypeId]="entityTypeId"
+    [additionalEntityTypeIds]="additionalEntityTypeIds"
+    [entityId]="entityId" 
+    [pageSize]="pageSize"
+    [isPublicSettingEnabled]="isPublicSettingEnabled"
+    [isEditEnabled]="isEditEnabled"
+    (newRecord)="addNew()">
+</app-notes-list>

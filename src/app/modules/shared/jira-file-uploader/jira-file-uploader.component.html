@@ -1,0 +1,47 @@
+<div class="upload-file">
+    <div class="uploader">
+        <span style="cursor: pointer" (click)="fileInput.click()">
+            <img src="assets/svg/upload.svg" /><a>Upload files here</a>
+        </span>
+        <input #fileInput type="file" hidden multiple (change)="onFilesSelected($event)" />
+        <a>5 File Quantity Limit ~ No larger than 50mb each</a>
+    </div>
+
+    <div *ngIf="exceedsFileLimit" class="exceeds-file-limit">
+        If you have more than 5 documents please use <u>Document Batches</u>
+    </div>
+
+    <div class="file-tiles-container"
+        [ngClass]="{ 'columns-2': columns === 2, 'single-item-span': composeFiles.length === 1}">
+        <div class="file-tile" *ngFor="let fileTile of composeFiles; let i = index">
+            <div class="file-info">
+                <button class="remove-button" (click)="removeFile(i)">&#x2715;</button>
+                <div class="file-name-icon">
+                    <span class="file-name" ellipsisTooltip>{{ fileTile.file.name }}</span>
+                    <img *ngIf="IconHelper.getMimeIconByExtension(getFileExtension(fileTile.file.name)) as iconUrl"
+                        [src]="iconUrl" class="file-icon" alt="File type icon" />
+                </div>
+            </div>
+
+            <div class="file-status"
+                 [ngClass]="{ uploading: fileTile.status === JiraUploadStatus.Uploading,
+                  error: fileTile.status === JiraUploadStatus.Error}">
+                <ng-container [ngSwitch]="fileTile.status">
+                    <app-spinner *ngSwitchCase="JiraUploadStatus.Pending" [small]="true"></app-spinner>
+
+                    <img class="success-icon visible" *ngSwitchCase="JiraUploadStatus.Success"
+                        src="assets/svg/check-circle.svg" alt="Checkmark Icon" />
+
+                    <span *ngSwitchCase="JiraUploadStatus.Error" class="error-message">
+                        {{ fileTile.errorMessage }}
+                        <img src="assets/svg/xmark-circle.svg" alt="Error Icon" />
+                    </span>
+
+                    <div *ngSwitchCase="JiraUploadStatus.Uploading" class="progress-bar-container">
+                        <div class="progress-bar" [style.width]="fileTile.progress + '%'"></div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

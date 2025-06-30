@@ -1,0 +1,15 @@
+<div style="height: 100%; width: 100%" [ngClass]="{ 'invisible' : (loadingInProgress$ | async) }">
+  <ng-container *ngIf="showInfoBar$ | async">
+    <app-action-bar
+      *ngIf="actionBar"
+      [actionHandlers]="actionBar"
+      [pager]="pager$ | async"
+      (navigate)="toPage($event)">
+    </app-action-bar>
+    <app-context-bar
+      [title]="title"
+      [elements]="headerElements">
+    </app-context-bar>
+  </ng-container>
+  <router-outlet></router-outlet>
+</div>

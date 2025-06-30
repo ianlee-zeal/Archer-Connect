@@ -1,0 +1,47 @@
+<div class="modal-section file-import-configure">
+    <form *ngIf="documentImportSelectedTemplate$ | async as template" [formGroup]="form" novalidate>
+        <card hideSeparator>
+            <card-col [width]="730">
+                <ng-container *ngFor="let item of template.config | keyvalue" [ngSwitch]="getFormControlType(item.key)">
+                    <card-row *ngSwitchCase="controlConfigTypes.FormCheck">
+                        <label class="form-check" cardValue>
+                            <input type="checkbox" class="form-check-input" formControlName="{{item.key}}"
+                                id="{{item.key}}" />
+                            <span>{{template.config.getFieldName(item.key)}}</span>
+                            <app-tooltip-info
+                            *ngIf="template.config.getFieldTooltip(item.key)"
+                            [tooltipText]="template.config.getFieldTooltip(item.key)"></app-tooltip-info>
+                        </label>
+                    </card-row>
+                    <card-row *ngSwitchCase="controlConfigTypes.Text" label="{{item.key | splitCamelCase}}"
+                        inputId="item.key" [control]="form.get(item.key)">
+                        <input type="text" class="form-control" formControlName="{{item.key}}" id="{{item.key}}"
+                            maxLength="255" cardValue />
+                    </card-row>
+                </ng-container>
+                <card-row *ngIf="showDisbursementGroup()" label="Select Disbursement Group" inputId="documentImportGroup" [control]="form.get('documentImportGroup')" required>
+                    <app-select id="documentImportGroup" [options]="disbursementGroupsOptions" formControlName="documentImportGroup"
+                    (onModelChange)="onDocumentGroupChange($event)" optionAsValue required cardValue></app-select>
+                </card-row>
+                <ng-container *ngIf="isLedgerArcherFeesTemplate">
+                    <card-row class="radio-btn-container"  [noLabelPadding]="true">
+                        <label class="d-block radio-btn-container__label" cardValue>
+                            <input type="radio" [value]="false" formControlName="replaceAllValues" id="replaceAllValues" />
+                            <span class="ms-1">
+                                <span class="fw-bold">Only Add New Admin Fees - </span>
+                                <span class="radio-btn-container__label--desc">This will add and/or replace Fees in the system that are in the file. Existing Fees in the system will remain present.</span>
+                            </span>
+                        </label>
+                        <label class="d-block radio-btn-container__label" cardValue>
+                            <input type="radio" [value]="true" formControlName="replaceAllValues" id="replaceAllValues" />
+                            <span class="ms-1 ">
+                                <span class="fw-bold">Overwrite All Admin Fees with data from the Import - </span>
+                                <span class="radio-btn-container__label--desc">Fees that are not in the file will be deleted.</span>
+                            </span>
+                        </label>
+                    </card-row>
+                </ng-container>
+            </card-col>
+        </card>
+    </form>
+</div>

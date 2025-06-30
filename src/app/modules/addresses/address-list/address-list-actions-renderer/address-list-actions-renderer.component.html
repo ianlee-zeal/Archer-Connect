@@ -1,0 +1,23 @@
+<div class="grid-actions">
+  <button
+  *permissions="addressesEditPermission"
+    type="button"
+    class="btn-grid-action btn-edit"
+    (click)="onEditAddressClick()"
+    title="Edit"
+  ></button>
+  <button
+    type="button"
+    class="btn-grid-action fa-address-card"
+    (click)="onViewAddressClick()"
+    title="View address details"
+  ></button>
+  <button
+  *permissions="addressesEditPermission"
+    type="button"
+    class="btn-grid-action btn-set-primary"
+    [class.disabled] = "params.data.isPrimary"
+    (click)="onSetPrimaryAddressClick()"
+    title="Set Primary"
+  ></button>
+</div>

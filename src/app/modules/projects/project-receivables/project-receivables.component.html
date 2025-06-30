@@ -1,0 +1,58 @@
+<div class="page-content" *ngIf="receivables; else noRecordsTemplate">
+  <ng-container *ngFor="let section of receivables; index as sectionIndex">
+    <div class="expansion-panel-container">
+      <div class="expansion-panel">
+        <div class="expansion-panel__title">
+          <span>{{ section.name }}</span>
+          <span title="Activate items to make them mandatory for other users" class="fa fa-info-circle title-info"></span>
+        </div>
+        <span
+          class="fas expansion-panel_expand-button"
+          [ngClass]="section.isExpanded ? 'fa-chevron-down' : 'fa-chevron-right'"
+          (click)="expandSection(sectionIndex)">
+        </span>
+      </div>
+      <div [hidden]="!section.isExpanded" class="expansion-content">
+        <ng-container *ngFor="let group of section.items; index as groupIndex">
+          <div class="receivable-group">
+            <div class="plain-group" *ngIf="!group.isServiceSpecific; else specificGroup">
+              <div class="description-container">
+                <p class="group-description" *ngIf="section.description">{{ section.description }}</p>
+                <button type="button" class="reset-btn" (click)="resetToDefault(section.id, 0)">Reset to default</button>
+              </div>
+              <ng-container *ngFor="let item of group.receivables">
+                <app-project-receivable-item
+                  [item]="item"
+                  (checkState)="onCheck(sectionIndex, groupIndex, item.id, $event)">
+                </app-project-receivable-item>
+              </ng-container>
+            </div>
+            <ng-template #specificGroup>
+              <div class="specific-group">
+                <p class="group-title">
+                  <span>{{ group.serviceName }}</span>
+                  <span class="group-title__info"> - Service specific</span>
+                  <span title="All these receivables are for specific services" class="fa fa-info-circle title-info"></span>
+                </p>
+                <div class="description-container">
+                  <p class="group-description">{{ group.serviceDescription }}</p>
+                  <button type="button" class="reset-btn" (click)="resetToDefault(section.id, group.serviceId)">Reset to default</button>
+                </div>
+                <ng-container *ngFor="let item of group.receivables">
+                  <app-project-receivable-item
+                    [item]="item"
+                    (checkState)="onCheck(sectionIndex, groupIndex, item.id, $event)">
+                  </app-project-receivable-item>
+                </ng-container>
+              </div>
+            </ng-template>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #noRecordsTemplate>
+  <app-tab-placeholder-no-record></app-tab-placeholder-no-record>
+</ng-template>

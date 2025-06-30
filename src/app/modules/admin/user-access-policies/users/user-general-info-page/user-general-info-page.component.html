@@ -1,0 +1,78 @@
+<form [formGroup]="userForm" class="user-general-info" *ngIf="canEdit; else viewTemplate">
+  <card hideSeparator>
+    <card-col [width]="550" [labelWidth]="145">
+      <card-row label="First Name" inputId="firstName" [control]="userForm.get('firstName')" required>
+        <input type="text" id="firstName" class="form-control" formControlName="firstName" required appAutoFocus cardValue />
+      </card-row>
+      <card-row label="Last Name" inputId="lastName" [control]="userForm.get('lastName')" required>
+        <input type="text" id="lastName" class="form-control" formControlName="lastName" required cardValue />
+      </card-row>
+      <card-row label="Email" inputId="email" [control]="userForm.get('email')" required>
+        <input type="email" id="email" class="form-control" formControlName="email" required cardValue/>
+      </card-row>
+      <card-row label="User Name" inputId="userName" [control]="userForm.get('userName')" required>
+        <input type="text" id="userName" class="form-control" formControlName="userName" required cardValue/>
+      </card-row>
+      <card-row label="Display Name" inputId="displayName" [control]="userForm.get('displayName')" required>
+        <input type="text" id="displayName" class="form-control" formControlName="displayName" required cardValue/>
+      </card-row>
+      <card-row label="Time Zone" inputId="timezone" [control]="userForm.get('timeZone')">
+        <app-select id="timezone" [options]="timezoneOptions" formControlName="timeZone" optionAsValue cardValue></app-select>
+      </card-row>
+      <card-row label="Active" inputId="isActive" [control]="userForm.get('isActive')">
+        <label class="form-check h-100" cardValue>
+          <input type="checkbox" class="form-check-input" formControlName="isActive" id="isActive" />
+          <span></span>
+        </label>
+      </card-row>
+      <card-row *permissions="canToggleMFA" label="Is MFA Enabled" inputId="isTwoFactorEnabled" [control]="userForm.get('isTwoFactorEnabled')">
+        <label class="form-check h-100" cardValue>
+          <input type="checkbox" class="form-check-input" formControlName="isTwoFactorEnabled"
+            id="isTwoFactorEnabled" />
+          <span></span>
+        </label>
+      </card-row>
+    </card-col>
+  </card>
+
+  <card *ngIf="canViewEmployeeDetails" header="Employee Details">
+    <card-col [width]="550" [labelWidth]="145">
+      <card-row label="Employee ID" inputId="employeeId" [control]="userForm.get('employeeId')">
+        <input 
+          type="text" 
+          id="employeeId" 
+          class="form-control" 
+          formControlName="employeeId" 
+          cardValue 
+        />
+      </card-row>
+    </card-col>
+  </card>
+</form>
+<ng-template #viewTemplate>
+  <ng-container *ngIf="userInfo$ | async as userInfo">
+    <card hideSeparator>
+      <card-col [width]="550" [labelWidth]="145">
+        <card-row label="First Name" [value]="userInfo.firstName" required/>
+        <card-row label="Last Name" [value]="userInfo.lastName" required/>
+        <card-row label="Email" inputId="email" [value]="userInfo.email" required/>
+        <card-row label="User Name" inputId="userName" [value]="userInfo.userName" required/>
+        <card-row label="Display Name" inputId="displayName" [value]="userInfo.displayName" required/>
+        <card-row label="Time Zone" inputId="timezone" [value]="userInfo.timeZone?.name"/>
+        <card-row label="Active" inputId="isActive" [value]="userInfo.isActive ? 'Yes' : 'No'"/>
+        <card-row *permissions="canToggleMFA" label="Is MFA Enabled" inputId="isTwoFactorEnabled" [value]="userInfo.isTwoFactorEnabled ? 'Yes' : 'No'"/>
+      </card-col>
+    </card>  
+    <card *ngIf="canViewEmployeeDetails"  header="Employee Details">
+      <card-col [width]="550" [labelWidth]="145">
+        <card-row label="Employee ID" inputId="employeeId" [value]="userInfo.employeeId"/>
+      </card-col>
+    </card>
+  </ng-container>  
+</ng-template>
+<ng-container *ngIf="(userInfo$ | async) as user">
+  <app-user-teams-grid
+    *ngIf="user.id && canViewTeams"
+    [userId]="user.id">
+  </app-user-teams-grid>
+</ng-container>

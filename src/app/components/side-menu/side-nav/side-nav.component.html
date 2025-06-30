@@ -1,0 +1,150 @@
+<div
+  *ngIf="items"
+  data-test-id="side-nav-groups"
+  class="sidebar-container d-none d-md-block">
+  <ul class="list-group list-unstyled">
+    <ng-container *ngFor="let group of items; index as ind">
+      <ng-container *ngIf="!group.isTopLevelItem" [ngTemplateOutlet]="groupTemplate" [ngTemplateOutletContext]="{ group: group, ind: ind }"></ng-container>
+      <ng-container *ngIf="group.isTopLevelItem" [ngTemplateOutlet]="topLevelItem" [ngTemplateOutletContext]="{ item: group }"></ng-container>
+    </ng-container>
+  </ul>
+</div>
+
+<ng-template #groupTemplate let-group='group' let-ind='ind'>
+  <ng-container *permissions="group.permissions">
+    <li
+      *ngIf="canShowGroup(group)"
+      data-test-id="side-nav-group">
+
+      <!-- Parent group -->
+      <div *ngIf="!collapsed" [attr.href]="'#tab_' + ind" [class.disabled]="group.disabled || !group.route" class="group-container" (click)="group.expanded = !group.expanded">
+        <div class="menu-title">{{ group.name }}</div>
+        <div class="fas expand-button fa-chevron-down" [ngClass]="group.expanded ? 'fa-chevron-down' : 'fa-chevron-right'"></div>
+      </div>
+
+      <ng-container *ngIf="group.expanded">
+        <div class="elements-container">
+          <ul
+            data-test-id="side-nav-group-items"
+            class="list-unstyled" [class.list-unstyled--scrollable]="!!group.maxItemsCount" [attr.id]="'tab_' + ind"
+            [style.height.px]="group.maxItemsCount ? group.maxItemsCount * 33 : 'auto'">
+
+            <!-- Children -->
+            <ng-container *ngIf="group.hasChildren">
+              <ng-container *ngFor="let item of group.items.slice(0, group.visibleItemsCount); index as i">
+
+                <!-- Group item -->
+                <div *ngIf="item.hasChildren" class="ms-1">
+                  <ng-container [ngTemplateOutlet]="groupTemplate" [ngTemplateOutletContext]="{ group: item, ind: i  }"></ng-container>
+                </div>
+
+                <!-- Menu item -->
+                <ng-container *ngIf="!item.hasChildren"
+                  [ngTemplateOutlet]="routeTemplate"
+                  [ngTemplateOutletContext]="{ item: item }">
+                </ng-container>
+
+              </ng-container>
+            </ng-container>
+
+            <!-- Dummy item  -->
+            <ng-container *ngIf="!group.hasChildren"
+              [ngTemplateOutlet]="dummyItemTemplate"
+              [ngTemplateOutletContext]="{ dummyItemName: group.dummyItemName }">
+            </ng-container>
+
+          </ul>
+        </div>
+      </ng-container>
+    </li>
+  </ng-container>
+</ng-template>
+
+<ng-template #routeTemplate let-item='item'>
+  <ng-container *ngIf="item.visible()">
+    <li
+      *permissions="item.permissions" appScrollSideMenuItemFocus
+      data-test-id="side-nav-group-item">
+      <div class="menu-elements" [ngClass]="{'menu-elements__collapsed': collapsed, 'menu-elements__current': isActivePath(item.route)}" [class.current]="isActivePath(item.route)" [class.auto-scroll-enabled]="item.autoScrollEnabled">
+        <a class="element-container"
+           [routerLink]="item.isRedirectable ? item.route : null"
+           [ngClass]="{'element-container__current': isActivePath(item.route), 'element-container__pointer': item.withPointer, 
+           'element-container__collapsed': collapsed, 'element-container__route-item': collapsed && !isActivePath(item.route),
+           'element-container__full-badges-current': isActivePath(item.route) && !collapsed && item.badges}"
+           [class.disabled]="item.disabled || (!item.route && !item.action)"
+           (click)="onItemClick(item)"
+        >
+          <div title="{{ collapsed ? item.name : '' }}">
+            <img src="{{item.icon}}" [ngClass]="{'element-icon__current': isActivePath(item.route), 'element-icon__collapsed': collapsed}" class="element-icon" title="{{ collapsed ? item.name : item.iconTooltip }}">
+          </div>
+          <div *ngIf="!collapsed" class="element-container__title" ellipsisTooltip>
+            {{ item.name }}
+          </div>
+        </a>
+        <div *ngIf="!collapsed">
+          <div style="display: flex" [ngClass]="{'item-badge-container__current': isActivePath(item.route)}">
+          <div
+            *ngFor="let badge of item.badges; index as i"
+            class="item-badge"
+            [ngClass]="{'item-badge__collapsed': collapsed}"
+          >
+            <span
+              data-test-id="side-nav-badge-title"
+              *ngIf="badge.title"
+              title="{{ badge.tooltip }}"
+              class="item-badge__title">
+              {{ badge.title | number }}
+            </span>
+            <img
+              data-test-id="side-nav-badge-icon"
+              *ngIf="badge.icon"
+              src="{{ badge.icon }}"
+              class="item-badge__icon"
+              title="{{ badge.tooltip }}"
+            />
+            <span
+              data-test-id="side-nav-badge-class"
+              *ngIf="badge.className"
+              title="{{ badge.tooltip }}"
+              class="item-badge__class {{badge.className}}">
+            </span>
+          </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ng-container>
+</ng-template>
+
+<ng-template #dummyItemTemplate let-dummyItemName='dummyItemName'>
+  <li class="elements-container">
+    <div class="element-container">
+      <span class="element-container__dummy" [ngClass]="{'route-item': collapsed}">
+        {{ dummyItemName }}
+      </span>
+    </div>
+  </li>
+</ng-template>
+
+<ng-template #topLevelItem let-item='item'>
+  <ng-container *ngIf="item.visible()">
+    <li
+      data-test-id="side-nav-toplevel-item"
+      *permissions="item.permissions"
+      appScrollSideMenuItemFocus>
+      <div class="menu-elements" [class.current]="isActivePath(item.route)" [class.auto-scroll-enabled]="item.autoScrollEnabled">
+        <div class="rectangle" [ngClass]="{'rectangle__remove': !isActivePath(item.route)}"></div>
+        <a class="group-container"
+           routerLink="{{item.route}}"
+           [ngClass]="{'element-container__current': isActivePath(item.route)}"
+           [class.disabled]="item.disabled || (!item.route && !item.action)"
+           (click)="onItemClick(item)"
+        >
+          <div *ngIf="!collapsed" class="menu-title" ellipsisTooltip>
+            {{ item.name }}
+          </div>
+        </a>
+      </div>
+    </li>
+  </ng-container>
+</ng-template>

@@ -1,0 +1,12 @@
+<ng-container *ngIf="canEdit; else engagePreview">
+    <app-date-selector 
+      [(ngModel)]="date" 
+      [maxWidth]="110"
+      (ngModelChange)="onChangeDate($event)"
+      cardValue>
+    </app-date-selector>
+</ng-container>
+  
+  <ng-template #engagePreview>
+    {{ this.productCategory[this.control] | dateFormat }}
+  </ng-template>

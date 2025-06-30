@@ -1,0 +1,52 @@
+<div *ngIf="reportSchedule">
+      <app-project-schedule-report-form *ngIf="canEdit; else viewTemplate" [reportSchedule]="reportSchedule"></app-project-schedule-report-form>
+</div>
+
+<ng-template #viewTemplate>
+    <card header="Schedule Details" >
+      <card-col [width]="460" [labelWidth]="200">
+          <card-row label="Report Type" inputId="reportType" [value]="this.reportScheduleView.reportType">
+          </card-row>
+        
+          <card-row inputId="active" label="Enable Automation" [value]="this.reportScheduleView.active">
+            </card-row>
+
+          <card-row inputId="Frequency" label="Frequency" [value]="this.reportScheduleView.frequency">
+          </card-row>
+
+        <card-row label="Schedule"
+                [value]="this.reportScheduleView.schedule">
+        </card-row>
+        
+          <card-row inputId="endDate" label="End Date"
+            [value]="this.reportScheduleView.endDate">
+          </card-row>
+      </card-col>
+    </card>
+  </ng-template>
+
+<card header="Current Recipients" *ngIf="projectId" >
+  <card-col>
+    <div>
+      <app-contacts-list-reporting *ngIf="deficiencyReportFilter.length > 1"
+        [projectId]="projectId"
+        [additionalFilter]="deficiencyReportFilter"
+        [hideNewContactButton]="true">
+      </app-contacts-list-reporting>
+    </div>
+  </card-col>
+</card>
+
+<card header="Recent Reports" *ngIf="projectId" >
+  <card-col>
+    <app-documents-list
+      [entityTypeId]="entityTypeId"
+      [entityId]="integrationId"
+      [showNewDocumentButton]="false"
+      [forOneEntityOnly]="true"
+      [isContentAutoHeight]="true"
+      [additionalPageItemsCountValues]="additionalPageItemsCountValues"
+      [gridId]="gridId">
+    </app-documents-list>
+  </card-col>
+</card>

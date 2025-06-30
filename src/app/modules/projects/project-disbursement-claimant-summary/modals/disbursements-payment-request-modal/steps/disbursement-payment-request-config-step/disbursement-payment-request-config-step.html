@@ -1,0 +1,70 @@
+<card class="payment-request-form__info-section" hideSeparator>
+  <card-col [labelWidth]="140">
+    <card-row label="ID" [value]="projectId"></card-row>
+    <card-row label="Project Name" [value]="projectName"></card-row>
+</card-col>
+</card>
+<form [formGroup]="form">
+  <card>
+    <card-col [labelWidth]="140">
+      <card-row label="QSF" inputId="qsfOrg" [control]="form.get('qsfOrg')" [marginTop]="10" alignContentVertically>
+        <app-clearable-input
+          cursorPointer
+          [form]="form"
+          controlName="qsfOrg"
+          [isReadonly]="true"
+          id="qsfOrg"
+          placeholder="Select QSF"
+          cardValue
+          (click)="onOpenQSFModal()"
+          (clear)="onClear('qsfOrg')"
+          width="300">
+        </app-clearable-input>
+      </card-row>
+
+      <card-row label="Total Rows" [control]="form.get('totalRows')" required>
+        <ng-container cardValue>
+          <div class="payment-request-form__container">
+            <input
+              id="totalRows"
+              formControlName="totalRows"
+              type="text"
+              class="form-control"
+              onlyNumbers
+            />
+          </div>
+        </ng-container>
+      </card-row>
+
+      <card-row label="Total Amount" [control]="form.get('totalAmount')" required>
+        <ng-container cardValue>
+          <div class="payment-request-form__container">
+            <span class="text-box-editor">
+              <span class="text-box-editor__currency">$</span>
+              <input
+                id="totalAmount"
+                class="form-control"
+                formControlName="totalAmount"
+                type="text"
+                onlyNumbersEx
+                allowDecimal="true"
+                toFixed="2"
+                suppressPasteIfValueIsIncorrect="true" />
+            </span>
+          </div>
+        </ng-container>
+      </card-row>
+
+      <button
+        asyncButton
+        [awaitedActionTypes]="awaitedActionTypesForDownloadTemplate"
+        type="button"
+        class="btn modal-footer__btn modal-footer__btn--primary payment-request-form__download_btn"
+        (click)="onDownloadTemplate()">
+          <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          Download Template
+      </button>
+
+    </card-col>
+  </card>
+</form>

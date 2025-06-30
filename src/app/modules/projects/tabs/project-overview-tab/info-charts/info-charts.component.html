@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="info-charts-ctn info-charts-ctn-col-2">
+    <div class="row">
+      <div class="col-12 info-charts-ctn__title">Release Admin</div>
+    </div>
+    <ng-container *ngIf="releaseAdminEngaged else notEngaged">
+      <div class="row info-charts-ctn__chart" *ngIf="releaseAdminChart else noData">
+        <fusioncharts width="100%"
+          min-height="260"
+          class="w-100"
+          dataFormat="json"
+          type="doughnut2d"
+          placeholder="Loading..."
+          [dataSource]="releaseAdminChart">
+        </fusioncharts>
+      </div>
+    </ng-container>
+  </div>
+  <div class="info-charts-ctn info-charts-ctn-col-2">
+    <div class="row">
+      <div class="col-12 info-charts-ctn__title">Lien Resolution</div>
+    </div>
+    <ng-container *ngIf="lienResolutionEngaged else notEngaged">
+      <div class="row info-charts-ctn__chart"  *ngIf="lienResolutionChart else noData">
+        <fusioncharts width="100%"
+          min-height="260"
+          class="w-100"
+          dataFormat="json"
+          type="doughnut2d"
+          placeholder="Loading..."
+          [dataSource]="lienResolutionChart">
+        </fusioncharts>
+      </div>
+    </ng-container>
+  </div>
+  <div class="info-charts-ctn info-charts-ctn-col-2">
+    <div class="row">
+      <div class="col-12 info-charts-ctn__title">Bankruptcy</div>
+    </div>
+    <ng-container *ngIf="bankruptcyEngaged else notEngaged" >
+      <div class="row info-charts-ctn__chart" *ngIf="bankruptcyChart else noData">
+        <fusioncharts width="100%"
+          min-height="260"
+          class="w-100"
+          dataFormat="json"
+          type="doughnut2d"
+          placeholder="Loading..."
+          [dataSource]="bankruptcyChart">
+        </fusioncharts>
+      </div>
+    </ng-container>
+  </div>
+  <div class="info-charts-ctn info-charts-ctn-col-2">
+    <div class="row">
+      <div class="col-12 info-charts-ctn__title">Probate</div>
+    </div>
+    <ng-container *ngIf="probateEngaged else notEngaged">
+      <div class="row info-charts-ctn__chart" *ngIf="probateChart else noData">
+        <fusioncharts width="100%"
+          min-height="260"
+          class="w-100"
+          dataFormat="json"
+          type="doughnut2d"
+          placeholder="Loading..."
+          [dataSource]="probateChart">
+        </fusioncharts>
+      </div>
+    </ng-container>
+  </div>
+  <div class="info-charts-ctn info-charts-ctn-col-2">
+    <div class="row">
+      <div class="col-12 info-charts-ctn__title">QSF Admin</div>
+    </div>
+    <ng-container *ngIf="qsfAdminEngaged else notEngaged">
+      <div class="row info-charts-ctn__chart" *ngIf="qsfAdminChart else noData">
+        <fusioncharts width="100%"
+          min-height="260"
+          class="w-100"
+          dataFormat="json"
+          type="doughnut2d"
+          placeholder="Loading..."
+          [dataSource]="qsfAdminChart">
+        </fusioncharts>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<div class="row" *ngIf="showLegend">
+  <div class="col-12 info-charts-ctn__legend-ctn">
+    <div class="info-charts-ctn__legend-item" *ngFor="let legendItem of legendItems">
+      <span class="info-charts-ctn__legend-item__icon" [ngStyle]="{backgroundColor: legendItem.color}"></span>
+      <span class="info-charts-ctn__legend-item__lebel">{{legendItem.label}}</span>
+    </div>
+  </div>
+</div>
+
+<ng-template #notEngaged>
+  <div class="info-charts-ctn__not-engaged">Not Engaged</div>
+</ng-template>
+
+<ng-template #noData>
+  <div class="info-charts-ctn__no-data">No Data</div>
+</ng-template>

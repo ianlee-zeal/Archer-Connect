@@ -1,0 +1,19 @@
+<div [ngClass]="class" class="grid-expansion-panel-row" [ngStyle]="{ 'width': width ? width + 'px' : 'null'}">
+  <div class="grid-expansion-panel-row__background">
+    <div class="grid-expansion-panel-row-element">
+      <span class="fas expand-button fa-chevron-down grid-expansion-panel-row-element__value" [ngClass]="isExpanded ? 'fa-chevron-down' : 'fa-chevron-up'" (click)="toggle()"></span>
+    </div>
+    <div *ngFor="let element of elements; trackBy:trackByFn" 
+         [style.width]="element.width" 
+         class="grid-expansion-panel-row-element"
+         [ngClass]="{ 'grid-expansion-panel-row-element__right' : element.isRightAligned }">
+      <div *ngIf="element.valueGetter()">
+        <span title="{{ element.tooltip }}" class="grid-expansion-panel-row-element__value">{{ element.valueGetter() }}{{ element.tooltip ? '...' : '' }}</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isExpanded" class="grid-expansion-panel-row__content">
+    <ng-content></ng-content>
+  </div>
+</div>
+  

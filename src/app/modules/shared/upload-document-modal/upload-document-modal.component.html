@@ -1,0 +1,96 @@
+<modal class="upload-document-modal" (close)="uploadDocumentModal.hide()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section wrap-text">
+      <form [formGroup]="uploadForm" novalidate>
+        <card hideSeparator>
+          <card-col [width]="730">
+            <card-row label="File Name" [labelWidth]="125" [value]="fileName"></card-row>
+            <!-- Name -->
+            <card-row label="Name" inputId="name" [control]="uploadForm.get('name')"
+              [labelWidth]="125" required>
+              <input class="form-control w-100" type="text" formControlName="name" appAutoFocus cardValue />
+            </card-row>
+            <!-- Service -->
+            <card-row label="Services" inputId="serviceSelector" [control]="uploadForm.get('service')"
+              *ngIf="canSelectService"
+              [labelWidth]="125">
+              <app-select
+                id="serviceSelector"
+                [options]="productCategories"
+                formControlName="service"
+                placeholder="Select Service"
+                class="w-100"
+                cardValue
+                fullwidth
+                [searchable]="isSearchable">
+              </app-select>
+            </card-row>
+            <!-- Type -->
+            <card-row label="Type" inputId="typeSelector" [control]="uploadForm.get('type')"
+              [labelWidth]="125" required>
+              <app-select
+              id="typeSelector"
+              [options]="documentTypes"
+              formControlName="type"
+              placeholder=""
+              class="w-100"
+              required
+              cardValue
+              fullwidth
+              [disabled]="entityId && isUpdate && entityTypeId === 3"
+              [searchable]="isSearchable">
+              </app-select>
+            </card-row>
+            <card-row label="Type Other" inputId="otherType" [control]="uploadForm.get('otherType')"
+              *ngIf="isShowOtherTypeField" [labelWidth]="125" required>
+              <input type="text" class="form-control w-100" formControlName="otherType" id="otherType"
+                [required]="isShowOtherTypeField" cardValue />
+            </card-row>
+            <app-upload-document-advance-share *ngIf="showIsPublic" [entityId]="entityId" [entityTypeId]="entityTypeId" [document]="document" (onFormChanged)="onFormChanged()"></app-upload-document-advance-share>
+            <card-row label="" [labelWidth]="125">
+              <app-drag-and-drop
+                class="drag-drop-modal w-100"
+                cardValue
+                [selectedFile]="selectedFile"
+                [allowedFileTypes]="allowedExtensions"
+                [stopPropagation]="stopPropagation"
+                (filesSelected)="onFilesSelected($event)">
+              </app-drag-and-drop>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <div class="upload-document-modal__footer">
+      <div class="upload-document-modal__actions upload-document-modal__actions--left">
+        <ng-container *ngIf="document">
+          <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            *permissions="deletePermissions" (click)="onDelete()">
+            Delete
+          </button>
+        </ng-container>
+        <div *ngIf="errorMessage$ | async as errorMessage" class="upload-document-modal__error text-danger me-auto">
+          {{errorMessage}}</div>
+      </div>
+      <div class="upload-document-modal__actions upload-document-modal__actions--right">
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+          (click)="uploadDocumentModal.hide()">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="btn modal-footer__btn modal-footer__btn--primary"
+          asyncButton
+          [awaitedActionTypes]="awaitedActionTypes"
+          [disabled]="isUploadDocumentDisabled"
+          (click)="onSave()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            {{ isUpdate ? 'Update' : 'Upload' }}
+        </button>
+      </div>
+    </div>
+  </modal-footer>
+</modal>

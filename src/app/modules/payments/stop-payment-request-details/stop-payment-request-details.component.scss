@@ -1,0 +1,30 @@
+@import "src/styles/variables.scss";
+
+.page-content {
+  padding: 20px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.stop-payment-block {
+  background-color: $grey-background;
+  max-width: 800px;
+  padding: 20px 20px 0 20px;
+  &__header {
+    font-weight: 700;
+    margin-right: 25px;
+  }
+  &__view-details-link {
+    text-decoration: underline;
+  }
+  &__status-request {
+    color: $yellow !important;
+  }
+  &__attachments-link {
+    font-weight: 700;
+  }
+  &__status-comment, &__resend-reason, &__status-request {
+    word-break: break-word;
+  }
+}

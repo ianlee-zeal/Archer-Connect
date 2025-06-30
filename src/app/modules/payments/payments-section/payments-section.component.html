@@ -1,0 +1,15 @@
+<div class="page">
+  <app-action-bar *ngIf="actionbar$ | async as actionbar" [actionHandlers]="actionbar"></app-action-bar>
+  <app-context-bar [title]="'Payments'"></app-context-bar>
+  <ng-container *ngIf="tabs">
+    <app-tab-group>
+      <ng-container *ngFor="let tab of tabs">
+        <app-tab-item 
+          [title]="tab.title" 
+          [routerLink]="tab.link" 
+          [permission]="tab.permission">
+        </app-tab-item>
+      </ng-container>
+    </app-tab-group>
+  </ng-container>  
+</div>

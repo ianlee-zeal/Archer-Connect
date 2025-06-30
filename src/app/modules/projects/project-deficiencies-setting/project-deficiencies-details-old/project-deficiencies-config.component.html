@@ -1,0 +1,29 @@
+<form *ngIf="form" [formGroup]="form">
+    <card header="Deficiency Category Enablement" hideSeparator>
+        <card-col [width]="550" [labelWidth]="140">
+        <card-row *ngFor="let category of deficiencyCategories" [label]="category | productCategoryToString" maxContentWidth="330" inputId="category_{{category}}">
+            <div cardValue class="actions">
+            <label>
+                <input (change)="onChange(category, true)" type="radio" formControlName="category_{{category}}" id="category_{{category}}" [value]="true"/>
+                <span class="actions__value">On</span>
+            </label>
+            <label>
+                <input (change)="onChange(category, false)" type="radio" formControlName="category_{{category}}" id="category_{{category}}" [value]="false"/>
+                <span class="actions__value">Off</span>
+            </label>
+            </div>
+        </card-row>
+        </card-col>
+    </card>
+</form>
+<app-grid 
+    *ngIf="project$ | async"
+    entityLabel="Deficiencies Template Items"
+    [gridId]="gridId"
+    [gridOptions]="gridOptions"
+    [saveGridDataOnModelUpdate]="true"
+    [skipSetContentHeight]="true"
+    [isPagerEnabled]="false"
+    (gridReady)="onGridReady($event)"
+    (loadData)="loadData($event)">
+</app-grid>

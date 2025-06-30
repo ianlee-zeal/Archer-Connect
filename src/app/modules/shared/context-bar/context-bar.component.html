@@ -1,0 +1,104 @@
+<div>
+  <div
+    data-test-id="context-bar"
+    class="context-bar-container">
+    <div class="d-flex flex-column flex-grow-1" style="min-width: 35%">
+      <div
+        data-test-id="context-bar-title"
+        class="context-bar-title">
+        <span>{{ title }}</span>
+        <span *ngIf="subTitle" class="context-bar-sub-title">
+          <app-rating-icon *ngIf="ratingIconClass" [iconClass]="ratingIconClass"></app-rating-icon>
+          {{ subTitle }}
+        </span>
+        <span *ngIf="isEdited" class="context-bar-is-edited">EDITED</span>
+      </div>
+      <div
+        data-test-id="context-bar-status"
+        class="context-bar-title">
+        <span> {{ status?.statusName }}</span>
+        <span *ngIf="status?.inactiveReason" class="context-bar-status">{{ status?.inactiveReason }}</span>
+        <span *ngIf="status?.inactiveDate" class="context-bar-status" >{{ status?.inactiveDate | date: 'MM/dd/yyyy' }}</span>
+      </div>
+    </div>
+
+    <div class="messaging-container">
+      <button
+        *ngIf="showAdditionalButton"
+        data-test-id="context-bar-messaging-btn"
+        type="button"
+        class="btn btn-md messaging-btn"
+        [disabled]="isProjectMessagesModalOpen$ | async"
+        (click)="onOpenModal()">
+          {{additionalButtonTitle}}
+      </button>
+      <app-special-designations-bar
+        *ngIf="showSpecialDesignationsBar">
+      </app-special-designations-bar>
+      <app-claimant-designations-bar *ngIf="showSpecialDesignationsBar">
+      </app-claimant-designations-bar>
+    </div>
+
+    <div class="context-bar-element-container">
+      <!-- Elements -->
+      <div
+        data-test-id="context-bar-elements"
+        class="context-bar-element-wrapper">
+        <ng-container *ngFor="let element of elements">
+          <ng-container
+            [ngTemplateOutlet]="contextBarElement"
+            [ngTemplateOutletContext]="{ element: element }">
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <span *ngIf="error" class="col-12 error-text text-danger">{{ error }}</span>
+</div>
+
+<ng-template #contextBarElement let-element='element'>
+  <div data-test-id="context-bar-element" class="context-bar-element">
+    <div data-test-id="context-bar-element-title" class="context-bar-element__title">
+        {{ element.column ? element.column : '' }}
+        <ng-container *ngIf="!!element.link && element.link.showInHeaderBar"
+          [ngTemplateOutlet]="linkTitle" 
+          [ngTemplateOutletContext]="{$implicit: element}">
+        </ng-container>
+        <ng-container *ngIf="!!element.routerLink && element.routerLink.showInHeaderBar"
+        [ngTemplateOutlet]="routerLink" 
+        [ngTemplateOutletContext]="{$implicit: element}">
+      </ng-container>
+    </div>
+    <div data-test-id="context-bar-element-value" class="context-bar-element__value {{element.class || ''}}">
+        <span *ngIf="element.valueGetter && element.valueGetter()">{{ element.valueGetter() }} </span>
+        <ng-container *ngIf="!!element.link && element.link.showInValueBar"
+          [ngTemplateOutlet]="linkTitle" 
+          [ngTemplateOutletContext]="{$implicit: element}">
+        </ng-container>
+        <ng-container *ngIf="!!element.routerLink &&  element.routerLink.showInValueBar" 
+          [ngTemplateOutlet]="routerLink" 
+          [ngTemplateOutletContext]="{$implicit: element}">
+        </ng-container>
+        <i *ngIf="element.errorTooltip" class="context-bar-element__value--error fas fa-exclamation-triangle" title="{{ element.errorTooltip }}"></i>
+        <div
+          *ngIf="expandable && element.expandableIconAsValue"
+          data-test-id="context-bar-toggle-btn"
+          class="context-bar-toggle"
+          (click)="onExpand()">
+            <span
+              class="fas expand-button"
+              [ngClass]="{ 'fa-chevron-up' : isExpanded, 'fa-chevron-down' : !isExpanded }">
+            </span>
+        </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #routerLink let-element>
+  <a *ngIf="element.routerLink && !element.routerLink.hidden" class="btn btn-link context-bar-element__link" [routerLink]="element.routerLink.routerLink" title="{{ element.routerLink.text }}">{{ element.routerLink.text }}</a>
+</ng-template>
+
+<ng-template #linkTitle let-element>
+  <span *ngIf="element.link && !element.link.hidden" class="btn btn-link context-bar-element__link" (click)="element.link.action()" title="{{ element.link.text }}">{{ element.link.text }}</span>
+</ng-template>

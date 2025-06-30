@@ -1,0 +1,28 @@
+<div class="file-uploader">
+  <div class="upload-container">
+    <button type="button" class="btn upload-btn" (click)="fileInput.click()" [disabled]="isBtnDisabled" data-test-id="files-selector-upload-btn">
+      <img src="assets/svg/upload.svg" alt="upload-btn"/>
+      <p>{{ selectButtonTitle }}</p>
+    </button>
+    <p class="upload-info">{{ maxFilesCount}} File Quantity Limit ~ No larger than {{ maxFileSize | fileSize : 0}} each</p>
+    <input
+      #fileInput
+      type="file"
+      [multiple]="allowMultiple"
+      (change)="onFilesSelected($event)"
+      hidden
+    />
+  </div>
+
+  <ul *ngIf="selectedFiles.length > 0" class="file-list">
+    <li *ngFor="let file of selectedFiles; let i = index" class="file-item">
+      <button (click)="removeFile(i)" class="">&#x2715;</button>
+      <div class="file-name-container">
+        <span class="file-name" [title]="fileNames[i]">
+          {{ fileNames[i] }}
+        </span>
+        <i class="far fa-file"></i>
+      </div>
+    </li>
+  </ul>
+</div>

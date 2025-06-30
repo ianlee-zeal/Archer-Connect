@@ -1,0 +1,70 @@
+@import "src/styles/variables.scss";
+@import "src/styles/_mixins.scss";
+
+$grouped-grid-font-size: 14px;
+$grouped-grid-header-color: $black;
+$grouped-grid-body-color: #000;
+$grouped-grid-cell-padding-left: 0;
+$grouped-grid-cell-padding-right: 15px;
+$grouped-grid-cell-border-color: #f9f9f9;
+$grouped-grid-cell-height: 28px;
+$grouped-grid-edge-cell-padding: 15px;
+
+.grouped-grid {
+  padding-right: 15px;
+  overflow-x: auto;
+}
+
+.grouped-grid-table {
+  table-layout: fixed;
+  margin-bottom: 0;
+
+  &__header-row {
+    height: 20px;
+    font-size: $grouped-grid-font-size;
+    font-weight: bold;
+  }
+
+  &__header-col {
+    color: $grouped-grid-header-color;
+    padding-left: $grouped-grid-cell-padding-left;
+    padding-right: $grouped-grid-cell-padding-right;
+    white-space: nowrap;
+    background-color: transparent;
+  }
+
+  &__row {
+    font-size: $grouped-grid-font-size;
+
+    &:hover td {
+      background-color: transparent;
+    }
+  }
+
+  &__col {
+    color: $grouped-grid-body-color;
+    padding-left: $grouped-grid-cell-padding-left;
+    padding-right: $grouped-grid-cell-padding-right;
+    border-bottom: none;
+    height: $grouped-grid-cell-height;
+
+    &--is-in-last-row {
+      border-bottom: 2px solid $grouped-grid-cell-border-color !important;
+      padding-bottom: $grouped-grid-edge-cell-padding;
+      height: ($grouped-grid-cell-height + $grouped-grid-edge-cell-padding);
+      vertical-align: bottom;
+    }
+
+    &--is-in-first-row {
+      padding-top: $grouped-grid-edge-cell-padding;
+      height: ($grouped-grid-cell-height + $grouped-grid-edge-cell-padding);
+      vertical-align: top;
+    }
+
+    &--no-items {
+      font-size: 12px;
+      text-align: center;
+      padding-top: 30px;
+    }
+  }
+}

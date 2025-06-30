@@ -1,0 +1,9 @@
+<ng-container *ngIf="isAdvancedSearchEnabled">
+  <app-advanced-search *ngIf="showAdvancedSearch" [fields]="searchFields" [state]="searchState"
+    (onSearch)="advancedSearchSubmit()">
+  </app-advanced-search>
+</ng-container>
+
+<app-grid entityName="transfers" [gridId]="gridId" [gridOptions]="gridOptions" [canReorderColumns]="true"
+  (gridReady)="gridReady($event)" (loadData)="loadData($event)">
+</app-grid>

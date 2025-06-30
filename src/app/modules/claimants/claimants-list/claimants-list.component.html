@@ -1,0 +1,13 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBar$ | async"></app-action-bar>
+  <app-context-bar [title]="'Claimants Search'" [error]="error$ | async" [elements]="elements">
+  </app-context-bar>
+  <div class="page-content">
+    <app-clients-list
+        [gridId]="gridId"
+        (rowDoubleClicked)="onRowDoubleClicked($event)"
+        (dataChanged)="onDataChanged($event)"
+        (filtersCleared)="onFiltersCleared()">
+    </app-clients-list>
+  </div>
+</div>

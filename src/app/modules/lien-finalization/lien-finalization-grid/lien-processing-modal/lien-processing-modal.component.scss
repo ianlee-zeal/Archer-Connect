@@ -1,0 +1,18 @@
+@import 'src/styles/variables.scss';
+
+.lien-processing-modal {
+  &__body {
+    min-height: 200px; 
+    margin-bottom: 2px; 
+    background-color: $white;
+  }
+
+  &__error-message {
+    font-size: $font-size-m;
+    width: 100%;
+  }
+}
+
+.section-header {
+  padding-top: 13px;
+}

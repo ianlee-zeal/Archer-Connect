@@ -1,0 +1,84 @@
+<div [ngClass]="{'range-date-selector': isRange}">
+  <div class="date-selector" [ngClass]="{'date-selector--hidden': isRange}" (keyup.tab)="tabToNextInput($event)">
+    <input class="date-selector__input date-selector__input--long search-input"
+           [ngModel]="date"
+           ngbDatepicker
+           [placeholder]="placeholder"
+           (dateSelect)="onDateSelect($event)"
+           (ngModelChange)="onChangeHandler($event)"
+           (closed)="onClosed()"
+           (focus)="onFocus()"
+           (blur)="onBlur()"
+           #datepicker="ngbDatepicker"
+           container="body"
+           placement="bottom-right bottom-left top-right top-left"
+           navigation="select"
+           firstDayOfWeek="7"
+           autocomplete="off"
+           [appAutoFocus]="isAutofocused"
+           #dateInput
+           (keyup)="onKeyUp($event)"
+           [dayTemplate]="t"
+           [startDate]="fromDate!"
+           name="datepicker"
+           [autoClose]="isRange ? 'outside': 'true'"
+           >
+           <ng-template #t let-date let-focused="focused">
+            <span class="custom-day"
+                  [class.focused]="focused"
+                  [class.range]="isDateRange(date)"
+                  [class.faded]="isHovered(date) || isInside(date)"
+                  (mouseenter)="hoveredDate = date"
+                  (mouseleave)="hoveredDate = null">
+              {{ date.day }}
+            </span>
+          </ng-template>
+          <ng-container [ngTemplateOutlet]="buttonTemplate"></ng-container>
+  </div>
+
+  <ng-container *ngIf="isRange">
+    <div class="input-group">
+      <span class="date-selector__filter-label">from:</span>
+      <input #dpFromDate
+             class="form-control date-selector__input date-selector__input--long search-input"
+             [ngModel]="fromDateModel"
+             (ngModelChange)="onChangeHandler($event, 'fromDate')"
+             name="dpFromDate"
+             [placeholder]="placeholder"
+             (closed)="onClosed()"
+             (focus)="onFocus()"
+             (blur)="onBlur()"
+             [value]="formatter.format(fromDate)"
+             (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+      <div>
+        <ng-container [ngTemplateOutlet]="buttonTemplate"></ng-container>
+      </div>
+    </div>
+
+    <div class="input-group" >
+        <span class="date-selector__filter-label">to:</span>
+        <input #dpToDate
+              class="form-control date-selector__input date-selector__input--long search-input"
+              [ngModel]="toDateModel"
+              (ngModelChange)="onChangeHandler($event, 'toDate')"
+              name="dpToDate"
+              [placeholder]="placeholder"
+              (closed)="onClosed()"
+              (focus)="onFocus()"
+              (blur)="onBlur()"
+              [value]="formatter.format(toDate)"
+              (input)="toDate = validateInput(toDate, dpToDate.value)">
+        <div>
+          <ng-container [ngTemplateOutlet]="buttonTemplate"></ng-container>
+        </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #buttonTemplate>
+  <button class="date-selector__button date-selector__button--small" (click)="toggle(datepicker)" [ngSwitch]="mode">
+    <img *ngSwitchCase="0" src="assets/svg/ic_calendar.svg" />
+    <img *ngSwitchCase="1" src="assets/svg/ic_calendar_yellow.svg" />
+    <img *ngSwitchCase="2" src="assets/svg/ic_calendar_gray.svg" />
+  </button>
+</ng-template>

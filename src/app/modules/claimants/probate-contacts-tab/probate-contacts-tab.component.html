@@ -1,0 +1,14 @@
+<div class="page-content">
+  <app-contact-list
+    *ngIf="claimant$ | async as claimant"
+    class="person-contacts-tab"
+    [claimantId]="claimant.id"
+    [entityType]="entityType"
+    [showOrganizationColumn]="true"
+    (newRecord)="onAddContact()"
+    (editStarted)="onEditStarted()">
+  </app-contact-list>
+  <div *ngIf="totalPercentageAllocated" class="info">
+    <span>Total Percentage Allocated {{ totalPercentageAllocated }}%</span>
+  </div>
+</div>

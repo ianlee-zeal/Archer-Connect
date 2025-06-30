@@ -1,0 +1,7 @@
+<div 
+    *ngFor="let o of options" 
+    [ngClass]="{'option-selected': o.id === selectedOption?.id}"
+    class="option"
+    (click)="onOptionClick(o)">
+    {{ o.name }}
+</div>

@@ -1,0 +1,20 @@
+@import "src/styles/variables.scss";
+
+.billing-rules-list-container {
+    border-bottom: 1px solid $gray-light;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.header-list-with-separator {
+    font-size: $font-size-m;
+      font-weight: 700;
+      border-bottom: 2px solid $border-gray;
+      padding-bottom: 5px;
+  }
+
+::ng-deep .billing-rules-list-services {
+    .ag-cell-wrapper, span {
+        display: block !important;
+    }
+  }

@@ -1,0 +1,12 @@
+<card header="Primary Firm-Messaging" isHeaderFlexRow="true" [actionBar]="actionBar">
+  <card-col>
+    <app-grid
+      [gridId]="gridId"
+      isContentAutoHeight="true"
+      entityLabel="projectFirmMessages"
+      [gridOptions]="gridOptions"
+      hideTopStatusbar="true"
+      [rowData]="projectFirmMessages$ | async">
+    </app-grid>
+  </card-col>
+</card>

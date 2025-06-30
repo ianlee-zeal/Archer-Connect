@@ -1,0 +1,31 @@
+<div class="container"
+    (click)="onClick()"
+    [class.selected]="isSelected"
+    [class.faded]="!isSelected && parentSelected"
+    [class.not-engaged]="status === LienServiceStatus.NotEngaged">
+  
+  <app-donut-tracker-icon
+    [percentComplete]="lienStatusSummary.percentComplete"
+    [status]="status"
+    [iconSrc]="iconSrc">
+  </app-donut-tracker-icon>
+  
+  <div class="content">
+    <div class="text text--title">{{ serviceName }}</div>
+    <ng-container *ngIf="status === LienServiceStatus.Pending">
+      <span class="text text--subtitle">{{ lienStatusSummary.percentComplete }}%</span>
+      <ng-container *ngTemplateOutlet="claimantCountTemplate"></ng-container>
+    </ng-container>
+    <ng-container *ngIf="status === LienServiceStatus.Finalized">
+      <span class="text text--subtitle">Complete</span>
+      <ng-container *ngTemplateOutlet="claimantCountTemplate"></ng-container>
+    </ng-container>
+    <ng-container *ngIf="status === LienServiceStatus.NotEngaged">
+      <span class="text text--subtitle">Not Engaged</span>
+    </ng-container>
+
+    <ng-template #claimantCountTemplate>
+      <span class="text text--bottom">{{ lienStatusSummary.totalCount | number }} {{ lienStatusSummary.totalCount === 1 ? 'Claimant' : 'Claimants' }}</span>
+    </ng-template>
+  </div>
+</div>

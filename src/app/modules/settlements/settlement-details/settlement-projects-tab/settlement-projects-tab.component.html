@@ -1,0 +1,10 @@
+<div class="page-content" *ngIf="settlementId">
+    <app-grid
+        [gridOptions]="gridOptions"
+        (gridReady)="gridReady($event)"
+        (loadData)="loadData($event)"
+        entityLabel="projects"
+        [skipSetContentHeight]="true"
+        [gridId]="gridId">
+    </app-grid>
+</div>

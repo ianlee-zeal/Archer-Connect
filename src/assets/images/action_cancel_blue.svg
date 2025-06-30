@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="14"
+   height="14"
+   viewBox="0 0 14 14"
+   version="1.1"
+   id="svg37"
+   sodipodi:docname="action_cancel_blue.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview39"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="40.254579"
+     inkscape:cx="1.2048319"
+     inkscape:cy="7.2786751"
+     inkscape:window-width="1920"
+     inkscape:window-height="1013"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="prefix__Rectangle_193" />
+  <defs
+     id="defs27">
+    <style
+       id="style25">
+            .prefix__cls-2{fill:none}
+        </style>
+  </defs>
+  <g
+     id="prefix__ic_cancel"
+     transform="rotate(-90,98,172)"
+     style="opacity:0.75">
+    <path
+       id="prefix__bg"
+       d="M 0,0 H 14 V 14 H 0 Z"
+       class="prefix__cls-2"
+       transform="translate(256,74)" />
+    <path
+       id="prefix__Rectangle_194"
+       d="M 0,0 H 1 V 13 H 0 Z"
+       data-name="Rectangle 194"
+       transform="rotate(-45,221.283,-272.951)"
+       style="fill:#1774DE;fill-opacity:1" />
+    <g
+       id="prefix__Rectangle_193"
+       data-name="Rectangle 193"
+       transform="translate(256,74)"
+       style="display:inline;fill:none;stroke:#ff0101">
+      <rect
+         width="14"
+         height="14"
+         rx="7"
+         style="stroke:none"
+         id="rect31"
+         x="0"
+         y="0" />
+      <rect
+         width="13"
+         height="13"
+         x="0.5"
+         y="0.5"
+         class="prefix__cls-2"
+         rx="6.5"
+         id="rect33"
+         style="stroke:#1774DE;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

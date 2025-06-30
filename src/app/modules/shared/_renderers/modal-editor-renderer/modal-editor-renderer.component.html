@@ -1,0 +1,15 @@
+<ng-container *ngIf="!editable else editor" [ngSwitch]="value">
+    <span>{{displayedValue}}</span>
+</ng-container>
+<ng-template #editor>
+  <div class="clearable-input">
+    <input
+        type="text"
+        class="form-control cursor-pointer"
+        [(ngModel)]="displayedValue"
+        [placeholder]="placeholder"
+        [readonly]="true"
+        (click)="onOpenModal()" />
+    <span *ngIf="value" class="clear-button" (click)="onClear($event)">&times;</span>
+</div>
+</ng-template>

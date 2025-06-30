@@ -1,0 +1,52 @@
+<div
+  data-test-id="system-fields"
+  class="system-fields-section read-only-form"
+  [ngClass]="{ 'system-fields-section--page-mode': !isModalMode }"
+  *ngIf="item">
+  <div class="system-fields-section__content read-only-form__content">
+    <div class="row">
+      <ng-container *ngIf="!showOnlyModified">
+        <div class="system-fields-section__col col-auto">
+          <div class="form-group">
+            <label>Created By:</label>
+            <span
+              data-test-id="system-fields-created-by"
+              class="form-control-plaintext">
+              {{ item.createdBy && item.createdBy.displayName || '-' }}
+            </span>
+          </div>
+        </div>
+        <div class="system-fields-section__col col-auto">
+          <div class="form-group">
+            <label>Created Date:</label>
+            <span
+              data-test-id="system-fields-created-date"
+              class="form-control-plaintext">
+              {{ (item.createdDate | dateFormat) || '-' }}
+            </span>
+          </div>
+        </div>
+      </ng-container>
+      <div class="system-fields-section__col col-auto">
+        <div class="form-group">
+          <label>Last Modified By:</label>
+          <span
+            data-test-id="system-fields-last-modified-by"
+            class="form-control-plaintext">
+            {{ item.lastModifiedBy && item.lastModifiedBy.displayName || '-' }}
+          </span>
+        </div>
+      </div>
+      <div class="system-fields-section__col col-auto">
+        <div class="form-group">
+          <label>Last Modified Date:</label>
+          <span
+            data-test-id="system-fields-last-modified-date"
+            class="form-control-plaintext">
+            {{ (item.lastModifiedDate | dateFormat) || '-' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

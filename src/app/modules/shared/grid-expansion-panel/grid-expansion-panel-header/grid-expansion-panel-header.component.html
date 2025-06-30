@@ -1,0 +1,12 @@
+<div class="grid-expansion-panel-header" [ngStyle]="{ 'width': width ? width + 'px' : 'null'}">
+  <div *ngFor="let element of elements" 
+       class="grid-expansion-panel-header-element"     
+       [style.width]="element.width" 
+       [style.minWidth]="element.minWidth"
+       [class]="element.className"
+       [ngClass]="{ 'grid-expansion-panel-header-element__right' : element.isRightAligned }">
+    <span class="grid-expansion-panel-header-element__value">
+      {{ element.valueGetter() }}
+    </span>
+  </div>
+</div>

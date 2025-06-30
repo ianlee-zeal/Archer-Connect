@@ -1,0 +1,13 @@
+<div class="popover-container">
+    <div class="popover-content">
+        <div class="title-container cursor-pointer" (click)="goToService(service)">
+            <span class="title-text">{{ ProductCategoryValues[service] }}</span>
+            <span class="title-text">{{ lienStatusSummary.totalCount | number }} {{ lienStatusSummary.totalCount === 1 ? 'Claimant' : 'Claimants' }}</span>
+        </div>
+        <app-release-dashboard-charts *ngIf="service === ProductCategory.Release" [projectId]="projectId"></app-release-dashboard-charts>
+        <app-lien-resolution-dashboard-charts *ngIf="service === ProductCategory.MedicalLiens" [projectId]="projectId"></app-lien-resolution-dashboard-charts>
+        <app-bankruptcy-dashboard-charts *ngIf="service === ProductCategory.Bankruptcy" [projectId]="projectId"></app-bankruptcy-dashboard-charts>
+        <app-probate-dashboard-charts *ngIf="service === ProductCategory.Probate" [projectId]="projectId"></app-probate-dashboard-charts>
+        <app-qsf-admin-dashboard-charts *ngIf="service === ProductCategory.QSFAdministration" [projectId]="projectId"></app-qsf-admin-dashboard-charts>
+    </div>
+</div>

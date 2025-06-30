@@ -1,0 +1,78 @@
+<modal class="create-organization-access-modal" (close)="modal.hide()">
+  <modal-header>
+    <span *ngIf="isEditMode">{{ organizationAccess ? 'Edit': 'Link' }}</span>
+    Organization
+    <span *ngIf="!isEditMode">Details</span>
+  </modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <ng-container *ngIf="isEditMode; else viewTemplate" >
+        <form [formGroup]="form">
+          <card hideSeparator>
+            <card-col [width]="418" [labelWidth]="140">
+              <card-row label="Organization" inputId="org" [control]="form.get('organization')" required>
+                <input
+                  (click)="onOpenOrganizationModal()"
+                  type="text"
+                  class="form-control cursor-pointer"
+                  formControlName="organization"
+                  readonly
+                  id="org"
+                  cardValue
+                  placeholder="Select Organization" />
+              </card-row>
+              <card-row label="Type" inputId="type" [control]="form.get('organizationTypeId')" required>
+                <app-select id="type" [options]="orgTypesValues" [defaultOption]="isOrgTypesValuesClearable" formControlName="organizationTypeId" required cardValue></app-select>
+              </card-row>
+              <card-row label="External ID" inputId="externalId" [control]="form.get('externalId')">
+                <input type="text" class="form-control" formControlName="externalId" id="externalId" cardValue />
+              </card-row>
+            </card-col>
+          </card>
+        </form>
+        <p *ngIf="errorMessage" class="text-danger small mb-0">{{ errorMessage }}</p>
+      </ng-container>
+    </div>
+    <div class="modal-section" *ngIf="organizationAccess">
+      <app-system-fields-section [item]="organizationAccess" modalMode onlyModified></app-system-fields-section>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <ng-container *permissions="clientOrgAccessDeletePermission">
+      <button
+      *ngIf="organizationAccess"
+      type="button" class="btn modal-footer__btn modal-footer__btn--secondary me-auto"
+      asyncButton
+      [disabled]="!isRemoveableOrganizationTypeId || organizationAccess.isMaster"
+      [class.disabled]="!isRemoveableOrganizationTypeId"
+      [awaitedActionTypes]="awaitedActionTypes"
+      (asyncFinished)="onActionFinished($event)"
+      (click)="onDelete()">
+        De-link
+      </button>
+    </ng-container>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="modal.hide()">Cancel</button>
+    <button
+      *ngIf="isEditMode"
+      type="submit"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      asyncButton
+      [awaitedActionTypes]="awaitedActionTypes"
+      [disabled]="!canSaveOrDelete"
+      (asyncFinished)="onActionFinished($event)"
+      (click)="save()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Save
+    </button>
+  </modal-footer>
+</modal>
+
+<ng-template #viewTemplate>
+<card hideSeparator>
+  <card-col [width]="418" [labelWidth]="132">
+    <card-row label="Name" [value]="organizationAccess.organizationName" required></card-row>
+    <card-row label="Type" [value]="organizationAccess.organizationTypeName" required></card-row>
+    <card-row label="External ID" [value]="organizationAccess.externalId" required></card-row>
+  </card-col>
+</card>
+</ng-template>

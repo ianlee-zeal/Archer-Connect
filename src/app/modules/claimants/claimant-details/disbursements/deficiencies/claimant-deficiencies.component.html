@@ -1,0 +1,11 @@
+<div class="page" *ngIf="currentClaimant$ | async as client">
+    <div class="page-content">
+        <app-grid
+          [gridOptions]="gridOptions"
+          (gridReady)="gridReady($event)"
+          (loadData)="loadData($event)"
+          [gridId]="gridId"
+          entityLabel="Deficiencies">
+        </app-grid>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+@import '../../../../styles.variables.scss';
+
+.success {
+    text-align: center;
+    color: $success;
+}
+
+.error {
+    text-align: center;
+    color: $error;
+}

@@ -1,0 +1,15 @@
+<form [formGroup]="form" novalidate>
+    <card hideSeparator>
+        <card-col [width]="760" [labelWidth]="250">
+            <card-row [maxContentWidth]="500" [containerWidth]="760" label="Percentage Of Savings">
+                <div cardValue class="value-container">
+                    <input id="percentageOfSavings" formControlName="percentageOfSavings" type="text" placeholder="Percentage Of Savings" onlyNumbersEx
+                        [allowDecimal]="true" [maxValue]="9999999999" class="form-control" />
+
+                    <button type="button" class="btn btn-secondary btn-icon btn-icon-remove"
+                        (click)="onDeleteClick()"></button>
+                </div>
+            </card-row>
+        </card-col>
+    </card>
+</form>

@@ -1,0 +1,38 @@
+@import "src/styles/variables.scss";
+
+.system-fields-section {
+
+  &--page-mode {
+    margin: 0 -20px -20px;
+    padding: 0 20px 60px;
+    border-top: 2px solid $form-separator-color;
+  }
+
+  &:not(&--page-mode) {
+    margin-bottom: 0;
+  }
+
+  &__content {
+    padding-top: 20px;
+  }
+
+  &:not(&--page-mode) &__content {
+    padding-top: 0;
+  }
+
+  &__col {
+    &:not(:first-child) {
+      padding-left: 20px;
+    }
+
+    &:not(:last-child) {
+      padding-right: 20px;
+    }
+
+    label,
+    .form-control-plaintext {
+      height: auto;
+      line-height: normal;
+    }
+  }
+}

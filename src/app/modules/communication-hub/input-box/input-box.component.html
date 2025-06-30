@@ -1,0 +1,15 @@
+<div
+  [ngStyle]=" { 'font-size': fontSize + 'px'}"
+  class="input-container">
+  <div class="input-label">
+    {{ label }}  
+    <span style="margin-right: 3px; font-size: 12px;"
+        *ngIf="required && textValue.length == 0"
+        class="text-danger">*</span>
+  </div>
+  <input 
+    [type]="format"
+    [(ngModel)]="textValue"
+    (ngModelChange)="textValueChanged$.next($event)"
+  />
+</div>

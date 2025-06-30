@@ -1,0 +1,5 @@
+<app-action-bar *ngIf="actionBar$ | async as actionBar" [actionHandlers]="actionBar">
+</app-action-bar>
+
+<app-context-bar [title]="userName$ | async"></app-context-bar>
+<router-outlet></router-outlet>

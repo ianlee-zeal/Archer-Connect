@@ -1,0 +1,16 @@
+<div class="finalization-details-header-container">
+  <div class="container-fluid finalization-details-header row" 
+    *ngIf="finalizationDetailsHeader$ | async as finalizationDetailsHeader">
+    <card hideSeparator>
+      <card-col [width]="450" [labelWidth]="130">
+        <card-row label="Status" [value]="finalizationDetailsHeader.runStatus.name"></card-row>
+        <card-row label="Collector" [value]="finalizationDetailsHeader.collectorOrg.name"></card-row>
+        <card-row label="Created By" [value]="finalizationDetailsHeader.createdBy.displayName"></card-row>
+        <card-row label="Created Date" [value]="dateTransform(finalizationDetailsHeader.createdDate)"></card-row>
+      </card-col>
+      <card-col [labelWidth]="150">
+        <card-row label="Number of Liens" [value]="finalizationDetailsHeader.selectedLienCount"></card-row>
+      </card-col>
+    </card>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="page" *ngIf="item$ | async">
+  <div class="page-content">
+    <app-grid
+      [gridId]="gridId"
+      [gridOptions]="gridOptions"
+      [isPagerEnabled]="false"
+      (gridReady)="gridReady($event)"
+      (rowDoubleClicked)="onRowDoubleClicked($event)">
+    </app-grid>
+  </div>
+</div>

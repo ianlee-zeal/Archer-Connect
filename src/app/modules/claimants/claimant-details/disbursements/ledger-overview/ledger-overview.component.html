@@ -1,0 +1,14 @@
+<div class="page" *ngIf="currentClaimant$ | async as client">
+    <div class="page-content">
+        <app-grid
+            [gridOptions]="gridOptions" 
+            (gridReady)="onGridReady($event)"
+            (loadData)="loadData($event)"
+            [isPagerEnabled]="false"
+            [enabledAutoHeight]="false"
+            [gridId]="gridId" 
+            entityLabel="Ledger Overview"
+            class="ag-pinned-row-fixed">
+        </app-grid>
+    </div>
+</div>

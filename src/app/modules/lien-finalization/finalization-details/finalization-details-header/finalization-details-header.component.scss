@@ -1,0 +1,26 @@
+@import "src/styles/variables.scss";
+
+.finalization-details-header-container {
+  border-bottom: 2px solid $menu-color;
+  padding-left: 5px;
+}
+
+.finalization-details-header {
+  margin: 0;
+  padding: 5px 0 6px 100px;
+  line-height: 24px;
+  flex-wrap: nowrap;
+
+  card {
+    margin-right: 40px;
+    margin-bottom: 0;
+
+    @media screen and (min-width: 1440px) {
+      margin-right: 90px;
+    }
+
+    @media screen and (min-width: 1600px) {
+      margin-right: 190px;
+    }
+  }
+}

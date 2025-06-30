@@ -1,0 +1,24 @@
+<ng-container *ngIf="overviewRelease">
+    <ng-container *ngIf="overviewRelease.items.length > 0; else noRecords">
+        <card header="Release Information">
+            <div class="column-container">
+                <card-col [labelWidth]="215" [width]="600">
+                    <card-row label="Stage" [value]="overviewRelease.items[0].stage.name"></card-row>
+                    <card-row label="Allocation" [value]="allocation"></card-row>
+                    <card-row label="# of Allocations" [value]="overviewRelease.items[0].numberOfAllocation"></card-row>
+                    <card-row label="In Good Order" [value]="overviewRelease.items[0].inGoodOrder"></card-row>
+                </card-col>
+
+                <card-col [labelWidth]="215" [width]="600">
+                    <card-row label="Date Mailed To Claimant" [value]="dateMailed"></card-row>
+                    <card-row label="Release Rec'd" [value]="releaseRec"></card-row>
+                    <card-row label="Submitted to Defense" [value]="submittedToDefense"></card-row>
+                    <card-row label="Defense Approval Date" [value]="defenseApprovalDate"></card-row>
+                </card-col>
+            </div>
+        </card>
+    </ng-container>
+    <ng-template #noRecords>
+        <app-tab-placeholder-no-record></app-tab-placeholder-no-record>
+    </ng-template>
+</ng-container>

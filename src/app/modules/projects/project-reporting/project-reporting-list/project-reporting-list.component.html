@@ -1,0 +1,11 @@
+<div class="page" *ngIf="currentProject$ | async as project">
+    <app-grid
+      [gridOptions]="gridOptions"
+      (gridReady)="gridReady($event)"
+      (loadData)="loadData($event)"
+      [gridId]="gridId"
+      [skipSetContentHeight]="true"
+      entityLabel="Reporting">
+    </app-grid>
+  </div>
+  

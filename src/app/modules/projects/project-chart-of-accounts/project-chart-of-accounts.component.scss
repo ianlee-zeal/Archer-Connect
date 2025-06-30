@@ -1,0 +1,18 @@
+@import "src/styles/variables";
+
+::ng-deep .fa-exclamation-triangle:before {
+  color: $validation-invalid-color;
+  margin-top: 4px;
+}
+
+::ng-deep .disabled-acc-in-use {
+  margin-left: -7px;
+
+  .ag-cell-wrapper {
+    width: unset !important;
+  }
+}
+
+::ng-deep .error-message {
+  color: red !important;
+}

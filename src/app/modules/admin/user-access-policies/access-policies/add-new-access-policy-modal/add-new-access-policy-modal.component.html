@@ -1,0 +1,43 @@
+<modal (close)="cancel()">
+  <modal-header>Add New Access Policy</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="item">
+        <card hideSeparator>
+          <card-col [labelWidth]="117">
+            <card-row label="Name" inputId="name" [control]="item.get('name')" required>
+              <input type="text" class="form-control" formControlName="name" id="name" appAutoFocus cardValue>
+            </card-row>
+            <card-row label="Description" inputId="description" [control]="item.get('description')">
+              <input type="text" class="form-control" formControlName="description" id="description" cardValue>
+            </card-row>
+            <card-row *ngIf="isMaster && hasPermission()" label="Level" inputId="isGlobal" [control]="item.get('level')" required>
+              <app-select id="levelId" class="modal-control__dropdown" [options]="levelOptions" formControlName="level" cardValue></app-select>
+            </card-row>
+            <ng-container *ngIf="!(isMaster && hasPermission())">
+              <card-row label="Level" [value]="'Organization'"></card-row>
+            </ng-container>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <div *ngIf="error$ | async as error" class="text-danger me-auto">
+      {{ error }}
+    </div>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="cancel()">
+      Cancel
+    </button>
+    <button 
+      type="submit" 
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      asyncButton
+      [awaitedActionTypes]="awaitedActionTypes"
+      (click)="save()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Save
+    </button>
+  </modal-footer>
+</modal>

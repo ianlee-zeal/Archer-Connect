@@ -1,0 +1,22 @@
+<div [ngClass]="['clearable-input', className]" 
+    [formGroup]="form" 
+    [ngStyle]="{'margin-right': marginRight ? marginRight + 'px' : null}">
+        <div id="input-container" >
+            <app-rating-icon
+                *ngIf="rating"
+                [title]="ratingTitle"
+                class="input-container__rating-icon"
+                [iconClass]="rating.class + ' rating-icon--label'">
+            </app-rating-icon>
+            <input 
+                type="text"
+                [ngClass]="{'cursor-pointer': cursorPointer, 'input-container__input': rating}"
+                class="form-control"
+                [formControlName]="controlName" 
+                [readonly]="isReadonly"
+                [id]="id" 
+                [placeholder]="placeholder"
+                [ngStyle]="{'width': width ? width + 'px': null}" />
+        </div>
+    <span *ngIf="form.controls[controlName].value" class="clear-button" (click)="onClear($event)">&times;</span>
+</div>

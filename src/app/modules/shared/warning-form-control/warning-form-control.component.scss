@@ -1,0 +1,16 @@
+@import "src/styles/variables";
+
+::ng-deep .fa-exclamation-triangle:before {
+  color: $validation-invalid-color;
+  margin-top: -4px;
+  position: absolute;
+}
+
+.warning-form-control .input-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .warning-form-control .form-control {
+    margin-right: 10px;
+  }

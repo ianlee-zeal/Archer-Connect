@@ -1,0 +1,14 @@
+<div [ngClass]="{ 'invisible' : (loadingInProgress$ | async) }">
+  <app-communication-edit-page *ngIf="claimantsParentPage"></app-communication-edit-page>
+  <app-projects-communication-edit-page *ngIf="!claimantsParentPage"></app-projects-communication-edit-page>
+
+<div>
+  <ng-container *ngIf="tabs">
+    <app-tab-group>
+      <ng-container *ngFor="let tab of tabs">
+        <app-tab-item [title]="tab.title" [routerLink]="tab.link" [disabled]="tab.disabled" [count]="tab.count"></app-tab-item>
+      </ng-container>
+    </app-tab-group>
+  </ng-container>
+</div>
+</div>

@@ -1,0 +1,25 @@
+@import "../variables.scss";
+
+select[required] {
+  & > option:empty {
+    display: none;
+  }
+}
+
+.dropdown-submenu {
+  position: relative;
+
+  & > .dropdown-menu {
+    top: 0;
+    left: 100%;
+  }
+
+  & > .dropdown-item {
+    display: flex;
+    align-items: center;
+
+    & > .dropdown-caret {
+      margin-left: auto;
+    }
+  }
+}

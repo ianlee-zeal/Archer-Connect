@@ -1,0 +1,6 @@
+<div class="lien-stage-renderer" *ngIf="params.value as value">
+  <ng-container *ngIf="value.name">
+    <img class="lien-stage-renderer__icon" [src]="getIcon(value)" />
+    <div class="lien-stage-renderer__status " [ngClass]="{'text-truncate': !params.wrap}" [title]="value.name || ''">{{ value.name }}</div>
+  </ng-container>
+</div>

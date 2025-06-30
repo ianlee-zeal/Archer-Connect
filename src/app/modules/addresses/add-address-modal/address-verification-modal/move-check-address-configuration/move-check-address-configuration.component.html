@@ -1,0 +1,15 @@
+<div class="move-check-address-configuration">
+  <form [formGroup]="form" [connectForm]="config$ | async" class="address-form">
+    <div class="d-flex">
+      <div class="move-check-address-configuration__header">Move Check</div>
+      <app-select
+        id="monthsRequested"
+        class="move-check-address-configuration__form-control"
+        (onModelChange)="onChange($event)"
+        [options]="moveCheckMonthsRequested"
+        formControlName="monthsRequested"
+        required
+      ></app-select>
+    </div>
+  </form>
+</div>

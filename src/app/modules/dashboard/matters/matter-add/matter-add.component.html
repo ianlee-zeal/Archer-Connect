@@ -1,0 +1,34 @@
+<modal (close)="onCancel()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="matterForm" novalidate>
+        <card hideSeparator>
+          <card-col>
+          <card-row label="Tort Name" inputId="matterName" [control]="matterForm.get('matterName')" required>
+            <input type="text" id="matterName" class="form-control" formControlName="matterName" appAutoFocus cardValue />
+          </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onCancel()">
+      Cancel
+    </button>
+    <button
+      asyncButton
+      [awaitedActionTypes]="awaitedActionTypes"
+      type="submit"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      [ngClass]="{ disabled: matterForm.invalid }"
+      [disabled]="matterForm.invalid"
+      (click)="onSave()"
+      (asyncFinished)="onCancel($event)">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Save
+    </button>
+  </modal-footer>
+</modal>

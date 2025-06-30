@@ -1,0 +1,8 @@
+<div class="task-mng-dash-legend-ctn" *ngIf="legendItems">
+  <div class="task-mng-dash-legend-ctn__legend" *ngFor="let li of legendItems">
+    <div class="task-mng-dash-legend-ctn__legend-cell">
+      <div class="task-mng-dash-legend-ctn__legend-icon" [ngStyle]="{'background-color': li.color}"></div>
+      <div class="task-mng-dash-legend-ctn__legend-label">{{li.label}}</div>
+    </div>
+  </div>
+</div>

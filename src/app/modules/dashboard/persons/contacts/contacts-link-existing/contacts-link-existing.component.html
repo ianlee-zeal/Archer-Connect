@@ -1,0 +1,30 @@
+<modal (close)="modalService.hide()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <div class="form-row" [formGroup]="formSearch">
+        <div class="col">
+          <div class="input-group">
+            <input type="text" class="form-control input-sm" formControlName="searchTerm"
+              placeholder="Enter search term" appAutoFocus />
+            <div class="input-group-append" (click)="resetSearch()">
+              <span class="input-group-text"><i class="fas fa-times"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col persons-list">
+        <app-contacts-link-person-list [persons]="searchPersonsResult$"></app-contacts-link-person-list>
+      </div>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="modalService.hide()">
+      Cancel
+    </button>
+    <button type="submit" class="btn modal-footer__btn modal-footer__btn--primary" (click)="onSave()"
+      [ngClass]="{ disabled: !personList?.selectedPerson }" [disabled]="!personList?.selectedPerson">
+      Save
+    </button>
+  </modal-footer>
+</modal>

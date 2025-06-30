@@ -1,0 +1,8 @@
+<app-grid 
+    [gridOptions]="gridOptions" 
+    [rowData]="personContacts$ | async" 
+    [gridId]="gridId" 
+    entityLabel="contacts"
+    (gridReady)="gridReady($event)"
+    (newRecord)="addNewRecord()">
+</app-grid>

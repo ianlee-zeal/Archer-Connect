@@ -1,0 +1,11 @@
+::ng-deep .modal-dialog {
+  margin-top: 200px;
+}
+
+::ng-deep .modal-md {
+  max-width: 600px;
+}
+.footer-container {
+  display: flex;
+  justify-content: flex-end;
+}

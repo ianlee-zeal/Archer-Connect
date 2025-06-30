@@ -1,0 +1,52 @@
+<form [formGroup]="uploadForm" novalidate (change)="onFormChange()">
+  <card-row label="Share With" [labelWidth]="125" inputId="isPrivate" [control]="uploadForm.get('shareType')" required>
+    <div class="share-with-my-org w-100" cardValue>
+      <input
+        id="isPrivate"
+        [value]="shareTypes.Private"
+        class="share-with-my-org__radio-button"
+        (change)="onChangeType()"
+        type="radio"
+        formControlName="shareType"
+      />
+      <label class="label">My organization</label>
+    </div>
+  </card-row>
+  <card-row [labelWidth]="125" inputId="shareWith" [control]="uploadForm.get('shareWith')">
+    <div class="share-with w-100" cardValue>
+      <input
+        [value]="shareTypes.OrgLevel"
+        class="share-with__radio-button"
+        type="radio"
+        (change)="onChangeType()"
+        formControlName="shareType"
+      />
+      <app-select 
+        id="shareWith"
+        placeholder="Search for organizations"
+        optionAsValue
+        [fullwidth]="true"
+        class="w-100"
+        [options]="orgsOptions" 
+        formControlName="shareWith"
+        [multiple]="true"
+        (onKeyup) = "fetch($event)"
+        [searchFn] = searchFn
+        [loading]="orgsOptionsLoading"
+        [multiLabelTemplate]="filterMultiLabelTemplate" 
+        searchable>
+      </app-select>
+      <ng-template #filterMultiLabelTemplate let-items="items" let-clear="clear">
+        <span style="color: #999;">{{uploadForm.get('shareWith').value?.length || 0}} Selected</span>
+      </ng-template>
+    </div>
+  </card-row>
+  <card-row *ngIf="isSharedChecked" [labelWidth]="125">
+    <div cardValue>
+      <span *ngIf="defaultOrgsLoading" class="loading-defaults-indicator">Loading default organizations...</span>
+      <app-selected-orgs-list
+        [orgsList]="uploadForm.get('shareWith').value"
+        [onDeleteHandler]="removeOrgOption.bind(this)"></app-selected-orgs-list>
+    </div>
+  </card-row>
+</form>

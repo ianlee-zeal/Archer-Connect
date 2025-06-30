@@ -1,0 +1,54 @@
+import { JiraSearchOptions } from './../../../models/jira/jira-search-options';
+import { ListMessagesResponse } from '@app/models/jira/jira-page';
+import { createAction, props } from '@ngrx/store';
+import { JiraStatus } from '@app/models/jira/jira-status';
+import { JiraRequestType } from '@app/models/jira/jira-request-type';
+import { JiraComment } from '@app/models/jira/jira-comment';
+import { JiraRequestTypeField } from '@app/models/jira/jira-request-type-field';
+import { IServerSideGetRowsRequestExtended } from '@app/modules/shared/_interfaces/ag-grid/ss-get-rows-request';
+import { SelectOption } from '@app/modules/shared/_abstractions/base-select';
+import { JiraUser } from '@app/models/jira/jira-user';
+import { JiraIssue } from '@app/models/jira/jira-issue';
+import { JiraProjectListResponse } from '@app/models/jira/jira-project-list-response';
+
+const featureName = '[CommunicationHub]';
+
+export const LoadMessages = createAction(`${featureName} Load Messages`, props<{ jiraSearchOptions: JiraSearchOptions }>());
+export const LoadMessagesSuccess = createAction(`${featureName} Load Messages Success`, props<{ page: ListMessagesResponse }>());
+export const LoadStatuses = createAction(`${featureName} Load Statuses`);
+export const LoadStatusesSuccess = createAction(`${featureName} Load Statuses Success`, props<{ statuses: JiraStatus[] }>());
+export const LoadRequestTypes = createAction(`${featureName} Load Request Types`);
+export const LoadRequestTypesSuccess = createAction(`${featureName} Load Request Types Success`, props<{ requestTypes: JiraRequestType[] }>());
+export const Error = createAction(`${featureName} Error`, props<{ errorMessage: string }>());
+export const LoadMessageComments = createAction(`${featureName} Load Message Comments`, props<{ ticketKey: string }>());
+export const LoadMessageCommentsSuccess = createAction(`${featureName} Load Message Comments Success`, props<{ comments: JiraComment[] }>());
+export const DownloadAttachment = createAction(`${featureName} Download Attachment`, props<{ attachmentId: number }>());
+export const DownloadAttachmentSuccess = createAction(`${featureName} Download Attachment Success`);
+export const GetJiraRequestTypeFields = createAction(`${featureName} Get Request Type Fields`, props<{ requestTypeId: number }>());
+export const GetJiraRequestTypeFieldsSuccess = createAction(`${featureName} Get Request Type Fields Success`, props<{ fields: JiraRequestTypeField[] }>());
+export const ClearJiraRequestTypeFields = createAction(`${featureName} Clear Request Type Fields`);
+export const CreateJiraMessage = createAction(`${featureName} Create Jira Message`, props<{ data: FormData }>());
+export const CreateJiraMessageSuccess = createAction(`${featureName} Create Jira Message Success`);
+export const GetParticipants = createAction(`${featureName} Create Participants Message`, props<{ searchTerm?: string }>());
+export const GetParticipantsSuccess = createAction(`${featureName} Get Participants Success`, props<{ participants: JiraUser[] }>());
+export const CreateJiraReply = createAction(`${featureName} Create Jira Reply`, props<{ data: any }>());
+export const CreateJiraReplySuccess = createAction(`${featureName} Create Jira Reply Success`);
+export const LoadMessage = createAction(`${featureName} Load Message`, props<{ ticketKey: string }>());
+export const LoadMessageSuccess = createAction(`${featureName} Load Message Success`, props<{ issue: JiraIssue }>());
+export const GetUnresolvedCount = createAction(`${featureName} Get Unresolved Count`, props<{ userId: number }>());
+export const GetUnresolvedCountSuccess = createAction(`${featureName} Get Unresolved Count Success`, props<{ unresolvedCount: number }>());
+export const UploadJiraFile = createAction(`${featureName} Upload Jira File`, props<{ file: File }>());
+export const UploadJiraFileSuccess = createAction(`${featureName} Upload Jira File Success`, props<{ resultId: number }>());
+export const UploadJiraFileError = createAction(`${featureName} Upload Jira File Error`, props<{ errorMessage: string }>());
+export const UploadJiraFileProgress = createAction(`${featureName} Upload Jira File Progress`, props<{ progress: number }>());
+
+export const GetProjectsRequest = createAction(`${featureName} Get Projects Request`, props<{ search?: IServerSideGetRowsRequestExtended }>());
+export const GetProjectsSuccess = createAction(`${featureName} Get Projects Success`, props<{ projects: SelectOption[] }>());
+export const GetProjectsError = createAction(`${featureName} Get Projects Error`, props<{ error: any }>());
+export const GetAgents = createAction(`${featureName} Create Agents Message`);
+export const GetAgentsSuccess = createAction(`${featureName} Get Agents Success`, props<{ agents: JiraUser[] }>());
+export const GetAvailableJiraProjects = createAction(`${featureName} Get Available Jira Projects`, props<{ jiraSearchOptions: JiraSearchOptions }>());
+export const GetAvailableJiraProjectsSuccess = createAction(`${featureName} Get Available Jira Projects Success`, props<{ projects: JiraProjectListResponse }>());
+export const GetResponseNeededCount = createAction(`${featureName} Get Response Needed Count`, props<{ userId: number }>());
+export const GetResponseNeededCountSuccess = createAction(`${featureName} Get Response Needed Count Success`, props<{ responseNeededCount: number }>());
+

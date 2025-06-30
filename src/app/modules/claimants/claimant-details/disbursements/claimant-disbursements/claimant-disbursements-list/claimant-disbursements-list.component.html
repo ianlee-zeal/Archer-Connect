@@ -1,0 +1,8 @@
+<app-disbursement-groups-grid 
+    [gridOptions]="gridOptions" 
+    [gridId]="gridId" 
+    [exportOrderColumns]="exportOrderColumns"
+    (fetchDataEvent)="fetchData($event)" 
+    (onActionBarUpdated)="onActionBarUpdated($event)"
+    (onExportEvent)="onExportHandler($event)">
+</app-disbursement-groups-grid>

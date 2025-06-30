@@ -1,0 +1,26 @@
+<div class="batch-details-header-container">
+    <div class="container-fluid batch-details-header row" 
+      *ngIf="batchDetails$ | async as batchDetails">
+      <card hideSeparator>
+        <card-col [labelWidth]="150" [width]="400">
+          <card-row label="Project" [value]="project" [hyperlink]="'/projects/' + batchDetails.caseId + '/overview/tabs/details'"></card-row>
+          <card-row label="Organization" [value]="org"></card-row>
+          <card-row label="Created By" [value]="batchDetails.createdByFullName"></card-row>
+          <card-row label="Created Date" [value]="createdDate"></card-row>
+        </card-col>
+      </card>
+
+      <card hideSeparator>
+        <card-col [labelWidth]="100" [width]="400">
+          <card-row [maxContentWidth]="300" label="Departments" [value]="batchDetails.departmentNames" [bulletList]="true"></card-row>
+        </card-col>
+      </card>
+  
+      <card hideSeparator>
+        <card-col [labelWidth]="100" [width]="600">
+          <card-row [maxContentWidth]="500" class="breakline-text" label="Notes" [value]="batchDetails.batchDescription"></card-row>
+        </card-col>
+      </card>
+    </div>
+  </div>
+  

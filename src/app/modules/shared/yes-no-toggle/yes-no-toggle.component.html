@@ -1,0 +1,7 @@
+<app-toggle-buttons 
+    [options]="options" 
+    [selectedOption]="selectedOption" 
+    [disabled]="disabled"
+    [ngClass]="{'disabled': disabled}"
+    (change)="onToggleChange($event)">
+</app-toggle-buttons>

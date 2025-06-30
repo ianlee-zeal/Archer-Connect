@@ -1,0 +1,25 @@
+  <div class="hidable-form-control" *ngIf="isEditMode; else readOnlyModeTemplate">
+    <ng-container *ngIf="formGroup"[formGroup]="formGroup">
+      <input type="text" *ngIf="isEditingInProgress" [mask]="mask" class="form-control"  [formControlName]="formControlName" (ngModelChange)="onChange($event)" [appAutoFocus]="isApplyAutoFocus" />
+      <div class="card-row__content card-row__content--editable" *ngIf="!isEditingInProgress">
+        <span class="form-control-plaintext text-nowrap">
+          <ng-container *ngIf="formatFunction; else noFormatTemplate">{{ formatFunction(value, isEditingInProgress) || '-' }}</ng-container>
+        </span>
+        <button *permissions="editPermissions" class="btn btn-link btn-details-edit hidable-form-control__icon" (click)="toggleViewMode()">Edit</button>
+      </div>
+    </ng-container>
+</div>
+
+<ng-template #readOnlyModeTemplate>
+  <div class="card-row__content card-row__content--editable" *ngIf="value">
+    <span class="form-control-plaintext text-break">
+      <ng-container *ngIf="formatFunction; else noFormatTemplate">{{ formatFunction(value, isEditingInProgress) || '-' }}</ng-container>
+    </span>
+    <button *permissions="readPermissions" class="btn btn-link btn-details-edit hidable-form-control__icon" (click)="toggleViewMode()"> {{ isEditingInProgress ? 'Hide' : 'View' }}</button>
+  </div>
+  <span class="card-row__value form-control-plaintext" *ngIf="!value">-</span>
+</ng-template>
+
+<ng-template #noFormatTemplate>
+  {{ value || '-' }}
+</ng-template>

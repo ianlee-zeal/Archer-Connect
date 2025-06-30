@@ -1,0 +1,52 @@
+.modal-backdrop {
+  &.show {
+    background-color: #000;
+    opacity: 0.2;
+  }
+}
+
+.modal {
+  &+.modal-backdrop.modal-backdrop{
+    z-index: 1060;
+
+    &+.modal{
+      z-index: 1061;
+    }
+  }
+}
+
+.modal-dialog {
+  margin-top: 100px;
+}
+
+.modal-content {
+  background-color: #ccc; // this is #000 with 0.2 opacity
+  border: none;
+}
+
+modal-container:nth-of-type(2) {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 576px) {
+  .modal-md {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 992px) {
+  .modal-md {
+    max-width: 600px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .modal-dialog {
+    margin-top: 15vh;
+  }
+  .representative-modal {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0px;
+  }
+}

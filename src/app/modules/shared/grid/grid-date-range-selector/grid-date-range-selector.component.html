@@ -1,0 +1,8 @@
+<div class="grid-date-range-selector">
+  <app-date-selector-template-driven
+    [isAutofocused]="isAutofocused"
+    [isRange] = "isRange"
+    (onDateTyped)="onArrDateSelected($event)"
+    (onDateSelected)="onArrDateSelected($event)">
+  </app-date-selector-template-driven>
+</div>

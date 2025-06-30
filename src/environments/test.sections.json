@@ -1,0 +1,580 @@
+{
+    "title": "3M Census Form Unsecured",
+    "sections": [
+        {
+            "title": "Part 1",
+            "pages": [
+                {
+                    "title": "Information",
+                    "header": "1. Information",
+                    "template": [
+                        {
+                            "fieldGroupClassName": "row",
+                            "fieldGroup": [
+                                {
+                                    "className": "col-4",
+                                    "type": "input",
+                                    "key": "claiment_name",
+                                    "templateOptions": {
+                                        "label": "Claiment Name",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "className": "col-2",
+                                    "type": "input",
+                                    "key": "dob",
+                                    "templateOptions": {
+                                        "label": "D.O.B.",
+                                        "required": true,
+                                        "pattern": "\\d{1,2}/\\d{1,2}/\\d{4}"
+                                    }
+                                },
+                                {
+                                    "className": "col-1",
+                                    "type": "select",
+                                    "key": "gender",
+                                    "templateOptions": {
+                                        "label": "Gender",
+                                        "options": [
+                                            {
+                                                "value": "M",
+                                                "label": "Male"
+                                            },
+                                            {
+                                                "value": "F",
+                                                "label": "Female"
+                                            }
+                                        ],
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "className": "col-2",
+                                    "type": "select",
+                                    "key": "state_of_residence",
+                                    "templateOptions": {
+                                        "label": "State of residence",
+                                        "options": "get_dropdown('codes','state')",
+                                        "required": true
+                                    }
+                                },
+                                {
+                                    "className": "col-2",
+                                    "type": "input",
+                                    "key": "state_of_residence_years",
+                                    "templateOptions": {
+                                        "label": "Years in residence",
+                                        "required": true,
+                                        "pattern": "\\d{1,2}"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "fieldGroupClassName": "row",
+                            "fieldGroup": [
+                                {
+                                    "className": "col-2",
+                                    "type": "input",
+                                    "key": "case_number",
+                                    "templateOptions": {
+                                        "label": "Case Number",
+                                        "required": true
+                                    },
+                                    "expressionProperties": {
+                                        "templateOptions.disabled": "model.case_number_not_applicable"
+                                    }
+                                },
+                                {
+                                    "className": "col-2",
+                                    "type": "input",
+                                    "key": "cv",
+                                    "templateOptions": {
+                                        "label": "CV",
+                                        "required": true
+                                    },
+                                    "expressionProperties": {
+                                        "templateOptions.disabled": "model.case_number_not_applicable"
+                                    }
+                                },
+                                {
+                                    "className": "col-2 row-check",
+                                    "type": "checkbox",
+                                    "key": "case_number_not_applicable",
+                                    "templateOptions": {
+                                        "label": "Not applicable"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "title": "Military Duty",
+                    "header": "2. Military Duty",
+                    "template": [
+                        {
+                            "key": "did_serve",
+                            "type": "radio",
+                            "templateOptions": {
+                                "label": "Did the claimant serve in the military and/or armed forces?",
+                                "options": "get_dropdown('codes','true_false')",
+                                "required": true
+                            }
+                        },
+                        {
+                            "header": "a. Identify each branch the claimant served in, and the dates of service in each branch:",
+                            "key": "military_duty_a",
+                            "type": "repeat",
+                            "className": "ms-5",
+                            "templateOptions": {
+                                "addText": "Add",
+                                "disabled": false
+                            },
+                            "expressionProperties": {
+                                "templateOptions.disabled": "model.did_serve"
+                            },
+                            "fieldArray": {
+                                "fieldGroupClassName": "row",
+                                "fieldGroup": [
+                                    {
+                                        "type": "input",
+                                        "key": "branch",
+                                        "templateOptions": {
+                                            "header_label": "Branch",
+                                            "required": false
+                                        }
+                                    },
+                                    {
+                                        "type": "input",
+                                        "key": "start_date",
+                                        "cellWidth": "100",
+                                        "templateOptions": {
+                                            "header_label": "Start Date",
+                                            "required": false,
+                                            "pattern": "\\d{1,2}/\\d{1,2}/\\d{4}"
+                                        },
+                                        "expressionProperties": {
+                                            "templateOptions.required": "!!model.branch"
+                                        }
+                                    },
+                                    {
+                                        "type": "input",
+                                        "key": "end_date",
+                                        "cellWidth": "100",
+                                        "templateOptions": {
+                                            "header_label": "End Date",
+                                            "required": false,
+                                            "pattern": "\\d{1,2}/\\d{1,2}/\\d{4}"
+                                        },
+                                        "expressionProperties": {
+                                            "templateOptions.required": "!!model.branch"
+                                        }
+                                    },
+                                    {
+                                        "className": "col-check",
+                                        "type": "checkbox",
+                                        "key": "present",
+                                        "templateOptions": {
+                                            "header_label": "Present"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "title": "Military Duty",
+                    "header": "2b. Military Duty (Part 2)",
+                    "template": [
+                        {
+                            "header": "b. Identify each of the claimant’s duty stations between 2000 and present:",
+                            "key": "military_duty_b",
+                            "type": "repeat",
+                            "className": "ms-5",
+                            "templateOptions": {
+                                "addText": "Add"
+                            },
+                            "expressionProperties": {
+                                "templateOptions.disabled": "model.case_number_not_applicable"
+                            },
+                            "fieldArray": {
+                                "fieldGroupClassName": "row",
+                                "fieldGroup": [
+                                    {
+                                        "type": "input",
+                                        "key": "duty_station",
+                                        "cellWidth": "300",
+                                        "templateOptions": {
+                                            "header_label": "Duty Station",
+                                            "required": false
+                                        }
+                                    },
+                                    {
+                                        "type": "input",
+                                        "key": "start_date",
+                                        "cellWidth": "100",
+                                        "templateOptions": {
+                                            "header_label": "Start Date",
+                                            "required": false,
+                                            "pattern": "\\d{1,2}/\\d{1,2}/\\d{4}"
+                                        },
+                                        "expressionProperties": {
+                                            "templateOptions.required": "!!model.duty_station"
+                                        }
+                                    },
+                                    {
+                                        "type": "input",
+                                        "key": "end_date",
+                                        "cellWidth": "100",
+                                        "templateOptions": {
+                                            "header_label": "End Date",
+                                            "required": false,
+                                            "pattern": "\\d{1,2}/\\d{1,2}/\\d{4}"
+                                        },
+                                        "expressionProperties": {
+                                            "templateOptions.required": "!!model.duty_station"
+                                        }
+                                    },
+                                    {
+                                        "className": "col-check",
+                                        "type": "checkbox",
+                                        "key": "present",
+                                        "templateOptions": {
+                                            "header_label": "Present"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "title": "Military Duty",
+                    "header": "2c. Military Duty (Part 3)",
+                    "template": [
+                        {
+                            "header": "c. Identify each of the claimant's military occupational specialties between 2000 and present:",
+                            "key": "military_duty_c",
+                            "type": "repeat",
+                            "className": "ms-5",
+                            "templateOptions": {
+                                "addText": "Add"
+                            },
+                            "expressionProperties": {
+                                "templateOptions.disabled": "model.case_number_not_applicable"
+                            },
+                            "fieldArray": {
+                                "fieldGroupClassName": "row",
+                                "fieldGroup": [
+                                    {
+                                        "type": "input",
+                                        "key": "specialty",
+                                        "cellWidth": "300",
+                                        "templateOptions": {
+                                            "header_label": "Military Occupation Specialty",
+                                            "required": false
+                                        }
+                                    },
+                                    {
+                                        "type": "input",
+                                        "key": "start_date",
+                                        "cellWidth": "100",
+                                        "templateOptions": {
+                                            "header_label": "Start Date",
+                                            "required": false,
+                                            "pattern": "\\d{1,2}/\\d{1,2}/\\d{4}"
+                                        },
+                                        "expressionProperties": {
+                                            "templateOptions.required": "!!model.specialty"
+                                        }
+                                    },
+                                    {
+                                        "type": "input",
+                                        "key": "end_date",
+                                        "cellWidth": "100",
+                                        "templateOptions": {
+                                            "header_label": "End Date",
+                                            "required": false,
+                                            "pattern": "\\d{1,2}/\\d{1,2}/\\d{4}"
+                                        },
+                                        "expressionProperties": {
+                                            "templateOptions.required": "!!model.specialty"
+                                        }
+                                    },
+                                    {
+                                        "className": "col-check",
+                                        "type": "checkbox",
+                                        "key": "present",
+                                        "templateOptions": {
+                                            "header_label": "Present"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "title": "Active Duty",
+                    "header": "3. Active Duty",
+                    "template": [
+                        {
+                            "key": "active_duty",
+                            "type": "radio",
+                            "templateOptions": {
+                                "label": "Is the claimant currently on active military duty?",
+                                "options": "get_dropdown('codes','true_false')",
+                                "required": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "title": "Combat Arms Earplugs",
+                    "header": "4a. Earplugs",
+                    "template": [
+                        {
+                            "key": "used_cae",
+                            "type": "radio",
+                            "templateOptions": {
+                                "label": "Did the claimant use the Combat Arms Earplugs version 2 (“CAEv2”) when he or she served in the military and/or armed forces?",
+                                "options": "get_dropdown('codes','true_false')",
+                                "required": true
+                            }
+                        },
+                        {
+                            "key": "used_cae_where",
+                            "type": "radio",
+                            "templateOptions": {
+                                "label": "If yes. State whether the claimant used CAEv2 in training, combat, or both:",
+                                "options": [
+                                    {
+                                        "value": "training",
+                                        "label": "Traning"
+                                    },
+                                    {
+                                        "value": "combat",
+                                        "label": "Combat"
+                                    },
+                                    {
+                                        "value": "both",
+                                        "label": "Both"
+                                    }
+                                ],
+                                "required": true
+                            },
+                            "expressionProperties": {
+                                "templateOptions.disabled": "!model.used_cae"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "title": "Combat Arms Earplugs",
+                    "header": "4b. Earplugs (Part 2)",
+                    "template": [
+                        {
+                            "header": "b. Identify the year(s), duty station(s), and military occupational specialties in which the claimant used the CAEv2 earplugs:",
+                            "key": "cae_when",
+                            "type": "repeat",
+                            "className": "ms-5",
+                            "templateOptions": {
+                                "addText": "Add"
+                            },
+                            "expressionProperties": {
+                                "templateOptions.disabled": "model.case_number_not_applicable"
+                            },
+                            "fieldArray": {
+                                "fieldGroupClassName": "row",
+                                "fieldGroup": [
+                                    {
+                                        "type": "input",
+                                        "key": "years",
+                                        "cellWidth": "200",
+                                        "templateOptions": {
+                                            "header_label": "Years",
+                                            "required": false
+                                        }
+                                    },
+                                    {
+                                        "type": "input",
+                                        "key": "duty_station",
+                                        "cellWidth": "300",
+                                        "templateOptions": {
+                                            "header_label": "Duty Station",
+                                            "required": false
+                                        },
+                                        "expressionProperties": {
+                                            "templateOptions.required": "!!model.Years"
+                                        }
+                                    },
+                                    {
+                                        "type": "input",
+                                        "key": "specialty",
+                                        "cellWidth": "400",
+                                        "templateOptions": {
+                                            "header_label": "Military Occupational Specialty",
+                                            "required": false
+                                        },
+                                        "expressionProperties": {
+                                            "templateOptions.required": "!!model.Years"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "title": "Civilian Use",
+                    "header": "5. Civilian Use",
+                    "template": [
+                        {
+                            "key": "civilian_use",
+                            "type": "radio",
+                            "templateOptions": {
+                                "label": "Did the claimant use CAEv2 earplugs as a civilian any time?",
+                                "options": "get_dropdown('codes','true_false')",
+                                "required": true
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "Part 2",
+            "pages": [
+                {
+                    "title": "Physical Injuries",
+                    "header": "6. Identify the physical injuries claimant sustained as a result of using CAEv2 earplugs:",
+                    "template": [
+                        {
+                            "key": "total_hearing_left",
+                            "type": "checkbox",
+                            "templateOptions": {
+                                "label": "Total Hearing Loss, Left Ear"
+                            }
+                        },
+                        {
+                            "key": "total_hearing_right",
+                            "type": "checkbox",
+                            "templateOptions": {
+                                "label": "Total Hearing Loss, Right Ear"
+                            }
+                        },
+                        {
+                            "fieldGroupClassName": "row",
+                            "fieldGroup": [
+                                {
+                                    "key": "partial_hearing_left",
+                                    "type": "checkbox",
+                                    "className": "col-3",
+                                    "templateOptions": {
+                                        "label": "Partial Hearing Loss, Left Ear"
+                                    }
+                                },
+                                {
+                                    "type": "input",
+                                    "key": "partial_hearing_left_specify",
+                                    "className": "col-4",
+                                    "templateOptions": {
+                                        "label": "Percentage/grade of hearing loss, if known:",
+                                        "required": false
+                                    },
+                                    "expressionProperties": {
+                                        "templateOptions.required": "model.partial_hearing_left",
+                                        "templateOptions.disabled": "!model.partial_hearing_left"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "fieldGroupClassName": "row",
+                            "fieldGroup": [
+                                {
+                                    "key": "partial_hearing_right",
+                                    "type": "checkbox",
+                                    "className": "col-3",
+                                    "templateOptions": {
+                                        "label": "Partial Hearing Loss, Right Ear"
+                                    }
+                                },
+                                {
+                                    "type": "input",
+                                    "key": "partial_hearing_right_specify",
+                                    "className": "col-4",
+                                    "templateOptions": {
+                                        "label": "Percentage/grade of hearing loss, if known:",
+                                        "required": false
+                                    },
+                                    "expressionProperties": {
+                                        "templateOptions.required": "model.partial_hearing_right",
+                                        "templateOptions.disabled": "!model.partial_hearing_right"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "key": "tinnitus_left",
+                            "type": "checkbox",
+                            "templateOptions": {
+                                "label": "Tinnitus, Left Ear"
+                            }
+                        },
+                        {
+                            "key": "tinnitus_right",
+                            "type": "checkbox",
+                            "templateOptions": {
+                                "label": "Tinnitus, Right Ear"
+                            }
+                        },
+                        {
+                            "key": "tinnitus_unknown",
+                            "type": "checkbox",
+                            "templateOptions": {
+                                "label": "Tinnitus - Extent Unknow"
+                            }
+                        },
+                        {
+                            "key": "total_hearing_left",
+                            "type": "checkbox",
+                            "templateOptions": {
+                                "label": "Total Hearing Loss, Left Ear"
+                            }
+                        },
+                        {
+                            "fieldGroupClassName": "row",
+                            "fieldGroup": [
+                                {
+                                    "key": "other_hearing",
+                                    "type": "checkbox",
+                                    "className": "col-2",
+                                    "templateOptions": {
+                                        "label": "Other, specify"
+                                    }
+                                },
+                                {
+                                    "type": "input",
+                                    "key": "other_hearing_specify",
+                                    "className": "col-4",
+                                    "templateOptions": {
+                                        "header_label": "",
+                                        "required": false
+                                    },
+                                    "expressionProperties": {
+                                        "templateOptions.required": "model.other_hearing",
+                                        "templateOptions.disabled": "!model.other_hearing"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

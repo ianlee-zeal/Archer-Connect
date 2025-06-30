@@ -1,0 +1,14 @@
+<div class="advanced-search-field-boolean">
+  <div class="advanced-search-field-boolean">
+    <label [ngClass]="{ 'form-check-label advanced-search-field-text-primary-option__checkbox' : !checkboxHidden }">
+      <input
+             type="checkbox"
+             [ngClass]="{ 'form-check-input' : !checkboxHidden, 'hidden' : checkboxHidden }"
+             class="form-check-input"
+             (change)="onChange($event)"
+             [checked]="this.entry.term">
+      <span>{{label}}</span>
+      <app-tooltip-info *ngIf="entry?.field?.tooltipText" [tooltipText]="entry?.field?.tooltipText" placement='top' [inline]="true">
+      </app-tooltip-info>
+      </label>
+</div>

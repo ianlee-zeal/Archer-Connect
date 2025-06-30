@@ -1,0 +1,68 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+  <div class="title">Upload a New Batch of Documents</div>
+  <div class="page-content">
+    <div class="upload-area">
+      <div class="drag-drop">
+        <app-drag-and-drop-modern [allowedFileTypes]="(documentBatchUploadSettings$ | async)?.allowedFileExtensions"
+          multiple="true" (filesSelected)="selectFiles($event)" class="label-font">
+        </app-drag-and-drop-modern>
+      </div>
+      <div class="batch-info">
+        <div class="flex-left">
+          <div class="batch-title">Batch Information</div>
+          <label class="label-font" for="0">Project</label>
+          <span class="required">&nbsp;*</span>
+          <div class="project-select">
+            <app-select class="document-batch-select" placeholder="Search" optionAsValue
+              [options]="projects" (onKeyup)="fetch($event)" [searchFn]="searchFn" [loading]="projectsLoading"
+              (onModelChange)="selectedProjectId = $event?.id" (onOpen)="fetch($event)" searchable>
+            </app-select>
+          </div>
+
+          <div class="document-types">
+            <label class="label-font">Departments</label>
+            <div class="checkbox-group">
+              <app-select class="document-batch-select" [options]="selectedDepartmentOptions"
+                placeholder="Select Departments" [model]="selectedDepartments" searchable [isMultiselectDropdown]="true"
+                (onModelChange)="updateSelectedDocumentTypes($event)" [multiple]="true" [optionAsValue]="true"
+                filterMultiselect>
+              </app-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="document-batch-notes-flex-right">
+          <div class="notes">
+            <label class="label-font" for="notes">Notes</label>
+            <span class="required">&nbsp;*</span>
+            <textarea class="label-font" id="notes" rows="4" [value]="batchDescription" [maxLength]="500"
+              placeholder="Write text here ..." (keyup)="batchDescription = $event.target.value"></textarea>
+          </div>
+          <div class="upload-btn-container">
+            <button name="submit" (click)="createBatch()" class="btn btn-primary">
+              Upload
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="file-list">
+      <nav data-test-id="tab-group" class="nav-tabs-container">
+        <ul data-test-id="tab-group-tabs" class="document-batch-link nav-tabs" role="tablist">
+          <ng-container>
+            <li data-test-id="tab-group-tab" class="nav-item" routerLinkActive="nav-item--active">
+              <a class="document-batch-link nav-link" routerLinkActive="nav-link--active">
+                Selected Files
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </nav>
+      <div class="page-content">
+        <app-document-batch-files [selectedFiles]="selectedFiles" (fileRemoved)="handleFileRemoved($event)">
+        </app-document-batch-files>
+      </div>
+    </div>
+  </div>
+</div>

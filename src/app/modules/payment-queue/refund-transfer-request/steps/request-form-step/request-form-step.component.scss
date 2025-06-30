@@ -1,0 +1,54 @@
+.request-form-step {
+  &__options {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+  }
+
+  &__attachment {
+    padding-right: 50px;
+  }
+
+  &__selector {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    width: 300px;
+  }
+
+  &__select-container {
+    height: 50px;
+  }
+
+  &__container {
+    position: relative;
+  }
+}
+
+.request-form-container {
+  display: flex;
+  gap: 10px;
+
+  &__column {
+    flex: 0 1 auto; 
+    padding: 15px 0px;
+    max-width: 380px;
+    box-sizing: border-box;
+  }
+
+  
+}
+
+.claimant_header {
+  margin-bottom: 10px;
+
+}
+
+.requestForm_card_row {
+  min-height:50px;
+}
+
+.card-row__label-container
+{
+  height:50px;
+}

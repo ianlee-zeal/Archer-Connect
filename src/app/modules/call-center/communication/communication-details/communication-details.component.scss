@@ -1,0 +1,54 @@
+@import "src/styles/variables.scss";
+
+.communication-details {
+  margin-left: 25px;
+  margin-top: 15px;
+
+  .card-row {
+    word-wrap: break-word;
+
+    .form-control,
+    .ac-select,
+    .date-selector {
+      width: 230px;
+    }
+
+    #emailBody {
+      width: 460px;
+      height: 230px;
+    }
+  }
+
+  &__datetimepicker {
+    .time-picker {
+      padding-left: 10px;
+
+      .form-control {
+        width: 45px;
+      }
+
+      .btn {
+        padding: 0 5px;
+        margin-top: 4px;
+        margin-left: -8px;
+        height: $controls-height;
+        line-height: $controls-height;
+      }
+    }
+  }
+
+  .select__options {
+    z-index: $max-z-index;
+  }
+
+  card-col {
+    @media screen and (min-width: 1600px) {
+      margin-right: 60px;
+    }
+  }
+
+  input#emailTo::placeholder,
+  input#emailFrom::placeholder {
+    font-size: 12px;
+  }
+}

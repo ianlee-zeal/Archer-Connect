@@ -1,0 +1,19 @@
+<div class="file-uploader">
+  <button type="button" class="btn me-auto" [class]="selectButtonClass" (click)="fileInput.click()" [disabled]="isBtnDisabled">
+    {{ selectButtonTitle }}
+  </button>
+  <input
+    #fileInput
+    type="file"
+    [multiple]="allowMultiple"
+    (change)="onFilesSelected($event)"
+    hidden
+  />
+
+  <ul *ngIf="selectedFiles.length > 0" class="file-list">
+    <li *ngFor="let file of selectedFiles; let i = index" class="file-item">
+      <span>{{ file.name }}</span>
+      <button (click)="removeFile(i)" class="delete-btn"><img src="assets/images/action_ic_delete.svg" /></button>
+    </li>
+  </ul>
+</div>

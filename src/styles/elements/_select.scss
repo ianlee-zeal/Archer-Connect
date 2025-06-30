@@ -1,0 +1,351 @@
+@import "src/styles/variables.scss";
+@import "src/styles/_mixins.scss";
+
+$toogle-btn-size: 16px;
+
+.select {
+  position: relative;
+
+  &__input-container {
+    position: relative;
+  }
+
+  &__input {
+    height: $controls-height;
+    line-height: $controls-height;
+    padding-right: 18px;
+
+    @include placeholder {
+      color: $control-text-color;
+    }
+
+    &[readonly] {
+      background-color: $white;
+      cursor: default;
+      user-select: none;
+    }
+  }
+
+  &__toggle {
+    @include square($toogle-btn-size);
+    line-height: $toogle-btn-size;
+    background-color: #e6e6e6;
+    border-radius: 1px;
+    border: none;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    font-size: 10px;
+    color: $gray-darker;
+
+    &:before {
+      content: '\f078';
+      font-family: $font-awesome;
+      font-weight: 600;
+    }
+
+    &--up:before {
+      content: '\f077';
+    }
+  }
+
+  .dropdown-menu,
+  // used in typeahead
+  &__options {
+    visibility: hidden;
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    padding: 6px 0;
+    background-color: $white;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+    min-width: 100%;
+    max-height: 352px;
+    overflow-y: auto;
+
+    &--shown {
+      visibility: visible;
+    }
+
+    &--shown-top {
+      bottom: 4px;
+    }
+  }
+
+  .dropdown-item,
+  // used in typeahead
+  &__option {
+    line-height: 2;
+    padding: 0 6px;
+    color: $black;
+    white-space: nowrap;
+
+    &:hover,
+    &--selected,
+    &--hovered {
+      background-color: $custom-blue;
+      color: $white;
+      cursor: default;
+    }
+  }
+
+  &__options--hovered-orange &__option:hover,
+  &__options--hovered-orange &__option--selected,
+  &__options--hovered-orange &__option--hovered {
+    background-color: $yellow;
+  }
+
+  &__options:hover &__option--selected:not(:hover),
+  // hide hightligting of selected item when user uses mouse to hover option
+  &__options--hovered &__option--selected:not(&__option--hovered) {
+    // hide hightligting of selected item when user uses keyboard to hover option
+    background-color: $white;
+    color: $control-text-color;
+  }
+
+  &--expanded &__input:focus {
+    border-color: $gray;
+  }
+
+  // for typeahead
+  .dropdown-menu {
+    font-size: inherit;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+
+    &.show {
+      display: block;
+    }
+  }
+
+  .dropdown-item {
+    &.active {
+      background-color: $custom-blue;
+      color: $white;
+      cursor: default;
+    }
+
+    &:not(.active) .ngb-highlight {
+      background-color: $light-yellow;
+    }
+  }
+
+  &__input.open {
+    border-color: $gray;
+  }
+}
+
+
+.ng-select.ac-select {
+  margin-top: 4px;
+  &.w-100 {
+    .ng-select-container {
+      width: 100%;
+    }
+  }
+  .ng-select-container {
+    border-radius: 0;
+    border-color: #C2C2C0;
+    .ng-value-container {
+      padding-left: 5px;
+    }
+  }
+
+  &.hovered-orange {
+    .ng-dropdown-panel {
+      &-items {
+        .ng-option {
+
+          &.ng-option-marked,
+          &.ng-option-selected.ng-option-marked {
+            background-color: $yellow;
+          }
+        }
+      }
+    }
+  }
+
+  &.ng-select-opened {
+    >.ng-select-container .ng-arrow {
+      top: 0;
+    }
+
+    .ng-arrow-wrapper {
+      .ng-arrow {
+        &::before {
+          content: '\f077';
+        }
+      }
+    }
+  }
+
+  .ng-arrow-wrapper {
+    width: $toogle-btn-size;
+    height: $toogle-btn-size;
+    line-height: 16px;
+    background-color: $gray-mid-light;
+    border-radius: 1px;
+    border: none;
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    font-size: 10px;
+    color: $gray-darker;
+
+    .ng-arrow {
+      width: 16px;
+      border: none;
+
+      &::before {
+        content: '\f078';
+        font-family: $font-awesome;
+        font-weight: 600;
+      }
+    }
+
+    &:hover {
+      color: $gray;
+    }
+  }
+
+  .ng-dropdown-panel {
+    &-items {
+      .ng-option {
+        line-height: 2;
+        padding: 0 6px;
+        color: $black;
+        white-space: normal;
+
+        &.ng-option-selected {
+          background-color: $white;
+        }
+
+        &.ng-option-marked,
+        &.ng-option-selected.ng-option-marked {
+          background-color: $custom-blue;
+          color: $white;
+          cursor: default;
+        }
+      }
+    }
+  }
+
+  .ng-value-container {
+    .ng-input {
+      top: 0;
+    }
+
+    .ng-value-label {
+      font-size: 14px;
+      color: $black;
+    }
+  }
+
+  &.ng-select-single {
+    .ng-select-container {
+      min-height: $controls-height;
+      height: $controls-height;
+
+      .ng-value-container {
+        .ng-input {
+          top: 0;
+          padding-left: 5px;
+        }
+        .ng-value {
+          padding-right: 20px;
+        }
+      }
+    }
+  }
+
+  &.ng-select-multiple {
+    .ng-select-container {
+      min-height: 28px;
+      .ng-value-container {
+        padding-top: 0;
+        padding-left: 5px;
+        .ng-placeholder {
+          position: static;
+          padding-bottom: 0;
+          padding-left: 0;
+        }
+        .ng-input {
+          padding: 0 0 0px 3px;
+        }
+        .ng-value {
+          margin: 2px 5px 2px 0;
+          background-color: $gray-light;
+          .ng-value-label {
+            padding: 0px 3px;
+          }
+          .ng-value-icon {
+            &:hover {
+              background-color: inherit;
+              color: $gray;
+            }
+            &.right {
+              border-left: none;
+            }
+          }
+        }
+      }
+      .ng-arrow-wrapper {
+        display: none;
+      }
+      .ng-clear-wrapper {
+        position: static;
+      }
+    }
+  }
+
+  &.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+    border-color: #ccc;
+    box-shadow: none;
+  }
+
+  .ng-clear-wrapper {
+    right: 15px;
+    width: 15px;
+    .ng-clear {
+      font-size: $font-size-m;
+    }
+  }
+}
+
+// @todo: Temporary solution: app-select refactoring is needed
+
+.custom-multiselect {
+  .ng-select {
+    .ng-option-marked label {
+      color: white;
+    }
+  }
+
+  .selected-option:not(:last-of-type):after {
+    content: ", ";
+    margin-right: 0.5ex;
+  }
+}
+
+.custom-multiselect--standalone {
+  @extend .custom-multiselect;
+
+  .ng-select-container {
+    height: auto !important;
+  }
+
+  .ng-value-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.custom-multiselect--grid {
+  @extend .custom-multiselect;
+
+  .ng-value-container {
+    max-width: 100%;
+    flex-wrap: nowrap !important;
+  }
+}

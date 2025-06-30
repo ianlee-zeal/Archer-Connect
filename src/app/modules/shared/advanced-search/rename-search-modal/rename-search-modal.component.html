@@ -1,0 +1,26 @@
+<modal (close)="onCancel()">
+  <modal-header>Rename</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="renameSearchForm">
+        <card hideSeparator>
+          <card-col [width]="581" [labelWidth]="135">
+            <card-row label="Name Search" inputId="nameSearch" [control]="renameSearchForm.get('nameSearch')" required>
+              <input type="text" class="form-control w-100" formControlName="nameSearch" id="nameSearch" maxLength="50" appAutoFocus required cardValue />
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--primary"
+            (click)="onSave()">
+      Save
+    </button>
+  </modal-footer>
+</modal>

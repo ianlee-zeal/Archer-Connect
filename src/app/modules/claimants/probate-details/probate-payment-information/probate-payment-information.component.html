@@ -1,0 +1,76 @@
+<form [formGroup]="form" *ngIf="canEdit; else viewTemplate" novalidate>
+  <card header="Payment Information" class="mb-0">
+    <card-col [width]="600" [labelWidth]="215">
+      <card-row label="Disbursement Group" [value]="probateDisbursementGroups"></card-row>
+    </card-col>
+  </card>
+  <card header="Invoicing">
+    <card-col [width]="200" [labelWidth]="100">
+      <card-row label="Invoiced" inputId="invoiced" [control]="form.get('invoiced')">
+        <label class="form-check h-100" cardValue>
+          <input type="checkbox" class="form-check-input" formControlName="invoiced" id="invoiced" />
+          <span></span>
+        </label>
+      </card-row>
+    </card-col>
+    <card-col [width]="300" [labelWidth]="120">
+      <card-row label="Invoice Date" inputId="invoiceDate" [control]="form.get('invoiceDate')">
+        <app-date-selector maxWidth="110" id="invoiceDate" formControlName="invoiceDate" cardValue></app-date-selector>
+      </card-row>
+    </card-col>
+    <card-col [width]="350">
+      <card-row [containerWidth]="280" [labelWidth]="155" label="Invoice Amount" inputId="invoiceAmount" [control]="form.get('invoiceAmount')">
+        <div cardValue class="invoicing__amount">
+          <span>$</span>
+          <input
+            type="text"
+            placeholder="0.00"
+            class="form-control"
+            formControlName="invoiceAmount"
+            id="invoiceAmount"
+            [allowDecimal]="true"
+            [maxValue]="99999999.99"
+            onlyNumbersEx
+          />
+        </div>
+      </card-row>
+    </card-col>
+    <card-col [width]="260" [labelWidth]="160">
+      <card-row label="Invoice Number" inputId="invoiceNumber" [control]="form.get('invoiceNumber')">
+        <input type="text" class="form-control" formControlName="invoiceNumber" id="invoiceNumber" maxLength="100" cardValue />
+      </card-row>
+    </card-col>
+  </card>
+</form>
+
+<ng-template #viewTemplate>
+  <card header="Payment Information" class="mb-0">
+    <card-col [labelWidth]="215">
+      <card-row label="Disbursement Group" [value]="probateDisbursementGroups"></card-row>
+    </card-col>
+  </card>
+
+  <card hideSeparator>
+    <card-col>
+        <app-probate-payment-information-contacts-list
+          *ngIf="claimant"
+          [claimantId]="claimant.id">
+        </app-probate-payment-information-contacts-list>
+    </card-col>
+  </card>
+
+  <card header="Invoicing">
+    <card-col [width]="200" [labelWidth]="100">
+      <card-row label="Invoiced" [value]="probateDetails?.invoiced | yesNoPipe"></card-row>
+    </card-col>
+    <card-col [width]="300" [labelWidth]="120">
+      <card-row label="Invoice Date" [value]="probateDetails?.invoiceDate | dateFormat"></card-row>
+    </card-col>
+    <card-col [width]="350" [labelWidth]="155">
+      <card-row label="Invoice Amount" [value]="probateDetails?.invoiceAmount | extendedCurrency"></card-row>
+    </card-col>
+    <card-col [width]="260" [labelWidth]="160">
+      <card-row label="Invoice Number" [value]="probateDetails?.invoiceNumber"></card-row>
+    </card-col>
+  </card>
+</ng-template>

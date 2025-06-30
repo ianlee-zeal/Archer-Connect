@@ -1,0 +1,86 @@
+<modal (close)="createProjectModal.hide()">
+    <modal-header>{{title}}</modal-header>
+
+    <modal-body>
+        <div class="modal-section">
+            <form [formGroup]="form" novalidate>
+                <card hideSeparator>
+                    <card-col [width]="480" [labelWidth]="160">
+
+                        <card-row label="Project Name" inputId="name" [control]="form.get('name')" required>
+                            <input type="text" class="form-control" formControlName="name" id="name" maxLength="100" cardValue appAutoFocus />
+                        </card-row>
+
+                        <card-row label="Type" inputId="type" [control]="form.get('type')" required>
+                            <div class="select-container" cardValue>
+                                <app-select
+                                    required 
+                                    id="type" 
+                                    [options]="types$ | async"
+                                    formControlName="type" 
+                                    optionAsValue 
+                                    placeholder="Select Type">
+                                </app-select>
+                            </div>
+                        </card-row>
+
+                        <card-row label="Customer" inputId="customer" [control]="form.get('customer')" required>
+                            <input
+                                (click)="onOpenCustomerModal()"
+                                type="text" 
+                                class="form-control cursor-pointer" 
+                                formControlName="customer" 
+                                readonly
+                                id="customer" 
+                                cardValue 
+                                placeholder="Select Customer" />
+                        </card-row>
+
+                        <card-row label="Settlement" inputId="settlement" [control]="form.get('settlement')" required>
+                            <input
+                                (click)="onOpenSettlementModal()"
+                                type="text" 
+                                class="form-control cursor-pointer" 
+                                formControlName="settlement" 
+                                readonly
+                                id="settlement" 
+                                cardValue 
+                                placeholder="Select Settlement" />
+                        </card-row>
+
+                        <card-row label="Project Status" inputId="status" [control]="form.get('status')" required>
+                            <div class="select-container" cardValue>
+                                <app-select 
+                                    required 
+                                    id="status" 
+                                    [options]="statuses$ | async"
+                                    formControlName="status" 
+                                    optionAsValue 
+                                    placeholder="Select Status">
+                                </app-select>
+                            </div>
+                        </card-row>
+                    </card-col>
+                </card>
+            </form>
+        </div>
+    </modal-body>
+
+    <modal-footer>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="createProjectModal.hide()">
+            Cancel
+        </button>
+        <button
+            asyncButton
+            [awaitedActionTypes]="awaitedActionTypes"
+            type="submit" 
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            [ngClass]="{ disabled: form.invalid }" 
+            [disabled]="form.invalid" 
+            (click)="onSave()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Save
+        </button>
+    </modal-footer>
+</modal>

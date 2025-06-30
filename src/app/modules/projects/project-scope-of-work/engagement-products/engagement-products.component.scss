@@ -1,0 +1,72 @@
+@import "src/styles/variables.scss";
+@import "src/styles/colors";
+
+$category-width: 12%;
+$status-width: 10%;
+$category-status-width: 22%;
+$service-width: 20%;
+$conditions-width: 20%;
+
+.category-services {
+  width: 100%;
+
+  .row-bt {
+    border-top: 1px solid $border-gray;
+  }
+
+  .row-bb {
+    border-bottom: 1px solid $gray-light;
+  }
+
+  td {
+    padding-top: 10px;
+    vertical-align: top;
+
+    &.product-category-status {
+      width: $category-status-width;
+      padding-left: 15px;
+    }
+
+    &.service {
+      width: $service-width;
+    }
+
+    &.conditions {
+      width: $conditions-width;
+      min-width: 280px;
+    }
+
+    &.other-fields {
+      width: 38%;
+      border-bottom: 1px solid #f3f3f3;
+    }
+  }
+
+  .form-check {
+    width: 260px; 
+    
+    & > span:first-of-type {
+      display: inline-block;
+      padding-bottom: 18px;
+
+      &.error {
+        &:before {
+          border-color: $validation-invalid-color;
+        }
+      }
+    }
+
+    &-label--ellipsis {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 240px;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .text-danger {
+      font-size: small;
+    }
+  }
+}
+

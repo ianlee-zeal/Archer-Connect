@@ -1,0 +1,11 @@
+.grid-page-items-count {
+  display: flex;
+  margin-left: 40px;
+  align-items: center;
+
+  &__selector {
+    width: 60px;
+    margin-right: 10px;
+    margin-bottom: 3px;
+  }
+}

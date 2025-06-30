@@ -1,0 +1,17 @@
+<div
+  data-test-id="notes"
+  class="page notes-list" *ngIf="entityId != undefined">
+  <ul *ngIf="notes$ | async as notes" class="list-unstyled">
+    <li *ngFor="let note of notes" class="note">
+      <app-note
+        [note]="note"
+        [isPublicSettingEnabled]="isPublicSettingEnabled"
+        [isEditEnabled]="isEditEnabled">
+      </app-note>
+    </li>
+    <li *ngIf="!notes.length">
+      <app-no-records (newRecord)="callNewRecord()" [showNewRecordLink]="showNewRecordLink()" ></app-no-records>
+    </li>
+  </ul>
+  <app-simple-pager *ngIf="pager" [pager]="pager" (toPage)="toPage($event)"></app-simple-pager>
+</div>

@@ -1,0 +1,17 @@
+<nav class="nav-tabs-container">
+  <ul *ngIf="tabs && tabs.length" class="nav nav-tabs" role="tablist">
+    <ng-container *ngFor="let tab of tabs">
+      <li *permissions="tab.permission" class="nav-item" routerLinkActive="nav-item--active">
+        <a class="nav-link" routerLinkActive="nav-link--active" [routerLink]="tab.routerLink" 
+          [class.disabled]="tab.disabled">
+          <img [src]="tab.iconPath" class="nav-link-icon">
+          <span class="nav-link-title">{{tab.title}}</span>
+          <span *ngIf="{ count: tab.count | async, countToolTip: tab.countToolTip | async } as data" [title]="data.countToolTip">({{ data.count }})</span>
+        </a>
+      </li>
+    </ng-container>
+  </ul>
+  <div class="tab-content">
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
+  </div>
+</nav>

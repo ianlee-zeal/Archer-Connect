@@ -1,0 +1,83 @@
+<div
+  data-test-id="card-row"
+  class="card-row form-group row"
+  [ngClass]="{
+    'w-100': containValue,
+    'align-items-center': alignContentVertically
+  }"
+  [ngStyle]="{
+    'margin-top': marginTop ? marginTop + 'px' : null,
+    'margin-left': (reversedOrder ? '0' : (marginLeft ? marginLeft + 'px' : null)),
+  }">
+  <ng-content select="[cardValueBeforeLabel]"></ng-content>
+  <div
+    *ngIf="!hideLabel"
+    class="card-row__label-container col-auto"
+    [ngStyle]="{ 'width': labelWidth + 'px', 'font-weight': labelWeight, 'flex-shrink': labelShrinkCss !== '' ? labelShrinkCss : 'initial' }"
+    [ngClass]="{
+      'card-row__label-container--no-padding': denyLabelPadding
+    }">
+    <label
+      *ngIf="labelText"
+      data-test-id="card-label"
+      [ngStyle]="{'color': labelColor}"
+      [attr.for]="inputId"
+      [title]="labelTooltip">
+      <ng-container *ngIf="!tooltip || tooltip && !tooltipPosition">
+        <span>{{ labelText }}</span>
+      </ng-container>
+      <ng-container *ngIf="tooltip && tooltipPosition === tooltipPositionEnum.Right">
+        <span class="card-row__label-with-tooltip">{{ labelText }}<app-tooltip-info [tooltipText]="tooltip" [templateRef]="tooltipTemplateRef"></app-tooltip-info>
+        </span>
+      </ng-container>
+    </label>
+    <ng-content select="[cardLabel]"></ng-content>
+    <ng-content select="[cardNextToLabel]"></ng-content>
+    <span class="card-row__asterisk" *ngIf="required && labelText">&nbsp;*</span>
+    <span *ngIf="!isColonHidden && labelText">:</span>
+  </div>
+  <div
+    data-test-id="card-value"
+    class="card-row__value-container col px-0"
+    [ngClass]="{ 'break-text': containValue }"
+    [ngStyle]="{ 'max-width': containerWidth && labelWidth ? calcContentWidth() + 'px' : 'auto',
+                 'padding-top': valuePaddingTop ? valuePaddingTop + 'px' : null }">
+
+    <ng-content select="[cardValue]"></ng-content>
+    <control-messages *ngIf="control && !errorOnTheRight" [control]="control"></control-messages>
+
+    <span
+      *ngIf="!hideText"
+      data-test-id="card-value"
+      [className]="'card-row__value form-control-plaintext ' + (valueClass || '')"
+      [ngClass]="{
+        'card-row__value--keep-line-breaks': keepLineBreaks,
+        'text-nowrap': denyWrapValue,
+        'card-row__value--wrap': isBreakWordWrap
+      }">
+      <ng-container *ngIf="bulletList && ArrayHelper.isArray(value); else defaultContent">
+        <ul>
+          <li *ngFor="let item of value">{{ item }}</li>
+        </ul>
+      </ng-container>
+
+      <ng-template #defaultContent>
+        <span *ngIf="hyperlink">
+          <a [href]="hyperlink">{{ value || '-' }}</a>
+        </span>
+        <span *ngIf="!hyperlink">
+          {{ !labelText ? '' : (value || '-') }}
+        </span>
+      </ng-template>
+      <ng-container *ngIf="tooltip && !tooltipPosition">
+        <ng-container *ngIf="!tooltipTemplateRef">
+          <span [title]="tooltip" [ngClass]="iconTooltipClass"></span>
+        </ng-container>
+        <ng-container *ngIf="tooltipTemplateRef">
+          <app-tooltip-info [tooltipText]="tooltip" [templateRef]="tooltipTemplateRef"></app-tooltip-info>
+        </ng-container>
+      </ng-container>
+    </span>
+  </div>
+  <control-messages class="card-row__error-message-right" *ngIf="control && errorOnTheRight" [control]="control"></control-messages>
+</div>

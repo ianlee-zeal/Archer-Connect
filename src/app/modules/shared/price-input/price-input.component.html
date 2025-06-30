@@ -1,0 +1,14 @@
+<form [formGroup]="form" novalidate class="price">
+    <input 
+        id="value" 
+        formControlName="value" 
+        type="text" 
+        [placeholder]="placeholder" 
+        onlyNumbersEx
+        [setToZeroIfValueIsEmpty]="setPriceToZeroIfValueIsEmpty"
+        [allowDecimal]="true" 
+        [maxValue]="9999999999" 
+        class="form-control" />
+
+    <app-price-type-toggle class="price-type" formControlName="type"></app-price-type-toggle>
+</form>

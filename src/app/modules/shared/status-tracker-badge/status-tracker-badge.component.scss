@@ -1,0 +1,61 @@
+@import "src/styles/variables.scss";
+
+.container {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+  }
+  
+  .image {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    align-self: baseline;
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    max-width: 160px;
+  }
+  
+  .text {
+    font-size: 16px;
+    color: $black;
+    font-weight: bold;
+  }
+  
+  .icon-text {
+    font-size: 12px;
+    align-items: center;
+    margin-top: 5px;
+    color: $gray;
+  }
+  
+  .icon {
+    width: 13px;
+    height: 13px;
+    margin-right: 5px;
+    margin-bottom: 4px;
+  }
+  
+  .icon-caption {
+    font-size: 15px;
+  }
+
+  .progress-ring__background {
+    stroke-dasharray: 132; /* 2 * PI * (radius) */
+  }
+
+  .progress-ring__circle {
+    stroke-dasharray: 132;
+    stroke-dashoffset: 132;
+    transition: stroke-dashoffset 0.35s;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+  
+  #progress-text {
+    display: none;
+  }

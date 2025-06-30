@@ -1,0 +1,134 @@
+@import "../../../../styles.variables.scss";
+@import "../../../../styles/variables.scss";
+
+.search-form {
+  position: relative;
+
+  .input-container {
+    display: flex;
+    border-radius: 30px;
+    border: 1px solid #A3C7F1;
+    box-shadow: 1px 1px 10px 0px rgba(142, 156, 206, 0.12);
+    padding: 10px 24px 10px 53px;
+    height: 57px;
+    align-items: center;
+    justify-content: space-between;
+
+    &:before {
+      content: url("../../../../assets/svg/search-icon-blue.svg");
+      position: absolute;
+      top: 19px;
+      left: 24px;
+    }
+
+    .dropdown .active-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      span {
+        font-size: 16px !important;
+        font-weight: 700;
+        color: #080808;
+
+        .fa {
+          color: $blue-footer;
+        }
+      }
+    }
+
+    &__input {
+      width: 100%;
+      color: #080808;
+      font-family: $open-sans-font-family;
+      font-size: 15px;
+      font-weight: 400;
+      border: none;
+      background-color: transparent;
+
+      &::placeholder {
+        color: $dark-grey;
+      }
+    }
+  }
+
+  .dropdown-toggle:after {
+    content: none;
+  }
+
+  .dropdown-item:hover, .dropdown-item:focus {
+    background-color: #FFF;
+    color: #080808;
+  }
+
+  .dropdown-options {
+    position: absolute;
+    border-radius: 10px;
+    border: 1px solid #EBEBEB;
+    border-top: none;
+    background: #FFF;
+    box-shadow: 0px 8px 16.4px 0px rgba(14, 16, 16, 0.08);
+    right: -10%;
+    width: auto;
+
+    > a {
+      cursor: pointer;
+      font-size: 16px !important;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      padding: 3px 15px ;
+      margin-top: 3px ;
+      margin-bottom: 3px ;
+      text-decoration: none;
+      color: #080808;
+
+      &:hover {
+        background-color: $pale-navy;
+      }
+    }
+  }
+
+  .search-results {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-family: $open-sans-font-family;
+    font-size: 14px;
+    font-weight: 400;
+    top: 100%;
+    z-index: 1;
+    width: 100%;
+    margin: 0;
+    border-radius: 10px;
+    border: 1px solid #EBEBEB;
+    background: #FFF;
+    box-shadow: 0px 8px 16.4px 0px rgba(14, 16, 16, 0.08);
+
+    > a {
+      display: flex;
+      align-items: center;
+      padding: 11px 24px;
+      text-decoration: none;
+      color: $blue-footer;
+
+      &:hover {
+        border-radius: 10px;
+        background: #fafafa;
+      }
+    }
+  }
+
+  .empty-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $gray-dark;
+  }
+
+  .result-icon {
+    padding-right: 12px;
+    filter: invert(52%) sepia(31%) saturate(7390%) hue-rotate(351deg) brightness(102%) contrast(89%);
+  }
+}

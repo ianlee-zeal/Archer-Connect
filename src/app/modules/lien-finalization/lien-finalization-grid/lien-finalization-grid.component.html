@@ -1,0 +1,9 @@
+<div *ngIf="gridOptions">
+  <app-grid
+    entityLabel="Items"
+    [gridId]="gridId"
+    [gridOptions]="gridOptions"
+    (gridReady)="gridReady($event)"
+    (loadData)="loadData($event)">
+  </app-grid>
+</div>

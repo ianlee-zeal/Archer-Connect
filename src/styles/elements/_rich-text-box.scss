@@ -1,0 +1,72 @@
+@import "../variables.scss";
+
+@mixin font() {
+  font-size: 14px;
+  font-family: $open-sans-font-family;
+  color: $black;
+}
+
+quill-editor {
+  display: block !important;
+  position: relative;
+  height: 168px;
+
+  &.quill-editor_new {
+    .ql-container.ql-snow {
+      border-radius: 10px !important;
+    }
+
+    .ql-toolbar.ql-snow {
+      position: absolute;
+      bottom: 3px;
+      top: auto;
+    }
+
+    .ql-toolbar .ql-picker-options {
+      bottom: 100%;
+      top: auto !important;
+      z-index: 10;
+    }
+
+    .ql-container.ql-snow {
+      padding-bottom: 40px;
+      padding-top: 0;
+    }
+  }
+
+  .ql-toolbar.ql-snow {
+    border: none;
+    background: #f2f2f2;
+    border-radius: 4px;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    z-index: 1;
+  }
+
+  .ql-container {
+    &.ql-snow {
+      border: 1px solid $gray !important;
+      padding-top: 40px;
+      height: 100%;
+    }
+  }
+
+  .ql-editor {
+    @include font();
+
+    &.ql-blank:before {
+      font-size: 14px;
+      color: $label-color;
+      opacity: 0.5;
+    }
+  }
+}
+
+quill-view {
+  .ql-editor {
+    padding: 0;
+    @include font();
+  }
+}

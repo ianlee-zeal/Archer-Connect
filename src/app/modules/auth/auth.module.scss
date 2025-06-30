@@ -1,0 +1,19 @@
+.container{
+    width: 300px;
+}
+
+.form-control, .btn {
+    margin-top: 15px;
+}
+
+.invalid-feedback, .text-danger {
+    color: #6b1513 !important;
+}
+
+.invalid-email {
+  display: block;
+}
+
+.successful-message{
+  color: green;
+}

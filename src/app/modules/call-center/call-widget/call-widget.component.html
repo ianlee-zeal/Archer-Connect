@@ -1,0 +1,215 @@
+<div
+  data-test-id="log-call"
+  class="call-center-container"
+  *ngIf="callInfo$ | async">
+  <div class="call-center">
+    <ng-container *ngIf="controlStatus === controlStatusEnum.collapsed">
+      <ng-container *ngTemplateOutlet="collapsedTemplate"></ng-container>
+    </ng-container>
+    <ng-container *ngIf="controlStatus === controlStatusEnum.minimized">
+      <ng-container *ngTemplateOutlet="minimizedTemplate"></ng-container>
+    </ng-container>
+    <div class="call-center--expanded"
+      [hidden]="controlStatus !== controlStatusEnum.expanded"
+      [@toggleWidget]="controlStatus == controlStatusEnum.expanded">
+      <div class="start-decorator"></div>
+      <div class="data-panel col">
+        <span class="row" resizer></span>
+        <ng-container *ngTemplateOutlet="dataTemplate"></ng-container>
+      </div>
+      <div class="control-panel row">
+        <div class="col-10 call-panel">
+          <button
+            data-test-id="log-call-cancel-btn"
+            type="button"
+            title="Cancel Call"
+            class="btn float-end ps-2 pe-1"
+            (click)="onCancel()">
+            x
+          </button>
+          <button
+            data-test-id="log-call-cta-btn"
+            type="button"
+            class="btn btn-md save-call-btn"
+            [disabled]="!callInProgress && (saveCallInProgress$ | async)"
+            (click)="onFinishCall()">
+            SAVE CALL
+          </button>
+          <span
+            data-test-id="log-call-duration"
+            class="call-duration">
+            {{ callDuration }}
+        </span>
+          <button
+            data-test-id="log-call-hide-btn"
+            type="button"
+            class="btn hide-btn"
+            (click)="onMinimize()">
+            Hide
+            <span class="fa fa-chevron-down text-light ps-2"></span>
+          </button>
+        </div>
+        <div class="col-2 expand-panel">
+          <button
+            data-test-id="log-call-collapse-btn"
+            type="button"
+            class="btn btn-icon"
+            (click)="onCollapse()">
+            <span class="fa fa-angle-double-right"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #collapsedTemplate>
+  <div class="call-center--collapsed">
+    <div class="control-panel row read-only-form m-0">
+      <div class="col-1 expand-panel">
+        <button
+          data-test-id="log-call-expand-btn"
+          type="button"
+          class="btn btn-icon"
+          (click)="onExpand()">
+          <span class="fa fa-angle-double-left"></span>
+        </button>
+      </div>
+
+      <div class="col-11 call-panel">
+        <ng-container *ngTemplateOutlet="callInfoTemplate"></ng-container>
+        <div class="row buttons-panel">
+          <div class="col">
+            <button
+              data-test-id="log-call-cta-btn"
+              type="button"
+              class="btn btn-md save-call-btn"
+              [disabled]="!callInProgress && (saveCallInProgress$ | async)"
+              (click)="onFinishCall(true)">
+              Save Call
+            </button>
+          </div>
+          <div class="col">
+            <button
+              data-test-id="log-call-hide-btn"
+              type="button"
+              class="btn hide-btn"
+              (click)="onMinimize()">
+              Hide
+              <span class="fa fa-chevron-down text-light ps-2"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #minimizedTemplate>
+  <div class="call-center--minimized">
+    <div class="control-panel row">
+      <div class="col-2 expand-panel">
+        <button
+          data-test-id="log-call-expand-btn"
+          type="button"
+          class="btn btn-icon"
+          (click)="onExpand()">
+          <span class="fa fa-angle-double-left"></span>
+        </button>
+      </div>
+      <div class="col-10 call-panel">
+        <div class="row buttons-panel">
+          <button
+            data-test-id="log-call-cta-btn"
+            type="button"
+            class="btn btn-md save-call-btn"
+            [disabled]="!callInProgress && (saveCallInProgress$ | async)"
+            (click)="onFinishCall(true)">
+            Save Call
+          </button>
+          <button
+            data-test-id="log-call-show-btn"
+            type="button"
+            class="btn hide-btn"
+            (click)="onCollapse()">
+            Show
+            <span class="fa fa-chevron-up text-light ps-2"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #dataTemplate>
+  <nav>
+    <div
+      data-test-id="log-call-tabs"
+      class="nav nav-tabs" id="widget-nav-tab" role="tablist">
+      <a class="nav-item nav-link" [class.active]="isActiveTab(callWidgetTabsEnum.Details)" id="nav-details-tab"
+        (click)="onChangeTab(callWidgetTabsEnum.Details)" data-toggle="tab" data-target="#nav-details">Details
+      </a>
+      <a class="nav-item nav-link" [class.active]="isActiveTab(callWidgetTabsEnum.RelatedDocuments)" id="nav-related-documents-tab"
+      (click)="onChangeTab(callWidgetTabsEnum.RelatedDocuments)" data-toggle="tab" data-target="#nav-related-documents">Related Documents ({{ relatedDocumentsCount }})
+      </a>
+    </div>
+  </nav>
+
+  <div *ngIf="error$ | async as error" class="text-danger me-auto pb-3">{{error}}</div>
+
+  <div class="tab-content" id="widget-nav-tab-content">
+    <div class="tab-pane fade show" [class.active]="isActiveTab(callWidgetTabsEnum.Details)" id="nav-details">
+      <app-new-phone-call [communicationRecord]="communicationRecord"></app-new-phone-call>
+    </div>
+    <div class="tab-pane fade show" [class.active]="isActiveTab(callWidgetTabsEnum.RelatedDocuments)" id="nav-related-documents">
+      <button
+        data-test-id="log-call-new-attachment-btn"
+        type="button"
+        class="btn btn-secondary btn-add mb-2"
+        (click)="onAddAttachment()">
+        New
+      </button>
+      <app-documents-list
+        [entityTypeId]="entityTypeId"
+        [gridId]="gridId"
+        [isAutonomic]="true"
+        [documents]="communicationRecord?.relatedDocuments"
+        [dragDropStopPropagation]="false"
+        [emailDragAndDropEnabled]="true">
+      </app-documents-list>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #callInfoTemplate>
+  <div class="form-group row">
+    <label class="col text-light">Entity Id</label>
+    <div class="col">
+      <span class="form-control-plaintext">{{ callInfo?.entityId }}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col text-light">Date</label>
+    <div class="col">
+      <span class="form-control-plaintext">{{ communicationRecord.startTime | dateFormat }}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col text-light">Call Start Time</label>
+    <div class="col">
+      <span class="form-control-plaintext">{{ communicationRecord.startTime | date:'shortTime':'':'en-US' }}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col text-light">Call End Time</label>
+    <div class="col">
+      <span class="form-control-plaintext">{{ communicationRecord.endTime | date:'shortTime':'':'en-US' }}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col text-light">Duration</label>
+    <div class="col">
+      <span class="form-control-plaintext">{{ callDuration }}</span>
+    </div>
+  </div>
+</ng-template>

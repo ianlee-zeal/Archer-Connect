@@ -1,0 +1,34 @@
+<app-loading-indicator
+  [loadingInProgress]="loadingInProgress$ | async">
+</app-loading-indicator>
+
+<div class="layout-main" [ngClass]="{ 'external-theme': !isCurrentOrgMaster }" element-lookup-assistant>
+  <div class="layout-main__header">
+    <app-top-nav
+      data-test-id="layout-top-nav"
+      (toggleMenu)="menuIsToggled = !menuIsToggled">
+    </app-top-nav>
+  </div>
+
+  <app-banner *ngIf="!(isBannerClosed$ | async)"></app-banner>
+
+  <!-- Hamburger menu -->
+  <app-side-nav-bar data-test-id="layout-hamburger"></app-side-nav-bar>
+
+  <div class="layout-main__main wrapper">
+    <!-- Sub-menu for components -->
+    <div
+      data-test-id="layout-sidebar"
+      class="sidebar-wrapper" [ngClass]="{ 'show' : menuIsToggled, 'hidden': (loadingInProgress$ | async) }">
+      <app-sub-nav-menu></app-sub-nav-menu>
+    </div>
+
+    <!-- Main content -->
+    <div
+      data-test-id="layout-main"
+      class="layout-main__page-content" [ngClass]="{ 'hidden' : menuIsToggled ,'loading-in-progress' : (loadingInProgress$ | async) }">
+      <router-outlet></router-outlet>
+      <app-call-widget *ngIf="callInfo$ | async"></app-call-widget>
+    </div>
+  </div>
+</div>

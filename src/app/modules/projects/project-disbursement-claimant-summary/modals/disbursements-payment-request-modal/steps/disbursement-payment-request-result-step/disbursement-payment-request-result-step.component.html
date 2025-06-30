@@ -1,0 +1,13 @@
+<div class="payments-review-step__container">
+  <app-context-bar
+      title="Results Summary"
+      [elements]="headerElements">
+  </app-context-bar>
+  <app-grid
+      class="ag-grid-custom-height-150"
+      [gridId]="gridId"
+      idColumnName="rowId"
+      [gridOptions]="gridOptions"
+      (gridReady)="gridReady($event)">
+  </app-grid>
+</div>

@@ -1,0 +1,28 @@
+@import "src/styles/variables.scss";
+
+.lien-service-renderer {
+  font-weight: bold;
+
+  &__service-link {
+    font-size: 16px;
+    color: $black;
+  }
+
+  &__status {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+
+    &--pending {
+      color: #fdba12;
+    }
+
+    &--finalized {
+      color: #4ebf52;
+    }
+  }
+
+  &__finalized-info {
+    font-size: 10px;
+  }
+}

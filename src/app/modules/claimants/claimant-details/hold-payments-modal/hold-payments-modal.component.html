@@ -1,0 +1,59 @@
+<modal (close)="onCancel()">
+  <modal-header>{{ isRemoveAction ? 'Remove' : 'Update' }} Payment Hold</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="form">
+        <card hideSeparator>
+          <card-col [width]="550" [labelWidth]="140">
+            <card-row label="Action" maxContentWidth="330" inputId="action" [control]="form.get('action')">
+              <div cardValue class="actions">
+                <label>
+                  <input type="radio" formControlName="action" id="action" value="update"/>
+                  <span class="actions__value">Update Payment Hold</span>
+                </label>
+                <label>
+                  <input type="radio" formControlName="action" id="action" value="remove"/>
+                  <span class="actions__value">Remove from Hold</span>
+                </label>
+              </div>
+            </card-row>
+            <card-row label="Hold Type" maxContentWidth="330" inputId="holdType" [control]="form.get('holdTypeId')" required>
+              <app-select id="holdType" [options]="holdTypesList" formControlName="holdTypeId" placeholder="Select an Option" cardValue></app-select>
+            </card-row>
+            <card-row [hidden]="isRemoveAction" label="Reason" maxContentWidth="330" inputId="reason" [control]="form.get('holdTypeReasonId')" required>
+              <app-select id="reason" [options]="reasonsList" formControlName="holdTypeReasonId" placeholder="Select an Option" cardValue></app-select>
+            </card-row>
+            <card-row [hidden]="isRemoveAction" label="Follow up Date" maxContentWidth="330" inputId="followUpDate" [control]="form.get('followUpDate')">
+              <app-date-selector id="dateReceived" formControlName="followUpDate" fullwidth cardValue></app-date-selector>
+            </card-row>
+            <card-row label="Notes" maxContentWidth="330" inputId="notes" [control]="form.get('description')">
+              <textarea id="notes" class="form-control" formControlName="description" cardValue ></textarea>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+    <div class="modal-section">
+      <app-hold-payments-history-grid [clientId]="clientId"></app-hold-payments-history-grid>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <div *ngIf="error$ | async as error" class="text-danger me-auto">
+      {{ error }}
+    </div>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onCancel()">
+      Cancel
+    </button>
+    <button
+      asyncButton
+      [awaitedActionTypes]="awaitedActionTypes"
+      type="submit"
+      [disabled]="isDisabled()"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      (click)="submit()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Submit
+    </button>
+  </modal-footer>
+</modal>

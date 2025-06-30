@@ -1,0 +1,10 @@
+<div class="grid-expansion-panel-row-child" [ngStyle]="{ width: width ? width + 'px' : 'null' }" [ngClass]="alternateBackground ? 'grid-expansion-panel-row-child__alternateBackground' : ''">
+  <div class="grid-expansion-panel-row-child__background">
+    <div *ngFor="let element of elements" [style.width]="element.width" class="grid-expansion-panel-row-child-element">
+      <div *ngIf="element.valueGetter()"
+           [ngClass]="{ 'grid-expansion-panel-row-child-element__right' : element.isRightAligned }">
+        <span class="grid-expansion-panel-row-child-element__value">{{ element.valueGetter() }}</span>
+      </div>
+    </div>
+  </div>
+</div>

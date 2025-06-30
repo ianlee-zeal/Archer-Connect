@@ -1,0 +1,20 @@
+<div class="grid-actions">
+  <div class="grid-actions__action-wrapper">
+    <button
+      *ngIf="params.data?.documentIds?.length > 0"
+      type="button"
+      class="btn-grid-action btn-download "
+      (click)="onDownloadClick()"
+      title="Download Attachments">
+    </button>
+  </div>
+  <div class="grid-actions__action-wrapper">
+    <button
+      *permissions="editPermission"
+      type="button"
+      class="btn-grid-action btn-edit"
+      title="View Request"
+      (click)="onEditClick()"
+    ></button>
+  </div>
+</div>

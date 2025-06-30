@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #08743b;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="ic_excel" transform="translate(5)">
+    <rect id="Rectangle_322" data-name="Rectangle 322" class="cls-1" width="16" height="16" rx="2" transform="translate(-5)"/>
+    <path id="Path_121" data-name="Path 121" class="cls-2" d="M15.8,15.373H12.953l-1.944-2.748L8.968,15.373H6.11L9.658,10.91l-2.866-3.9h2.89l1.342,2.122,1.429-2.122h2.939l-3,3.9L15.8,15.373" transform="translate(-7.648 -3.036)"/>
+  </g>
+</svg>

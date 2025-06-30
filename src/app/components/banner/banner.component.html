@@ -1,0 +1,6 @@
+ <ngb-alert *ngIf="msg" (closed)="clearBanner()" class="alert-archer" [dismissible] [animation]>
+    <quill-view
+      class="alert-archer-content"
+        [content]="msg">
+    </quill-view>
+</ngb-alert>

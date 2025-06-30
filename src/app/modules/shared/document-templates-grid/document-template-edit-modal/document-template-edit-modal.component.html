@@ -1,0 +1,107 @@
+<modal class="upload-document-modal" (close)="onClose()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form *ngIf="uploadForm" [formGroup]="uploadForm" novalidate>
+        <card hideSeparator>
+          <card-col [width]="730">
+            <card-row label="File Name" [labelWidth]="120" [value]="fileName"></card-row>
+            <card-row label="Name" inputId="name" [control]="uploadForm.get('name')" [labelWidth]="120" required>
+              <input class="form-control w-100" type="text" formControlName="name" appAutoFocus cardValue />
+            </card-row>
+            <card-row label="Type" inputId="typeSelector" [control]="uploadForm.get('documentTypeId')"
+              [labelWidth]="120" required>
+              <app-select id="typeSelector" [options]="documentTypes$ | async" formControlName="documentTypeId" required
+                cardValue fullwidth [searchable]="(documentTypes$ | async)?.length > 0"
+                (onModelChange)="onDocumentTypeChange($event)">
+              </app-select>
+            </card-row>
+            <card-row *ngIf="projectFieldsEnabled" label="Level" inputId="level" [control]="uploadForm.get('isGlobal')"
+              [labelWidth]="120" required>
+              <app-select id="level" [options]="levelsList" formControlName="isGlobal" required cardValue fullwidth>
+              </app-select>
+            </card-row>
+            <card-row label="Project" *ngIf="!uploadForm.get('isGlobal').value" [labelWidth]="120" inputId="projects"
+              [control]="uploadForm.get('projects')" alignContentVertically>
+              <app-clearable-input cursorPointer id="projects" [form]="uploadForm" controlName="projects"
+                [isReadonly]="true" placeholder="Select Project" cardValue (clear)="onClear()" [width]="610"
+                (click)="onOpenProjectModal()">
+              </app-clearable-input>
+            </card-row>
+            <card-row [labelWidth]="120" *ngIf="projectsList?.length > 1">
+              <div cardValue>
+                <p class="projects__title">Projects This Template Is Applied to:</p>
+                <ol class="projects__list">
+                  <li *ngFor="let project of projectsList">{{project}}</li>
+                </ol>
+              </div>
+            </card-row>
+            <card-row label="Status" inputId="typeSelector" [control]="uploadForm.get('documentStatusId')"
+              [labelWidth]="120" required>
+              <app-select id="typeSelector" [options]="documentStatuses$ | async" formControlName="documentStatusId"
+                required cardValue fullwidth [searchable]="(documentStatuses$ | async)?.length > 0">
+              </app-select>
+            </card-row>
+            <card-row label="" [labelWidth]="120">
+              <app-drag-and-drop class="drag-drop-modal w-100" (filesSelected)="onFilesSelected($event)"
+                [allowedFileTypes]="allowedExtensions$ | async" cardValue>
+              </app-drag-and-drop>
+            </card-row>
+            <card-row label="" [labelWidth]="120">
+              <div class="generate-button" cardValue>
+                <button id="generateSampleFile" type="button" class="btn modal-footer__btn modal-footer__btn--primary"
+                  [disabled]="!disableGenerateButton()" (click)="onTestFile()">
+                  <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+                  Generate Sample
+                </button>
+              </div>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+    <ng-container>
+      <app-docusign-sender-test *ngIf="showDocusignFields()" [selectedFile]="selectedFile" [template]="template"
+        [fromCreate]="isCreate" [csUploadForm]="uploadForm" (testDITFileEvent)="onTestDITFileEvent($event.templateId, $event.request)"
+        (eDeliveryUpdateStatus)="onEDeliveryStatusUpdate($event)">
+      </app-docusign-sender-test>
+    </ng-container>
+  </modal-body>
+  <modal-footer>
+    <div class="upload-document-modal__footer">
+      <div class="upload-document-modal__actions upload-document-modal__actions--left">
+        <ng-container *ngIf="template && template.documentId">
+          <button *permissions="deletePermissions" type="button"
+            class="btn modal-footer__btn modal-footer__btn--secondary" asyncButton
+            [awaitedActionTypes]="awaitedDeleteActionTypes" (asyncFinished)="onDeleteFinished($event)"
+            (click)="onDelete()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Delete
+          </button>
+        </ng-container>
+        <div *ngIf="errorMessage$ | async as errorMessage" class="upload-document-modal__error text-danger me-auto">
+          {{errorMessage}}</div>
+      </div>
+      <div *ngIf="showIncorrectFileType()" class="upload-document-modal__error text-danger me-auto">
+        Incorrect File Type. File must be .fsf file type.
+      </div>
+      <div class="upload-document-modal__actions upload-document-modal__actions--right">
+        <div *ngIf="template?.lastTestedBy" class="tested-by">
+          <div class="tested-by__header-text">Last Tested By:</div>
+          <div class="tested-by__text">{{template?.lastTestedBy}}</div>
+          <div class="tested-by__header-text">Last Tested Date:</div>
+          <div class="tested-by__text">{{template?.lastTestedDate | date: 'shortDate'}}</div>
+        </div>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onClose()">
+          Cancel
+        </button>
+        <button id="UploadUpdateButton" type="submit" class="btn modal-footer__btn modal-footer__btn--primary"
+          asyncButton [awaitedActionTypes]="awaitedSubmitActionTypes" [disabled]="!canAddOrUpdate"
+          (asyncFinished)="onClose()" (click)="onSave()">
+          <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          {{ isCreate ? 'Upload' : 'Update' }}
+        </button>
+      </div>
+    </div>
+  </modal-footer>
+</modal>

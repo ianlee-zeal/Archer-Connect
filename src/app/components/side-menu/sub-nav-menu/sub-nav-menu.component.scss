@@ -1,0 +1,121 @@
+@import "../../../../styles/colors";
+@import "../../../../styles/variables.scss";
+@import "../../../../styles.variables";
+
+$menu-width: 270px;
+$menu-collapsed-width: 68px;
+
+.nav {
+  &--expanded {
+    width: $menu-width;
+
+    .nav-items-container {
+      margin-bottom: 187px;
+    }
+  }
+
+  &--collapsed {
+    min-width: $menu-collapsed-width;
+
+    .nav-items-container {
+      margin-bottom: 71px;
+    }
+
+    .nav-footer {
+      width: $menu-collapsed-width;
+    }
+  }
+}
+
+.nav-footer {
+  background-color: $pale-navy;
+  color: $gray;
+  bottom: 0;
+  width: $menu-width;
+  min-height: 36px;
+  padding-top: 5px;
+
+  &--collapsed {
+    .collapse-button-container {
+      text-align: center !important;
+    }
+  }
+
+  .terms-condition-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 20px;
+    gap: 8px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    a {
+      text-decoration: none;
+    }
+
+    span {
+      color: $dark-grey;
+    }
+  }
+
+  .collapse-button-container {
+    padding: 28px 14px 16px 14px;
+
+    a {
+      display: flex;
+      align-items: center;
+      color: $white;
+      padding: 2px 10px;
+      background-color: $blue;
+      border-radius: 22px;
+      text-decoration: none;
+      cursor: pointer;
+
+      img {
+        width: 10px;
+        height: 10px;
+      }
+    }
+    
+    a.collapsed {
+      width: 36px;
+      height: 22px;
+      justify-content: center;
+    }
+
+    a.expanded {
+      width: 123px;
+      height: 22px;
+      justify-content: space-around;
+
+      .expandedText {
+        font-size: 12px;
+        font-weight: 600;
+        line-height: normal;
+      }
+    }
+  }
+}
+
+.sticky-wrapper {
+  min-height: 100%;
+  background-color: $pale-navy;
+}
+
+@media screen and (max-width: 992px) {
+  .nav {
+    &--expanded {
+      width: unset;
+    }
+  }
+  .nav-footer {
+    position: relative;
+  }
+  .collapse-button-container {
+    display: none;
+  }
+}

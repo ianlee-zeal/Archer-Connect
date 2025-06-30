@@ -1,0 +1,18 @@
+@import "src/styles/variables.scss";
+
+.no-rows-overlay {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+
+    &__no-results {
+        font-size: 14px;
+        color: $label-color;
+    }
+
+    &__btn-action {
+        pointer-events: all;
+        cursor: pointer;
+        color: $custom-blue;
+    }
+}

@@ -1,0 +1,4 @@
+  <span class="text-container"> {{ isExpanded ? text : shortText}} </span>
+  <button *ngIf="canExpand" type="button" class="btn btn-link" (click)="isExpanded = !isExpanded">
+    show {{ isExpanded ? 'less' : 'more' }}
+  </button>

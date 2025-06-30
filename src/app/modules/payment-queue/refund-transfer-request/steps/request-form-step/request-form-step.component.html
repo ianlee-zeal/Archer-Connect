@@ -1,0 +1,91 @@
+<div>
+  <form [formGroup]="requestForm">
+    <card header="Project and account information">
+      <card-col>
+        <card-row label="Project" required [labelWidth]="leftInputLabelWidth" inputId="project"
+          [control]="requestForm.get('projectId')">
+          <div class="request-form-step__select-container" cardValue>
+            <app-clearable-input cursorPointer id="project" [form]="requestForm" controlName="project"
+              [isReadonly]="true" placeholder="Select Project" cardValue (clear)="onProjectClear()" [width]="inputWidth"
+              (click)="onOpenProjectModal()">
+            </app-clearable-input>
+          </div>
+        </card-row>
+        <card-row label="Transfer FROM Org" required [labelWidth]="leftInputLabelWidth" inputId="transferFromOrgId" class="requestForm_card_row" 
+          [control]="requestForm.get('transferFromOrgId')">
+          <app-clearable-input cursorPointer [form]="requestForm" controlName="transferFromOrg" [isReadonly]="true"
+            id="transferFromOrg" placeholder="Select QSF" cardValue
+            (click)="onOpenQSFModal('Select Transfer From Org', 'transferFromOrg', 'transferFromOrgId')"
+            (clear)="onQsfClear('transferFromOrg', 'transferFromOrgId')" [width]="inputWidth">
+          </app-clearable-input>
+        </card-row>
+        <card-row label="Transfer TO Org" required [labelWidth]="leftInputLabelWidth" inputId="transferToOrgId" class="requestForm_card_row"  
+          [control]="requestForm.get('transferToOrgId')">
+          <app-clearable-input cursorPointer [form]="requestForm" controlName="transferToOrg" [isReadonly]="true"
+            id="transferToOrg" placeholder="Select QSF" cardValue
+            (click)="onOpenQSFModal('Select Transfer To Org', 'transferToOrg', 'transferToOrgId')"
+            (clear)="onQsfClear('transferToOrg', 'transferToOrgId')" [width]="inputWidth">
+          </app-clearable-input>
+        </card-row>
+
+      </card-col>
+      <card-col [width]="462">
+        <card-row label="Project ID" [value]="projectId"  [labelWidth]="rightInputLabelWidth" class="requestForm_card_row" >
+        </card-row>
+        <card-row label="Transfer FROM Account"  required inputId="transferFromAccountId" containerWidth="460" class="requestForm_card_row"  
+          [control]="requestForm.get('transferFromAccountId')" [labelWidth]="rightInputLabelWidth">
+          <app-select cardValue id="transferFromAccountId" [options]="fromBankAccounts" class="request-form-input"
+            (onModelChange)="onTransferFromAccountChange($event)" fullwidth
+            formControlName="transferFromAccountId" placeholder="Select Bank Account"></app-select>
+        </card-row>
+        <card-row label="Transfer TO Account" required inputId="transferToAccountId" containerWidth="460" class="requestForm_card_row" 
+          [control]="requestForm.get('transferToAccountId')" [labelWidth]="rightInputLabelWidth" >
+          <app-select cardValue id="transferToAccountId" [options]="toBankAccounts" formControlName="transferToAccountId" class="request-form-input"
+           placeholder="Select Bank Account"></app-select>
+        </card-row>
+      </card-col>
+    </card>
+  </form>
+  <card header="Claimant and Item details" class="claimant_header">
+    <card-col>
+      <span>Download template and complete required columns or select 'Add Manually' and type in required values</span>
+      <div class="request-form-container">
+        <div class="request-form-container__column">
+          <button type="button" class="btn modal-footer__btn modal-footer__btn--primary me-auto" (click)="downloadTemplate()">
+            Download Template
+          </button>
+        </div>
+        <div class="request-form-container__column">
+          <button type="button" [disabled]="claimantAndDetailsFile || !valid" class="btn modal-footer__btn modal-footer__btn--secondary me-auto" (click)="onAddManuallyClick()">
+            Add Manually
+          </button>
+        </div>
+      </div>
+      
+    </card-col>
+    
+  </card>
+  <card header="Attachments">
+    <card-col>
+      <span>Upload Claimant and Item Details template or add any additional backup documents that need to be included.
+        You can add additional backup documents even if you wish to manually add the claimant items details.
+      </span>
+      <div class="request-form-container">
+        <div class="request-form-container__column">
+          <span>Add Attachments:</span>
+        </div>
+        <div class="request-form-container__column">
+          <app-files-selector [allowMultiple]="false" [selectButtonTitle]="'Upload Claimant & Item Details'"
+            (filesSelected)="onClaimantAndDetailsFileSelected($event)"
+            [isBtnDisabled]="claimantAndDetailsFile != null"
+            [selectButtonClass]="'modal-footer__btn modal-footer__btn--primary'"></app-files-selector>
+        </div>
+        <div class="request-form-container__column">
+          <app-files-selector [allowMultiple]="true" selectButtonTitle="Upload Additional Documents"
+            (filesSelected)="onAdditionalDocumentsFilesSelected($event)"
+            [selectButtonClass]="'modal-footer__btn modal-footer__btn--secondary'"></app-files-selector>
+        </div>
+      </div>
+    </card-col>
+  </card>
+</div>

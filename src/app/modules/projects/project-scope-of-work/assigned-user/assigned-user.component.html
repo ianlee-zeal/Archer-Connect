@@ -1,0 +1,17 @@
+<ng-container *ngIf="canEdit; else engagePreview">
+   <app-clearable-input
+                cursorPointer
+                [form]="form"
+                controlName="assignedUser"
+                [isReadonly]="true"
+                id="assigned-user"
+                placeholder="Select"
+                cardValue
+                (click)="onOpenModal()"
+                (clear)="onClear()">
+              </app-clearable-input>
+</ng-container>
+  
+  <ng-template #engagePreview>
+    {{ this.assignedUser }}
+  </ng-template>

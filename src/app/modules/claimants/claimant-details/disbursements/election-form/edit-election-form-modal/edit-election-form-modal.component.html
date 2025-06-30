@@ -1,0 +1,488 @@
+<modal (close)="editElectionFormModal.hide()">
+    <modal-header>{{title}}</modal-header>
+
+    <modal-body>
+        <form [formGroup]="form">
+            <div class="modal-section">
+                <card hideSeparator>
+                    <card-col [width]="500">
+                        <card-row [labelWidth]="200" label="Disbursement Group" inputId="disbursementGroup" [control]="form.get('disbursementGroup')">
+                            <div class="election-form__status-select-container" cardValue>
+                                <app-select id="disbursementGroup" [options]="availableDisbursementGroupsForElectionForm$ | async" (onModelChange)="onDisbursementGroupChange($event)" formControlName="disbursementGroup" optionAsValue cardValue></app-select>
+                            </div>
+                        </card-row>
+
+                        <card-row [labelWidth]="200" label="Status" inputId="status" [control]="form.get('status')" required>
+                            <div class="election-form__status-select-container" cardValue>
+                                <app-select required id="status" [options]="electionFormStatuses$ | async"
+                                (onModelChange)="onStatusChange($event)" formControlName="status" optionAsValue cardValue></app-select>
+                                <div *ngIf="isStatusInvalid" class="control-message text-danger mt-1">
+                                    Method of Payment total does not match Claimant Net.  Change status to 'Deficient' or update Method of Payment entry.
+                                </div>
+                            </div>
+                        </card-row>
+
+                        <card-row [labelWidth]="200" label="Date Received" inputId="dateReceived" [control]="form.get('dateReceived')">
+                            <app-date-selector id="dateReceived" formControlName="dateReceived" [maxDate]="todaysDate" cardValue></app-date-selector>
+                        </card-row>
+
+                        <card-row [labelWidth]="200" class="election-form__format-received" label="Format Received" [control]="form.get('documentChannelId')" required>
+                            <div class="election-form__status-select-container" cardValue>
+                            <app-select
+                                id="formatReceived"
+                                [options]="documentChannels$ | async"
+                                formControlName="documentChannelId"
+                                required>
+                            </app-select>
+                            </div>
+                        </card-row>
+
+                        <card-row [labelWidth]="200" label="Document Tracking ID" [control]="form.get('docTrackingId')">
+                        <ng-container cardValue>
+                          <div class="election-form__status-select-container">
+                            <input
+                              id="docTrackingId"
+                              formControlName="docTrackingId"
+                              type="text"
+                              class="form-control"
+                            />
+                          </div>
+                        </ng-container>
+                        </card-row>
+                    </card-col>
+                </card>
+            </div>
+
+            <div class="modal-section">
+                <card [maxWidth]="600" hideSeparator>
+                    <card-col>
+                        <card-row inputId="methodOfPayment">
+                            <ng-container cardLabel>
+                              <label class="label election-form__label-header">Method of Payment:</label>
+                              <label class="label election-form__radio-label">Claimant Net:</label>
+                              <span class="label election-form__radio-label">
+                                  {{ netAllocation | extendedCurrency:'-' }}
+                               </span>
+                            </ng-container>
+                        </card-row>
+
+                        <card-row [labelWidth]="215" inputId="lumpSumPaymentMethod" [control]="form.get('electionFormPaymentMethodId')">
+                            <ng-container cardLabel>
+                                <input class="election-form__radio-control" type="radio" [value]="electionPaymentMethod.LumpSumPayment" formControlName="electionFormPaymentMethodId" />
+                                <label class="label election-form__radio-label">Lump-Sum Payment</label>
+                            </ng-container>
+                            <ng-container cardValue *ngIf="form.get('electionFormPaymentMethodId').value === electionPaymentMethod.LumpSumPayment">
+                                <div class="election-form__amount-field-container">
+                                    <div>
+                                        $<input
+                                            id="lumpSumAmount"
+                                            formControlName="lumpSumAmount"
+                                            type="text"
+                                            placeholder="0.00"
+                                            onlyNumbersEx
+                                            [allowDecimal]="true"
+                                            [maxValue]="9999999999"
+                                            [toFixed]="2"
+                                            class="form-control election-form__combination-fields-amount" />                                       
+                                    </div>
+                                    <div class="election-form__amount-field-container__radio-container">
+                                        <input type="radio" [value]="paymentMethod.Check" formControlName="paymentMethodId" />
+                                        <label class="label election-form__radio-label">Check</label>
+                                    </div>
+                                    <div class="election-form__amount-field-container__radio-container">
+                                        <input type="radio" [attr.disabled]="ledgerSettings.isDigitalPaymentsEnabled ? null : true" [value]="paymentMethod.DigitalPayment" formControlName="paymentMethodId" />
+                                        <label class="label election-form__radio-label">Digital Payment</label>
+                                    </div>
+                                </div>
+                                <div class="control-message text-danger ms-2 mt-2"> {{ getTotalError() }} </div>
+                            </ng-container>
+                        </card-row>
+
+                        <card-row [labelWidth]="215" inputId="structuredSettlementMethod" [control]="form.get('electionFormPaymentMethodId')">
+                            <ng-container cardLabel>
+                                <input class="election-form__radio-control" type="radio" [value]="electionPaymentMethod.StructuredSettlement" formControlName="electionFormPaymentMethodId"/>
+                                <label class="label election-form__radio-label">Structured Settlement</label>
+                            </ng-container>
+                            <div
+                                *ngIf="form.get('electionFormPaymentMethodId').value === electionPaymentMethod.StructuredSettlement"
+                                cardValue
+                                class="election-form__amount-field-container">
+                                $<input
+                                    id="structuredSettlementAmount"
+                                    formControlName="structuredSettlementAmount"
+                                    type="text"
+                                    placeholder="0.00"
+                                    onlyNumbersEx
+                                    [allowDecimal]="true"
+                                    [maxValue]="9999999999"
+                                    [toFixed]="2"
+                                    class="form-control election-form__combination-fields-amount" />
+                                    <div class="control-message text-danger ms-2 mt-2"> {{ getTotalError() }} </div>
+                            </div>
+                        </card-row>
+
+                        <card-row [labelWidth]="215" inputId="specialNeedsTrustMethod" [control]="form.get('electionFormPaymentMethodId')">
+                            <ng-container cardLabel>
+                                <input class="election-form__radio-control" type="radio" [value]="electionPaymentMethod.SpecialNeedsTrust" formControlName="electionFormPaymentMethodId"/>
+                                <label class="label election-form__radio-label">Special Needs Trust</label>
+                            </ng-container>
+                            <div
+                                *ngIf="form.get('electionFormPaymentMethodId').value === electionPaymentMethod.SpecialNeedsTrust"
+                                cardValue
+                                class="election-form__amount-field-container">
+                                $<input
+                                    id="specialNeedsTrustAmount"
+                                    formControlName="specialNeedsTrustAmount"
+                                    type="text"
+                                    placeholder="0.00"
+                                    onlyNumbersEx
+                                    [allowDecimal]="true"
+                                    [maxValue]="9999999999"
+                                    [toFixed]="2"
+                                    class="form-control election-form__combination-fields-amount" />
+                                    <div class="control-message text-danger ms-2 mt-2"> {{ getTotalError() }} </div>
+                            </div>
+                        </card-row>
+
+                        <card-row inputId="combinationMethod" [control]="form.get('electionFormPaymentMethodId')">
+                            <ng-container cardLabel>
+                                <input type="radio" class="election-form__radio-control" [value]="electionPaymentMethod.Combination" formControlName="electionFormPaymentMethodId"/>
+                                <label class="label election-form__radio-label">Combination per the following</label>
+                            </ng-container>
+                        </card-row>
+
+                        <card hideSeparator class="election-form__combination-fields" *ngIf="form.get('electionFormPaymentMethodId').value === electionPaymentMethod.Combination">
+                            <card-col [labelWidth]="185">
+                                <card-row label="Lump Sum Amount" [control]="form.get('combinationLumpSumAmount')">
+                                    <ng-container cardValue>
+                                        <div class="card-row__content election-form__amount-field-container">
+                                            $<input
+                                                id="combinationLumpSumAmount"
+                                                formControlName="combinationLumpSumAmount"
+                                                type="text"
+                                                placeholder="0.00"
+                                                onlyNumbersEx
+                                                [allowDecimal]="true"
+                                                [maxValue]="9999999999"
+                                                [toFixed]="2"
+                                                class="form-control election-form__combination-fields-amount" />
+                                                
+                                                <div class="election-form__amount-field-container__radio-container">
+                                                    <input type="radio" [attr.disabled]="isCheckPaymentMethodDisabled ? true : null" [value]="paymentMethod.Check" formControlName="paymentMethodId" />
+                                                    <label class="label election-form__radio-label">Check</label>
+                                                </div>
+                                                <div class="election-form__amount-field-container__radio-container">
+                                                    <input type="radio" [attr.disabled]="isDigitalPaymentMethodDisabled ? true : null" [value]="paymentMethod.DigitalPayment" formControlName="paymentMethodId" />
+                                                    <label class="label election-form__radio-label">Digital Payment</label>
+                                                </div>
+                                            </div>
+                                    </ng-container>
+                                </card-row>
+
+                                <card-row label="Structured Settlement" [control]="form.get('combinationStructuredSettlementAmount')">
+                                    <ng-container cardValue>
+                                        <div class="card-row__content election-form__amount-field-container">
+                                            $<input
+                                                id="combinationStructuredSettlementAmount"
+                                                formControlName="combinationStructuredSettlementAmount"
+                                                type="text"
+                                                placeholder="0.00"
+                                                onlyNumbersEx
+                                                [allowDecimal]="true"
+                                                [maxValue]="9999999999"
+                                                [toFixed]="2"
+                                                class="form-control election-form__combination-fields-amount" />
+                                        </div>
+                                    </ng-container>
+                                </card-row>
+
+                                <card-row label="Special Needs Trust" [control]="form.get('combinationSpecialNeedsTrustAmount')">
+                                    <ng-container cardValue>
+                                        <div class="card-row__content election-form__amount-field-container">
+                                            $<input
+                                                id="combinationSpecialNeedsTrustAmount"
+                                                formControlName="combinationSpecialNeedsTrustAmount"
+                                                type="text"
+                                                placeholder="0.00"
+                                                onlyNumbersEx
+                                                [allowDecimal]="true"
+                                                [maxValue]="9999999999"
+                                                [toFixed]="2"
+                                                class="form-control election-form__combination-fields-amount" />
+                                        </div>
+                                    </ng-container>
+                                </card-row>
+
+                                <card-row label="Total" hideLabel>
+                                    <ng-container cardValue>
+                                        <div class="d-flex">
+                                            <div class="election-form__combination-fields-total mt-2">{{ (totalAmount | extendedCurrency) + ' TOTAL' }}</div>
+                                            <div class="control-message text-danger ms-2 mt-2"> {{ getTotalError() }} </div>
+                                        </div>
+                                    </ng-container>
+                                </card-row>
+                            </card-col>
+                        </card>
+                    </card-col>
+                </card>
+            </div>
+
+            <div class="modal-section">
+                <card hideSeparator>
+                    <card-col [width]="650">
+                        <ng-container *ngIf="selectedFile; then selectedFileTemplate else existingDocTemplate"></ng-container>
+
+                        <card-row label="Attach Election Form" [labelWidth]="175" [marginTop]="15">
+                            <app-drag-and-drop
+                                [isSelectButtonInside]="true"
+                                class="drag-drop-modal w-100"
+                                (filesSelected)="onFileSelected($event[0])"
+                                [allowedFileTypes]="allowedExtensions"
+                                [selectedFile]="selectedFile"
+                                cardValue>
+                            </app-drag-and-drop>
+                        </card-row>
+                    </card-col>
+                </card>
+            </div>
+
+            <div class="modal-section">
+              <card header="Claimant's Primary Address" [maxWidth]="650" hideSeparator>
+                  <card-col [labelWidth]="155">
+                    <card-row label="Address Line One" [value]="personAddress?.line1"></card-row>
+                    <card-row label="Address Line Two" [value]="personAddress?.line2"></card-row>
+                    <card-row label="City" [value]="personAddress?.city"></card-row>
+                    <card-row label="State" [value]="personAddress?.state"></card-row>
+                </card-col>
+                <card-col [labelWidth]="100">
+                    <card-row label="Zip Code" [value]="personAddress?.zip"></card-row>
+                    <card-row label="Country" [value]="personAddress?.country?.name"></card-row>
+                    <card-row label="Email" [value]="(primaryEmail$ | async)?.email"></card-row>
+                </card-col>
+              </card>
+          </div>
+
+          <div class="modal-section verify-wrapper">
+            <button
+              type="button"
+              class="btn btn-primary stop-payment-modal__verify-address__change-address-btn"
+              [disabled]="!this.personAddress"
+              (click)="onVerifyAddress(addressStatus.ExistingAddress)"
+              cardValue>
+              Verify
+            </button>
+          </div>
+
+            <div class="modal-section">
+                <card header="Address Change" [maxWidth]="600" hideSeparator>
+                    <card-col>
+                        <card-row label="Address Change Needed">
+                            <ng-container cardValue>
+                                <label class="form-check h-100" for="addressChangeNeeded">
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        id="addressChangeNeeded"
+                                        formControlName="addressChangeNeeded"
+                                        (change)="onCheckAddressChange($event)" />
+                                    <span></span>
+                                </label>
+                            </ng-container>
+                        </card-row>
+
+                        <card *ngIf="form.get('addressChangeNeeded').value" hideSeparator>
+                            <card-col [width]="400" [labelWidth]="165">
+                                <card-row label="Address Line One" inputId="lineOne" [control]="form.get('lineOne')" [required]="isAddressRequired">
+                                    <input
+                                        type="text"
+                                        class="form-control election-form__address-input"
+                                        formControlName="lineOne"
+                                        id="lineOne"
+                                        cardValue
+                                        maxLength="255"
+                                        [required]="isAddressRequired"/>
+                                </card-row>
+
+                                <card-row label="Address Line Two" inputId="lineTwo" [control]="form.get('lineTwo')">
+                                    <input
+                                        type="text"
+                                        class="form-control election-form__address-input"
+                                        formControlName="lineTwo"
+                                        id="lineTwo"
+                                        cardValue
+                                        maxLength="255"/>
+                                </card-row>
+
+                                <card-row label="City" inputId="city" [control]="form.get('city')" [required]="isAddressRequired">
+                                    <input
+                                        type="text"
+                                        class="form-control election-form__address-input"
+                                        formControlName="city"
+                                        id="city"
+                                        maxLength="255"
+                                        cardValue
+                                        [required]="isAddressRequired"/>
+                                </card-row>
+
+                                <card-row label="State" inputId="state" [control]="form.get('state')" [required]="isAddressRequired">
+                                    <input
+                                        type="text"
+                                        class="form-control election-form__address-input"
+                                        formControlName="state"
+                                        id="state"
+                                        maxLength="10"
+                                        cardValue
+                                        [required]="isAddressRequired"/>
+                                </card-row>
+                            </card-col>
+
+                            <card-col [width]="350" [labelWidth]="110">
+                                <card-row label="Zip Code" inputId="zipCode" [control]="form.get('zipCode')" [required]="isAddressRequired">
+                                    <input
+                                        type="text"
+                                        class="form-control election-form__address-input"
+                                        formControlName="zipCode"
+                                        id="zipCode"
+                                        maxLength="20"
+                                        cardValue
+                                        [required]="isAddressRequired"/>
+                                </card-row>
+
+                                <card-row label="Country" inputId="country" [control]="form.get('country')">
+                                        <app-select
+                                            cardValue
+                                            id="country"
+                                            placeholder="Type to search Country"
+                                            optionAsValue
+                                            [fullwidth]="true"
+                                            class="country-select"
+                                            [options]="countries$ | async"
+                                            formControlName="country"
+                                            searchable>
+                                        </app-select>
+                                </card-row>
+
+                                <card-row label="Type" inputId="type" [control]="form.get('type')" [required]="isAddressRequired">
+                                    <select
+                                        id="type"
+                                        class="form-control election-form__address-input"
+                                        formControlName="type"
+                                        [compareWith]="dropdownComparator"
+                                        cardValue
+                                        [required]="isAddressRequired">
+                                        <option *ngFor="let type of addressTypesDropdownValues$ | async" [ngValue]="type">
+                                            {{ type.name }}
+                                        </option>
+                                    </select>
+                                </card-row>
+
+                                <button
+                                  asyncButton
+                                  [awaitedActionTypes]="awaitedVerifyActionTypes"
+                                  type="button"
+                                  class="btn btn-primary stop-payment-modal__verify-address__change-address-btn ms-auto btn-verify"
+                                  [disabled]="!isAddressFilled"
+                                  [title]="!isAddressFilled ? 'To verify please fill Address Line One, City and State.' : ''"
+                                  cardValue
+                                  (click)="onVerifyAddress(addressStatus.NewAddress)">
+                                    <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+                                    Verify
+                                </button>
+                            </card-col>
+                        </card>
+
+                    </card-col>
+                </card>
+            </div>
+
+            <div class="modal-section">
+                <card hideSeparator [maxWidth]="600">
+                    <card-col>
+                        <card-row
+                            label="Add a Note"
+                            [valuePaddingTop]="5"
+                            inputId="note"
+                            [control]="form.get('note')">
+                            <quill-editor
+                                formControlName="note"
+                                placeholder="Enter text here..."
+                                cardValue>
+                            </quill-editor>
+                        </card-row>
+                    </card-col>
+                </card>
+            </div>
+        </form>
+
+        <div *ngIf="electionFormId" class="modal-section">
+          <app-change-history-list
+            [id]="electionFormId"
+            [availableDisbursementGroupsForElectionForm]="availableDisbursementGroupsForElectionForm$ | async"
+            [electionFormStatusOptions]="electionFormStatuses$ | async"
+            [documentChannels]="documentChannels$ | async">
+        </app-change-history-list>
+        </div>
+
+    </modal-body>
+
+    <modal-footer>
+        <ng-container *ngIf="existingElectionForm">
+            <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary me-auto" *permissions="deletePermission" (click)="onDelete()">
+              Delete
+            </button>
+        </ng-container>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="editElectionFormModal.hide()">Cancel</button>
+        <button
+            asyncButton
+            [awaitedActionTypes]="awaitedActionTypes"
+            [indicateLongLoad]="true"
+            type="submit"
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            [ngClass]="{ disabled: form.invalid }"
+            [disabled]="form.invalid || isStatusInvalid"
+            (click)="onSave()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Save
+        </button>
+    </modal-footer>
+</modal>
+
+<ng-template #existingDocTemplate>
+    <card-row *ngIf="existingElectionForm?.doc" label="Attached File" [labelWidth]="175">
+        <div class="election-form__file-panel" cardValue>
+            <span class="election-form__file-name">{{ existingElectionForm.doc.fileNameFull }}</span>
+            <button
+                type="button"
+                class="btn btn-icon btn-icon-remove"
+                (click)="onRemoveDocument()"
+                title="Delete Document">
+            </button>
+            <button
+                type="button"
+                class="btn btn-icon btn-icon-download"
+                (click)="onDownloadDocument()"
+                title="Download Document">
+            </button>
+        </div>
+    </card-row>
+</ng-template>
+
+<ng-template #selectedFileTemplate>
+    <card-row label="Attached File" [labelWidth]="175">
+        <div class="election-form__file-panel" cardValue>
+            <span class="election-form__file-name">{{ selectedFile.name }}</span>
+            <button
+                type="button"
+                class="btn btn-icon btn-icon-remove"
+                (click)="onRemoveSelectedFile()"
+                title="Delete Document">
+            </button>
+            <button
+                type="button"
+                class="btn btn-icon btn-icon-download"
+                (click)="onDownloadSelectedFile()"
+                title="Download Document">
+            </button>
+        </div>
+    </card-row>
+</ng-template>

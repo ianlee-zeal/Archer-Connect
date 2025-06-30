@@ -1,0 +1,46 @@
+@import "src/styles/variables.scss";
+
+::ng-deep .multiselect-option__checkbox {
+    border: 1px solid $primary-blue;
+    background-color: white;
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 2px;
+}
+
+::ng-deep .multiselect-option__checkbox:checked {
+
+    border: 1px solid $primary-blue;
+    background-color: $primary-blue;
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 2px;
+}
+
+::ng-deep .multiselect-option__checkbox:checked::after {
+    content: '✔';
+    color: white;
+    position: relative;
+    font-size: 8px;
+    bottom: 5px;
+    left: 2px;
+}
+
+
+::ng-deep .ag-header-cell.ag-floating-filter .ng-select-container {
+    border-color: $info-card-border-info;
+}
+
+::ng-deep .dropdown-column-filter__selected_options.ng-star-inserted {
+    background: $light-blue !important;
+    color: $communication-hub-primary;
+    border-radius: 5px;
+
+    span {
+        font-size: 12px;
+        margin: 5px;
+        color: $communication-hub-primary
+    }
+}

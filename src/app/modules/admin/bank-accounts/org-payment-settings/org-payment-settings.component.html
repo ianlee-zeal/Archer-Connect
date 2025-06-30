@@ -1,0 +1,91 @@
+<div class="org-payment-details">
+
+    <form [formGroup]="form" *ngIf='canEdit; else viewTemplate'>
+        <card hideSeparator>
+            <card-col [width]="600" [labelWidth]="250">
+                <card-row *ngIf="hasEditNameOnCheckPermission" label="Name on Check" inputId="nameOnCheck"
+                    [control]="form.get('nameOnCheck')">
+                    <input type="text" class="form-control" formControlName="nameOnCheck" id="nameOnCheck" cardValue>
+                </card-row>
+                <card-row *ngIf="!hasEditNameOnCheckPermission" label="Name on Check"
+                    [value]="currentOrg?.nameOnCheck" containValue></card-row>
+
+                <card-row *ngIf="hasEditERPVendorNamePermission" label="ERP Vendor Name" inputId="erpVendorName"
+                    [control]="form.get('erpVendorName')">
+                    <input type="text" class="form-control" formControlName="erpVendorName" id="erpVendorName"
+                        cardValue>
+                </card-row>
+                <card-row *ngIf="!hasEditERPVendorNamePermission" label="ERP Vendor Name"
+                    [value]="currentOrg?.erpVendorName" containValue></card-row>
+            </card-col>
+        </card>
+
+        <card [maxWidth]="600">
+            <card-col [width]="600" [labelWidth]="250">
+                <card-row [marginTop]="20" label="Default Check Memo" inputId="displayedCheckMemos">
+                    <app-tag-value-list *ngIf="checkMemoState.displayedCheckMemos.length"
+                        [data]="checkMemoState.displayedCheckMemos" [containerWidth]="600" cardValue>
+                    </app-tag-value-list>
+                </card-row>
+                <card-row [marginTop]="10" inputId="editDefaultCheckMemo" [control]="form.get('defaultCheckMemo')">
+                    <app-multiselect-list enableSelectAll [isSelectAllChecked]="checkMemoState.isAllCheckMemoChecked"
+                        [options]="checkMemoState.checkMemoOptions"
+                        (select)="checkMemoState.onCheckMemoCheckboxChange($event)"
+                        (selectAll)="checkMemoState.onCheckMemoSelectAllChange($event)" cardValue>
+                    </app-multiselect-list>
+                </card-row>
+            </card-col>
+        </card>
+
+        <card hideSeparator>
+            <card-col [width]="600" [labelWidth]="250">
+                <card-row label="Payment Batch Type" inputId="batchPayments" [control]="form.get('batchPayments')" required>
+                    <app-select id="batchPayments" [options]="batchPaymentsOptions$ | async"
+                        formControlName="batchPayments" cardValue required optionAsValue></app-select>
+                </card-row>
+
+                <card-row label="Frequency" inputId="frequency" [control]="form.get('frequency')">
+                    <app-select id="frequency" [options]="frequencyOptions$ | async" formControlName="frequency"
+                        cardValue optionAsValue></app-select>
+                </card-row>
+
+                <card-row label="Scheduling" inputId="scheduling" [control]="form.get('scheduling')">
+                    <input type="text" class="form-control" formControlName="scheduling" id="scheduling" cardValue>
+                </card-row>
+
+                <card-row label="Advanced Payment Instructions" inputId="advancedPaymentInstructionsDocument"
+                    [control]="form.get('advancedPaymentInstructionsDocument')" [marginTop]="5">
+                    <app-document-input formControlName="advancedPaymentInstructionsDocument" cardValue
+                        [entityType]="entityTypeOrg" [entityId]="currentOrg?.id" [isDocumentTypeSelectDisabled]="true"
+                        [selectedDocumentTypeId]="documentTypeEnum.AdvancedPaymentInstructions"></app-document-input>
+                </card-row>
+            </card-col>
+        </card>
+    </form>
+
+    <ng-template #viewTemplate>
+        <card hideSeparator>
+            <card-col [width]="900" [labelWidth]="250">
+                <card-row label="Name on Check" [value]="currentOrg?.nameOnCheck" containValue></card-row>
+                <card-row label="ERP Vendor Name" [value]="currentOrg?.erpVendorName" containValue></card-row>
+
+                <card-row [marginTop]="10" label="Default Check Memo">
+                    <app-tag-value-list *ngIf="checkMemoState.displayedCheckMemos?.length"
+                        [data]="checkMemoState.displayedCheckMemos" [containerWidth]="600" cardValue>
+                    </app-tag-value-list>
+                </card-row>
+
+                <card-row label="Payment Batch Type" [value]="currentOrg?.paymentGroupType?.name" [marginTop]="10"></card-row>
+                <card-row label="Frequency" [value]="currentOrg?.paymentFrequency?.name"></card-row>
+                <card-row label="Scheduling" [value]="currentOrg?.paymentSchedulingNotes" containValue></card-row>
+                <card-row label="Advanced Payment Instructions" [maxContentWidth]="800">
+                    <button *ngIf="currentOrg?.paymentInstructionDoc" cardValue
+                        class="btn btn-link" type="button" title="Download Document" (click)="onDownloadDocument()">
+                        {{ currentOrg?.paymentInstructionDoc.description }}
+                    </button>
+                </card-row>
+            </card-col>
+        </card>
+    </ng-template>
+
+</div>

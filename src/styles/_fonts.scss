@@ -1,0 +1,32 @@
+@import "./variables.scss";
+
+@mixin font-face($fontname, $fontfile, $fontweight: normal, $fontstyle: normal) {
+  font-family: $fontname;
+  font-style: $fontfile;
+  font-weight: $fontweight;
+  src:  url("../assets/fonts/#{$fontname}/#{$fontfile}.woff2") format("woff2"),
+        url("../assets/fonts/#{$fontname}/#{$fontfile}.woff") format("woff");
+}
+
+/* Open Sans */
+// If you need more font formats for Open Sans font please visit https://google-webfonts-helper.herokuapp.com/fonts/open-sans?subsets=latin
+
+@font-face {
+  @include font-face($open-sans-font-family, 'open-sans-latin-300', 300);
+}
+
+@font-face {
+  @include font-face($open-sans-font-family, 'open-sans-latin-regular');
+}
+
+@font-face {
+  @include font-face($open-sans-font-family, 'open-sans-latin-600', 600);
+}
+
+@font-face {
+  @include font-face($open-sans-font-family, 'open-sans-latin-700', 700);
+}
+
+@font-face {
+  @include font-face($open-sans-font-family, 'open-sans-latin-800', 800);
+}

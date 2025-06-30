@@ -1,0 +1,18 @@
+<div class="advanced-search-filter">
+  <ng-container *ngIf="entry.field" [ngSwitch]="true"><!-- we should compare these complex objects not only by reference because we have some cases when these are not equal -->
+    <app-advanced-search-field-text *ngSwitchCase="isEqual(entry.field.type, types.text)" [entry]="entry" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (markAsEdited)="markAsEdited.emit()" (onSubmit)="submit.emit()"></app-advanced-search-field-text>
+    <app-advanced-search-field-text-primary-option *ngSwitchCase="isEqual(entry.field.type, types.textPrimary)" [entry]="entry" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (markAsEdited)="markAsEdited.emit()" (onSubmit)="submit.emit()"></app-advanced-search-field-text-primary-option>
+    <app-advanced-search-field-number *ngSwitchCase="isEqual(entry.field.type, types.number)" [entry]="entry" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (markAsEdited)="markAsEdited.emit()" (onSubmit)="submit.emit()"></app-advanced-search-field-number>
+    <app-advanced-search-field-date *ngSwitchCase="isEqual(entry.field.type, types.date)" [entry]="entry" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (markAsEdited)="markAsEdited.emit()" (onSubmit)="submit.emit()"></app-advanced-search-field-date>
+    <app-advanced-search-field-data *ngSwitchCase="isEqual(entry.field.type, types.data)" [entry]="entry" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (markAsEdited)="markAsEdited.emit()" (onSubmit)="submit.emit()"></app-advanced-search-field-data>
+    <app-advanced-search-field-data *ngSwitchCase="isEqual(entry.field.type, types.in)" [entry]="entry" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (markAsEdited)="markAsEdited.emit()" (onSubmit)="submit.emit()"></app-advanced-search-field-data>
+    <app-advanced-search-field-data-with-checkbox *ngSwitchCase="isEqual(entry.field.type, types.dataWithCheckbox)" [entry]="entry" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (markAsEdited)="markAsEdited.emit()" (onSubmit)="submit.emit()"></app-advanced-search-field-data-with-checkbox>
+    <app-advanced-search-field-age *ngSwitchCase="isEqual(entry.field.type, types.age)" [entry]="entry" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (markAsEdited)="markAsEdited.emit()" (onSubmit)="submit.emit()"></app-advanced-search-field-age>
+    <app-advanced-search-field-boolean *ngSwitchCase="isEqual(entry.field.type, types.boolean)" [entry]="entry" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (markAsEdited)="markAsEdited.emit()" (onSubmit)="submit.emit()"></app-advanced-search-field-boolean>
+    <app-advanced-search-field-identifier *ngSwitchCase="isEqual(entry.field.type, types.numberIdentifier)" [entry]="entry" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (markAsEdited)="markAsEdited.emit()" (onSubmit)="submit.emit()"></app-advanced-search-field-identifier>
+    <app-advanced-search-field-identifier *ngSwitchCase="isEqual(entry.field.type, types.stringIdentifier)" [entry]="entry" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (markAsEdited)="markAsEdited.emit()" (onSubmit)="submit.emit()"></app-advanced-search-field-identifier>
+  </ng-container>
+  <ng-container *ngIf="!entry.field">
+    <app-advanced-search-field-text [disabled]="true" (onSubmit)="submit.emit()"></app-advanced-search-field-text>
+  </ng-container>
+</div>

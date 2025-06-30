@@ -1,0 +1,12 @@
+:host {
+  width: 100%;
+}
+
+.payee {
+  display: flex;
+  align-items: center;
+  &__{
+    width: 20px;
+    height: 20px;
+  }
+}

@@ -1,0 +1,21 @@
+@import "src/styles/variables.scss";
+
+.advanced-search-field-client-workflow-group {
+  margin-top: 12px;
+  margin-left: 10px;
+
+  &__filter{
+    flex-grow: 1;
+    padding-left: $advanced-search-controls-indent;
+  }
+
+  &__row {
+    display: flex;
+    width: 825px;
+  }
+
+  &__label {
+    width: 120px;
+    margin-right:29px;
+  }
+}

@@ -1,0 +1,15 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+  <app-context-bar [title]="'Settlements Search'"></app-context-bar>
+  <div class="page-content">
+    <app-grid
+      [gridOptions]="gridOptions"
+      (gridReady)="gridReady($event)"
+      (loadData)="loadData($event)"
+      (newRecord)="addNewRecord()"
+      entityLabel="settlements"
+      [skipSetContentHeight]="true"
+      [gridId]="gridId">
+    </app-grid>
+  </div>
+</div>

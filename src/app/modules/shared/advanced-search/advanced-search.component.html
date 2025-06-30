@@ -1,0 +1,91 @@
+
+<div *ngIf="showExpandBtn" class="advanced-search-toggle-btn">
+  <label *ngIf="isHidden">Search Criteria:</label>   
+  <app-data-toggle  (toggle)="toggleHidingAdvSearch($event)"></app-data-toggle>  
+</div>
+
+
+<div class="advanced-search" [class.hidden]="isHidden">
+   <card hideSeparator>
+    <card-col [width]="1150">
+      <card-row *ngIf="savedSearchOptions?.length > 0"
+        label="Saved Search"
+        [labelWidth]="180"
+        labelWeight="bold"
+        [labelColor]="labelColor">
+        <div class="advanced-search__saved-search" cardValue>
+          <div class="advanced-search__name-container">
+            <app-select
+              [model]="currentSearch"
+              [options]="savedSearchOptions"
+              (onModelChange)="goToSavedSearch($event)"
+              placeholder="Select Saved Search"
+              optionAsValue
+              fullwidth
+              searchable>
+            </app-select>
+          </div>
+        </div>
+      </card-row>
+      <ng-container *ngFor="let entry of state; let i = index, first as first, last as last; trackBy:trackByFn">
+        <card-row [label]="!first ? getOperatorName(entry) : 'Search Criteria'"
+                  [labelWidth]="first ? '180' : '60'"
+                  [labelWeight]="first ? 'bold' : 'normal'"
+                  [labelColor]="labelColor"
+                  [ngStyle]="{'margin-left': first ? 'null' : '120px'}"
+                  [hideColon]="!first">
+          <div cardValue>
+            <div class="advanced-search__row">
+              <div class="card-row__content advanced-search__row-content">
+                <div class="advanced-search__field-container">
+                  <app-select class="advanced-search__field" optionId="name" optionName="name" [model]="entry.field"
+                    [options]="fields" (onModelChange)="onFieldChange(entry, i, $event)" placeholder="Select Field"
+                    fullwidth optionAsValue searchable>
+                  </app-select>
+                </div>
+                <app-advanced-search-filter class="advanced-search__filter" [entry]="entry"
+                  (markAsEdited)="markAsEdited.emit()" (submit)="search()"></app-advanced-search-filter>
+              </div>
+              <div class="advanced-search__button-container">
+                <button [disabled]="state.length < 2"
+                  class="btn btn-secondary btn-icon btn-icon-remove btn-icon-remove-small advanced-search__remove-btn"
+                  title="Remove" (click)="deleteEntry(i)"></button>
+                <button class="btn btn-secondary btn-add advanced-search__add-btn"
+                  [ngClass]="{ 'advanced-search__add-btn--hidden': !last }" (click)="addEntry()">Add</button>
+              </div>
+            </div>
+            <div *ngIf="entry.field && entry.additionalFields?.length > 0">
+              <ng-container *ngIf="entry?.field?.groupType" [ngSwitch]="entry.field.groupType">
+                <app-product-workflow-group *ngSwitchCase="groupTypes.ProductWorkflowGroup"
+                    class="advanced-search__additional-fields-container"
+                    [entry]="entry"
+                    (markAsEdited)="markAsEdited.emit()"
+                    (onSubmit)="search()">
+                  </app-product-workflow-group>
+                  <app-client-workflow-group *ngSwitchCase="groupTypes.ClientWorkflowGroup"
+                    class="advanced-search__additional-fields-container"
+                    [entry]="entry"
+                    (markAsEdited)="markAsEdited.emit()"
+                    (onSubmit)="search()">
+                  </app-client-workflow-group>
+                  <app-hold-client-group *ngSwitchCase="groupTypes.HoldClientGroup"
+                    class="advanced-search__additional-fields-container"
+                    [entry]="entry"
+                    (markAsEdited)="markAsEdited.emit()"
+                    (onSubmit)="search()">
+                  </app-hold-client-group>
+              </ng-container>
+              <ng-container *ngIf="!entry?.field?.groupType">
+                <app-advanced-search-fields-group class="advanced-search__additional-fields-container" [entry]="entry"
+                  (markAsEdited)="markAsEdited.emit()" (onSubmit)="search()"></app-advanced-search-fields-group>
+              </ng-container>
+            </div>
+          </div>
+        </card-row>
+      </ng-container>
+    </card-col>
+  </card>
+  <div class="advanced-search__actions">
+    <button class="btn btn-primary" (click)="search()" [disabled]="!isValid">Search</button>
+  </div>
+</div>

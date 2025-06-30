@@ -1,0 +1,85 @@
+<modal (close)="modal.hide()">
+    <modal-header>Authorize Lien Entries</modal-header>
+  
+    <modal-body>
+      <div class="modal-section">
+        <app-stepper [stage]="step">
+          <step label="Selected Entries" [isActive]="step === steps.SelectedEntries">
+            <div class="section-content">
+              <app-authorize-entries-selected-list [parentGridId]="gridId"
+                [paymentQueueGridParams]="gridParams$ | async"></app-authorize-entries-selected-list>
+            </div>
+          </step>
+          <step label="Deficiency Summary" [isActive]="step === steps.DeficiencySummary">
+            <div class="section-content" *ngIf="step === steps.DeficiencySummary">
+              <app-authorize-entries-deficiency-summary
+                [batchAction]="batchAction"></app-authorize-entries-deficiency-summary>
+            </div>
+          </step>
+          <step label="Results" [isActive]="step === steps.Results">
+            <div class="section-content" *ngIf="step === steps.Results">
+              <app-authorize-entries-results [tabsGroup]="tabsGroup"
+                [batchAction]="batchAction"></app-authorize-entries-results>
+            </div>
+          </step>
+        </app-stepper>
+  
+      </div>
+    </modal-body>
+  
+    <modal-footer>
+      <span *ngIf="errorMessage" class="text-danger small me-auto">{{errorMessage}}</span>
+      <ng-container [ngSwitch]="step">
+        <ng-container *ngSwitchCase="steps.SelectedEntries"
+          [ngTemplateOutlet]="selectedEntriesButtons"></ng-container>
+        <ng-container *ngSwitchCase="steps.DeficiencySummary" [ngTemplateOutlet]="deficiencySummaryButtons"></ng-container>
+        <ng-container *ngSwitchCase="steps.Results" [ngTemplateOutlet]="resultsButtons"></ng-container>
+      </ng-container>
+    </modal-footer>
+  </modal>
+  
+  <ng-template #selectedEntriesButtons>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="modal.hide()">
+      Cancel
+    </button>
+    <button class="btn modal-footer__btn modal-footer__btn--primary" [disabled]="!(selectedPaymentQueueGrid$ | async)"
+        asyncButton
+        [awaitedActionTypes]="validateButtonAwaitedActions" (click)="onValidateClick()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Validate
+    </button>
+  </ng-template>
+  
+  
+  <ng-template #deficiencySummaryButtons>
+    <button *ngIf="!!validationCompleted"
+        type="button"
+        asyncButton
+        [awaitedActionTypes]="validateButtonAwaitedActions"
+        (click)="onValidationResultsClick()"
+        class="btn modal-footer__btn modal-footer__btn--success me-auto">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+    Download Deficiency Details
+    </button>
+      <button class="btn modal-footer__btn modal-footer__btn--secondary"
+              (click)="modal.hide()">
+        Cancel
+      </button>
+      <button asyncButton
+            [awaitedActionTypes]="authorizeButtonAwaitedActions"
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            [disabled]="!validationCompleted"
+            (click)="onAuthorizeClick()">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Authorize
+    </button>
+  
+  </ng-template>
+  
+  
+  <ng-template #resultsButtons>
+      <button class="btn modal-footer__btn modal-footer__btn--secondary"
+              (click)="modal.hide()">
+        Close
+      </button>
+  </ng-template>

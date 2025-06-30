@@ -1,0 +1,3 @@
+<ng-container *ngIf="params.shouldDisplayOverlay">
+    <app-no-records (newRecord)="params.newRecord()" [noRowsMessage]="params.noRowsMessageFunc()" [showNewRecordLink]="params.showNewRecordLink()" [showByAdvancedSearch]="params.showByAdvancedSearch"></app-no-records>  
+</ng-container>

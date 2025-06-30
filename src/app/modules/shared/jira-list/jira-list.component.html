@@ -1,0 +1,11 @@
+<div class="tickets-list" *ngIf="data.length > 0">
+  <div class="issue" 
+     *ngFor="let ticket of data; let first = first; let last = last" 
+     [ngClass]="{'issue--first-child': first, 'issue--last-child': last }"
+     [class.selected]="selectedIssue?.id === ticket.id"
+     (click)="selectIssue(ticket)">
+    <jira-list-card
+      [data]="ticket">
+    </jira-list-card>
+  </div>
+</div>

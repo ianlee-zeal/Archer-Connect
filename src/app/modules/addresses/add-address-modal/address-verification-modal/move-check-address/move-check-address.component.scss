@@ -1,0 +1,10 @@
+@import '../../../../../../styles/variables.scss';
+
+.move-check-address {
+  &__link {
+    color: $primary-blue;
+  }
+  &__body {
+    margin: 0 20px;
+  }
+}

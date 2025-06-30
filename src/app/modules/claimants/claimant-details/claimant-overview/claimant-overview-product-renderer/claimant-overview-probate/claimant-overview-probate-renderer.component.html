@@ -1,0 +1,26 @@
+<ng-container>
+  <div class="service-block">
+    <div *ngIf="items$ | async as items" class="service-header">
+      <div>
+        <span class="service-link line-part">Probate</span>
+        <span class="status line-part"
+              [ngClass]="{
+         'status--pending': items[0]?.service?.status?.id === statuses.Pending,
+         'status--finalized': items[0]?.service?.status?.id === statuses.Finalized
+       }">{{ items[0]?.service?.status?.name }}</span>
+      </div>
+    </div>
+
+    <app-grid entityName="probates"
+              [gridId]="gridId"
+              [gridOptions]="gridOptions"
+              [canReorderColumns]="true"
+              [isContentAutoHeight]="true"
+              [enabledAutoHeight]="false"
+              hideTopStatusbar="true"
+              hideBottomStatusbar="true"
+              (gridReady)="onGridReady($event)"
+              [rowData]="items$ | async">
+    </app-grid>
+  </div>
+</ng-container>

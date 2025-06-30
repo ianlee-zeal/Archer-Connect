@@ -1,0 +1,73 @@
+<modal (close)="onClose()">
+  <modal-header>Reassign Disbursement Group</modal-header>
+  <modal-body>
+      <div class="modal-section">
+        <app-stepper [stage]="step">
+          <step label="Selected Claimants" [isActive]="isClaimantConfigStage">
+            <div class="section-content">
+              <app-claimants-with-ledgers-list [projectId]="projectId"></app-claimants-with-ledgers-list>
+            </div>
+          </step>
+          <step label="Disbursement Groups" [isActive]="isDisbursementGroupsConfigStage">
+            <div class="section-content">
+              <app-disbursement-group-config-step
+                *ngIf="isDisbursementGroupsConfigStage"
+                [projectId]="projectId"
+                (selectGroup)="onSelectDisbursementGroup($event)">
+              </app-disbursement-group-config-step>
+            </div>
+          </step>
+        </app-stepper>
+      </div>
+  </modal-body>
+  <modal-footer>
+    <ng-container [ngSwitch]="step">
+      <ng-container *ngSwitchCase="steps.ClaimantConfig" [ngTemplateOutlet]="previewButtons"></ng-container>
+      <ng-container *ngSwitchCase="steps.DisbursementGroupsConfig" [ngTemplateOutlet]="stageSelectionButtons"></ng-container>
+    </ng-container>
+  </modal-footer>
+</modal>
+
+<ng-template #previewButtons>
+  <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onClose()">
+      Cancel
+  </button>
+  <button
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      (click)="onChangeMode(steps.DisbursementGroupsConfig)">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Next
+  </button>
+</ng-template>
+
+<ng-template #stageSelectionButtons>
+  <div *ngIf="errorText" class="text-danger small w-100">{{ errorText }}</div>
+  <div *ngIf="message" class="text-danger small w-100">{{ message }}</div>
+  <button *ngIf="validationResultDocId"
+      type="button"
+      asyncButton
+      [awaitedActionTypes]="validationResultsButtonAwaitedActions"
+      [disabled]="!erroredItemsCount"
+      (click)="onValidationResultsClick()"
+      class="btn modal-footer__btn modal-footer__btn--success me-auto">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Validation Results
+  </button>
+  <button
+      class="btn modal-footer__btn modal-footer__btn--secondary"
+      (click)="validationResultDocId ? onClose() : onChangeMode(steps.ClaimantConfig)">
+      {{ validationResultDocId ? 'Cancel' : 'Back' }}
+  </button>
+  <button
+      *ngIf="!validationResultDocId"
+      asyncButton
+      type="button"
+      [awaitedActionTypes]="submitButtonAwaitedActions"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      [ngClass]="{ disabled: !selectedDisbursementGroup?.id }"
+      [disabled]="!selectedDisbursementGroup?.id"
+      (click)="onSubmit()">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Submit
+  </button>
+</ng-template>

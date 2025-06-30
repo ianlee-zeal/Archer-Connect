@@ -1,0 +1,9 @@
+<app-grid 
+    [gridId]="gridId"
+    entityLabel="Disbursement groups"
+    [skipSetContentHeight]="true"
+    [gridOptions]="gridOptions"
+    [canReorderColumns]="true"
+    (gridReady)="gridReady($event)" 
+    (loadData)="loadData($event)" >
+</app-grid>

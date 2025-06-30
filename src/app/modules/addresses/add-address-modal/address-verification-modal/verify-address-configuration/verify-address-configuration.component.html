@@ -1,0 +1,17 @@
+<div class="verify-address-configuration">
+  <form [formGroup]="form" [connectForm]="config$ | async" (change)="onChange()">
+    <div class="d-flex align-items-center">
+      <div class="modal-title__header">Address Verification</div>
+      <label class="form-check h-100 modal-title__form-control" cardValue>
+        <input type="checkbox" class="form-check-input" formControlName="advancedAddressCorrection" id="advancedAddressCorrection" />
+        <span class="verify-address-configuration__radio-input-check-box"></span>
+        Advanced On
+      </label>
+      <label class="form-check h-100 modal-title__form-control" cardValue>
+        <input type="checkbox" class="form-check-input" formControlName="includeName" id="includeName" />
+        <span class="verify-address-configuration__radio-input-check-box"></span>
+        Include Name
+      </label>
+    </div>
+  </form>
+</div>

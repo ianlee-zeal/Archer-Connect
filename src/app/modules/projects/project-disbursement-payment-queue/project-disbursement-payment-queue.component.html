@@ -1,0 +1,8 @@
+<div class="page">
+    <div class="page-content">
+        <app-payment-queue-list 
+        *ngIf="(project$ | async) as currentProject"
+        [projectId]="currentProject.id">
+        </app-payment-queue-list>
+    </div>
+  </div>

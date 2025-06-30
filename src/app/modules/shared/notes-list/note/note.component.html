@@ -1,0 +1,102 @@
+<div
+  data-test-id="note"
+  class="note">
+  <div class="note__info-container" *ngIf="note.id">
+    <button
+      data-test-id="note-expand-btn"
+      type="button"
+      class="btn btn-icon note__expand-btn"
+      [ngClass]="{ 'note__expand-btn--expanded': isExpanded }"
+      (click)="toggleExpanded()">
+    </button>
+    <ul class="note-info list-inline">
+      <li
+        data-test-id="note-last-modified-by"
+        class="note-info__item list-inline-item">
+        {{ (note.lastModifiedBy || note.createdBy)?.displayName }}
+      </li>
+      <li
+        data-test-id="note-last-modified-date"
+        class="note-info__item list-inline-item">
+        {{ note.lastModifiedDate | dateFormat }}
+      </li>
+      <li
+        data-test-id="note-last-modified-time"
+        class="note-info__item list-inline-item">
+        {{ note.lastModifiedDate | dateFormat: false : 'h:mm a' }}
+      </li>
+      <li
+        data-test-id="note-source"
+        class="note-info__item list-inline-item">
+        {{ getDataSource(note.dataSourceId) }}
+      </li>
+    </ul>
+    <div class="note__actions">
+      <a *ngIf="hasRelatedEntity()" class="btn btn-link note__action-link" (click)="clickOnRelatedEntity()">
+        {{ getRelatedEntityTitle() }}
+      </a>
+      <ng-container *ngIf="hasPermissionToEdit">
+        <button
+          data-test-id="note-edit-btn"
+          type="button"
+          class="btn btn-icon note__action-btn"
+          title="Edit note"
+          (click)="edit()"
+          *ngIf="canEdit">
+          <img src="assets/images/action_ic_edit.svg" />
+        </button>
+      </ng-container>
+      <ng-container *ngIf="hasPermissionToDelete">
+        <button
+          data-test-id="note-remove-btn"
+          type="button"
+          class="btn btn-icon note__action-btn"
+          title="Remove note"
+          (click)="delete()"
+          *ngIf="canDelete">
+          <img src="assets/images/action_ic_delete.svg" />
+        </button>
+      </ng-container>
+    </div>
+  </div>
+  <div
+    data-test-id="note-content"
+    class="note__content" *ngIf="isExpanded || !note.id">
+    <ng-container *ngIf="isViewMode(note.id); else editTemplate">
+      <card-row
+        *ngIf="isPublicSettingEnabled"
+        label="Public Note"
+        [value]="note.isPublic | yesNoPipe">
+      </card-row>
+      <quill-view
+        [content]="note.html">
+      </quill-view>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #editTemplate>
+  <form [formGroup]="form" novalidate class="note__edit-control">
+    <card *ngIf="isPublicSettingEnabled" hideSeparator>
+      <card-col width="470" labelWidth="128">
+        <card-row label="Public Note" inputId="isPublic" [control]="form.get('isPublic')">
+          <label class="form-check h-100" cardValue>
+            <input type="checkbox" class="form-check-input" formControlName="isPublic" id="isPublic">
+            <span></span>
+          </label>
+        </card-row>
+      </card-col>
+    </card>
+    <quill-editor
+      formControlName="note"
+      bounds="self"
+      [modules]="editorModules"
+      placeholder="Enter text here...">
+    </quill-editor>
+    <control-messages
+      [control]="form.get('note')"
+      customErrorMessage="Text length exceeds maximum value of 32766 symbols. Please make it shorter or convert text into file and attach in the 'Related Documents' section."
+      customErrorPropName="maxlength">
+    </control-messages>
+  </form>
+</ng-template>

@@ -1,0 +1,20 @@
+<app-advanced-search
+    *ngIf="showAdvancedSearch"
+    (onSearch)="advancedSearchSubmit()"
+    [fields]="searchFields"
+    [state]="searchState"
+    [savedSearchOptions]="savedSearchOptions$ | async"
+    [entityType]="entityType"
+    [gridId]="gridId"
+    (markAsEdited)="markAsEdited()"
+    (onClear)="clearFilters()">
+</app-advanced-search>
+<app-grid
+    [gridId]="gridId"
+    entityLabel="claimants"
+    [gridOptions]="gridOptions"
+    [canReorderColumns]="true"
+    [skipSetContentHeight]="true"
+    (gridReady)="gridReady($event)"
+    (loadData)="loadData($event)">
+</app-grid>

@@ -1,0 +1,12 @@
+<div *ngIf="itemDetailsHeader$ | async as itemDetailsHeader" style="height: 100%; width: 100%">
+
+    <app-action-bar *ngIf="actionbar$ | async as actionbar" [actionHandlers]="actionbar"></app-action-bar>
+    <app-context-bar [title]="itemDetailsHeader.name" [elements]="headerElements" ></app-context-bar>
+ 
+    <app-tab-group>
+      <app-tab-item title="Details" routerLink="./tabs/details"></app-tab-item>
+      <app-tab-item title="Permissions" routerLink="./tabs/permissions"></app-tab-item>
+    </app-tab-group>
+
+</div>
+  

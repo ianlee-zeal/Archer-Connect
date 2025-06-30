@@ -1,0 +1,16 @@
+
+.td-checkbox {
+  padding-top: 20px;
+  padding-right: 10px;
+  vertical-align: top;
+}
+.td-notes {
+    padding: 10px;
+}
+.td-loud {
+    font-weight: bold;
+    text-decoration: underline;
+}
+.td-loud::before {
+    content: '' !important;
+}

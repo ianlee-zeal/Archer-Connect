@@ -1,0 +1,73 @@
+<div
+  *ngIf="isVisible"
+  data-test-id="action-bar-action"
+  class="action">
+  <ng-container *permissions="action?.permissions">
+    <div class="action__control" (clickOutside)="close()" [ngClass]="{ 'action__options' : action.options }">
+      <ng-container *ngIf="action?.awaitedActionTypes else regularButton">
+        <button
+          class="action__button"
+          tabindex="-1"
+          asyncButton
+          [awaitedActionTypes]="action?.awaitedActionTypes"
+          [isSpinnerEnabled]="false"
+          [title]="action?.tooltip ? action?.tooltip() : ''"
+          [class.disabled]="action?.disabled && action?.disabled()"
+          [disabled]="action?.disabled && action?.disabled()"
+          (click)="onActionClicked()">
+            <img [src]="actionConfig.icon" />
+            <span class="action__action-name">{{ action.label || actionConfig.label }}</span>
+        </button>
+        </ng-container>
+      <ng-template #regularButton>
+        <button
+          class="action__button"
+          tabindex="-1"
+          [title]="action?.tooltip ? action?.tooltip() : ''"
+          [class.disabled]="action?.disabled && action?.disabled()"
+          [disabled]="action?.disabled && action?.disabled()"
+          (click)="onActionClicked()">
+            <img [src]="actionConfig.icon" [ngStyle]="customStyle"/>
+            <span class="action__action-name" [ngStyle]="customStyle">{{ action.label || actionConfig.label }}</span>
+        </button>
+      </ng-template>
+      <button *ngIf="action.options"
+            tabindex="-1"
+            type="button"
+            class="btn btn-icon select__toggle"
+            [ngClass]="{ 'select__toggle--up': isOpen }"
+            [disabled]="action?.disabled && action?.disabled()"
+            (click)="toggleOpen()">
+      </button>
+    </div>
+  <ng-container *ngIf="action.options">
+    <ul
+      data-test-id="action-bar-options"
+      class="select__options list-unstyled"
+      [ngClass]="{ 'select__options--shown': isOpen }">
+        <ng-container *ngFor="let option of action.options">
+          <ng-container *permissions="option?.permissions">
+            <li *ngIf="!option.hidden || !option.hidden()"
+              data-test-id="action-bar-option"
+              class="select__option"
+              [ngClass]="{'select__option-flex' : option.isFlex}"
+              (click)="onClickOption(option)">
+              <a href="javascript:void(0)"
+                [class]="option.class"
+                [ngClass]="{ 'disabled': optionIsDisabled(option) }"
+                [attr.disabled]="optionIsDisabled(option)">
+                  {{ option.name }}
+              </a>
+              <span
+                data-test-id="action-bar-option-delete"
+                *ngIf="option.isDelete"
+                class="select__option-delete">
+                <i class="fas fa-times"></i>
+              </span>
+            </li>
+          </ng-container>
+        </ng-container>
+    </ul>
+  </ng-container>
+</ng-container>
+</div>

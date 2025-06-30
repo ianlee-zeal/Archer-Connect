@@ -1,0 +1,38 @@
+.upload-template-step {
+    &__options {
+      display: flex;
+      flex-direction: row;
+      margin-top: 10px;
+    }
+  
+    &__attachment {
+      padding-right: 50px;
+    }
+  
+    &__selector {
+      display: inline-block;
+      position: absolute;
+      right: 0;
+      width: 300px;
+    }
+  
+    &__select-container {
+      height: 100px;
+    }
+  
+    &__container {
+      position: relative;
+    }
+  }
+  
+  .upload-template-container {
+    display: flex;
+    gap: 10px;
+  
+    &__column {
+      flex: 0 1 auto; 
+      padding: 15px 0px;
+      max-width: 380px;
+      box-sizing: border-box;
+    }
+  }

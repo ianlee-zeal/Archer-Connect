@@ -1,0 +1,70 @@
+<div class="advanced-search-field-age">
+  <div class="advanced-search-field-age__type-container">
+    <app-select class="advanced-search-field-age__type"
+                [model]="condition"
+                [options]="conditionOptions"
+                (onModelChange)="onChangeCondition($event)"
+                placeholder="Select Condition"
+                fullwidth
+                searchable>
+    </app-select>
+  </div>
+
+  <div class="advanced-search-field-age__filter-container" *ngIf="condition !== conditions.IsMissing">
+    <!-- conditional block for age in range of -->
+    <div *ngIf="condition === conditions.InRange" [class.has-error]="hasError(entry?.errors.term)">
+      <div class="advanced-search-field-age__range-controls" [class.has-error]="entry.errors.range">
+        <input class="form-control" 
+               type="text"
+               [ngModel]="term"
+               (ngModelChange)="onInputTermChange($event)"
+               [disabled]="!condition"
+               onlyNumbers />
+        <app-search-validation-messages [errors]="entry.errors.term"></app-search-validation-messages>
+        <div class="advanced-search-field-age__delimiter">to</div>
+        <input class="form-control"
+               type="text"
+               [ngModel]="termTo"
+               (ngModelChange)="onInputTermToChange($event)"
+               [disabled]="!condition"
+               onlyNumbers />
+        <app-search-validation-messages [errors]="entry.errors.termTo"></app-search-validation-messages>
+        <div [class.has-error]="entry.errors.period" class="advanced-search-field-age__period-container">
+          <app-select [model]="period"
+                      [options]="options"
+                      [disabled]="!condition"
+                      (onModelChange)="onPeriodChange($event)"
+                      placeholder="Select Value"
+                      fullwidth
+                      searchable>
+          </app-select>
+          <app-search-validation-messages [errors]="entry.errors.period"></app-search-validation-messages>
+        </div>
+      </div>
+    </div>
+    <!-- conditional block for age days from -->
+    <div *ngIf="condition !== conditions.InRange" [class.has-error]="hasError(entry?.errors.term)">
+      
+      <div class="advanced-search-field-age__range-controls" [class.has-error]="entry.errors.range">
+        <input class="form-control"
+                type="text"
+                [ngModel]="term"
+                (ngModelChange)="onInputTermChange($event)"
+                [disabled]="!condition"
+                onlyNumbers />
+        <app-search-validation-messages [errors]="entry.errors.term"></app-search-validation-messages>
+        <div [class.has-error]="entry.errors.period" class="advanced-search-field-age__period-container">
+          <app-select [model]="period"
+                      [options]="options"
+                      [disabled]="!condition"
+                      (onModelChange)="onPeriodChange($event)"
+                      placeholder="Select Value"
+                      fullwidth
+                      searchable>
+          </app-select>
+          <app-search-validation-messages [errors]="entry.errors.period"></app-search-validation-messages>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

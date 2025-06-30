@@ -1,0 +1,105 @@
+<modal (close)="createDisbursementGroupModal.hide()">
+    <modal-header>{{title}}</modal-header>
+
+    <modal-body>
+        <div class="modal-section">
+            <form [formGroup]="form" novalidate>
+                <card hideSeparator>
+                    <card-col [width]="480" [labelWidth]="180">
+
+                        <card-row label="ID" [value]="sequence"></card-row>
+
+                        <card-row label="Name" inputId="name" [control]="form.get('name')" required>
+                            <input required type="text" class="form-control" formControlName="name" id="name" maxLength="100" cardValue appAutoFocus />
+                        </card-row>
+
+                        <card-row label="Type" inputId="type" [control]="form.get('type')" required>
+                            <app-select 
+                                required 
+                                id="type" 
+                                [options]="types$ | async"
+                                formControlName="type" 
+                                optionAsValue 
+                                cardValue
+                                placeholder="Select Type"
+                                (onModelChange)="onTypeChanged($event)">
+                            </app-select>
+                        </card-row>
+                        
+                        <card-row *ngIf="isLienHoldbackGroup" label="Primary Firm Approval Required for Payment"
+                            inputId="isPrimaryFirmApprovalRequiredForPayment" [control]="form.get('isPrimaryFirmApprovalRequiredForPayment')">
+                            <label class="form-check h-100" cardValue [ngClass]="{'read-only': isLienHoldbackGroup}">
+                                <input type="checkbox" class="form-check-input" formControlName="isPrimaryFirmApprovalRequiredForPayment"
+                                    id="isPrimaryFirmApprovalRequiredForPayment">
+                                <span></span>
+                            </label>
+                        </card-row>
+
+                        <card-row label="Stage" inputId="stage" [control]="form.get('stage')" required>
+                            <app-select 
+                                required 
+                                id="stage" 
+                                [options]="stages$ | async"
+                                formControlName="stage" 
+                                optionAsValue 
+                                cardValue
+                                placeholder="Select Stage">
+                            </app-select>
+                        </card-row>
+
+                        <card-row label="Payment Enabled" inputId="isPaymentEnabled" [control]="form.get('isPaymentEnabled')">
+                            <label class="form-check h-100" cardValue [ngClass]="{'read-only': isProvisionalDisbursementGroup}">
+                              <input type="checkbox" class="form-check-input" formControlName="isPaymentEnabled" id="isPaymentEnabled"
+                              [attr.disabled]="isProvisionalDisbursementGroup">
+                              <span></span>
+                            </label>
+                        </card-row>
+
+                        <card-row label="Election Form Required before Payment" class="electionFormRequired" inputId="electionFormRequired" [control]="form.get('electionFormRequired')">
+                            <label class="form-check h-100" cardValue>
+                              <input type="checkbox" class="form-check-input" formControlName="electionFormRequired" id="electionFormRequired">
+                              <span></span>
+                            </label>
+                        </card-row>
+
+                        <card-row *permissions="deficienciesTemplatePermission" label="Deficiency Settings" inputId="deficiencySettingsTemplate" [control]="form.get('deficiencySettingsTemplate')" required>
+                            <app-select 
+                                required 
+                                id="deficiencySettingsTemplate" 
+                                [options]="deficiencySettingsTemplates$ | async"
+                                formControlName="deficiencySettingsTemplate"  
+                                optionName="templateName"
+                                cardValue
+                                placeholder="Select Deficiency Settings Template">
+                            </app-select>
+                        </card-row>
+                    </card-col>
+                </card>
+            </form>
+        </div>
+    </modal-body>
+
+    <modal-footer>
+        <div *ngIf="error$ | async as error" 
+             class="text-danger me-auto create-disbursement-group-modal-error">
+                {{ error }}
+        </div>
+        <button 
+            type="button" 
+            class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="createDisbursementGroupModal.hide()">
+            Cancel
+        </button>
+        <button 
+            type="submit" 
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            asyncButton
+            [awaitedActionTypes]="awaitedActionTypes"
+            [ngClass]="{ disabled: form.invalid }" 
+            [disabled]="form.invalid" 
+            (click)="onSave()">
+                <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+                Save
+        </button>
+    </modal-footer>
+</modal>

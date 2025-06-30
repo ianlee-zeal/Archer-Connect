@@ -1,0 +1,19 @@
+<div>
+    <table class="finalization-widget-table">
+        <tr>
+            <th>Recent Finalizations</th>
+        </tr>
+        <tr>
+            <td *ngIf="!!start && !!end">
+                <app-date-range-slider 
+                    [start]="start" 
+                    [end]="end"
+                    (onRangeChanged)="onRangeChanged($event)"
+                    ></app-date-range-slider>
+                <div class="info">{{finalizedClaimantsCount}} Claimants were finalized during this range.</div>
+            </td>
+        </tr>
+    </table>
+    
+</div>
+  

@@ -1,0 +1,16 @@
+@import "src/styles/variables.scss";
+
+.modal-body {
+  padding: 0;
+}
+
+.modal-section {
+  margin-bottom: $modal-section-indent;
+  padding: $modal-section-padding;
+  border-radius: $modal-border-radius;
+  background-color: $modal-bg;
+
+  card:last-child {
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,26 @@
+<modal class="mfa-code-modal" (close)="onClose()">
+  <modal-header>Stage History</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <app-grid
+        class="ag-grid-custom-height-300"
+        [gridOptions]="gridOptions"
+        (loadData)="loadData($event)"
+        (gridReady)="gridReady($event)"
+        [gridId]="gridId"
+        entityLabel="Stage History">
+      </app-grid>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      (click)="onClose()">
+      Close
+    </button>
+    </modal-footer>
+</modal>
+
+
+

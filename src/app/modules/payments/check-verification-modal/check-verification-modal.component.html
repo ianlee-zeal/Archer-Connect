@@ -1,0 +1,175 @@
+<modal (close)="onCancel()">
+    <modal-header>
+      <span>Check Verification</span>
+    </modal-header>
+
+    <modal-body  *ngIf="(payment$ | async) as payment">
+      <form [formGroup]="form">
+        <div *ngIf="!editMode; else editTemplate" class="modal-section">
+          <card hideSeparator>
+            <card-col [width]="480" [labelWidth]="180">
+              <card-row
+                label="Financial Institution"
+                inputId="financialInstitution"
+                [control]="form.get('financialInstitution')"
+                required
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="financialInstitution"
+                  id="financialInstitution"
+                  cardValue
+                  maxLength="50"
+                />
+              </card-row>
+              <card-row
+                label="Agent's Name"
+                inputId="agentsName"
+                [control]="form.get('agentsName')"
+                required
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="agentsName"
+                  id="agentsName"
+                  cardValue
+                  maxLength="50"
+                />
+              </card-row>
+              <card-row
+                label="Phone Number"
+                inputId="phone"
+                [control]="form.get('phone')"
+                required
+              >
+                <input
+                  type="text"
+                  mask="(000) 000-0000"
+                  class="form-control"
+                  formControlName="phone"
+                  id="phone"
+                  cardValue
+                  maxLength="100"
+                />
+              </card-row>
+              <card-row [marginTop]="10" [maxContentWidth]="600" label="Comments" inputId="notes" [control]="form.get('notes')">
+                <textarea id="notes" class="form-control" formControlName="notes" cardValue></textarea>
+              </card-row>
+              <card-row [marginTop]="10" [maxContentWidth]="600" label="Add Attachments" [labelWidth]="175" [marginTop]="15">
+                <app-drag-and-drop
+                  [isSelectButtonInside]="true"
+                  class="drag-drop-modal w-100" 
+                  [valueClass]="'drop-container__drop-zone__grey'"
+                  (filesSelected)="onFileSelected($event[0])"
+                  [allowedFileTypes]="allowedExtensions$ | async" 
+                  [selectedFile]="selectedFile"
+                  cardValue>
+                </app-drag-and-drop>
+            </card-row>
+            <ng-container *ngIf="attachments && attachments.length; then selectedFileTemplate"></ng-container>                      
+            </card-col>
+          </card>
+        </div>
+      </form>
+    </modal-body>
+
+    <modal-footer>
+      <div *ngIf="warningMsg" class="me-auto">
+        {{ warningMsg }}
+      </div>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onCancel()">
+            Cancel
+        </button>
+        <button
+          asyncButton
+          [awaitedActionTypes]="awaitedActionTypes"
+          type="submit" 
+          class="btn modal-footer__btn modal-footer__btn--primary"
+          [ngClass]="{ disabled: form.invalid || (editMode && !validFormOnEdit) }" 
+          [disabled]="form.invalid || (editMode && !validFormOnEdit)" 
+          (click)="onSubmit()">
+          <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          Submit
+      </button>
+    </modal-footer>
+</modal>
+
+<ng-template #selectedFileTemplate>
+  <card-row label="Attached File" [labelWidth]="175">
+      <div class="check-verification-modal__file-panel" cardValue>
+        <div class="check-verification-modal__uploaded-attachments-container">
+          <div class="check-verification-modal__uploaded-attachment" *ngFor="let attachment of attachments">
+            <span class="check-verification-modal__file-name">{{ attachment.name }}</span>
+            <button
+                type="button"
+                class="btn btn-icon btn-icon-remove"
+                (click)="onRemoveSelectedFile(attachment)"
+                title="Delete Document">
+            </button>
+          </div>
+        </div>
+      </div>
+  </card-row>
+</ng-template>
+
+<ng-template #editTemplate>
+  <div *ngIf="checkVerification" class="modal-section">
+    <form [formGroup]="form">
+      <card  hideSeparator>
+        <card-col [width]="480" [labelWidth]="180">
+          <card-row
+            label="Financial Institution"
+            [value]="checkVerification.financialInstitution"
+            required
+          ></card-row>
+
+          <card-row
+            label="Agent's Name"
+            [value]="checkVerification.agentsName"
+            required
+          ></card-row>
+
+          <card-row
+            label="Phone Number"
+            [value]="checkVerification.phone?.number"
+            required
+          ></card-row> 
+
+          <card-row [marginTop]="10" [maxContentWidth]="600" label="Comments" inputId="notes" [control]="form.get('notes')">
+            <textarea id="notes" class="form-control" formControlName="notes" cardValue></textarea>
+          </card-row>
+          <card-row [marginTop]="10" [maxContentWidth]="600" label="Add Attachments" [labelWidth]="175" [marginTop]="15">
+            <app-drag-and-drop
+              [isSelectButtonInside]="true"
+              class="drag-drop-modal w-100" 
+              [valueClass]="'drop-container__drop-zone__grey'"
+              (filesSelected)="onFileSelected($event[0])"
+              [allowedFileTypes]="allowedExtensions$ | async" 
+              [selectedFile]="selectedFile"
+              cardValue>
+            </app-drag-and-drop>
+        </card-row>
+        <ng-container *ngIf="attachments && attachments.length; then selectedFileTemplate"></ng-container>                      
+        </card-col>
+      </card>
+    </form>
+  </div>
+  <div *ngIf="checkVerification" class="modal-section">
+    <card  hideSeparator>
+      <card-col [width]="480" [labelWidth]="180">
+        <card-row
+          label="Archer Agent"
+          [value]="checkVerification.createdBy?.displayName"
+        ></card-row>
+        <card-row
+          label="Date Created"
+          [value]="checkVerification.createdDate | dateFormat"
+          required
+        ></card-row>                    
+      </card-col>
+    </card>
+  </div>
+</ng-template>

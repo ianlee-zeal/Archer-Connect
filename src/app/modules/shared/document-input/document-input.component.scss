@@ -1,0 +1,13 @@
+.document-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    input {
+        margin: 0;
+    }
+
+    button {
+        min-width: 60px;
+    }
+}

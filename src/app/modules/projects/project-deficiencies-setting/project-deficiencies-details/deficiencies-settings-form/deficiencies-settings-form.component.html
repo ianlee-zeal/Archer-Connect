@@ -1,0 +1,67 @@
+<ng-container *ngIf="(deficiencyTemplate$ | async) as deficiencyTemplate">
+    <ng-container *ngIf="(canEdit$ | async)" [ngTemplateOutlet]="editTemplate" [ngTemplateOutletContext]="{$implicit:deficiencyTemplate}"></ng-container>
+    <ng-container *ngIf="!(canEdit$ | async)" [ngTemplateOutlet]="viewTemplate" [ngTemplateOutletContext]="{$implicit:deficiencyTemplate}"></ng-container>
+</ng-container>
+
+<ng-template #editTemplate let-deficiencyTemplate>
+    <form [formGroup]="form">
+        <card hideSeparator>
+            <card-col [width]="500">
+                <card-row label="Settings Template Name" inputId="template-name" [control]="form.get('templateName')" [required]="true">
+                    <input id="template-name" class="form-control" type="text" formControlName="templateName" maxlength="255" cardValue required />
+                </card-row>
+            </card-col>
+            <card-col class="ms-5" [width]="300">
+                <card-row label="Project Default Template" inputId="default-template" [control]="form.get('isDefaultTemplate')">
+                    <label class="form-check h-100" cardValue>
+                        <input id="default-template" type="checkbox" class="form-check-input" formControlName="isDefaultTemplate" />
+                        <span></span>
+                    </label>
+                </card-row>
+            </card-col>
+            <ng-container
+                [ngTemplateOutlet]="dsbGroupView"
+                [ngTemplateOutletContext]="{ $implicit: deficiencyTemplate.disbursmentGroups }">
+          </ng-container>
+        </card>
+    </form>
+</ng-template>
+
+<ng-template #viewTemplate let-deficiencyTemplate>
+    <card hideSeparator>
+        <card-col [width]="500">
+            <card-row label="Settings Template Name" [value]="deficiencyTemplate.templateName"></card-row>        
+        </card-col>
+        <card-col class="ms-5" [width]="300">
+            <card-row label="Project Default Template">
+                <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="isDefaultTemplate"
+                    [checked]="deficiencyTemplate.isDefault" disabled>
+                    <span></span>
+                </label>
+            </card-row>
+        </card-col>
+        <ng-container
+            [ngTemplateOutlet]="dsbGroupView"
+            [ngTemplateOutletContext]="{ $implicit: deficiencyTemplate.disbursmentGroups }">
+      </ng-container>
+    </card>
+</ng-template>
+
+<ng-template #dsbGroupView let-items>
+    <card-col [labelWidth]="270">
+        <card-row label="Disbursement Group Assignment">
+            <div class="card-row__content form-control-plaintext list__line-by-line" cardValue>
+                <app-tooltip-info
+                    *ngIf="!!items && items.length > 0"
+                    [templateRef]="automatedTriggerTooltip"
+                    isScrollableContent="true">
+                </app-tooltip-info>
+                <ng-template #automatedTriggerTooltip>
+                    <div *ngFor="let item of items">({{ item.id }}) {{ item.name }}</div>
+                </ng-template>
+                <span *ngIf="!items || items.length === 0">-</span>
+            </div>
+        </card-row>
+    </card-col>
+</ng-template>

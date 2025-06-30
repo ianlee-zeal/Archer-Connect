@@ -1,0 +1,8 @@
+<div class="severity-status-renderer" *ngIf="params.data.isRelatedProcess">
+  <div class="severity-status-renderer__item">
+    <i [ngClass]="{'severity-status-renderer__icon--selected': isSeverityWarning()}" class="severity-status-renderer__icon severity-status-renderer__icon--warning fas fa-exclamation-triangle"></i>Warning
+  </div>
+  <div class="severity-status-renderer__item">
+    <i [ngClass]="{'severity-status-renderer__icon--selected': isSeverityError()}" class="severity-status-renderer__icon severity-status-renderer__icon--error fas fa-exclamation-triangle"></i>Error
+  </div>
+</div>

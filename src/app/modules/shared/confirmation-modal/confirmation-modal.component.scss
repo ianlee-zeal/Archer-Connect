@@ -1,0 +1,7 @@
+.confirm-msg {
+    &:before {
+        content: url("/assets/images/warning-icon.png");
+        margin-right: 5px;
+        line-height: 15px;
+    }
+}

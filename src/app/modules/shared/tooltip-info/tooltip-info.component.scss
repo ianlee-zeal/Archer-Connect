@@ -1,0 +1,16 @@
+.tooltip-info {
+  &--inline {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .btn-icon {
+    height: 30px;
+  }
+
+  .tooltip-scrollable {
+    overflow-y: auto;
+    max-height: 140px;
+    min-width: 200px;
+    display: block;
+  }
+}

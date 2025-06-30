@@ -1,0 +1,8 @@
+<div class="page-content">
+    <app-grid *ngIf="auditRun?.id"
+    entityLabel="Audited Liens"
+    [gridOptions]="gridOptions" 
+    (gridReady)="gridReady($event)" 
+    (loadData)="loadData($event)" 
+    [gridId]="gridId"></app-grid>
+</div>

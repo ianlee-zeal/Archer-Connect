@@ -1,0 +1,100 @@
+<ng-select
+    [ngClass]="{'hovered-orange': orangeHighlight, 'w-100': fullwidth }"
+    class="ac-select"
+    [searchable]="searchable"
+    [searchFn] = "searchFn"
+    [(ngModel)]="model"
+    [clearable]="isClearable()"
+    (change)="onChange($event)"
+    (keyup)="keyup($event)"
+    (open)="open()"
+    (clear)="onClear()"
+    [disabled]="isDisabled"
+    bindLabel="{{optionName}}"
+    [items]="options"
+    bindValue="{{selectedValue}}"
+    placeholder="{{placeholder}}"
+    [hideSelected]="hideSelected"
+    [multiple]="multiple"
+    [closeOnSelect]="!isMultiselectDropdown"
+    [loading]="loading"
+    appendTo="{{appendTo}}"
+    [title]="title ? title : getOptionName(model)"
+    [groupBy]="groupBy">
+
+    <ng-template ng-optgroup-tmp let-item="item">
+      <span class="group-title">{{ item[groupBy] || 'Unnamed group' }}</span>
+    </ng-template>
+
+    <ng-template ng-option-tmp let-item="item" let-item$="item$">
+        <ng-container *ngIf="optionTemplate">
+            <ng-container *ngTemplateOutlet="optionTemplate; context: {item: item}"></ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="!optionTemplate && isMultiselectDropdown">
+            <ng-container *ngTemplateOutlet="filterMultiselect ? filterOptionMultiselectTemplate : optionMultiselectTemplate; context: {item: item, item$: item$}"></ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="!optionTemplate && !isMultiselectDropdown">
+            <ng-container *ngTemplateOutlet="optionDefaultTemplate; context: {item: item}"></ng-container>
+        </ng-container>
+    </ng-template>
+
+    <ng-template ng-label-tmp let-item="item" let-clear="clear">
+        <ng-container *ngTemplateOutlet="labelTemplate ? labelTemplate : labelDefaultTemplate; context: {item: item, clear: clear}"></ng-container>
+    </ng-template>
+
+    <ng-template *ngIf="multiLabelTemplate" ng-multi-label-tmp let-items="items" let-clear="clear">
+        <ng-container *ngTemplateOutlet="multiLabelTemplate; context: {item: items, clear: clear}"></ng-container>
+    </ng-template>
+</ng-select>
+
+
+<ng-template #optionDefaultTemplate let-item="item">
+    <span class="ng-option-label" title="{{getOptionName(item)}}" [ngClass]="{'primary-list': checkedOptionId, 'rating-list': hasRatingIcon}">
+        <span *ngIf="checkedOptionId && checkedOptionId === item.id" class="primary-tag"></span>
+        <app-rating-icon *ngIf="hasRatingIcon" [iconClass]="item.class"></app-rating-icon>
+        {{getOptionName(item)}}
+    </span>
+</ng-template>
+
+<ng-template #labelDefaultTemplate let-item="item" let-clear="clear">
+    <span class="ng-value-label">
+        <span *ngIf="hasRatingIcon && showRatingIconInLabel">
+            <app-rating-icon
+                class="rating-icon"
+                [iconClass]="item.class + ' rating-icon--label'">
+            </app-rating-icon>
+        </span>
+        <span>{{getOptionName(item)}}</span>
+    </span>
+    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+</ng-template>
+
+<ng-template #optionMultiselectTemplate let-item="item" let-item$="item$">
+    <span class="ng-option-label" title="{{getOptionName(item)}}" [ngClass]="{'primary-list': checkedOptionId}">
+        <label class="multiselect-option__label" for="multiselect-option-{{item.id}}">
+            <input
+                id="multiselect-option-{{item.id}}"
+                class="multiselect-option__checkbox"
+                type="checkbox"
+                [checked]="item.checked"
+                (change)="onMultiselectOptionChecked($event.target.checked, item)">
+            <span>{{getOptionName(item)}}</span>
+        </label>
+    </span>
+</ng-template>
+
+<ng-template #filterOptionMultiselectTemplate let-item="item" let-item$="item$">
+    <span class="ng-option-label" title="{{getOptionName(item)}}" [ngClass]="{'primary-list': checkedOptionId}">
+        <label class="multiselect-option__label" for="multiselect-option-{{item.id}}">
+            <input
+                id="multiselect-option-{{item.id}}"
+                class="multiselect-option__checkbox"
+                type="checkbox"
+                [ngModel]="item$.selected">
+            <span>{{getOptionName(item)}}</span>
+        </label>
+    </span>
+</ng-template>
+

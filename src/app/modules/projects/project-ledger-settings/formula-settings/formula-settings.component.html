@@ -1,0 +1,18 @@
+<form [formGroup]="form" [connectForm]="formulaSettings">
+    <card header="Default Formula Settings">
+        <card-col [labelWidth]="322" [width]="865">
+
+            <!-- Formula Mode -->
+            <card-row label="Formula Mode" inputId="formulaModeId" [control]="form.get('formulaModeId')" required>
+                <app-select id="formulaModeId" [disabled]="isQsfGrossFirm"  [options]="formulaSettings.formulaModeIdOptions" (change)="onChanges()"
+                    formControlName="formulaModeId" class="dropdown" cardValue optionAsValue hideSelected required> </app-select>
+            </card-row>
+
+            <!-- Formula Template -->
+            <card-row label="Formula Template" inputId="formulaSetId" [control]="form.get('formulaSetId')" required>
+                <app-select id="formulaSetId" [options]="formulaSettings.formulaSetIdOptions" (change)="OnTemplateChange()"
+                    formControlName="formulaSetId" class="dropdown" cardValue optionAsValue required> </app-select>
+            </card-row>
+        </card-col>
+    </card>
+</form>

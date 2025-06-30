@@ -1,0 +1,135 @@
+<div class="upload-bulk-document-modal">
+  <modal (close)="onClose()">
+    <modal-header>File Import <span *ngIf="stage > stages.Select">- {{documentImport?.templateName}}</span></modal-header>
+    <modal-body>
+      <div class="upload-bulk-document-modal__body">
+        <app-stepper [stage]="stage">
+          <step label="Template">
+            <div class="section-content">
+              <app-upload-bulk-document-select></app-upload-bulk-document-select>
+            </div>
+          </step>
+          <step *ngIf="!shouldSkipConfigStage && entityTypeId == projectsEntityType" label="Settings">
+            <div class="section-content">
+              <app-upload-bulk-document-configure [entityId]="entityId" [importTypeId]="importTypeId"></app-upload-bulk-document-configure>
+            </div>
+          </step>
+          <step label="Upload">
+            <div class="section-content">
+              <app-upload-bulk-document-import-file *ngIf="!isValidationInProgress; else validationTemplate" [allowedExtensions]="allowedExtensions" [entityTypeId]="entityTypeId" [entityId]="entityId" [documentImport]="documentImport$ | async"></app-upload-bulk-document-import-file>
+              <ng-template #validationTemplate>
+                <app-upload-bulk-document-processing
+                  [documentImport]="documentImport$ | async">
+                </app-upload-bulk-document-processing>
+              </ng-template>
+            </div>
+          </step>
+          <step label="Review">
+            <div class="section-content">
+              <app-upload-bulk-document-grids
+              *ngIf="(previewFile$ | async)" 
+              [tabsGroup]="tabsPreviewGroup"
+              [documentTypeId]="types.Preview"></app-upload-bulk-document-grids>
+            </div>
+          </step>
+          <step label="Results">
+            <div  *ngIf="isApproved$ | async" class="section-content">
+              <app-upload-bulk-document-grids
+              *ngIf="!isProcessingInProgress; else processingDocument" 
+              [tabsGroup]="tabsResultGroup"
+              [documentTypeId]="types.LoadingResults"></app-upload-bulk-document-grids>
+              <ng-template #processingDocument>
+                <app-upload-bulk-document-processing
+                [documentImport]="documentImport$ | async"></app-upload-bulk-document-processing>
+              </ng-template>
+            </div>
+          </step>
+        </app-stepper>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <div *ngIf="errorMessage$ | async as errorMessage" class="upload-bulk-document-modal__error-message text-danger">{{ errorMessage }}</div>
+
+      <button *ngIf="stage == stages.Select"
+              type="button"
+              class="btn modal-footer__btn modal-footer__btn--primary me-auto"
+              (click)="downloadTemplate()"
+              [ngClass]="{ disabled: !(isValidSelect$ | async) && stage == stages.Select }"
+              [disabled]="(!(isValidSelect$ | async) && stage == stages.Select) || !provideTemplate">
+        Download Template
+      </button>
+
+      <div class="me-auto">
+        <button *ngIf="stage > stages.Select && stage < stages.Review && !isValidationInProgress"
+          type="submit"
+          class="btn modal-footer__btn modal-footer__btn--primary "
+          (click)="onBack()">Back</button>
+        <button *ngIf="stage > stages.Upload && validationResultsAvailable"
+          asyncButton
+          [awaitedActionTypes]="awaitedDocumentDownloadActionTypes"
+          (click)="onValidationResultsClick()"
+          class="btn modal-footer__btn upload-bulk-document-modal__link">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Validation Results
+        </button>
+        <button *ngIf="(stage === stages.Result || stage === stages.Review) && loadingResultAvailable"
+          asyncButton
+          [awaitedActionTypes]="awaitedDocumentDownloadActionTypes"
+          (click)="onLogFileClick()"
+          class="btn modal-footer__btn upload-bulk-document-modal__link">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Log File
+        </button>
+        <button *ngIf="stage === stages.Result"
+          asyncButton
+          [awaitedActionTypes]="awaitedDocumentDownloadActionTypes"
+          (click)="onOriginalFileClick()"
+          class="btn modal-footer__btn upload-bulk-document-modal__link">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Original File
+        </button>
+      </div>
+
+      <button class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onClose()">Close</button>
+
+      <button *ngIf="stage == stages.Select"
+        type="submit"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="onNextSelect()"
+        [ngClass]="{ disabled: !(isValidSelect$ | async) && stage == stages.Select }"
+        [disabled]="!(isValidSelect$ | async) && stage == stages.Select">
+        Next
+      </button>
+      <button *ngIf="stage == stages.Configure && (!shouldSkipConfigStage || importTypeId == disbursementGroupEntityType)"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        [ngClass]="{ disabled: isDisabledConfigureStage() }"
+        [disabled]="isDisabledConfigureStage()"
+        (click)="moveToNextStep()">
+        Next
+      </button>
+      <button *ngIf="stage == stages.Upload"
+        asyncButton
+        [awaitedActionTypes]="awaitedValidateActionTypes"
+        type="submit"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="onValidate()"
+        [ngClass]="{ disabled: !(isValidUpload$ | async) || isValidationInProgress }"
+        [disabled]="!(isValidUpload$ | async) || isValidationInProgress">
+          <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          Validate
+      </button>
+      <button 
+        *ngIf="stage == stages.Review"
+        asyncButton
+        [awaitedActionTypes]="awaitedApproveActionTypes"
+        [ngClass]="{ disabled: !canApprove() }" 
+        [disabled]="!canApprove()" 
+        type="submit" 
+        class="btn modal-footer__btn modal-footer__btn--primary" 
+        (click)="onApprove()">
+          <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          Approve
+      </button>
+    </modal-footer>
+  </modal>
+</div>

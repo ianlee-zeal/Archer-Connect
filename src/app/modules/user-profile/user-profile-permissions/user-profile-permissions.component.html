@@ -1,0 +1,9 @@
+<ng-container *ngIf="entityTypes$ | async as entityTypes">
+  <ng-container *ngIf="actionTypes$ | async as actionTypes">
+    <app-permissions-grid
+      [entityTypes]="entityTypes"
+      [actionTypes]="actionTypes"
+      [canEdit]="false">
+    </app-permissions-grid>
+  </ng-container>
+</ng-container>

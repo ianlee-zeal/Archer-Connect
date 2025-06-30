@@ -1,0 +1,18 @@
+@import "src/styles/variables.scss";
+
+.advanced-search-field-identifier {
+  display: flex;
+
+  &__type-container {
+    width: $advanced-search-condition-control-width;
+    margin-right: $advanced-search-controls-indent;
+  }
+
+  &__input-container {
+    flex-grow: 1;
+  }
+
+  &__checkbox {
+    margin-left: $advanced-search-controls-indent;
+  }
+}

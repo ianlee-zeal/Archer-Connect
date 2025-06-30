@@ -1,0 +1,82 @@
+@import "../../../../styles/elements/charts";
+:host {
+  position: relative;   
+ }
+
+.row {
+  flex-wrap: nowrap;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.pie-chart {
+  min-width: 200px;
+
+  &__header {
+    height: 50px;
+  }
+
+  &__chart {
+    height: 315px;
+  }
+}
+
+.column-chart {
+  min-width: 390px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    padding-right: 10px;
+  }
+
+  &__chart {
+    height: 270px;
+  }
+}
+
+.phase-legend {
+  @extend .legend;
+  width: 300px;
+
+  &__item {
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+  }
+}
+
+.chart-status-legend-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 44px;
+  margin-bottom: 1em;
+  
+  .legend-label {
+    font-size: 15px;
+  }
+}
+
+.legend-item-small {
+  width: 125px;
+
+  .legend-name {
+    max-width: 100px;
+  }
+}
+
+.legend-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  padding: 0;
+}
+
+.legend-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 15px;
+}

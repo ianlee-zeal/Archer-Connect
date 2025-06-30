@@ -1,0 +1,9 @@
+<div class="grid-actions">
+  <button
+    *ngIf="!params?.hidden()"
+    type="button"
+    class="btn-grid-action btn-remove"
+    title="Delete"
+    (click)="onDelete()"
+  ></button>
+</div>

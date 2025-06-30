@@ -1,0 +1,15 @@
+<div class="page-content" *ngIf="documentImports$">
+  <div *ngIf="error$ | async as error" class="text-danger mt-2 ms-3">
+    {{ error }}
+  </div>
+
+  <app-grid 
+    [gridOptions]="gridOptions" 
+    [gridId]="gridId" 
+    entityLabel="Document Imports" 
+    (rowDoubleClicked)="onEditUploadBulkDocumentModal($event)"
+    [skipSetContentHeight]="true"
+    (gridReady)="gridReady($event)" 
+    (loadData)="loadData($event)">
+  </app-grid>
+</div>

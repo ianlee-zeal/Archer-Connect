@@ -1,0 +1,11 @@
+<div class="user-roles-page">
+  <div class="user-roles-page__content-grid" [ngClass]="{'d-none': !isUserRolesFetched}">
+    <app-grid 
+      [gridOptions]="rolesGridOptions" 
+      [rowData]="userRoles$ | async" 
+      [gridId]="gridId" 
+      entityLabel="roles"
+      (gridReady)="gridReady($event)">
+    </app-grid>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="dashboard-container">
+  <div class="info">
+    <div class="title-container">
+      <h2><span class="cursor-pointer" routerLink="../">{{ title }}</span></h2>
+      <img src="assets/svg/chevron-right-grey.svg"/>
+      <h2>Deficiencies</h2>
+    </div>
+
+    <h3 (click)="goToProject()">{{ subTitle }}</h3>
+  </div>
+
+  <div class="dashboard-deficiencies-container">
+      <app-claimant-dashboard-uncured-deficiencies-count [routerLinkActivated]="false"
+          [uncuredDeficienciesCount]="uncuredDeficienciesCount$ | async"></app-claimant-dashboard-uncured-deficiencies-count>
+      <button *ngIf="hasClaimantDeficienciesEditPermission" class="btn btn-primary resolve-btn-position" (click)="onClickResolveDeficiencies()">Resolve Deficiencies</button>
+      <app-grid
+        style="margin-top: 14px;"
+        [gridOptions]="gridOptions"
+        (gridReady)="gridReady($event)"
+        (loadData)="loadData($event)"
+        [gridId]="gridId"
+        [skipSetContentHeight]="true"
+        entityLabel="Deficiencies"
+        [hideBottomStatusbar]="true">
+      </app-grid>
+    </div>
+</div>
+

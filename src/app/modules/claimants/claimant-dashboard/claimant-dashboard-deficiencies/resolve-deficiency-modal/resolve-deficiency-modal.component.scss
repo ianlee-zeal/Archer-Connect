@@ -1,0 +1,120 @@
+@import "src/styles.variables.scss";
+@import "src/styles/variables.scss";
+
+::ng-deep app-info-card .info-card {
+  box-shadow: none;
+  gap: 24px;
+  min-height: 378px;
+
+  .inner-info-card {
+    padding: 8px 24px;
+  }
+}
+
+.title-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+
+  .step-tracker-badge {
+    margin-right: 30px;
+  }
+}
+
+.form-section {
+  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px
+}
+
+.subtitle-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.subtitle {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.notes-subtitle {
+  color: $dark-grey;
+}
+
+.form-control {
+  border: 1px solid $border-alternate;
+  border-radius: $sm-border-radius;
+  height: 40px;
+  font-size: 16px;
+  padding: 0px 14px;
+  align-content: center;
+}
+
+.textarea-container {
+  width: 50%;
+  min-height: 64px;
+}
+
+.deficiency-note {
+  font-size: 14px;
+  margin-left: 5px
+}
+
+.multiple {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.info-message {
+  font-size: 14px;
+}
+
+.tooltip-container {
+  text-align: left;
+  padding: 5px 8px;
+
+  .title {
+    color: $white;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .body {
+    color: #B2D6FF;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+}
+
+.input-amount {
+  width: 170px;
+  text-align: right;
+  background-image: url("../../../../../../../src/assets/svg/dollar.svg");
+  background-repeat: no-repeat;
+  background-position: 16px 9px;
+}
+
+.download-btn {
+  font-size: 14px;
+  font-weight: 400;
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  color: $primary-blue;
+  justify-content: start;
+}
+
+.deficiency-type {
+  .subtitle{
+    display: flex;
+    color: #080808;
+    font-size: 18px;
+    margin-left: 5px;
+  }
+}

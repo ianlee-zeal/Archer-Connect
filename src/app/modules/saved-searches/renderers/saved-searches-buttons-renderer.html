@@ -1,0 +1,24 @@
+<div class="grid-actions">
+  <button
+    type="button"
+    *ngIf="isCreatedByThisUser"
+    class="btn-grid-action btn-edit"
+    (click)="editSavedSearchHandler()"
+    title="Edit">
+  </button>
+  <button
+    type="button"
+    class="btn-grid-action btn-link"
+    [ngClass]="{'right-button': !isCreatedByThisUser}"
+    (click)="goToSavedSearchHandler()"
+    title="Go to search">
+  </button>
+  <button
+    type="button"
+    *ngIf="isCreatedByThisUser"
+    class="btn-grid-action btn-remove"
+    [ngClass]="{'right-button': !isCreatedByThisUser}"
+    (click)="deleteSavedSearchHandler()"
+    title="Delete">
+  </button>
+</div>

@@ -1,0 +1,18 @@
+.payment-details-page {
+    &__stub-text {
+      width: 715px;
+      display: inline-block;
+    }
+  
+    @media screen and (max-width: 1620px) {
+      &__stub-text {
+        width: 400px;
+      }
+    }
+  
+    @media screen and (max-width: 1300px) {
+      .payment-details__stub-text {
+        width: 350px;
+      }
+    }
+  }

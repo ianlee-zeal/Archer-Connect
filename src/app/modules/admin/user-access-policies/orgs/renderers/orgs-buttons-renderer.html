@@ -1,0 +1,21 @@
+<div class="grid-actions">
+  <ng-container *ngIf="params.data.canSwitch">
+    <button     
+      type="button" 
+      *permissions="switchOrgPermissions" 
+      class="btn-grid-action btn-switch" 
+      (click)="onSwitchOrgHandler()" 
+      title="Switch Organization">
+    </button>
+  </ng-container>
+
+  <ng-container *ngIf="!isSubOrg">
+    <button *permissions="editOrgPermissions" type="button" class="btn-grid-action btn-edit" (click)="onEditOrgHandler()" title="Edit"></button>
+  </ng-container>
+
+  <ng-container *ngIf="isSubOrg">
+    <button *permissions="editSubOrgPermissions" type="button" class="btn-grid-action btn-edit"
+      (click)="onEditSubOrgHandler()" title="Edit">
+    </button>
+  </ng-container>
+</div>

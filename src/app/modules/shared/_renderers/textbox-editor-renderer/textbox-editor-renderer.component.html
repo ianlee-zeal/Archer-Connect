@@ -1,0 +1,57 @@
+<ng-container *ngIf="!editable else editor" [ngSwitch]="value">
+    <ng-container [ngSwitch]="type">
+        <ng-container *ngSwitchCase="modes.Text">
+            <span>{{ params.value }}</span>
+        </ng-container>
+        <ng-container *ngSwitchCase="modes.Percentage">
+            <span>{{ getPipedPercent(params.value * 100) }}</span>
+        </ng-container>
+        <ng-container *ngSwitchCase="modes.Decimal">
+            <span>{{ params.value | extendedCurrency }}</span>
+        </ng-container>
+    </ng-container>
+</ng-container>
+
+<ng-template #editor>
+    <ng-container [ngSwitch]="type">
+        <ng-container *ngSwitchCase="modes.Text">
+            <input 
+                class="text-box-editor__input" 
+                type="text"
+                [attr.maxlength]="maxLength"
+                [value]="value" 
+                (change)="onChange($event)" />
+        </ng-container>
+
+        <ng-container *ngSwitchCase="modes.Percentage">
+            <span class="text-box-editor__container">
+                <input 
+                    class="text-box-editor__percentage"
+                    type="text" 
+                    onlyNumbersEx 
+                    [allowDecimal]="true" 
+                    [maxValue]="100" 
+                    [toFixed]="percentageDecimalsCount" 
+                    [value]="value"
+                    [suppressPasteIfValueIsIncorrect]="true"
+                    (change)="onChange($event)" />
+                <span>%</span>
+            </span>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="modes.Decimal">
+            <span class="text-box-editor__container">
+                <span class="text-box-editor__currency">$</span>
+                <input 
+                    class="text-box-editor__input"
+                    type="text" 
+                    onlyNumbersEx 
+                    [allowDecimal]="true" 
+                    [toFixed]="2" 
+                    [value]="value" 
+                    [suppressPasteIfValueIsIncorrect]="true"
+                    (change)="onChange($event)" />
+            </span>
+        </ng-container>
+    </ng-container>
+</ng-template>

@@ -1,0 +1,113 @@
+<modal (close)="onCancel()">
+  <modal-header>Copy Project Settings</modal-header>
+
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="copyForm">
+        <card hideSeparator>
+          <card-col [width]="460" [labelWidth]="220">
+            <card-row
+              label="Copy from Project"
+              inputId="case"
+              [control]="copyForm.get('case')"
+              required
+            >
+              <div formGroupName="case" cardValue>
+                <input
+                  (click)="onOpenProjectList()"
+                  type="text"
+                  class="form-control cursor-pointer"
+                  formControlName="name"
+                  readonly
+                  id="case"
+                  placeholder="Select project"
+                />
+              </div>
+            </card-row>
+            <card-row
+              label="Ledger Settings"
+              inputId="copyLedgerSettings"
+              [control]="copyForm.get('copyLedgerSettings')"
+            >
+              <label class="form-check h-100" cardValue>
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  formControlName="copyLedgerSettings"
+                  id="copyLedgerSettings"
+                />
+                <span></span>
+              </label>
+            </card-row>
+            <card-row
+              label="Chart of Account Settings"
+              inputId="copyChartOfAccount"
+              [control]="copyForm.get('copyChartOfAccount')"
+            >
+              <label class="form-check h-100" cardValue>
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  formControlName="copyChartOfAccount"
+                  id="copyChartOfAccount"
+                />
+                <span></span>
+              </label>
+            </card-row>
+            <card-row
+              label="Firm Payment Instructions"
+              inputId="copyFirmPmtInstructions"
+              [control]="copyForm.get('copyFirmPmtInstructions')"
+            >
+              <label class="form-check h-100" cardValue>
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  formControlName="copyFirmPmtInstructions"
+                  id="copyFirmPmtInstructions"
+                />
+                <span></span>
+              </label>
+            </card-row>
+            <card-row
+              label="Messaging"
+              inputId="copyMessages"
+              [control]="copyForm.get('copyMessages')"
+            >
+              <label class="form-check h-100" cardValue>
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  formControlName="copyMessages"
+                  id="copyMessages"
+                />
+                <span></span>
+              </label>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+
+  <modal-footer>
+    <button
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--secondary add-address-modal__cancel-button"
+      (click)="onCancel()"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      [disabled]="!copyForm.valid || !isValidCheckboxes"
+      (click)="onSave()"
+    >
+      <span
+        class="spinner-border spinner-border-sm align-middle ms-1 hidden"
+      ></span>
+      Save
+    </button>
+  </modal-footer>
+</modal>

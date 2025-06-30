@@ -1,0 +1,15 @@
+<button
+  *ngIf="canEdit && hasRows"
+  class="btn btn-secondary btn-icon btn-icon-add"
+  (click)="onAdd()">
+</button>
+
+<app-grid *ngIf="injureCategories && pricingTypes.length > 0"
+  [gridOptions]="gridOptions"
+  (gridReady)="gridReady($event)"
+  (loadData)="loadData($event)"
+  [gridId]="gridId"
+  entityLabel="Variable Pricing"
+  isContentAutoHeight="true"
+  [saveGridDataOnModelUpdate]="true">
+</app-grid>

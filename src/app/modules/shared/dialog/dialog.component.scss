@@ -1,0 +1,37 @@
+@import "src/styles/variables.scss";
+
+.modal-backdrop {
+  background-color: rgba(45, 64, 87, 0.64);
+  &.show {
+    opacity: 1;
+  }
+}
+
+.modal {
+  &+.modal-backdrop.modal-backdrop{
+    z-index: 1060;
+
+    &+.modal{
+      z-index: 1061;
+    }
+  }
+}
+
+.modal-dialog {
+  margin-top: 100px;
+}
+
+.modal-content {
+  padding: 0;
+  border: none;
+  border-radius: $lg-border-radius
+}
+
+.modal-lg {
+  max-width: 1190px;
+}
+
+modal-container:nth-of-type(2) {
+  background: rgba(45, 64, 87, 0.64);
+}
+

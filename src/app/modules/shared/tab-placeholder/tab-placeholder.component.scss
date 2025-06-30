@@ -1,0 +1,13 @@
+@import "/src/styles/variables.scss";
+
+.tab-placeholder {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 500px;
+
+  &__message {
+    font-size: $font-size-base;
+    color: $gray-dark;
+  }
+}

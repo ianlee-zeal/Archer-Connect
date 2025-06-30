@@ -1,0 +1,45 @@
+@import "src/styles/variables.scss";
+
+.modal-section {
+    padding-top: 0;
+}
+
+.nav {
+    border-bottom: none;
+    padding: 0;
+    .nav-item {
+        color: $black;
+        margin-left: 10px;
+        text-decoration: underline;
+        &:not(:last-child) {
+            border-right: 2px solid $black;
+            border-radius: 0;
+            padding-right: 10px;
+        }
+        &:first-child {
+            margin-left: 0;
+        }
+        &.active {
+            text-decoration: none;
+        }
+        &.deleted-active {
+            color: $validation-invalid-color;
+            &:after {
+                content: url("/assets/images/action_cancel.png");
+                margin-left: 4px;
+                line-height: 15px;
+            }
+        }
+        &.error-active {
+            &:after {
+                content: url("/assets/images/warning-icon.png");
+                margin-left: 4px;
+                line-height: 15px;
+            }
+        }
+    }
+}
+
+.tab-pane {
+    margin: 0;
+}

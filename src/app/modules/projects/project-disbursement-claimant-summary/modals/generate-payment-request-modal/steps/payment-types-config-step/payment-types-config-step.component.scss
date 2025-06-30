@@ -1,0 +1,36 @@
+.payment-types-config-step {
+    &__description {
+        display: block;
+        padding: 5px 0 10px 0;
+    }
+    &__options {
+        display: flex;
+        flex-direction: row;
+        margin-top: 10px;
+    }
+    &__attachment {
+        padding-right: 50px;
+    }
+    &__selector {
+        display: inline-block;
+        position: absolute;
+        right: 0;
+        width: 300px;
+    }
+    &__select-container {
+        height: 400px;
+    }
+    &__container {
+        position: relative;
+    }
+}
+
+.card-text{
+    margin: 0px;
+    padding: 0px;
+}
+ 
+.card-margin{
+    margin-top: -10px;
+}
+

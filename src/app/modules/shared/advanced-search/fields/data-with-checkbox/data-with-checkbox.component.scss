@@ -1,0 +1,37 @@
+@import "src/styles/variables.scss";
+
+.advanced-search-field-data {
+  display: flex;
+
+  &__type-container {
+    width: $advanced-search-condition-control-width;
+    margin-right: $advanced-search-controls-indent;
+  }
+
+  &__multiselect-container {
+    height: 100px;
+    margin-bottom: 16px;
+  }
+
+  &__filter-container {
+    flex-grow: 1;
+  }
+
+  &__select {
+    width: 100%;
+  }
+
+  &__checkbox-container-wrapper {
+    position: relative;
+  }
+
+  &__checkbox-container {
+    position: absolute;
+    width: 208px;
+  }
+
+  &__checkbox {
+    margin-left: $advanced-search-controls-indent;
+  }
+}
+

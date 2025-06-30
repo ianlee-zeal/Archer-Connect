@@ -1,0 +1,9 @@
+<svg id="ic_calendar_orange" xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14">
+  <g id="Rectangle_150" data-name="Rectangle 150" transform="translate(0 2)" fill="none" stroke="#fdba12" stroke-width="1">
+    <rect width="12" height="12" rx="2" stroke="none"/>
+    <rect x="0.5" y="0.5" width="11" height="11" rx="1.5" fill="none"/>
+  </g>
+  <rect id="Rectangle_151" data-name="Rectangle 151" width="1" height="6" rx="0.5" transform="translate(3)" fill="#fdba12"/>
+  <rect id="Rectangle_152" data-name="Rectangle 152" width="1" height="6" rx="0.5" transform="translate(8)" fill="#fdba12"/>
+  <line id="Line_58" data-name="Line 58" x2="11" transform="translate(0.5 7.5)" fill="none" stroke="#fdba12" stroke-width="1"/>
+</svg>

@@ -1,0 +1,41 @@
+@import "../../../../styles.variables.scss";
+@import "src/styles/variables.scss";
+
+$bar-width: 270px;
+
+.wrapper {
+  display: block;
+}
+
+.close-button {
+  color: $white;
+  background-color: transparent;
+  border: none;
+  margin: 0 5px;
+  width: 20px;
+  height: 20px;
+  font-size: 25px;
+}
+
+#sidebar {
+  min-width: $bar-width;
+  max-width: $bar-width;
+  height: calc(100% - #{$header-height});
+  position: fixed;
+  top: 60px;
+  left: 0;
+  background-color: $white;
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+.overlay {
+  display: block;
+  position: fixed;
+  top: 60px;
+  left: $bar-width;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}

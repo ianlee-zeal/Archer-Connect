@@ -1,0 +1,21 @@
+@import "src/styles/variables.scss";
+
+.variable-pricing-type-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .variable-pricing-type-select {
+        flex-grow: 1;
+        margin-right: 10px;
+    }
+
+    .btn {
+        margin-top: 4px;
+    }
+}
+
+.pricing-container {
+    padding: 20px 0;
+    border-bottom: 1px solid $gray;
+}

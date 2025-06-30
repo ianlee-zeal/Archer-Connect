@@ -1,0 +1,21 @@
+@import '../../../../../styles.variables.scss';
+
+.generating-documents-loading {
+    margin-left: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #585858;
+    .spinner-border {
+        margin-left: 5px;
+    }
+}
+
+.void-error {
+    font-weight: 600;
+    color: $error;
+}
+
+.header-column {
+    padding-right: 50px;
+    vertical-align: top;
+}

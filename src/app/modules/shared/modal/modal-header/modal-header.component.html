@@ -1,0 +1,18 @@
+<div class="modal-header" [ngClass]="{'modal-header-warning': headerStyle == 'warning'}">
+  <h4
+    data-test-id="modal-title"
+    class="modal-title">
+    <ng-content></ng-content>
+  </h4>
+  <span *ngIf="additionalInfo" 
+    [ngClass]="{'additionalInfo-warning': headerStyle == 'warning'}"
+    >{{additionalInfo}}</span>
+  <button
+    data-test-id="modal-close-btn"
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="onClose()">
+    <img src="assets/svg/ic_close.svg" />
+  </button>
+</div>

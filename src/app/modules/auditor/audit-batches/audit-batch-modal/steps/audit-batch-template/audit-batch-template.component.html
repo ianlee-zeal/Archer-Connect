@@ -1,0 +1,22 @@
+<div class="modal-section" *ngIf="this.dropdownValues">
+    <form *ngIf="dropdownValues.templates" [formGroup]="form">
+        <card hideSeparator>
+            <card-col [labelWidth]="160" [width]="550">
+                
+                <!-- Collector Select -->
+                <card-row label="Select Collector" inputId="collector" [control]="form.get('collector')" required>
+                    <app-select id="collector" [options]="dropdownValues.collectors"
+                     formControlName="collector" (onModelChange)="onCollectorChange($event)" optionAsValue required cardValue></app-select>
+                </card-row>
+                
+                <!-- Template Select -->
+                <card-row label="Select Template" inputId="template" [control]="form.get('template')" required>
+                    <app-select id="template" [disabled]="isDisabledTemplateSelect" [options]="filteredTemplates"
+                        formControlName="template" (onModelChange)="onTemplateChange($event)" cardValue optionAsValue>
+                    </app-select>
+                </card-row>
+
+            </card-col>
+        </card>
+    </form>
+</div>

@@ -1,0 +1,432 @@
+<form novalidate class="ledger-list" *ngIf="form" [formGroup]="form" (change)="onChange()">
+  <card-col>
+    <card-row>
+      <card-col cardValue>
+        <!-- Sub Group -->
+        <span *ngIf="readOnly && !accountGroup.accounts?.length" class="no-accounts">No Records</span>
+        <div formArrayName="accounts" *ngFor="let account of accounts.controls; let i = index;" class="sub-group-container">
+          <ng-container *ngIf="!isCreditAccount(account.value.accountType) && !isAccountless" [ngTemplateOutlet]="accountTemplate" [ngTemplateOutletContext]="{ form: account, index: i }"></ng-container>
+          <ng-container *ngIf="isCreditAccount(account.value.accountType)" [ngTemplateOutlet]="creditAccountTemplate" [ngTemplateOutletContext]="{ form: account, index: i }"></ng-container>
+
+          <card-row>
+            <div cardValue>
+              <!-- Items -->
+              <span *ngIf="readOnly && !account.controls['entries'].controls.length">No Records</span>
+              <ng-container *ngFor="let ledgerItem of account.controls['entries'].controls; let idx = index;">
+                <div [formGroupName]="i" class="zebra hover-row ms-m20" (dblclick)="onShowEntryModal(ledgerItem.value)">
+                  <div class="ms-p20">
+                    <ng-container *ngIf="!isCreditAccount(account.value.accountType)" [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{ form: ledgerItem, account: account.value, index: idx }"></ng-container>
+                    <ng-container *ngIf="isCreditAccount(account.value.accountType)" [ngTemplateOutlet]="creditItemTemplate" [ngTemplateOutletContext]="{ form: ledgerItem, account: account.value, index: idx }"></ng-container>
+                  </div>
+                </div>
+              </ng-container>
+
+              <button *ngIf="!isCreditAccount(account.value.accountType) && canCreateEntry(account.value)" cardValue type="button" class="btn btn-link" (click)="onAddEntry(account.value)">
+                <span class="fa fa-plus"></span>
+                Add {{ accountGroup.accountGroupNo | ledgerEntryTypeTitle: account.value.accountNo }}
+                <span *ngIf="entryIsRequired(account?.value)" class="control-message text-danger" title="At least one entry item required">Required</span>
+              </button>
+
+              <button *ngIf="isCreditAccount(account.value.accountType) && canCreateEntry(account.value)" cardValue type="button" class="btn btn-link" (click)="onAddCredit(account)">
+                <span class="fa fa-plus"></span>
+                Add Credit
+              </button>
+            </div>
+          </card-row>
+
+          <!-- Percentage validation error -->
+          <div class="ledgers-list__total-percentage--error-container">
+            <card-row *ngIf="isCannotExceed100PercentAcc(account.value) && currentTotalPercentage(account.value) > 100" class="ledgers-list__total-percentage--label">
+              <span cardValue class="ledgers-list__total-percentage--error"
+                    title="The total value cannot exceed 100%">
+                <i class="fas fa-exclamation-triangle"></i>
+                {{ currentTotalPercentage(account.value) | fractionPercentage }}
+              </span>
+            </card-row>
+            <card-row *ngIf="isMustBe100PercentAcc(account.value) && currentTotalPercentage(account.value) < 100" class="ledgers-list__total-percentage--label">
+              <span cardValue class="ledgers-list__total-percentage--error"
+                    title="The total value must be equal 100%">
+                <i class="fas fa-exclamation-triangle"></i>
+                {{ currentTotalPercentage(account.value) | fractionPercentage }}
+              </span>
+            </card-row>
+          </div>
+        </div>
+      </card-col>
+    </card-row>
+  </card-col>
+</form>
+
+<ng-template #creditAccountTemplate let-form='form' let-index='index'>
+  <ng-container [formGroup]="form">
+    <card-row hideLabel>
+      <div class="card-row__content sub-group" cardValue>
+        <card-col class="account-name" [width]="410">
+          <span *ngIf="useFullAccountName(form.value)">{{ form.value | ledgerAccountTitle }}</span>
+          <span *ngIf="!useFullAccountName(form.value)">Credit</span>
+        </card-col>
+
+        <card-col class="account-percentage" class="ms-3" [width]="120"> <!-- Percentage placeholder --> </card-col>
+
+        <card-col class="account-amount-column" *ngIf="form.value.entries?.length > 1" [width]="146">
+          <card-row class="text-right">
+            <span cardValue>{{ form.value.totalAmount | extendedCurrency }}</span>
+          </card-row>
+        </card-col>
+
+        <card-col class="description-container"> <!-- placeholder --> </card-col>
+
+        <card-col *ngIf="form.value.entries?.length > 1" class="sub-group__total-paid-amount" [width]="105">
+          <card-row>
+            <span cardValue>{{ form.value.totalPaidAmount | extendedCurrency }}</span>
+          </card-row>
+        </card-col>
+
+        <!-- Remove Account placeholder -->
+        <card-col [width]="45">
+          <card-row noLabel></card-row>
+        </card-col>
+      </div>
+    </card-row>
+  </ng-container>
+</ng-template>
+
+<ng-template #creditItemTemplate let-form='form' let-account='account' let-index='index'>
+  <ng-container [formGroup]="form">
+    <card-row hideLabel>
+      <div cardValue class="card-row__content align-end">
+
+        <card-col [width]="390" class="me-3 name-column">
+          <ng-container *ngIf="canEditCreditEntryName(form.value)">
+            <card-row inputId="{{account.accountNo + '-' +index}}" [control]="form.get('chartOfAccountId')" hideLabel required>
+              <app-select
+                          id="{{account.accountNo + '-' +index}}"
+                          [options]="creditFilteredOptions"
+                          placeholder="Select credit"
+                          formControlName="chartOfAccountId"
+                          (onModelChange)="onSelectedCreditChanged($event, form)"
+                          (onOpen)="onSelectCreditEntryOpen(account.entries)"
+                          cardValue required>
+              </app-select>
+            </card-row>
+          </ng-container>
+
+          <span *ngIf="!canEditCreditEntryName(form.value)" [ngClass]="{ 'disabled-font': !form.value.active }">{{ getEntryTitle(form.value) }}</span>
+        </card-col>
+
+        <card-col class="ms-3" [width]="120"> <!-- Percentage placeholder --> </card-col>
+
+        <!-- Amount -->
+        <card-col class="amount-column" [width]="130">
+          <card-row hideLabel [control]="form.get('amount')">
+            <div cardValue class="ledgers-list__amount">
+              <div *ngIf="canEditCreditEntryAmount(form.value)" class="card-row__content">
+                <span>$</span>
+                <input
+                       id="amount" formControlName="amount" type='text'
+                       placeholder="0.00"
+                       onlyNumbersEx
+                       [allowDecimal]="true"
+                       [maxValue]="9999999999"
+                       [toFixed]="2"
+                       [suppressPasteIfValueIsIncorrect]="true"
+                       class="form-control ledgers-list__amount--input">
+              </div>
+              <span *ngIf="!canEditCreditEntryAmount(form.value)" [ngClass]="{ 'disabled-font': !form.value.active, 'fas-error': (form.value.amount < 0) }">{{ form.value.amount | extendedCurrencyLedger }}</span>
+            </div>
+          </card-row>
+        </card-col>
+
+        <!-- Modified Date -->
+        <card-col [width]="110">
+          <span cardValue class="disabled-font ledgers-list__modified-date">{{ (form.value.lastModifiedDate || form.value.createdDate) | dateFormat }}</span>
+        </card-col>
+
+        <!-- Description -->
+        <div class="description-container">
+          <card-col *ngIf="canEditCreditEntryDescription(form.value)" class="me-3">
+            <card-row hideLabel [control]="form.get('description')">
+              <input cardValue id="{{account.accountNo + '-' +index}}" formControlName="description" type='text' placeholder="Description" maxlength="125" class="form-control w-100">
+            </card-row>
+          </card-col>
+
+          <card-col *ngIf="!canEditCreditEntryDescription(form.value)">
+            <card-row hideLabel [control]="form.get('description')">
+              <span cardValue [ngClass]="{ 'disabled-font': !form.value.active }">{{ form.value.description }}</span>
+            </card-row>
+          </card-col>
+        </div>
+
+        <!-- Paid Amount -->
+        <card-col class="paid-amount-column" [width]="120">
+          <span cardValue class="disabled-font text-right">{{ form.value.paidAmount | extendedCurrency }}</span>
+        </card-col>
+
+        <!-- Payment Status -->
+        <card-col class="ms-3 payment-status-column" [width]="100">
+          <span cardValue class="disabled-font">{{ form.value.statusName }}</span>
+        </card-col>
+
+        <!-- Payee -->
+        <card-col class="ms-3 payee-column" [width]="145">
+          <card-row *ngIf="form.value.splitTypeId != null">
+            <img *ngIf="form.value.splitTypeId == paymentTypeEnum.Individual" cardValue class="me-1" src="assets/images/payment_instruction_special.png" title="Special Instruction"/>
+            <img *ngIf="form.value.splitTypeId == paymentTypeEnum.Default" cardValue class="me-1" src="assets/images/payment_instruction_default.png" title="Default Instruction"/>
+            <img *ngIf="form.value.splitTypeId == paymentTypeEnum.Split" cardValue class="me-1" src="assets/images/payment_instruction_split.png" title="Split Instruction"/>
+            <span cardValue class="disabled-font">{{ form.value.payeeName }}</span>
+          </card-row>
+        </card-col>
+
+        <!-- Actions -->
+        <card-col [width]="146" class="ledgers-list__actions">
+          <card-row>
+            <i cardValue
+               [style.visibility]="canShowWarningSign(form.value) ? 'visible' :'hidden'"
+               class="ledgers-list__disabled fas fa-exclamation-triangle"
+               title="Chart Of Account is not enabled anymore">
+            </i>
+            <i cardValue
+               [style.visibility]="form.value?.payeeNotExist ? 'visible' : 'hidden'"
+               class="ledgers-list__disabled fas-error fas fa-exclamation-triangle"
+               title="Payment Instructions validation error: the Payee does not exist">
+            </i>
+            <button
+                    cardValue
+                    type="button"
+                    title="Additional Information"
+                    class="btn btn-secondary btn-icon btn-icon-info"
+                    [ngClass]="{ 'disabled': !canShowEntryModal(form.value) }"
+                    [disabled]="!canShowEntryModal(form.value)"
+                    (click)="onShowEntryModal(form.value, true)"></button>
+            <button cardValue *ngIf="canRemoveCreditEntry(form.value)" type="button" title="Remove Credit" class="btn btn-secondary btn-icon btn-icon-remove" (click)="onRemoveCredit(index)"></button>
+          </card-row>
+        </card-col>
+      </div>
+    </card-row>
+  </ng-container>
+</ng-template>
+
+<ng-template #accountTemplate let-form='form' let-index='index'>
+  <ng-container [formGroup]="form">
+    <card-row hideLabel>
+      <div class="card-row__content sub-group" cardValue>
+        <card-col class="account-name" [width]="410">
+          <ng-container *ngIf="canEditAccountName(form.value)">
+            <card-row hideLabel inputId="{{'payeeOrgId-' + form.value.accountNo}}" [control]="form.get('payeeOrgId')" required>
+              <app-select id="{{'payeeOrgId-' + form.value.accountNo}}"
+                          [options]="payeeOptions(form.value)"
+                          formControlName="payeeOrgId"
+                          (onModelChange)="onSelectedAccountChanged($event, form)"
+                          (onOpen)="onSelectAccountOpen(accounts.value)"
+                          cardValue required>
+              </app-select>
+            </card-row>
+          </ng-container>
+
+          <span *ngIf="!canEditAccountName(form.value)">{{ form.value | ledgerAccountTitle }}</span>
+        </card-col>
+
+        <card-col class="ms-3 account-percentage" [width]="120"> <!-- Percentage placeholder --> </card-col>
+
+        <card-col class="account-amount-column" *ngIf="form.value.entries?.length > 1" [width]="146">
+          <card-row class="text-right">
+            <span cardValue>{{ form.value.totalAmount | extendedCurrency }}</span>
+          </card-row>
+        </card-col>
+
+        <card-col class="description-container"> <!-- placeholder --> </card-col>
+
+        <card-col *ngIf="form.value.entries?.length > 1" class="sub-group__total-paid-amount" [width]="105">
+          <card-row>
+            <span cardValue>{{ form.value.totalPaidAmount | extendedCurrency }}</span>
+          </card-row>
+        </card-col>
+
+        <card-col [width]="45">
+          <card-row noLabel>
+            <button *ngIf="canRemoveAccount(form.value)" cardValue type="button" class="btn btn-link" (click)="onRemoveAccount(index)">
+              <span class="far fa-trash-alt" title="Remove Group"></span>
+            </button>
+          </card-row>
+        </card-col>
+      </div>
+    </card-row>
+  </ng-container>
+</ng-template>
+
+<ng-template #itemTemplate let-form='form' let-account='account' let-index='index'>
+  <ng-container [formGroup]="form">
+    <card-row hideLabel>
+      <div cardValue class="card-row__content">
+        <card-col [width]="ledgerEntryService.canEditRelatedEntity(form.value) ? 290 : 390" class="me-3 name-column">
+          <ng-container *ngIf="canEditEntryName(form.value)">
+            <card-row *ngIf="isChartOfAccountEntryType" inputId="{{account.accountNo + '-' +index}}" [control]="form.get('chartOfAccountId')" hideLabel required>
+              <app-select id="{{account.accountNo + '-' +index}}"
+                            [options]="entryFilteredOptions"
+                            placeholder="Select {{ accountGroup.accountGroupNo | ledgerEntryTypeTitle: account.accountNo }}"
+                            formControlName="chartOfAccountId"
+                            (onModelChange)="onSelectedEntryChanged($event, form)"
+                            (onOpen)="onSelectEntryOpen(account.entries)"
+                            cardValue required>
+              </app-select>
+            </card-row>
+
+            <card-row *ngIf="groupByPayees(form.value)" hideLabel inputId="{{'payeeOrgId-' +account.accountNo + '-' +index}}" [control]="form.get('payeeOrgId')" required>
+              <app-select id="{{'payeeOrgId-' +account.accountNo + '-' +index}}"
+                            [options]="payeeOptions(account)"
+                            placeholder="Select {{ accountGroup.accountGroupNo | ledgerEntryTypeTitle: account.accountNo }}"
+                            formControlName="payeeOrgId"
+                            (onModelChange)="onSelectedEntryChanged($event, form)"
+                            (onOpen)="onSelectEntryOpen(account.entries)"
+                            cardValue>
+              </app-select>
+            </card-row>
+          </ng-container>
+
+          <span *ngIf="!canEditEntryName(form.value)"
+                [ngClass]="{ 'disabled-font': !form.value.active, 'view-in-lpm': canViewInLPM(form.value) }">
+            {{ getEntryTitle(form.value) }}
+            <ng-container *ngIf="canViewInLPM(form.value)">
+              (<button cardValue type="button" title="View in LPM" class="btn btn-link" (click)="onViewInLPM(form.value)">
+                {{ form.value | ledgerEtryEntityIdentifier }}
+              </button>)
+            </ng-container>
+          </span>
+        </card-col>
+
+        <card-col *ngIf="ledgerEntryService.canEditRelatedEntity(form.value) && !canEditEntryName(form.value)" [width]="80"></card-col>
+
+        <card-col [width]="80" *ngIf="canShowEditRelatedEntry(form.value, account)">
+          <card-row hideLabel errorOnTheRight [control]="form.get('relatedEntityId')">
+            <div cardValue class="ledgers-list__related-entity-id">
+              <div class="card-row__content">
+                <input id="relatedEntityId" placeholder="Id" formControlName="relatedEntityId" type='text' onlyNumbers class="form-control ledgers-list__amount--input">
+              </div>
+            </div>
+          </card-row>
+        </card-col>
+
+        <!-- Percentage -->
+        <card-col class="ms-3" [width]="120">
+          <card-row hideLabel *ngIf="canShowEntryPercentage(account)" [control]="form.get('percentage')">
+            <div cardValue class="ledgers-list__percentage">
+              <div *ngIf="canEditPercentageField(form.value, account)" class="card-row__content">
+                <input
+                       id="{{'percentage-' +account.accountNo + '-' +index}}" formControlName="percentage" type='text'
+                       placeholder="0.00"
+                       onlyNumbersEx
+                       [allowDecimal]="true"
+                       [maxValue]="100"
+                       [toFixed]="percentFractionDigits"
+                       [suppressPasteIfValueIsIncorrect]="true"
+                       class="form-control ledgers-list__percentage--input">
+                <span>%</span>
+              </div>
+              <span *ngIf="!canEditPercentageField(form.value, account)"
+                    class="ledgers-list__percentage--read-only"
+                    [ngClass]="{ 'disabled-font': !form.value.active }">
+                {{ form.value.percentage | fractionPercentage }}
+              </span>
+            </div>
+          </card-row>
+        </card-col>
+
+        <!-- Amount -->
+        <card-col class="amount-column" [width]="130" [ngClass]="{'ledgers-list__related-entity-amount-col': ledgerEntryService.canEditRelatedEntity(form.value)}">
+          <card-row hideLabel [control]="form.get('amount')">
+            <div cardValue class="ledgers-list__amount">
+              <div *ngIf="canEditAmountField(form.value, account)" class="card-row__content">
+                <span>$</span>
+                <input
+                       id="amount"
+                       formControlName="amount"
+                       type='text'
+                       placeholder="0.00"
+                       onlyNumbersEx
+                       [allowNegative]="canEnterNegativeValues(form)"
+                       [allowDecimal]="true"
+                       [maxValue]="99999999.99"
+                       [toFixed]="2"
+                       [suppressPasteIfValueIsIncorrect]="true"
+                       class="form-control ledgers-list__amount--input">
+              </div>
+              <span *ngIf="!canEditAmountField(form.value, account)" [ngClass]="{ 'disabled-font': !form.value.active, 'fas-error': (form.value.amount < 0) }">{{ form.value.amount | extendedCurrencyLedger }}</span>
+            </div>
+          </card-row>
+        </card-col>
+
+        <!-- Modified Date -->
+        <card-col [width]="110">
+          <span cardValue class="disabled-font ledgers-list__modified-date">{{ (form.value.lastModifiedDate || form.value.createdDate) | dateFormat }}</span>
+        </card-col>
+
+        <!-- Description -->
+        <div class="description-container">
+          <card-col *ngIf="canEditDescriptionField(form.value)" class="me-3">
+            <card-row hideLabel [control]="form.get('description')">
+              <input cardValue id="{{account.accountNo + '-' +index}}" formControlName="description" type='text' placeholder="Description" maxlength="125" class="form-control w-100">
+            </card-row>
+          </card-col>
+
+          <card-col *ngIf="!canEditDescriptionField(form.value)">
+            <card-row hideLabel [control]="form.get('description')">
+              <span cardValue [ngClass]="{ 'disabled-font': !form.value.active }">{{ form.value.description }}</span>
+            </card-row>
+          </card-col>
+        </div>
+
+        <!-- Paid Amount -->
+        <card-col class="paid-amount-column" [width]="120">
+          <span cardValue class="disabled-font text-right">{{ form.value.paidAmount | extendedCurrency }}</span>
+        </card-col>
+
+        <!-- Payment Status -->
+        <card-col class="ms-3 payment-status-column" [width]="100">
+          <span cardValue class="disabled-font">{{ form.value.statusName }}</span>
+        </card-col>
+
+        <!-- Payee -->
+        <card-col class="ms-3 payee-column" [width]="145">
+          <card-row *ngIf="form.value.splitTypeId != null">
+            <img *ngIf="form.value.splitTypeId == paymentTypeEnum.Individual" cardValue class="me-1" src="assets/images/payment_instruction_special.png" title="Special Instruction"/>
+            <img *ngIf="form.value.splitTypeId == paymentTypeEnum.Default" cardValue class="me-1" src="assets/images/payment_instruction_default.png" title="Default Instruction"/>
+            <img *ngIf="form.value.splitTypeId == paymentTypeEnum.Split" cardValue class="me-1" src="assets/images/payment_instruction_split.png" title="Split Instruction"/>
+            <span cardValue class="disabled-font">{{ form.value.payeeName }}</span>
+          </card-row>
+        </card-col>
+
+        <!-- <img src="{{item.icon}}" class="element-icon" title="{{ collapsed ? item.name : item.iconTooltip }}"> -->
+        <!-- Actions -->
+        <card-col [width]="146" class="ledgers-list__actions">
+          <card-row>
+            <i cardValue
+               [style.visibility]="canShowWarningSign(form.value) ? 'visible' : 'hidden'"
+               class="ledgers-list__disabled fas fa-exclamation-triangle"
+               title="Chart of account is not enabled anymore">
+            </i>
+            <i cardValue
+               [style.visibility]="form.value?.payeeNotExist ? 'visible' : 'hidden'"
+               class="ledgers-list__disabled fas-error fas fa-exclamation-triangle"
+               title="Payment Instructions validation error: the Payee does not exist">
+            </i>
+            <button
+                    cardValue
+                    type="button"
+                    title="Additional Information"
+                    class="btn btn-secondary btn-icon btn-icon-info"
+                    [ngClass]="{ 'disabled': !canShowEntryModal(form.value) }"
+                    [disabled]="!canShowEntryModal(form.value)"
+                    (click)="onShowEntryModal(form.value, true)">
+            </button>
+            <button cardValue
+                    *ngIf="canRemoveLedgerEntry(form.value)"
+                    type="button"
+                    title="Remove {{ accountGroup.accountGroupNo | ledgerEntryTypeTitle: account.accountNo }}"
+                    class="btn btn-secondary btn-icon btn-icon-remove"
+                    (click)="onRemoveEntry(index, form.value)"></button>
+          </card-row>
+        </card-col>
+      </div>
+    </card-row>
+  </ng-container>
+</ng-template>

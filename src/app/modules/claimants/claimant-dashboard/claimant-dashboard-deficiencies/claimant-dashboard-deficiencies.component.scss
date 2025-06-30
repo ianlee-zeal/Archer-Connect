@@ -1,0 +1,30 @@
+@import "src/styles/variables.scss";
+
+::ng-deep .grid-status-bar {
+  justify-content: flex-start !important;
+  &__state {
+    flex-grow: 0 !important;
+  }
+}
+
+.resolve-btn-position {
+  position: relative;
+  align-self: flex-end;
+  z-index: 10;
+  top: 45px;
+  width: 220px !important;
+  height: 36px;
+  padding-inline: 10px;
+  border-radius: $sm-border-radius;
+  font-size: 16px;
+  font-weight: 600;
+
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+
+.dashboard-deficiencies-container {
+  display: flex;
+  flex-direction: column;
+}

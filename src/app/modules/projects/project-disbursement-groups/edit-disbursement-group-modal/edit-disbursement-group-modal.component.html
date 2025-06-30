@@ -1,0 +1,146 @@
+<modal (close)="editDisbursementGroupModal.hide()">
+    <modal-header>{{title}}</modal-header>
+
+    <modal-body>
+        <div class="modal-section">
+            <form [formGroup]="form" novalidate>
+                <card hideSeparator>
+                    <card-col [width]="400" [labelWidth]="150">
+                        <card-row label="ID" [value]="form.get('sequence').value"></card-row>
+
+                        <ng-container *ngIf="!isProvisionalDisbursementGroup else provisionalDisbursementGroup">
+                            <card-row label="Name" inputId="name" [control]="form.get('name')" required>
+                                <input required type="text" class="form-control" formControlName="name" id="name" maxLength="100" style="width: inherit;"
+                                    cardValue appAutoFocus />
+                            </card-row>
+
+                            <card-row label="Type" inputId="type" [control]="form.get('type')" required>
+                                <app-select required id="type" [options]="types$ | async" formControlName="type"
+                                    optionAsValue cardValue
+                                    (onModelChange)="onTypeChanged($event)">
+                                </app-select>
+                            </card-row>
+
+                            <card-row *ngIf="isLienHoldbackGroup" label="Primary Firm Approval Required for Payment" inputId="isPrimaryFirmApprovalRequiredForPayment" [control]="form.get('isPrimaryFirmApprovalRequiredForPayment')">
+                                <label class="form-check h-100" cardValue [ngClass]="{'read-only': isLienHoldbackGroup}">
+                                  <input type="checkbox" class="form-check-input" formControlName="isPrimaryFirmApprovalRequiredForPayment" id="isPrimaryFirmApprovalRequiredForPayment">
+                                  <span></span>
+                                </label>
+                            </card-row>
+                        </ng-container>
+
+                        <card-row label="Stage" inputId="stage" [control]="form.get('stage')" required>
+                            <app-select required id="stage" [options]="stages$ | async" formControlName="stage"
+                                optionAsValue cardValue>
+                            </app-select>
+                        </card-row>
+
+                        <card-row label="Claimant Count" [value]="disbursementGroup?.claimantCount"></card-row>
+
+                        <card-row label="Total Allocation" [value]="disbursementGroup?.totalAmount | extendedCurrency"></card-row>
+                    </card-col>
+
+                    <card-col [labelWidth]="220">
+                        <card-row label="Defense Approved Date" inputId="defenseApprovedDate"
+                            [control]="form.get('defenseApprovedDate')">
+                            <app-date-selector 
+                                id="defenseApprovedDate" 
+                                formControlName="defenseApprovedDate" 
+                                cardValue 
+                                (onChange)="dateValidator.validate($event, form.get('defenseApprovedDate'))">
+                            </app-date-selector>
+                        </card-row>
+
+                        <card-row label="Settlement Approved Date" inputId="settlementApprovedDate"
+                            [control]="form.get('settlementApprovedDate')">
+                            <app-date-selector 
+                                id="settlementApprovedDate" 
+                                formControlName="settlementApprovedDate"
+                                cardValue
+                                (onChange)="dateValidator.validate($event, form.get('settlementApprovedDate'))">
+                            </app-date-selector>
+                        </card-row>
+
+                        <card-row label="ARCHER Approved Date" inputId="archerApprovedDate"
+                            [control]="form.get('archerApprovedDate')">
+                            <app-date-selector 
+                                id="archerApprovedDate" 
+                                formControlName="archerApprovedDate" 
+                                cardValue
+                                (onChange)="dateValidator.validate($event, form.get('archerApprovedDate'))">
+                            </app-date-selector>
+                        </card-row>
+
+                        <card-row label="Follow Up Date" inputId="followUpDate" [control]="form.get('followUpDate')">
+                            <app-date-selector
+                                id="followUpDate"
+                                formControlName="followUpDate"
+                                cardValue
+                                [minDate]="minDate"
+                                (onChange)="dateValidator.validate($event, form.get('followUpDate'))">
+                            </app-date-selector>
+                        </card-row>
+
+                        <card-row label="Payment Enabled" inputId="isPaymentEnabled" [control]="form.get('isPaymentEnabled')">
+                            <label class="form-check h-100" cardValue [ngClass]="{'read-only': isProvisionalDisbursementGroup}">
+                              <input type="checkbox" class="form-check-input" formControlName="isPaymentEnabled" id="isPaymentEnabled" 
+                              [attr.disabled]="isProvisionalDisbursementGroup">
+                              <span></span>
+                            </label>
+                        </card-row>
+
+                        <card-row class="electionFormRequired" label="Election Form Required before Payment"  [labelWidth]="320" inputId="electionFormRequired" [control]="form.get('electionFormRequired')">
+                            <label class="form-check h-100" cardValue>
+                              <input type="checkbox" class="form-check-input" formControlName="electionFormRequired" id="electionFormRequired" >
+                              <span></span>
+                            </label>
+                        </card-row>
+
+                        <card-row *permissions="deficienciesTemplatePermission" label="Deficiency Settings" inputId="deficiencySettingsTemplate" [control]="form.get('deficiencySettingsTemplate')" required>
+                            <app-select 
+                                required 
+                                id="deficiencySettingsTemplate" 
+                                [options]="deficiencySettingsTemplates$ | async"
+                                formControlName="deficiencySettingsTemplate"  
+                                optionName="templateName"
+                                cardValue
+                                placeholder="Select Deficiency Settings Template">
+                            </app-select>
+                        </card-row>
+                    </card-col>
+                </card>
+            </form>
+
+            <ng-template #provisionalDisbursementGroup>
+                <card-row label="Name" [value]="disbursementGroup?.name" [labelWidth]="150"></card-row>
+                <card-row label="Type" [value]="disbursementGroup?.typeName" [labelWidth]="150"></card-row>
+            </ng-template>
+        </div>
+        <div class="modal-section" *ngIf="disbursementGroup">
+            <app-system-fields-section [item]="disbursementGroup" modalMode></app-system-fields-section>
+        </div>
+    </modal-body>
+
+    <modal-footer>
+        <ng-container *ngIf="!isProvisionalDisbursementGroup">
+            <button *permissions="deletePermission" type="button" class="btn modal-footer__btn modal-footer__btn--secondary me-auto" (click)="onDelete()">
+                Delete
+            </button>
+        </ng-container>
+        <div *ngIf="error$ | async as error" 
+                class="text-danger me-auto">
+                {{ error }}
+        </div>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="editDisbursementGroupModal.hide()">
+            Cancel
+        </button>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--primary"
+            asyncButton
+            [awaitedActionTypes]="awaitedActionTypes"
+            [ngClass]="{ disabled: form.invalid }" [disabled]="form.invalid" (click)="onSave()">
+                <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Save
+        </button>
+    </modal-footer>
+</modal>

@@ -1,0 +1,19 @@
+<div class="page-content" *ngIf="communication$ | async as communication">
+  <app-notes-list *ngIf="entityLabel === 'claimants'" [entityTypeId]="entityTypeId" [entityId]="communication.id" (newRecord)="addNew()"></app-notes-list>
+
+  <card *ngIf="entityLabel === 'projects'" isHeaderFlexRow="true" [actionBar]="notesActionBar">
+    <card-col [width]="1000" [labelWidth]="1000">
+        <div class="form-check h-100" cardValue>
+            <app-notes
+                [entityTypeId]="entityTypeId"
+                [entityId]="id"
+                [pageSize]="5"
+                [isEditEnabled]="isEditEnabled"
+                (actionBarUpdated)="onActionBarUpdated($event)"
+                (notesEditModeChanged)="onNotesEditModeChanged($event)"
+                (notesExpanded)="onNotesExpanded($event)">
+            </app-notes>
+        </div>
+    </card-col>
+</card>
+</div>

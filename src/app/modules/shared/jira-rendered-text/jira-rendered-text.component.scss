@@ -1,0 +1,128 @@
+@import "src/styles.variables.scss";
+
+:host ::ng-deep {
+    .quill-container.quill-jira .ql-editor {
+        line-height: 1.1;
+        margin: 0;
+        padding: 10px 0 0 0;
+
+        p {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        .preformatted.panel pre {
+            border: 1px solid #D8D8D8;
+            border-left: 12px solid #D8D8D8;
+            border-radius: 5px;
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 13px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+
+        table th {
+            background-color: #f8f8f8;
+            text-align: left;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+
+        table td {
+            padding: 8px;
+            border: 1px solid #ccc;
+            color: #333;
+        }
+
+        ol,
+        ul {
+            padding-left: 1.6rem;
+            margin: 0;
+            line-height: .1em;
+        }
+
+        li {
+            margin-bottom: 0;
+            padding: 0.2em 0 0.2em 0.1em;
+        }
+
+        ul li {
+            list-style-type: disc;
+            line-height: 1.1;
+        }
+
+        ul ul li {
+            list-style-type: circle;
+        }
+
+        ul ul ul li {
+            list-style-type: square;
+        }
+
+        ol li {
+            list-style-type: decimal;
+            line-height: 1.1;
+        }
+
+        ol ol li {
+            list-style-type: lower-alpha;
+        }
+
+        ol ol ol li {
+            list-style-type: lower-roman;
+        }
+
+        ol li,
+        ul li {
+            padding: 0.1em 0;
+            line-height: 1.2;
+        }
+
+        ol+ol,
+        ul+ul,
+        ol+ul,
+        ul+ol {
+            margin-top: 0;
+        }
+    }
+}
+
+.content-wrapper {
+    overflow: hidden;
+    max-height: 120px;
+    position: relative;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.content-wrapper.expanded {
+    max-height: none;
+}
+
+.content-wrapper.expanded::after {
+    display: none;
+}
+
+.content-wrapper::after {
+    content: "";
+    position: absolute;
+    bottom: -30px;
+    left: -5px;
+    width: 100%;
+    height: 30px;
+    box-shadow: 0 -10px 10px rgb(255 255 255);
+    pointer-events: none;
+}
+
+.view-more {
+    color: $blue;
+    font-weight: 700;
+    margin-top: 10px;
+    display: inline-block;
+}

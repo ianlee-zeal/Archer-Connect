@@ -1,0 +1,16 @@
+<card header="Notes" isHeaderFlexRow="true" [actionBar]="actionBar">
+    <card-col [width]="800" [labelWidth]="800">
+        <div class="form-check h-100" cardValue>
+            <app-notes
+                [entityTypeId]="entityTypeId"
+                [entityId]="id"
+                [pageSize]="3"
+                [isPublicSettingEnabled]="isEditEnabled"
+                [isEditEnabled]="isEditEnabled"
+                (actionBarUpdated)="onActionBarUpdated($event)"
+                (notesEditModeChanged)="onNotesEditModeChanged($event)"
+                (notesExpanded)="onNotesExpanded($event)">
+            </app-notes>
+        </div>
+    </card-col>
+</card>

@@ -1,0 +1,86 @@
+<modal (close)="onCancel()">
+  <modal-header>Add Project Contact</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="form">
+        <card header='Contact Details' hideSeparator>
+          <card-col [width]="480" [labelWidth]="160">
+              <card-row label="Contact" inputId="contact" [control]="form.get('contact')" required>
+                <div cardValue>
+                  <input
+                  (click)="onOpenContactSelectModal()"
+                  type="text"
+                  class="form-control cursor-pointer"
+                  formControlName="contact"
+                  readonly
+                  id="contact"
+                  placeholder="Select Contact" />
+                  <form [formGroup]="form">
+                    <card hideSeparator>
+                      <card-col [width]="312" [labelWidth]="165">
+                        <card-row label="User" [value]="projectContact?.userIdName" containValue></card-row>
+                        <card-row class='organization' label="Organization" [value]="projectContact?.orgIdName" containValue></card-row>
+                        <card-row label="Primary Org Type" [value]="projectContact?.orgTypeIdName" containValue></card-row>
+                      </card-col>
+                    </card>
+                  </form>
+                </div>
+              </card-row>
+              <card-row  label="Role" inputId="roleId" [control]="form.get('roleId')">
+                <app-select [disabled]="isRoleDisabled" id="roleId" [options]="projectContactRoles$ | async" formControlName="roleId" cardValue fullwidth></app-select>
+              </card-row>
+          </card-col>
+        </card>
+        <card header='Information Routing' hideSeparator>
+          <card-col [width]="480" [labelWidth]="220">
+          <card-row label="CC on Lien Status Report?" inputId="ccOnLienStatusReport">
+          <label class="form-check h-100" cardValue>
+            <input type="checkbox" class="form-check-input" formControlName="ccOnLienStatusReport"
+              id="ccOnLienStatusReport" />
+            <span></span>
+          </label>
+        </card-row>
+        <card-row label="CC on Invoice?" inputId="ccOnInvoice">
+          <label class="form-check h-100" cardValue>
+            <input type="checkbox" class="form-check-input" formControlName="ccOnInvoice"
+              id="ccOnInvoice" />
+            <span></span>
+          </label>
+        </card-row>
+        <card-row label="Deficiency Report" inputId="ccOnDeficiencyReport">
+          <label class="form-check h-100" cardValue>
+            <input type="checkbox" class="form-check-input" formControlName="ccOnDeficiencyReport"
+              id="ccOnDeficiencyReport" />
+            <span></span>
+          </label>
+        </card-row>
+        <card-row label="QSF Report" inputId="ccOnQsfReport">
+          <label class="form-check h-100" cardValue>
+            <input type="checkbox" class="form-check-input" formControlName="ccOnQsfReport"
+              id="ccOnQsfReport" />
+            <span></span>
+          </label>
+        </card-row>
+        </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="submit"
+            asyncButton
+            [ngClass]="{ disabled: form.invalid }"
+            [disabled]="form.invalid"
+            [awaitedActionTypes]="awaitedActionTypes"
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            (click)="save()"
+            (asyncFinished)="onCancel($event)">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Save
+    </button>
+</modal-footer>
+</modal>

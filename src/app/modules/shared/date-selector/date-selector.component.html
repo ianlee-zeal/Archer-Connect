@@ -1,0 +1,45 @@
+<div
+  data-test-id="date-selector"
+  class="date-selector"
+  [ngClass]="{ 'w-100': fullwidth, 'is-invalid': dateModel.invalid && dateModel.touched }"
+  [ngStyle]="{ 'width': maxWidth + 'px'}">
+  <input
+    class="date-selector__input form-control"
+    [ngClass]="{ 'w-100': fullwidth }"
+    [attr.id]="id"
+    [ngModel]="date"
+    ngbDatepicker
+    [minDate]="internalMinDate"
+    [maxDate]="internalMaxDate"
+    [placeholder]="placeholder"
+    (dateSelect)="onDateSelect($event)"
+    (ngModelChange)="onChangeHandler($event)"
+    (closed)="onClosed()"
+    (focus)="onFocus()"
+    (blur)="onBlur()"
+    [disabled]="isDisabled"
+    #datepicker="ngbDatepicker"
+    container="body"
+    placement="bottom-right"
+    navigation="select"
+    firstDayOfWeek="7"
+    autocomplete="off"
+    #dateInput
+    #dateModel="ngModel"
+    (keyup)="onKeyUp($event)"
+  />
+  <button *ngIf="shouldShowClearButton()"
+    data-test-id="date-selector-toggle-btn"
+    class="date-selector__close_button"
+    (click)="clear()" [ngSwitch]="mode" [disabled]="isDisabled">
+    <img src="assets/svg/ic_close.svg" />
+  </button>
+  <button
+    data-test-id="date-selector-toggle-btn"
+    class="date-selector__button"
+    (click)="toggle(datepicker)" [ngSwitch]="mode" [disabled]="isDisabled">
+    <img *ngSwitchCase="0" src="assets/svg/ic_calendar.svg" />
+    <img *ngSwitchCase="1" src="assets/svg/ic_calendar_yellow.svg" />
+    <img *ngSwitchCase="2" src="assets/svg/ic_calendar_gray.svg" />
+  </button>
+</div>

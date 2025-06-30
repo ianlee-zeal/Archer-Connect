@@ -1,0 +1,208 @@
+<modal (close)="modal.hide()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form *ngIf="canEdit; else viewTemplate" [formGroup]="form" novalidate (change)="updateContactModel()">
+        <card hideSeparator>
+          <card-col [width]="480">
+            <card-row *ngIf="canEditLegalContactsPermission" label="Legal Contact" [labelWidth]="220" inputId="isLegalContact" [control]="form.get('isLegalContact')">
+              <label class="form-check h-100" cardValue>
+                <input type="checkbox" class="form-check-input" formControlName="isLegalContact" id="isLegalContact" />
+                <span></span>
+              </label>
+            </card-row>
+            <card-row label="Release Signature Required" [labelWidth]="220" inputId="isReleaseSignatureRequired" [control]="form.get('isReleaseSignatureRequired')">
+              <label class="form-check h-100" cardValue>
+                <input type="checkbox" class="form-check-input" formControlName="isReleaseSignatureRequired" id="isReleaseSignatureRequired" />
+                <span></span>
+              </label>
+            </card-row>
+            <card-row label="CS Signature Required" [labelWidth]="220" inputId="isCsSignatureRequired" [control]="form.get('isCsSignatureRequired')">
+              <label class="form-check h-100" cardValue>
+                <input type="checkbox" class="form-check-input" formControlName="isCsSignatureRequired" id="isCsSignatureRequired" />
+                <span></span>
+              </label>
+            </card-row>
+            <card-row label="Relationship" [labelWidth]="160" [containerWidth]="460" inputId="relationshipType" [control]="form.get('relationshipType')" required>
+              <app-select
+                id="relationshipType"
+                [options]="availableRelationshipTypes"
+                formControlName="relationshipType"
+                optionAsValue
+                cardValue
+                required
+                (onModelChange)="onRelationshipTypeChanged()">
+              </app-select>
+            </card-row>
+          </card-col>
+          <card-col [labelWidth]="160">
+            <card-row *ngIf="canEditLegalContactsPermission"></card-row>
+            <card-row *ngIf="canEditLegalContactsPermission"></card-row>
+            <card-row label="Role" inputId="representativeType" [control]="form.get('representativeType')" required>
+              <app-select
+                id="representativeType"
+                [options]="availableRepresentativeTypes"
+                formControlName="representativeType"
+                optionAsValue
+                cardValue
+                required>
+              </app-select>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+    <app-contacts-person-template
+      [canToggleMode]="canTogglePersonTemplateMode"
+      [person]="relationship?.person"
+      [isPrimaryContact]="relationship?.isPrimaryContact"
+      [isProbateContact]="isProbateContact"
+      [canEdit]="canEdit"
+      [showEmailWarning]="form.get('paymentMethod').value === paymentMethodEnum.DigitalPayment">
+    </app-contacts-person-template>
+    <div class="modal-section">
+      <form [formGroup]="form" (change)="updateContactModel()" novalidate>
+        <card *ngIf="canEdit else viewAdditionalInfo" header="Contact Note:" hideSeparator>
+          <card-col>
+            <card-row hideLabel="true" inputId="additionalInfo" [control]="form.get('additionalInfo')">
+              <div cardValue class="textarea__container__no-label">
+                <textarea
+                  id="additionalInfo"
+                  class="form-control textarea__container textarea__container"
+                  formControlName="additionalInfo">
+                </textarea>
+              </div>
+            </card-row>
+          </card-col>
+        </card>
+        <ng-template #viewAdditionalInfo>
+          <card header="Contact Note:" hideSeparator>
+            <card-col>
+              <card-row hideLabel>
+                <div cardValue class="textarea__container__no-label">
+                  {{ relationship?.additionalInfo }}
+                </div>
+              </card-row>
+            </card-col>
+          </card>
+        </ng-template>
+      </form>
+    </div>
+    <div class="modal-section">
+      <form *ngIf="canEdit; else viewPaymentInstructionsTemplate" [formGroup]="form" (change)="updateContactModel()" novalidate>
+        <card header="Special Payment Instructions:" hideSeparator>
+          <card-col [width]="460">
+            <card-row label="Is Contact being paid on behalf of claimant?" [hideColon]="true" [labelWidth]="335" inputId="isPaidOnBehalfOfClaimant" [control]="form.get('isPaidOnBehalfOfClaimant')">
+              <app-select id="isPaidOnBehalfOfClaimant" [options]="yesNoOptions" formControlName="isPaidOnBehalfOfClaimant" cardValue></app-select>
+            </card-row>
+            <card-row label="Payee" inputId="nameOnCheck" [control]="form.get('nameOnCheck')">
+              <input type="text" class="form-control" formControlName="nameOnCheck" id="nameOnCheck" maxLength="255" cardValue />
+            </card-row>
+            <card-row label="Percentage Split" [labelWidth]="185" inputId="percentageAllocation" [control]="form.get('percentageAllocation')">
+              <input type="text" class="form-control" formControlName="percentageAllocation" id="percentageAllocation" [toFixed]="percentFractionDigits" onlyNumbersEx cardValue [maxValue]="100" [allowDecimal]="true"/>
+            </card-row>
+            <card-row label="Amount" [labelWidth]="185" inputId="amountAllocation" [control]="form.get('amountAllocation')">
+              <input type="text" class="form-control" formControlName="amountAllocation" id="amountAllocation" cardValue maxLength="255" onlyNumbersEx [allowDecimal]="true" />
+            </card-row>
+            <card-row label="Payment Method" [labelWidth]="185" [containerWidth]="330" inputId="paymentMethod" [control]="form.get('paymentMethod')">
+              <app-select id="paymentMethod" [options]="paymentMethods" formControlName="paymentMethod" cardValue maxLength="255"></app-select>
+            </card-row>
+            <card-row label="Check Memo" inputId="checkMemo" [labelWidth]="185" [control]="form.get('checkMemo')">
+              <input type="text" class="form-control" formControlName="checkMemo" id="checkMemo" cardValue maxLength="255" />
+            </card-row>
+          </card-col>
+          <card-col [width]="480">
+            <card-row inputId="specialInstructions" [control]="form.get('specialInstructions')">
+              <div class="specialInstructions-container" cardValue>
+              <span class="textarea__label" >Special Instructions:</span>
+              <textarea id="specialInstructions" class="form-control textarea__container" formControlName="specialInstructions"></textarea>
+              </div>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+    <div class="modal-section" *ngIf="relationship?.id && canViewAuditInfoPermission">
+      <app-system-fields-section [item]="relationship" modalMode></app-system-fields-section>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <div *ngIf="relationship?.id" class="me-auto">
+      <button
+        *permissions="personRelationshipDeletePermission"
+        type="button"
+        class="btn modal-footer__btn modal-footer__btn--secondary me-auto"
+        asyncButton
+        [awaitedActionTypes]="awaitedDeleteActionTypes"
+        (click)="onDelete()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Remove Contact
+      </button>
+      <div *ngIf="error$ | async as error" class="text-danger ms-2 d-inline">{{error}}</div>
+    </div>
+    <div *ngIf="!relationship?.id" class="me-auto">
+      <button *permissions="createAssociationPermission" type="button" class="btn modal-footer__btn modal-footer__btn--primary me-auto" (click)="onLink()">
+        Link Existing
+      </button>
+      <div *ngIf="error$ | async as error" class="text-danger ms-2 d-inline">{{error}}</div>
+      <div *ngIf="canTogglePersonTemplateMode && personTemplate?.canEdit" class=" ms-2 d-inline">Edits will be saved to the existing person.</div>
+    </div>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="modal.hide()">
+      Cancel
+    </button>
+    <ng-container *ngIf="canEdit" >
+      <button
+        *permissions="editAssociationPermission || createAssociationPermission"
+        type="submit"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="onSave()"
+        [ngClass]="{ disabled: form.invalid || personTemplate?.form.invalid }"
+        asyncButton
+        [awaitedActionTypes]="awaitedSaveActionTypes"
+        [disabled]="form.invalid || personTemplate?.form.invalid">
+          <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          Save
+      </button>
+    </ng-container>
+    <ng-container *ngIf="relationship?.id" >
+      <ng-container *permissions="editAssociationPermission">
+        <button *ngIf="!canEdit" type="submit" class="btn modal-footer__btn modal-footer__btn--secondary"
+          (click)="onEdit()">
+          Edit
+        </button>
+      </ng-container>
+    </ng-container>
+  </modal-footer>
+</modal>
+
+<ng-template #viewTemplate>
+  <card hideSeparator>
+    <card-col [width]="480" [labelWidth]="220">
+      <card-row *ngIf="canEditLegalContactsPermission" label="Legal Contact" [value]="relationship?.isLegalContact | yesNoPipe"></card-row>
+      <card-row label="Release Signature Required" [value]="relationship?.isReleaseSignatureRequired | yesNoPipe"></card-row>
+      <card-row label="Relationship" [value]="relationship?.relationshipType?.name"></card-row>
+      <card-row label="CS Signature Required" [value]="relationship?.isCsSignatureRequired | yesNoPipe"></card-row>
+    </card-col>
+    <card-col [labelWidth]="130">
+      <card-row *ngIf="canEditLegalContactsPermission"></card-row>
+      <card-row *ngIf="canEditLegalContactsPermission"></card-row>
+      <card-row label="Role" [value]="relationship?.representativeType?.name"></card-row>
+    </card-col>
+  </card>
+</ng-template>
+
+<ng-template #viewPaymentInstructionsTemplate>
+  <card header="Special Payment Instructions:" hideSeparator>
+    <card-col  [width]="480">
+      <card-row label="Is Contact being paid on behalf of claimant?" [value]="relationship?.isPaidOnBehalfOfClaimant | yesNoPipe"></card-row>
+      <card-row label="Payee" [value]="relationship?.nameOnCheck"></card-row>
+      <card-row label="Percentage Split" [value]="relationship?.percentageAllocation"></card-row>
+      <card-row label="Amount" [value]="relationship?.amountAllocation"></card-row>
+      <card-row label="Payment Method" [value]="filterFromSelectOptions(paymentMethods, relationship?.paymentMethodId)?.name"></card-row>
+      <card-row label="Check Memo" [value]="relationship?.memoText"></card-row>
+    </card-col>
+    <card-col [labelWidth]="170">
+      <card-row  label="Special Instructions" [value]="relationship?.specialInstructions"></card-row>
+    </card-col>
+  </card>
+</ng-template>

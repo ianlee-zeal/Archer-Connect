@@ -1,0 +1,62 @@
+@import "../../../../styles/variables.scss";
+
+$min-height : 130px;
+
+.switch-org-modal {
+  .form-control {
+    width: 100%;
+  }
+}
+
+.org-list {
+  max-height: 310px;
+  font-weight: bold;
+  font-size: $font-size-m;
+  min-height: $min-height;
+  padding-left: 0;
+  overflow: auto;
+  list-style-type: none;
+
+  &__item {
+    cursor: pointer;
+    padding: 3px 0 3px 10px;
+
+    &:hover {
+      background-color: $grid-hover-row-bg-color;
+    }
+
+    &-title {
+      padding-left: 5px;
+    }
+
+    &--active &-icon {
+      color: $green;
+      margin-right: 5px;
+      font-size: 10px;
+    }
+
+    &--selected {
+      color: $custom-blue;
+      background-color: $grid-selected-row-bg-color;
+    }
+  }
+}
+
+.search-container {
+  &__icon {
+    position: absolute;
+    top: 7px;
+    left: 24px;
+  }
+
+  &__input {
+    padding-left: 25px;
+  }
+}
+
+.no-records-template {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: $min-height;
+}

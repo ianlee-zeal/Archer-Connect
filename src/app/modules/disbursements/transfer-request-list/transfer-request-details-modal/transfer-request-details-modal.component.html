@@ -1,0 +1,50 @@
+<modal (close)="onCancel()">
+    <modal-header>Transfer Details</modal-header>
+    <modal-body>
+      <div class="modal-section">
+        <app-context-bar
+            title="Transfer Summary By Payee"
+            [elements]="headerElements">
+        </app-context-bar>
+        <app-grid
+            class="ag-grid-custom-height-500"
+            [gridId]="gridId"
+            [gridOptions]="gridOptions"
+            [isPagerEnabled]="false"
+            (gridReady)="onGridReady($event)"
+            (loadData)="loadData($event)"
+            [hideTopStatusbar]="true"
+            >
+        </app-grid>
+     </div>
+      <div *ngIf="note" class="modal-section">
+        <card hideSeparator>
+          <card-col>
+              <card-row label="Notes" labelWeight="bold" [valuePaddingTop]="5" hideColon>
+                <quill-view [content]="note" cardValue></quill-view>
+              </card-row>
+          </card-col>
+       </card>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <div *ngIf="isExporting$ | async" class="generating-documents-loading me-auto"> Generating documents
+        <span class="spinner-border spinner-border-sm"></span>
+      </div>
+      <div *ngIf="showVoidError" class="void-error">  1 or more items are voided </div>
+      <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+              (click)="onCancel()">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        asyncButton
+        [awaitedActionTypes]="awaitedActionTypes"
+        [disabled]="generateExtractDisabled"
+        (click)="generateExtract()">
+          <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          Generate Extract
+      </button>
+    </modal-footer>
+  </modal>

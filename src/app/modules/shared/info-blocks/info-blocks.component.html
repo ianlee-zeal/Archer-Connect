@@ -1,0 +1,6 @@
+<div *ngIf="data?.length" class="ac-info-blocks">
+    <div *ngFor="let block of data" class="ac-info-blocks__element">
+        <div class="ac-info-blocks__element__title">{{block.label}}</div>
+        <div class="ac-info-blocks__element__value" [attr.title]="block.title">{{block.valueType !== dashboardValueType.Number ? block.value : block.value | number}}</div>
+    </div>
+</div>

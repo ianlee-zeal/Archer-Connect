@@ -1,0 +1,48 @@
+<div class="review-section">
+    <nav *ngIf="!resultTab">
+        <div class="nav nav-tabs" id="review-nav-tab" role="tablist">
+            <a *ngFor="let item of tabsGroup" [ngClass]="navItemclass(item)" class="nav-item nav-link"
+                id="{{item.tab}}-tab" (click)="onChangeTab(item.tab)" data-toggle="tab"
+                data-target="#{{item.tab}}">{{item.title}} ({{item.count}})
+            </a>
+        </div>
+    </nav>
+    <card>
+        <card-col>
+            <card-row label="Project Name" [value]="projectName">
+            </card-row>
+        </card-col>
+        <card-col>
+            <card-row label="QSF" [value]="qsfName">
+            </card-row>
+        </card-col>
+    </card>
+    <div class="tab-content" id="review-nav-tab-content" *ngIf="documentImport">
+        <card hideSeparator>
+            <card-col>
+                <card-row label="Total Payments" [value]="totalPaymentString">
+                </card-row>
+            </card-col>
+        </card>
+        <div *ngFor="let item of tabsGroup" class="tab-pane fade show" [class.active]="isActiveTab(item)"
+            id="{{item.tab}}">
+            <app-review-payments-grid *ngIf="isActiveTab(item)" [tab]="activeTab" [documentImport]="documentImport"
+                [documentTypeId]="documentTypeId">
+            </app-review-payments-grid>
+        </div>
+    </div>
+    <div class="modal-section note-editor-container">
+        <form *ngIf="showNotes()" [formGroup]="form" novalidate>
+            <card hideSeparator>
+                <card-col class="note-editor-container__col">
+                    <card-row [labelWidth]="160"  labelWeight="bold" label="Add a Note" inputId="note" [control]="form.get('note')" required>
+                        <quill-editor formControlName="note"
+                          placeholder="Enter text here..."
+                          cardValue>
+                        </quill-editor>
+                      </card-row>
+                </card-col>
+            </card>
+        </form>
+    </div>
+</div>

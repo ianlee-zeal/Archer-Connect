@@ -1,0 +1,15 @@
+<div class="modal-section" *ngIf="(progressValues$ | async) as progressValues">
+  <p class="text-center">Processing {{ getFileName() }}</p>
+  <div class="progress-container mb-4">
+    <div *ngIf="progressValues.progressTotalCount">{{progressValues.progressCurrentCount}}/{{progressValues.progressTotalCount}}</div>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" [style.width]="progressValues.progressWidth" [attr.aria-valuenow]="progressValues.progressValue"
+        aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+  </div>
+  <div *ngIf="progressValues.progressLoadedRows?.length">
+    <div class="progress-grid">
+      <ag-grid-angular [gridOptions]="gridOptions" [rowData]="progressValues.progressLoadedRows" class="ag-grid-angular progress-grid__table"></ag-grid-angular>
+    </div>
+  </div>
+</div>

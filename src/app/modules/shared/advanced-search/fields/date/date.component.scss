@@ -1,0 +1,40 @@
+@import "src/styles/variables.scss";
+
+.advanced-search-field-date {
+  display: flex;
+
+  &__type-container {
+    width: $advanced-search-condition-control-width;
+    margin-right: $advanced-search-controls-indent;
+  }
+
+  &__range {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__range-controls {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: nowrap !important;
+  }
+
+  &__delimiter {
+    font-style: italic;
+    width: 30px;
+    flex-shrink: 0;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .date-selector,
+  .date-selector__input {
+    width: $advanced-search-search-term-short-control-width !important;
+  }
+
+  &__range .date-selector,
+  &__range .date-selector__input {
+    flex-grow: 1;
+    width: 116px !important;
+  }
+}

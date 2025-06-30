@@ -1,0 +1,134 @@
+<div *ngIf="(docuSignFieldsDefaults$ | async) as defaults" class="modal-section">
+
+    <form [formGroup]="uploadDocusignForm" novalidate>
+        <card hideSeparator>
+        <card-col [width]="730">
+            <p class="docusign__headers">E-Delivery Settings</p>
+            <card-row label="Delivery Integration Provider" inputId="dIPSelector" [control]="uploadDocusignForm.get('deliveryIntegrationProvider')"
+            [labelWidth]="260">
+            <app-select
+                id="dIPSelector"
+                [options]="documentProvidersForDIPs$ | async"
+                formControlName="deliveryIntegrationProvider"
+                required
+                cardValue
+                fullwidth
+                [searchable]="(documentProvidersForDIPs$ | async)?.length > 0">
+            </app-select>
+            </card-row>
+            <card-row label="Delivery Integration Template" inputId="dITSelector" [control]="uploadDocusignForm.get('docuSignIntegrationTemplate')"
+            [labelWidth]="260">
+            <app-select
+                id="dITSelector"
+                [options]="documentTemplatesForDITs$ | async"
+                formControlName="docuSignIntegrationTemplate"
+                required
+                cardValue
+                fullwidth
+                [searchable]="(documentTemplatesForDITs$ | async)?.length > 0">
+            </app-select>
+            </card-row>
+            <div class="card-row-container">
+                <card-row label="Envelope Header" [labelWidth]="260"  [control]="uploadDocusignForm.get('envelopeHeader')">
+                    <input class="form-control w-100" type="text" formControlName="envelopeHeader" appAutoFocus cardValue/>
+                </card-row>
+                <div style="display: flex;">
+                    <app-tooltip-info style="margin-left: 245px;" [inline]="true" [tooltipText]="tooltip" [templateRef]="headerTriggerTooltip"></app-tooltip-info>
+                    <div style="color: grey; margin-top: 6px;">
+                        {{ tooltip }}
+                    </div>
+                </div>
+            </div>
+            <p class="docusign__headers">Email Content</p>
+            <div class="card-row-container">
+                <card-row label="Email Subject Line" [labelWidth]="260" [control]="uploadDocusignForm.get('emailSubjectLine')" [tooltip]="tooltip" [tooltipTemplateRef]="subjectLineTriggerTooltip">
+                    <input class="form-control w-100" type="text" formControlName="emailSubjectLine" appAutoFocus cardValue/>
+                </card-row>
+                <div style="display: flex;">
+                    <app-tooltip-info style="margin-left: 245px;" [inline]="true" [tooltipText]="tooltip" [templateRef]="subjectLineTriggerTooltip"></app-tooltip-info>
+                    <div style="color: grey; margin-top: 6px;">
+                        {{ tooltip }}
+                    </div>
+                </div>
+            </div>
+            <div class="card-row-container">
+                <card-row label="Email Intro" [labelWidth]="260" [control]="uploadDocusignForm.get('emailIntro')">
+                    <input class="form-control w-100" type="text" formControlName="emailIntro" appAutoFocus cardValue/>
+                </card-row>
+                <div style="display: flex;">
+                    <app-tooltip-info style="margin-left: 245px;" [inline]="true" [tooltipText]="tooltip" [templateRef]="introTriggerTooltip"></app-tooltip-info>
+                    <div style="color: grey; margin-top: 6px;">
+                        {{ tooltip }}
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-row-container">
+                <card-row label="Email Body" [labelWidth]="260" [control]="uploadDocusignForm.get('emailBody')">
+                    <textarea class="form-control w-100" style="height: 100px;" type="text" formControlName="emailBody" appAutoFocus cardValue></textarea>
+                </card-row>
+                <div style="display: flex;">
+                    <app-tooltip-info style="margin-left: 245px;" [inline]="true" [tooltipText]="tooltip" [templateRef]="bodyTriggerTooltip"></app-tooltip-info>
+                    <div style="color: grey; margin-top: 6px;">
+                        {{ tooltip }}
+                    </div>
+                </div>
+            </div>
+            <div class="card-row-container">
+                <card-row label="Email Footer" [labelWidth]="260" [control]="uploadDocusignForm.get('emailFooter')">
+                    <textarea class="form-control w-100" type="text" style="height: 100px;" formControlName="emailFooter" appAutoFocus cardValue></textarea>
+                </card-row>
+                <div style="display: flex;">
+                    <app-tooltip-info style="margin-left: 245px;" [inline]="true" [tooltipText]="tooltip" [templateRef]="footerTriggerTooltip"></app-tooltip-info>
+                    <div style="color: grey; margin-top: 6px;">
+                        {{ tooltip }}
+                    </div>
+                </div>
+            </div>
+            <card-row label="CC Signed Documents" [labelWidth]="260" [control]="uploadDocusignForm.get('carbonCopies')">
+            <input class="form-control w-100" type="text" formControlName="carbonCopies" appAutoFocus cardValue/>
+            </card-row>
+            <p class="docusign__headers">Send Test Document</p>
+            <card-row label="Test Recipients" [labelWidth]="260" [control]="uploadDocusignForm.get('recipients')">
+            <input class="form-control w-100" type="text" formControlName="recipients" appAutoFocus cardValue/>
+            </card-row>
+        </card-col>
+        </card>
+    </form>
+    <div class="container">
+        <div *ngIf="validationMessage" class="upload-document-modal__error text-danger me-auto">
+            {{ validationMessage }}
+        </div>
+        <div class="button-container">
+            <button 
+            style="margin-top: 10px;"
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            (click)="onTestDITFile(false)"
+            [disabled]="!disableTestButton()">
+                <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+                Test E-Delivery
+            </button>
+        </div>
+
+    </div>
+    
+    <ng-template #headerTriggerTooltip>
+        {{defaults.emailHeader}}
+     </ng-template>
+     
+     <ng-template #subjectLineTriggerTooltip>
+         {{defaults.emailSubjectLine}}
+     </ng-template>
+     
+     <ng-template #introTriggerTooltip>
+         {{defaults.emailIntro}}
+     </ng-template>
+     
+     <ng-template #bodyTriggerTooltip>
+         {{defaults.emailBody}}
+     </ng-template>
+     
+     <ng-template #footerTriggerTooltip>
+         {{defaults.emailFooter}}
+     </ng-template>
+</div>

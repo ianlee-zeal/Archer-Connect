@@ -1,0 +1,47 @@
+@import "src/styles/variables.scss";
+@import "src/styles.variables.scss";
+
+
+.progress-bar-modal  {
+    .modal-header {
+        background-color: $blue;
+        color: $white;
+        height: auto;
+        padding: 15px 20px 40px;
+        .btn-close {
+            display: none;
+        }
+    }
+    .modal-title {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }
+    &__container {
+        text-align: center;
+        max-width: 400px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+}
+
+.progress-container {
+    display: flex;
+    &__count {
+        line-height: 0.8rem;
+        height: 0.8rem;
+        margin-left: 20px;
+    }
+}
+
+.progress {
+    height: 0.8rem;
+    width: 100%;
+}
+
+.progress-bar {
+    background-color: $primary-blue;
+}
+

@@ -1,0 +1,7 @@
+<div class="page-content">
+    <app-grid *ngIf="matterId"
+    [gridOptions]="gridOptions" 
+    (gridReady)="gridReady($event)" 
+    (loadData)="loadData($event)" 
+    [gridId]="gridId"></app-grid>
+</div>

@@ -1,0 +1,13 @@
+<div class="page">
+  <app-action-bar 
+    [actionHandlers]="actionBar$ | async">
+  </app-action-bar>
+  <app-context-bar 
+    [title]="'Communications Search'">
+  </app-context-bar>
+  <div class="page-content">
+    <app-global-communication-search-list 
+      [gridId]="gridId">
+    </app-global-communication-search-list>
+  </div>
+</div>

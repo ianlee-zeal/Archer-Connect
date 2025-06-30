@@ -1,0 +1,19 @@
+<div *ngIf="address">
+    <div *ngIf="hasProperty(name)">
+        {{ name }}
+    </div>
+    {{ address.line1 }}
+    <div *ngIf="hasProperty(address?.line2)">
+        {{ address.line2 }}
+    </div>
+    <div *ngIf="hasProperty(address?.city) && hasProperty(address?.state)">
+        {{ address.city }}, {{ address.state }}
+    </div>
+    <div *ngIf="hasProperty(address?.city) && !hasProperty(address?.state)">
+        {{ address.city }}
+    </div>
+    <div *ngIf="hasProperty(address?.state) && !hasProperty(address?.city)">
+        {{ address.state }}
+    </div>
+    {{ address.zip }}
+</div>

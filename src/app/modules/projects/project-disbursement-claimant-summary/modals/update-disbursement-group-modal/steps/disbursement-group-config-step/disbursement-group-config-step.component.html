@@ -1,0 +1,10 @@
+<ng-container *ngIf="projectId">
+  <app-grid
+    class="ag-grid-custom-height-500"
+    [gridOptions]="gridOptions"
+    (gridReady)="gridReady($event)"
+    (loadData)="loadData($event)"
+    [gridId]="gridId"
+    entityLabel="Disbursement Groups">
+  </app-grid>
+</ng-container>

@@ -1,0 +1,57 @@
+<form novalidate class="emails-list" *ngIf="form && canEdit; else viewTemplate" [formGroup]="form" (change)="onChange()">
+  <card [maxWidth]="610" header="Emails">
+    <card-col [width]="550">
+      <ng-container formArrayName="emailList" *ngFor="let group of emailListGroup.controls; let i = index;">
+        <ng-container [formGroupName]="i">
+          <ng-container [ngTemplateOutlet]="emailTemplate"
+                        [ngTemplateOutletContext]="{ form: group, index: i }">
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="newEmailGroup"
+                    [ngTemplateOutlet]="emailTemplate"
+                    [ngTemplateOutletContext]="{ form: newEmailGroup, index: emailListGroup.controls.length }">
+      </ng-container>
+    </card-col>
+    <card-col [width]="90">
+      <button type="button" class="btn btn-secondary btn-add emails-list__add-btn" (click)="onAddNew()" [disabled]="emailListGroup.length > 9">Add</button>
+    </card-col>
+  </card>
+</form>
+
+<ng-template #emailTemplate let-form='form' let-index='index'>
+  <ng-container [formGroup]="form">
+    <card-row [label]="'Email' + (index + 1)" [inputId]="'email' + (index + 1)" [control]="form.get('email')" [labelWidth]="128">
+      <div class="card-row__content" cardValue>
+        <input [id]="'email' + (index + 1)" type="email" formControlName="email" class="form-control emails-list__email-input" placeholder="Email Address" required>
+        <label class="form-check-label">
+          <input type="checkbox" formControlName="isPrimary" class="form-check-input" (click)="onCheckPrimary(form.value)">
+          <span>Primary</span>
+        </label>
+        <button type="button" class="btn btn-secondary btn-icon btn-icon-remove btn-icon-remove-small emails-list__remove-btn" (click)="onDelete(index)"></button>
+      </div>
+    </card-row>
+  </ng-container>
+</ng-template>
+
+<ng-template #viewTemplate>
+  <card [maxWidth]="610" header="Emails">
+    <ng-container *ngIf="emails?.length > 0; else noRecordsTemplate">
+      <card-col [width]="500">
+        <ng-container *ngFor="let email of emails; let i = index;">
+          <card-row [label]="'Email' + (i + 1)" [labelWidth]="128">
+            <div class="form-control-plaintext" cardValue>
+              {{ email.email }}
+              <span class="tag tag--check" *ngIf="email.isPrimary">Primary</span>
+            </div>
+          </card-row>
+        </ng-container>
+      </card-col>
+    </ng-container>
+  </card>
+</ng-template>
+
+<ng-template #noRecordsTemplate>
+  <div class="col emails-list__no-records">No records</div>
+</ng-template>
+

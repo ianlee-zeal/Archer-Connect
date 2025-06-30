@@ -1,0 +1,12 @@
+.ssn-sequence {
+  .form-group {
+    position: relative;
+
+    &:not(:last-child):after {
+      content: '-';
+      position: absolute;
+      top: 0;
+      right: -3px;
+    }
+  }
+}

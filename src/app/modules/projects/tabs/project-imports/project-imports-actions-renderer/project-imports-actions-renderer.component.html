@@ -1,0 +1,27 @@
+<div class="grid-actions">
+  <div class="grid-actions__action-wrapper">
+    <button
+    *ngIf="params.data?.job?.logDocId && canDownloadFiles"
+    type="button"
+    class="btn-grid-action btn-download"
+    (click)="onDownloadFilesClick()"
+    title="Download Related Files"
+  ></button>
+    <button
+      *ngIf="params.data?.job?.logDocId"
+      type="button"
+      class="btn-grid-action btn-download"
+      (click)="onDownloadDocumentClick()"
+      title="Download Log"
+    ></button>
+  </div>
+  <div class="grid-actions__action-wrapper">
+    <button
+      type="button"
+      class="btn-grid-action btn-edit"
+      (click)="onEditDocumentClick()"
+      title="View Import"
+    ></button>
+  </div>
+</div>
+

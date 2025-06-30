@@ -1,0 +1,14 @@
+<app-grid
+  *ngIf="!hidden"
+  [class]="class"
+  [gridOptions]="gridOptions"
+  (gridReady)="gridReady($event)"
+  (loadData)="loadData($event)"
+  (newRecord)="add()"
+  [gridId]="gridId"
+  [enabledAutoHeight]="enabledAutoHeight"
+  [isContentAutoHeight]="isContentAutoHeight"
+  [skipSetContentHeight]="skipSetContentHeight"
+  [additionalPageItemsCountValues]="additionalPageItemsCountValues"
+  entityLabel="documents">
+</app-grid>

@@ -1,0 +1,10 @@
+<div class="no-rows-overlay">
+  <h4 class="no-rows-overlay__no-results"> 
+      <span *ngIf="showByAdvancedSearch; else noRecords">No Results. </span>
+      <!--span *ngIf="showNewRecordLink">Click <a class="no-rows-overlay__btn-action" (click)="newRecordEmit()">here</a> to begin!</span--> 
+  </h4>
+</div>
+
+<ng-template #noRecords>
+  {{ noRowsMessage }}
+</ng-template>

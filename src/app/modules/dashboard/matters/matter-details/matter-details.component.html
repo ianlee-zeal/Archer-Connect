@@ -1,0 +1,11 @@
+<div style="height: 100%; width: 100%" [ngClass]="{ 'invisible' : (loadingInProgress$ | async) }">
+  <app-action-bar
+  [actionHandlers]="actionBar$ | async"
+  [pager]="pager$ | async"
+  (navigate)="toPage($event)"></app-action-bar>
+  <app-context-bar
+    *ngIf="title"
+    [title]="title">
+  </app-context-bar>
+  <router-outlet></router-outlet>
+</div>

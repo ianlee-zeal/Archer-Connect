@@ -1,0 +1,27 @@
+@import "../variables.scss";
+
+$gutter: 10px;
+
+.card {
+  padding: 20px 30px;
+  border: none;
+  border-bottom: 2px solid $menu-color;
+  border-radius: unset;
+  max-width: 800px;
+
+  .container-fluid {
+    padding: 0;
+  }
+
+  .col,
+  .col-6,
+  .col-auto {
+    padding-left: $gutter;
+    padding-right: $gutter;
+  }
+
+  .row {
+    margin-left: -$gutter;
+    margin-right: -$gutter;
+  }
+}

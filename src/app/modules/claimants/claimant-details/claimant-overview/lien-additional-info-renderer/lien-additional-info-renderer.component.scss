@@ -1,0 +1,15 @@
+.lien-additional-info-renderer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  position: relative;
+  margin-right: -15px;
+  padding-right: 30px;
+
+  &__btn {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    margin-left: 10px;
+  }
+}

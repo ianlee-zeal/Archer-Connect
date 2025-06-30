@@ -1,0 +1,18 @@
+<modal (close)="duplicateWarnModal.hide()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <div *ngFor="let item of duplicateList" [innerHTML]="generateWarnMsg(item)"></div>
+      <p *ngIf="isFoundDuplicatedSsn" class="mt-4">Would you like to link to an existing person?</p>
+      <p *ngIf="!isFoundDuplicatedSsn" class="mt-4">Would you like to link to an existing person or create a new person?</p>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button *ngIf="!isFoundDuplicatedSsn" type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onCreateNew()">
+      Create New
+    </button>
+    <button type="submit" class="btn modal-footer__btn modal-footer__btn--primary" (click)="onLink()">
+      Link Existing
+    </button>
+  </modal-footer>
+</modal>

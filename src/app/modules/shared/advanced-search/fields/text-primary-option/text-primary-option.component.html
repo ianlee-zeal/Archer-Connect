@@ -1,0 +1,34 @@
+<div class="advanced-search-field-text-primary-option">
+  <div class="advanced-search-field-text-primary-option__type-container">
+    <app-select class="advanced-search-field-text-primary-option__type"
+                [model]="condition"
+                [options]="conditionOptions"
+                [disabled]="disabled"
+                (onModelChange)="onChangeCondition($event)"
+                placeholder="Select Condition"
+                fullwidth
+                searchable>
+    </app-select>
+  </div>
+  <div *ngIf="condition !== conditions.IsMissing" class="advanced-search-field-text-primary-option__controls">
+    <div class="advanced-search-field-text-primary-option__input-container" [class.has-error]="hasError(entry?.errors.term)">
+      <input class="form-control w-100"
+             type="text"
+             maxLength="255"
+             [ngModel]="entry && entry.term"
+             (ngModelChange)="onChangeSearch($event)"
+             [disabled]="disabled || !condition" />
+      <app-search-validation-messages [errors]="entry && entry.errors.term"></app-search-validation-messages>
+    </div>
+    <label class="form-check-label advanced-search-field-text-primary-option__checkbox">
+      <input
+             type="checkbox"
+             class="form-check-input"
+             [checkboxInSync]="entry.field.primaryKey"
+             [disabled]="disabled || !condition"
+             [checked]="entry.additionalInfo && entry.additionalInfo.isPrimary"
+             (change)="primaryChange($event)">
+      <span>Primary</span>
+    </label>
+  </div>
+</div>

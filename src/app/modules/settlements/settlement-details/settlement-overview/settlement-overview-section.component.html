@@ -1,0 +1,7 @@
+<ng-container *ngIf="tabs">
+  <app-tab-group>
+    <ng-container *ngFor="let tab of tabs">
+      <app-tab-item *ngIf="!tab.inactive" [title]="tab.title" [routerLink]="tab.link" [permission]="tab.permission"></app-tab-item>
+    </ng-container>
+  </app-tab-group>
+</ng-container>

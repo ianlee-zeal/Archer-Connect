@@ -1,0 +1,109 @@
+@import "src/styles.variables.scss";
+@import "src/styles/variables.scss";
+
+.messages-container {
+    height: 100%;
+    overflow-y: hidden;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+:host ::ng-deep {
+    .filters-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        font-size: 13px !important;
+        
+        .btn-text {
+            font-weight: 600;
+        }
+    }
+}
+
+.scroll-view {
+    height: 65vh;
+    overflow-y: auto;
+}
+
+.list-view {
+    width: 100%;
+}
+
+.preview-view-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.preview-view-list {
+    width: 40%;
+}
+
+.preview-view-detail {
+    width: 60%;
+}
+
+.list-view::-webkit-scrollbar {
+    width: 8px;
+}
+
+.list-view::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    transition: background 0.5s ease;
+}
+
+.list-view::-webkit-scrollbar-track {
+    background: transparent;
+    border: 0px;
+    visibility: hidden; 
+}
+
+.list-view::-webkit-scrollbar-thumb:hover {
+    background: $blue;
+}
+
+.messages-list {
+    width: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    background: white;
+}
+
+.clear-filters-btn {
+    color: $communication-hub-primary;
+    font-size: 13px;
+    font-weight: 600;
+
+    &:disabled {
+        font-weight: 400;
+        color: #484848;
+    }
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.loading-text {
+  text-align: center;
+  width: 100%;
+}
+
+.no-records {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15%;
+    font-size: 16px;
+    color: $gray-dark;
+    border-radius: 10px;
+    border: 1px solid #EAF1FB;
+}

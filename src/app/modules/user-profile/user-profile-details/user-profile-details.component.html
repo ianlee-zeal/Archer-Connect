@@ -1,0 +1,70 @@
+<div class="edit-user-profile" *ngIf="userProfile$ | async as userProfile">
+  <form [formGroup]="form" *ngIf="canEdit; else viewTemplate">
+    <card hideSeparator>
+      <card-col [width]="485" [labelWidth]="125">
+        <card-row label="First Name" inputId="firstName" [control]="form.get('firstName')" required>
+          <input type="text" class="form-control" formControlName="firstName" id="firstName" required appAutoFocus cardValue />
+        </card-row>
+        <card-row label="Last Name" inputId="lastName" [control]="form.get('lastName')" required>
+          <input type="text" class="form-control" formControlName="lastName" id="lastName" required cardValue />
+        </card-row>
+      </card-col>
+      <card-col [labelWidth]="145">
+        <card-row label="Display Name" inputId="displayName" [control]="form.get('displayName')" required>
+          <input type="text" class="form-control" formControlName="displayName" id="displayName" required cardValue />
+        </card-row>
+        <card-row label="Email Address" inputId="emailAddress" [control]="form.get('emailAddress')" required>
+          <input type="email" class="form-control" formControlName="email" id="emailAddress" required cardValue />
+        </card-row>
+      </card-col>
+    </card>
+    <card header="Employee Details">
+      <card-col [width]="625" [labelWidth]="130">
+        <card-row label="Employee ID" [value]="userProfile.employeeId"></card-row>
+      </card-col>
+    </card>
+    <card header="General Settings">
+      <card-col [width]="625" [labelWidth]="125">
+        <card-row class="timezone"  label="Time Zone" inputId="timezone" [control]="form.get('timezone')" required>
+          <app-select id="timezone" [options]="timezoneOptions" formControlName="timezone" required cardValue>
+        </app-select>
+        </card-row>
+      </card-col>
+    </card>
+    <card header="My System Settings">
+      <card-col [width]="625" [labelWidth]="195">
+        <card-row label="Default Global Search" inputId="defaultSearch" [control]="form.get('defaultGlobalSearch')" required>
+          <app-select id="defaultSearch" [options]="defaultGlobalSearchTypeOptions" formControlName="defaultGlobalSearch" required cardValue optionAsValue></app-select>
+        </card-row>
+      </card-col>
+    </card>
+  </form>
+
+  <ng-template #viewTemplate>
+    <card hideSeparator>
+      <card-col [width]="310" [labelWidth]="110">
+        <card-row label="First Name" [value]="userProfile.firstName"></card-row>
+        <card-row label="Last Name" [value]="userProfile.lastName"></card-row>
+      </card-col>
+      <card-col [labelWidth]="132">
+        <card-row label="Display Name" [value]="userProfile.displayName"></card-row>
+        <card-row label="Email Address" [value]="userProfile.email"></card-row>
+      </card-col>
+    </card>
+    <card header="Employee Details">
+      <card-col [width]="625" [labelWidth]="130">
+        <card-row label="Employee ID" [value]="userProfile.employeeId"></card-row>
+      </card-col>
+    </card>
+    <card header="General Settings">
+      <card-col [width]="625" [labelWidth]="110">
+        <card-row label="Time Zone" [value]="userProfile.timezone?.description"></card-row>
+      </card-col>
+    </card>
+    <card header="My System Settings">
+      <card-col [width]="625" [labelWidth]="181">
+        <card-row label="Default Global Search" [value]="userProfile.defaultGlobalSearch?.name"></card-row>
+      </card-col>
+    </card>
+  </ng-template>
+</div>

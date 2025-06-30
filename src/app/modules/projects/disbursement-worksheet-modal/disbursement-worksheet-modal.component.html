@@ -1,0 +1,94 @@
+<modal (close)="modal.hide()">
+    <modal-header>Generate Disbursement Worksheet</modal-header>
+
+    <modal-body>
+        <div class="modal-section">
+            <app-stepper [stage]="stage">
+                <step label="Select Template" [isActive]="stage === stages.SelectTemplate">
+                  <div class="section-content">
+                    <app-claimants-with-ledgers-list [projectId]="projectId"></app-claimants-with-ledgers-list>
+                    <small *ngIf="outputType == 2" class="text-muted d-inline-block mt-4">
+                        * Claimant records with Closing Statements Published will not be processed for Disbursement Worksheet
+                    </small>
+                    <small *ngIf="canPublish !== undefined && !canPublish" class="text-muted d-inline-block mt-4">
+                        * One or more selected claimants have a ledger stage of 'DW Finalized' or later. You may only export as a Draft, the ledger stage will not be updated for any of the selected claimants.
+                    </small>
+                    <form [formGroup]="form">
+                        <card class="template-options" header="Template Options"  maxWidth="500" hideSeparator>
+                            <card-col [width]="500">
+                                <card-row [marginTop]="10" [labelWidth]="180" label="Template"  inputId="templateId" [control]="form.get('templateId')" required>
+                                    <div class="select-container" cardValue>
+                                        <app-select
+                                            required 
+                                            id="templateId" 
+                                            [options]="templates$ | async"
+                                            formControlName="templateId" 
+                                            placeholder="Select Template">
+                                        </app-select>
+                                    </div>
+                                </card-row>
+                                <card-row [labelWidth]="180" [marginTop]="20"  label="Draft or Publish"  inputId="outputType" required [control]="form.get('outputType')">
+                                    <div *ngIf="canPublish !== undefined" class="draft-or-publish-container" cardValue>
+                                        <app-draft-or-publish-toggle class="draft-or-publish-container__toggle" [canPublish]="canPublish" formControlName="outputType"></app-draft-or-publish-toggle>
+                                        <span class="draft-or-publish-container__comment"> * Draft means that Ledger Stage won't update</span>
+                                    </div>
+                                </card-row>
+                            </card-col>
+                        </card>
+                    </form>
+                  </div>
+                </step>
+                <step label="Deficiency Summary" [isActive]="stage === stages.DeficiencySummary">
+                  <div class="section-content">
+                    <p *ngIf="outputType === outputTypes.Publish">
+                        Prior to continuing with stage updates, please review all of the deficiencies below.  Critical deficiencies must be addressed before continuing.  Download the Deficiency Details file to review list of all active deficiencies related to the selected clients.
+                    </p>
+                    <app-dw-deficiency-summary
+                    [outputType]="outputType">
+                    </app-dw-deficiency-summary>
+                </div>
+                </step>
+              </app-stepper>
+        </div>
+    </modal-body>
+
+    <modal-footer>
+        <button
+            *ngIf="validationDocId"
+            type="button"
+            asyncButton
+            [awaitedActionTypes]="validationResultsButtonAwaitedActions"
+            (click)="onValidationResultsClick()"
+            class="btn modal-footer__btn modal-footer__btn--success me-auto">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Download Deficiency Details
+        </button>
+            <span *ngIf="isErrorShown" class="text-danger small me-auto">Something went wrong, please try again later</span>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="modal.hide()">
+            Close
+        </button>
+        <button
+            *ngIf="stage === stages.SelectTemplate"
+            asyncButton
+            [awaitedActionTypes]="awaitedActionTypes"
+            type="submit" 
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            [disabled]="!valid || !loaded"
+            (click)="onValidate()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Validate
+        </button>
+        <button
+            *ngIf="stage === stages.DeficiencySummary"
+            asyncButton
+            [awaitedActionTypes]="awaitedActionTypes"
+            type="submit" 
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            [disabled]="!loaded || (outputType === outputTypes.Publish && (criticalDwDeficiencies$ | async)?.length)"
+            (click)="onGenerate()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Generate
+        </button>
+    </modal-footer>
+</modal>

@@ -1,0 +1,10 @@
+<modal (close)="modal.hide()">
+  <modal-header>Details</modal-header>
+  <modal-body>
+    <div class="modal-section">
+          <app-grid class="ag-grid-custom-height-500" entityLabel="Outcome Based Pricing" [gridId]="gridId" [gridOptions]="gridOptions" [isPagerEnabled]="false"
+            (gridReady)="gridReady($event)" (loadData)="loadData($event)" >
+          </app-grid>
+    </div>
+  </modal-body>
+</modal>

@@ -1,0 +1,106 @@
+<div
+  data-test-id="summary-bar"
+  class="summary-bar-container">
+  <!--<div class="summary-bar-container--title">Claimant Details</div>-->
+  <div class="container-fluid summary-bar row" *ngIf="claimantSummary && (isExpanded$ | async)">
+    <card hideSeparator>
+      <card-col [labelWidth]="110">
+        <card-row label="Client ID" [value]="claimantSummary.id"></card-row>
+        <card-row label="ARCHER ID" [value]="claimantSummary.archerId"></card-row>
+        <card-row label="SSN"
+          [value]="(claimantSummary.ssn && claimantSummary.ssn.length ? claimantSummary.ssn : '') | ssn" noWrap>
+        </card-row>
+        <card-row label="DOB" [value]="claimantSummary.dob | date: 'MM/dd/yyyy'" noWrap></card-row>
+        <card-row label="DOD" [value]="claimantSummary.dod | date: 'MM/dd/yyyy'" noWrap></card-row>
+      </card-col>
+    </card>
+
+    <card hideSeparator>
+      <card-col [labelWidth]="146">
+        <card-row label="Gender" [value]="claimantSummary.gender"></card-row>
+        <card-row label="Primary Phone" [value]="claimantSummary.primaryPhone | phone" noWrap></card-row>
+        <card-row label="Email" [value]="claimantSummary.email"></card-row>
+        <card-row
+          label="Current Address"
+          [value]="claimantSummary.currentAddress | address"
+          valueClass="form-control-plaintext--pre-line">
+        </card-row>
+        <card-row label="Funded Date" [value]="claimantSummary.fundedDate | date: 'MM/dd/yyyy'"></card-row>
+      </card-col>
+    </card>
+
+    <card hideSeparator class="project-column">
+      <card-col [labelWidth]="150" [minWidth]="400">
+        <card-row class="summary-bar__project-name" label="Project Name" [value]="claimantSummary?.projectName">
+          <a *ngIf="projectId"
+             [routerLink]="['/projects', projectId]"
+             class="btn btn-link fw-bold"
+             cardValue>
+              {{claimantSummary?.projectName}}
+          </a>
+        </card-row>
+        <card-row label="Project ID" [value]="projectId"></card-row>
+        <card-row
+          *ngIf="(canReadOrganizations && !!claimantSummary?.orgId) else primaryOrgNameReadonly"
+          label="Primary Firm"
+          [value]="claimantSummary.primaryOrg">
+          <a
+            [routerLink]="['/admin/user/orgs', claimantSummary?.orgId, 'my-organization', 'tabs', 'details']"
+            class="btn btn-link fw-bold"
+            cardValue>
+              {{getOrganizationName(claimantSummary?.orgId, claimantSummary?.primaryOrg)}}
+          </a>
+        </card-row>
+        <ng-template #primaryOrgNameReadonly>
+          <card-row
+            label="Primary Firm"
+            [value]="getOrganizationName(claimantSummary?.orgId, claimantSummary?.primaryOrg)"
+            >
+          </card-row>
+        </ng-template>
+        <card-row label="Attorney Ref ID" [value]="claimantSummary.attorneyReferenceId"></card-row>
+        <card-row
+          *ngIf="(canReadOrganizations && !!claimantSummary?.settlementFirmId) else settlementOrgNameReadonly"
+          label="Settlement Firm"
+          [value]="claimantSummary.settlementFirmName">
+          <a
+            [routerLink]="['/admin/user/orgs', claimantSummary?.settlementFirmId, 'my-organization', 'tabs', 'details']"
+            class="btn btn-link fw-bold"
+            cardValue>
+            {{getOrganizationName(claimantSummary?.settlementFirmId, claimantSummary?.settlementFirmName)}}
+          </a>
+        </card-row>
+        <ng-template #settlementOrgNameReadonly>
+          <card-row label="Settlement Firm" [labelWidth]="150" [value]="getOrganizationName(claimantSummary?.settlementFirmId, claimantSummary?.settlementFirmName)"></card-row>
+        </ng-template>
+      </card-col>
+    </card>
+    <card hideSeparator class="allocation-column">
+      <card-col [minWidth]="250">
+        <card-row label="Total Allocation" [value]="claimantSummary?.totalAllocation | extendedCurrency"
+                [tooltip]="totalAllocationTooltip"
+                [tooltipTemplateRef]="totalAllocationTooltipTemplate">
+        </card-row>
+      </card-col>
+    </card>
+    <card hideSeparator>
+      <card-col>
+        <ng-container *ngFor="let item of claimantSummary.services">
+          <card-row [labelWidth]="146" [label]="item.name" [value]="item.status"></card-row>
+        </ng-container>
+        <card-row [labelWidth]="146" label="QSF Admin" [value]="claimantSummary.qsfAdminStatus"></card-row>
+      </card-col>
+    </card>
+    <ng-template let-data="data" #totalAllocationTooltipTemplate>
+      <div *ngIf="!data?.length">
+        No details
+      </div>
+      <ng-container *ngIf="data?.length">
+          <div class="summary-bar-tooltip" *ngFor="let item of data">
+            <span class="summary-bar-tooltip__key">{{item.key}}: </span>
+            <span class="summary-bar-tooltip__value">{{item.value | extendedCurrency}}</span>
+          </div>
+      </ng-container>
+    </ng-template>
+  </div>
+</div>

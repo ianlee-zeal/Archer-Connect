@@ -1,0 +1,262 @@
+<form [formGroup]="form" *ngIf="canEdit; else viewTemplate" (change)="onChange()" novalidate>
+  <div class="modal-section">
+    <div *ngIf="canToggleMode" class="card-row__content card-row__content--editable">
+      <button class="btn btn-link btn-details-edit" (click)="toggleViewMode()">View</button>
+    </div>
+    <card hideSeparator>
+      <card-col [width]="480" [labelWidth]="160">
+        <ng-container *ngIf="isProbateContact">
+          <card-row label="Company Name" inputId="companyName" [control]="form.get('companyName')">
+            <input type="text" class="form-control" formControlName="companyName" id="companyName" maxLength="255"
+              appAutoFocus cardValue />
+          </card-row>
+        </ng-container>
+        <card-row label="First Name" inputId="firstName" [control]="form.get('firstName')" required>
+          <input type="text" class="form-control" formControlName="firstName" id="firstName" maxLength="100" cardValue />
+        </card-row>
+        <card-row label="Middle Name" inputId="middleName" [control]="form.get('middleName')">
+          <ng-container cardValue>
+            <input type="text" class="form-control" formControlName="middleName" id="middleName" maxLength="255" />
+          </ng-container>
+        </card-row>
+        <card-row label="Last Name" inputId="lastName" [control]="form.get('lastName')" required>
+          <input type="text" class="form-control" formControlName="lastName" id="lastName" maxLength="100" required cardValue />
+        </card-row>
+        <card-row label="Prefix" inputId="prefix" [control]="form.get('prefix')">
+          <input type="text" class="form-control" formControlName="prefix" id="prefix" maxLength="255" cardValue />
+        </card-row>
+        <card-row label="Suffix" inputId="suffix" [control]="form.get('suffix')">
+          <input type="text" class="form-control" formControlName="suffix" id="suffix" maxLength="255" cardValue />
+        </card-row>
+        <card-row label="Attention To" inputId="attentionTo" [control]="form.get('attentionTo')">
+          <input type="text" class="form-control" formControlName="attentionTo" id="attentionTo" maxLength="255" cardValue />
+        </card-row>
+        <card-row label="Phone Number" inputId="phoneNumber" [control]="form.get('phoneNumber')">
+          <input type="text" class="form-control" formControlName="phoneNumber" mask="(000) 000-0000" id="phoneNumber"
+            maxLength="255" cardValue />
+        </card-row>
+      </card-col>
+      <card-col [labelWidth]="160" [width]="275">
+        <ng-container *ngIf="isProbateContact">
+          <card-row label="Organization" inputId="organization" [control]="form.get('organizationName')" alignContentVertically>
+            <app-clearable-input
+              cursorPointer
+              [form]="form"
+              controlName="organizationName"
+              [isReadonly]="true"
+              id="organizationName"
+              placeholder="Select Organization"
+              cardValue
+              [width]="300"
+              (click)="onOpenOrganizationSearchModal()"
+              (clear)="onOrganizationClear()">
+            </app-clearable-input>
+          </card-row>
+        </ng-container>
+        <card-row label="SSN" inputId="ssn" [control]="form.get('ssn')">
+          <app-hidable-form-control [formGroup]="form" id="ssn" formControlName="ssn" mask="000-00-0000" [isEditMode]="true"
+            [isFullValueLoaded]="isSsnLoaded" [formatFunction]="formatSsn.bind(this)"
+            [editPermissions]="ssnEditPermissions" (onViewFull)="viewFullSSN()" cardValue>
+          </app-hidable-form-control>
+        </card-row>
+        <card-row label="Date of Birth" inputId="dobSelector" [control]="form.get('dateOfBirth')">
+          <app-date-selector [maxDate]="todaysDate" id="dobSelector" formControlName="dateOfBirth"
+            (onChange)="validateDateRange()" cardValue></app-date-selector>
+        </card-row>
+        <card-row label="Date of Death" inputId="dodSelector" [control]="form.get('dateOfDeath')">
+          <app-date-selector [maxDate]="todaysDate" id="dodSelector" formControlName="dateOfDeath"
+            (onChange)="validateDateRange()" cardValue></app-date-selector>
+        </card-row>
+        <card-row label="Marital Status" inputId="maritalStatus" [control]="form.get('maritalStatus')">
+          <select id="maritalStatus" class="form-control" formControlName="maritalStatus"
+            [compareWith]="dropdownComparator" cardValue>
+            <option *ngFor="let maritalStatus of (maritalStatuses$ | async)" [ngValue]="maritalStatus">
+              {{ maritalStatus.name }}
+            </option>
+          </select>
+        </card-row>
+        <card-row label="Gender" inputId="gender" [control]="form.get('gender')">
+          <select class="form-control" formControlName="gender" id="gender" cardValue>
+            <option *ngFor="let gender of (genders$ | async)" value={{gender.id}}>
+              {{gender.name}}
+            </option>
+          </select>
+        </card-row>
+        <card-row label="Email" inputId="email" [control]="form.get('email')">
+          <app-warning-form-control [formGroup]="form" id="email" formControlName="email" [showWarning]="showEmailWarning && !form.get('email').value" [isEditMode]="true"
+           cardValue></app-warning-form-control>
+        </card-row>
+        <card-row label="Is Primary Contact" inputId="isPrimaryContact" [control]="form.get('isPrimaryContact')">
+          <label class="form-check h-100" cardValue>
+            <input type="checkbox" class="form-check-input" formControlName="isPrimaryContact" id="isPrimaryContact" />
+            <span></span>
+          </label>
+        </card-row>
+      </card-col>
+    </card>
+  </div>
+  <div class="modal-section">
+    <card hideSeparator>
+      <card-col [width]="480" [labelWidth]="160">
+        <card-row label="Address Line One" inputId="line1" [control]="form.get('line1')">
+          <input type="text" class="form-control" formControlName="line1" id="line1" maxLength="255" cardValue />
+        </card-row>
+        <card-row label="Address Line Two" inputId="line2" [control]="form.get('line2')">
+          <input type="text" class="form-control" formControlName="line2" id="line2" maxLength="255" cardValue />
+        </card-row>
+        <card-row label="City" inputId="line2" [control]="form.get('city')">
+          <input type="text" class="form-control" formControlName="city" id="city" maxLength="255" cardValue />
+        </card-row>
+      </card-col>
+      <card-col [labelWidth]="160">
+        <card-row label="State" inputId="state" [control]="form.get('state')">
+          <app-select 
+            id="state" 
+            [options]="statesDropdownValues$ | async" 
+            formControlName="state" 
+            cardValue
+            optionName="code"
+            optionId="code"
+          >
+          </app-select>
+        </card-row>
+        <card-row label="Zip Code" inputId="zip" [control]="form.get('zip')">
+          <input type="text" class="form-control" formControlName="zip" id="zip" maxLength="20" cardValue />
+        </card-row>
+        <card-row label="Country" inputId="country" [control]="form.get('countryName')">
+          <input type="text" class="form-control" formControlName="countryName" [ngbTypeahead]="countrySearch"
+            (change)="onCountryChange($event)" id="country" cardValue />
+        </card-row>
+      </card-col>
+    </card>
+  </div>
+</form>
+
+<ng-template #viewTemplate>
+  <div class="modal-section">
+    <div *ngIf="canToggleMode" class="card-row__content card-row__content--editable">
+      <button class="btn btn-link btn-details-edit" (click)="toggleViewMode()">Edit</button>
+    </div>
+    <card hideSeparator>
+      <card-col [width]="480" [labelWidth]="160">
+        <ng-container *ngIf="isProbateContact">
+          <card-row label="Company Name" [value]="form.get('companyName')?.value"></card-row>
+        </ng-container>
+        <card-row label="First Name" [control]="form.get('firstName')" required>
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.firstName || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Middle Name" [control]="form.get('middleName')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.middleName || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Last Name" [control]="form.get('lastName')" required>
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.lastName || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Prefix" [control]="form.get('prefix')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.prefix || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Suffix" [control]="form.get('suffix')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.suffix || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Attention To" [control]="form.get('attentionTo')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.attentionTo || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Phone Number" [control]="form.get('phoneNumber')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.primaryPhone?.number || '-' }}
+          </div>
+        </card-row>
+      </card-col>
+      <card-col [labelWidth]="170" [width]="275">
+        <ng-container *ngIf="isProbateContact">
+          <card-row label="Organization" [value]="form.get('organizationName')?.value"></card-row>
+        </ng-container>
+        <card-row label="SSN" [control]="form.get('ssn')">
+          <app-hidable-form-control [model]="person?.ssn" [isFullValueLoaded]="isSsnLoaded"
+            [formatFunction]="formatSsn.bind(this)" [readPermissions]="ssnReadPermissions" (onViewFull)="viewFullSSN()"
+            cardValue>
+          </app-hidable-form-control>
+        </card-row>
+        <card-row label="Date of Birth" [value]="person?.dateOfBirth | dateFormat" [control]="form.get('dateOfBirth')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ (person?.dateOfBirth | dateFormat) || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Date of Death" [control]="form.get('dateOfDeath')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ (person?.dateOfDeath | dateFormat) || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Marital Status" [control]="form.get('maritalStatus')">
+          <ng-container *ngIf="maritalStatuses$ | async as maritalStatuses" cardValue>
+            <span
+              class="card-row__value form-control-plaintext">{{ person?.maritalStatus ? person?.maritalStatus.name : '-' }}</span>
+          </ng-container>
+        </card-row>
+        <card-row label="Gender" [control]="form.get('gender')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.gender || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Email" [control]="form.get('email')">
+          <app-warning-form-control [model]="person?.primaryEmail?.email" class="card-row__content form-control-plaintext" [showWarning]="showEmailWarning && !form.get('email').value" [isEditMode]="false"
+          cardValue></app-warning-form-control>
+        </card-row>
+        <card-row label="Is Primary Contact" [control]="form.get('isPrimaryContact')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ isPrimaryContact ? 'Yes' : 'No'}}
+          </div>
+        </card-row>
+      </card-col>
+    </card>
+  </div>
+  <div class="modal-section">
+    <card hideSeparator>
+      <card-col [width]="480" [labelWidth]="160">
+        <card-row label="Address Line One" [control]="form.get('line1')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.primaryAddress?.line1 || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Address Line Two" [control]="form.get('line2')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.primaryAddress?.line2 || '-' }}
+          </div>
+        </card-row>
+        <card-row label="City" [control]="form.get('city')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.primaryAddress?.city || '-' }}
+          </div>
+        </card-row>
+      </card-col>
+      <card-col [labelWidth]="170">
+        <card-row label="State" [control]="form.get('state')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.primaryAddress?.state || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Zip Code" [control]="form.get('zip')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.primaryAddress?.zip || '-' }}
+          </div>
+        </card-row>
+        <card-row label="Country" [control]="form.get('countryName')">
+          <div class="card-row__content form-control-plaintext" cardValue>
+            {{ person?.primaryAddress?.country?.name || '-' }}
+          </div>
+        </card-row>
+      </card-col>
+    </card>
+  </div>
+</ng-template>

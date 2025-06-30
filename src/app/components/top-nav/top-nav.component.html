@@ -1,0 +1,116 @@
+<nav
+  *ngIf="user"
+  data-test-id="topnav"
+  class="navbar navbar-expand-lg navbar-dark"
+  [ngClass]="{ 'navbar__uat-banner': isUatBannerDisplayed }">
+  <div class="d-flex navbar__justify-content ps-0 pe-0">
+    <button data-test-id="topnav-toggle-btn" type="button" class="navbar-toggle-button" (click)="toggleSideNavBar()">
+      <span class="navbar-toggler-icon" [ngClass]="{ 'navbar-toggled': toggled$ | async }"></span>
+    </button>
+    <button
+      data-test-id="topnav-resposive-toggle-btn"
+      type="button"
+      class="navbar-toggle-button navbar-toggle-button-responsive"
+      (click)="toggleMenu.emit()"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="d-flex align-items-center">
+      <a
+        data-test-id="topnav-logo"
+        class="navbar-brand me-1"
+        (click)="gotoDefSearch()"
+      >
+        <img [src]="logoUrl" class="logo" />
+      </a>
+      <h4
+        *ngIf="isUatBannerDisplayed"
+        data-test-id="topnav-uat-banner"
+        class="navbar-brand__uat-banner"
+      >
+        UAT Environment
+      </h4>
+    </div>
+
+    <quick-search class="d-flex align-items-center"></quick-search>
+
+    <!--div
+        data-test-id="topnav-responsive-profile-toggler"
+        class="d-flex align-items-center dropdown-toggle profile-toggler-responsive"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="true">
+          <img src="assets/svg/ic_user.svg" class="user-icon-responsive" />
+      </div>
+      <app-top-nav-dropdown-menu
+        [user]="user"
+        [canSwitchToDefaultOrg]="canSwitchToDefaultOrg"
+        (logout)="logout()"
+        (switchOrganization)="showSwitchOrgDialog($event)"
+        (switchToDefaultOrganization)="switchToDefaultOrg($event)"
+      >
+      </app-top-nav-dropdown-menu -->
+  </div>
+
+  <div id="navbarColor01" class="navbar-collapse justify-content-end margin-right-20">
+    <!-- Commented out due to BUG AC-1267 -->
+    <!-- <div class="breadcrumbs-container">
+        <app-breadcrumb [currentPageUrl]="pageName$" [currentUrl]="current_path"></app-breadcrumb>
+      </div> -->
+
+    <div data-test-id="profile-menu" class="user-menu">
+      <ul class="navbar-nav gap-10">
+        <li class="nav-item" ngbDropdown>
+          <a
+            class="nav-link navbar-header dropdown-toggle waves-effect waves-light profile-toggler h-100"
+            [ngClass]="{ 'impersonate-img': isImpersonating, 'user-img': !isImpersonating }"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="true"
+            id="dropdownBasic2"
+            ngbDropdownToggle
+          >
+            <div class="user-icon"></div>
+            <div data-test-id="profile-info" class="user-info">
+              <span data-test-id="profile-info-user">
+                {{ user.username }}
+              </span>
+              <span data-test-id="profile-info-org" class="user-info__active-org">
+                {{ user.selectedOrganization?.name }}
+              </span>
+            </div>
+          </a>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic2" class="user-menu-opts-container">
+            <app-top-nav-dropdown-menu
+              [user]="user"
+              [canSwitchToDefaultOrg]="canSwitchToDefaultOrg"
+              (logout)="logout()"
+              (switchOrganization)="showSwitchOrgDialog($event)"
+              (switchToDefaultOrganization)="switchToDefaultOrg($event)"
+              (impersonateOrganization)="showImpersonateOrgDialog()"
+              (depersonateOrganization)="depersonateOrg()"
+            >
+            </app-top-nav-dropdown-menu>
+          </div>
+        </li>
+        <li class="nav-item" ngbDropdown>
+          <a
+            data-test-id="topnav-help-link"
+            class="nav-link help-img navbar-header dropdown-toggle waves-effect waves-light profile-toggler h-100"
+            data-toggle="dropdown"
+            id="dropdownBasic3"
+            aria-haspopup="true"
+            aria-expanded="false"
+            ngbDropdownToggle
+          >
+            <div class="help-icon"></div>
+          </a>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic3" class="user-menu-opts-container dropdown-help-menu">
+            <app-top-nav-dropdown-help [helpUrl]="helpUrl" [supportUrl]="supportUrl"></app-top-nav-dropdown-help>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

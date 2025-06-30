@@ -1,0 +1,12 @@
+<app-documents-list *ngIf="taskId && additionalInfoLoaded"
+    [isAutonomic]="false"
+    [entityTypeId]="entityType"
+    [entityId]="taskId"
+    [gridId]="gridId"
+    forOneEntityOnly="false"
+    [enabledAutoHeight]="enabledAutoHeight"
+    [skipSetContentHeight]="skipSetContentHeight"
+    [isContentAutoHeight]="isContentAutoHeight"
+    [additionalInfo]="additionalInfo"
+    class="task-related-docs-container">
+  </app-documents-list>

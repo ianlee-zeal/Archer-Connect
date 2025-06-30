@@ -1,0 +1,19 @@
+<div class="modal-section">
+  <span class="small d-inline-block my-4" [ngSwitch]="actionTemplateId">
+    <span *ngSwitchCase="batchActionTemplates.SyncProbateSpiWithLedger">All valid special payment instructions that have been added to the claimants contacts will be added to the claimant's net disbursement.</span>
+  </span>
+  <nav>
+    <div class="nav nav-tabs" id="review-nav-tab" role="tablist">
+      <a *ngFor="let item of tabsGroup" class="nav-item nav-link" [class.active]="isActiveTab(item)" id="{{item.tab}}-tab"
+        (click)="onChangeTab(item.tab)" data-toggle="tab" data-target="#{{item.tab}}">{{item.title}} ({{item.count}})
+      </a>
+    </div>
+  </nav>
+
+  <div class="tab-content" id="review-nav-tab-content">
+    <div *ngFor="let item of tabsGroup" class="tab-pane fade show" [class.active]="isActiveTab(item)" id="{{item.tab}}">
+      <app-update-by-action-template-id-grid *ngIf="isActiveTab(item)" [tab]="activeTab" [batchAction]="batchAction" [documentTypeId]="documentTypeId" [actionTemplateId]="actionTemplateId">
+      </app-update-by-action-template-id-grid>
+    </div>
+  </div>
+</div>

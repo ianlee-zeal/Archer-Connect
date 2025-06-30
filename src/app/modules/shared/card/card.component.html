@@ -1,0 +1,35 @@
+<div
+  data-test-id="card"
+  class="card-container"
+  [ngStyle]="{ 'max-width': maxWidth ? maxWidth + 'px' : 'null'}">
+  <div
+    data-test-id="card-header"
+    class="card__header" [ngClass]="{
+    'card__header--with-separator': !isSeparatorHidden,
+    'card__header--collapsable': isCollapsable,
+    'card__header--flex-row': isHeaderFlexRow
+  }">
+    <div *ngIf="!headerAdditional && !headerThird">{{ header }}</div>
+    <div *ngIf="headerAdditional?.length > 0 || headerThird?.length > 0" style="display:flex">
+      <div [ngStyle]="{ 'width': !!headerWidth ? headerWidth + 'px' : 'auto' }">{{ header }}</div>
+      <div [ngStyle]="{ 'width': !!headerWidth ? headerWidth + 'px' : 'auto' }" >{{headerAdditional}}</div>
+      <div>{{headerThird}}</div>
+    </div>
+    <button
+      *ngIf="isCollapsable"
+      data-test-id="card-header-toggle-btn"
+      type="button"
+      class="btn btn-icon expand-btn"
+      [ngClass]="{ 'expand-btn--expanded': !isCollapsed }"
+      (click)="toggleCollapsed()">
+    </button>
+    <app-action-bar
+      *ngIf="actionBar"
+      [noBorder]="isHeaderFlexRow"
+      [actionHandlers]="actionBar">
+    </app-action-bar>
+  </div>
+  <div class="card__content row" [ngClass]="{'d-none': isCollapsable && isCollapsed}">
+    <ng-content></ng-content>
+  </div>
+</div>

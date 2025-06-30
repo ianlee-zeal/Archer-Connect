@@ -1,0 +1,10 @@
+<div class="advanced-hold-client-group">
+  <ng-container *ngFor="let entry of entry.additionalFields">
+    <div class="advanced-hold-client-group__row">
+      <div class="advanced-hold-client-group__label">
+        <label>and {{entry.field.name}}</label>
+      </div>
+        <app-advanced-search-filter class="advanced-hold-client-group__filter" [entry]="entry" (markAsEdited)="markAsEdited.emit()" [isRequiredValidationDisabled]="isRequiredValidationDisabled" (submit)="onSubmit.emit()"></app-advanced-search-filter>
+    </div>
+  </ng-container>
+</div>

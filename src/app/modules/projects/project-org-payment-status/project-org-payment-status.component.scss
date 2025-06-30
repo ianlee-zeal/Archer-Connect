@@ -1,0 +1,14 @@
+.project-org-payment-status {
+
+  card {
+    margin-bottom: 0;
+
+    @media screen and (min-width: 1440px) {
+      margin-right: 90px;
+    }
+
+    @media screen and (min-width: 1600px) {
+      margin-right: 190px;
+    }
+  }
+}

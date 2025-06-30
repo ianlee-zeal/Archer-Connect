@@ -1,0 +1,32 @@
+.rating-icon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+
+  &--excellent {
+    background-color: #30b74f;
+  }
+
+  &--neutral {
+    background-color: #1774de;
+  }
+
+  &--declining {
+    background-color: #fdba12;
+  }
+
+  &--negative {
+    background-color: #ff0101;
+  }
+
+  &--label {
+    margin-left: 3px;
+  }
+}

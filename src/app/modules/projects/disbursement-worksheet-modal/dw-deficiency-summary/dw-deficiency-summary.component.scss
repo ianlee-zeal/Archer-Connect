@@ -1,0 +1,10 @@
+@import "src/styles/variables.scss";
+
+.grid-title {
+    color: $validation-invalid-color;
+    font-size: 16px;
+    font-weight: bold;
+    &__warning {
+        color: $yellow;
+    }
+}

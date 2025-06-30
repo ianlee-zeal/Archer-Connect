@@ -1,0 +1,83 @@
+<modal (close)="modal.hide()" class="update-stop-payemnt-status-modal">
+    <modal-header>Update Status</modal-header>
+
+    <modal-body (paste)="onPaste($event)">
+        <div  class="modal-section">
+            <form [formGroup]="form">
+                <card hideSeparator>
+                    <card-col [labelWidth]="200" [width]="580">
+                        <card-row label="New Status" inputId="status" [control]="form.get('status')" required>
+                            <app-select searchable [disabled]="!valid" [ngClass]="{ disabled: !valid }" (onModelChange)="onStatusSelected($event)" required id="status" [options]="statuses" formControlName="status" optionAsValue cardValue></app-select>
+                        </card-row>
+                        <card-row [labelWidth]="200" [containerWidth]="580" *ngIf="showBusinessDays" label="# of Business Days" inputId="businessDays" [control]="form.get('businessDays')" required>
+                            <input type="text" class="form-control" formControlName="businessDays" id="businessDays" maxlength="9" onlyNumbers cardValue />
+                        </card-row>
+                        <card-row [labelWidth]="200" [containerWidth]="580" *ngIf="showRejectReason" label="Reject Reason" inputId="rejectReason" [control]="form.get('rejectReason')" required>
+                            <input type="text" class="form-control" formControlName="rejectReason" id="rejectReason" cardValue />
+                        </card-row>
+                        <card-row [labelWidth]="200" [containerWidth]="580" *ngIf="showCheckNumber" label="Reissued Check Number" inputId="checkNumber" [control]="form.get('checkNumber')">
+                            <input type="text" class="form-control" formControlName="checkNumber" id="checkNumber" maxlength="50" cardValue />
+                        </card-row>
+                        <card-row [labelWidth]="200" [containerWidth]="580" *ngIf="showComment" label="Comment" inputId="comment" [control]="form.get('comment')" [required]="isCommentRequired">
+                            <input type="text" class="form-control" formControlName="comment" id="comment" cardValue />
+                        </card-row>
+                        <ng-container>
+                            <card-row [marginTop]="10" [containerWidth]="340"  label="QSF Acct Attachments" [labelWidth]="200" [marginTop]="15" [required]="!isValidAttachment">
+                                <app-drag-and-drop
+                                [isSelectButtonInside]="true"
+                                class="drag-drop-modal w-100"
+                                [valueClass]="'drop-container__drop-zone__grey'"
+                                (filesSelected)="onFileSelected($event[0])"
+                                [allowedFileTypes]="allowedExtensions$ | async"
+                                [selectedFile]="selectedFile"
+                                cardValue>
+                                </app-drag-and-drop>
+                            </card-row>
+                            <ng-container *ngIf="attachments && attachments.length; then selectedFileTemplate"></ng-container>
+                        </ng-container>
+                    </card-col>
+                </card>
+            </form>
+        </div>
+    </modal-body>
+
+    <modal-footer>
+        <div *ngIf="errorText" class="text-danger small error-text">{{ errorText }}</div>
+
+        <button 
+            class="btn modal-footer__btn modal-footer__btn--secondary" 
+            (click)="onCancel()">
+            Cancel
+        </button>
+        <button
+            asyncButton
+            type="button"
+            [awaitedActionTypes]="submitButtonAwaitedActions"
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            [ngClass]="{ disabled: form.invalid || !isValidAttachment }"
+            [disabled]="form.invalid || !isValidAttachment"
+            (click)="onSubmit()">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Submit
+        </button>
+
+    </modal-footer>
+</modal>
+
+
+<ng-template #selectedFileTemplate>
+    <card-row label="Attached File(s)" [labelWidth]="200">
+        <div class="update-stop-payemnt-status-modal__file-panel" cardValue>
+          <div class="update-stop-payemnt-status-modal__uploaded-attachments-container">
+            <div class="update-stop-payemnt-status-modal__uploaded-attachment" *ngFor="let attachment of attachments">
+              <!-- <span class="update-stop-payemnt-status-modal__file-name">{{ attachment.fileName }}</span> -->
+              <div class="img-thmb">
+                <img [src]="attachment.imageUrl" (click)="openAttachment(attachment)" [title]="attachment.fileName"/>
+                <a (click)="onRemoveSelectedFile(attachment)" title="Delete Document">X</a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </card-row>
+  </ng-template>
+

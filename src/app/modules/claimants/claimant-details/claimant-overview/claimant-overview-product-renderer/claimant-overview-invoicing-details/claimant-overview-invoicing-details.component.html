@@ -1,0 +1,24 @@
+<ng-container>
+  <div class="service-block">
+    <div *ngIf="invoicingDetails$ | async as data" class="service-header service-header__one-row">
+      <div>
+        <span class="service-link line-part">Invoicing Details</span>
+      </div>
+      <div class="finalized-info">
+        <span class="line-part">Lien Fee Cap: {{(data.lienFeeCap | extendedCurrency) || '-'}}</span>
+      </div>
+    </div>
+
+    <app-grid entityName="Invoicing Details"
+              [gridId]="gridId"
+              [gridOptions]="gridOptions"
+              [canReorderColumns]="true"
+              [isContentAutoHeight]="true"
+              [enabledAutoHeight]="false"
+              hideTopStatusbar="true"
+              hideBottomStatusbar="true"
+              (gridReady)="onGridReady($event)"
+              [rowData]="items$ | async">
+    </app-grid>
+  </div>
+</ng-container>

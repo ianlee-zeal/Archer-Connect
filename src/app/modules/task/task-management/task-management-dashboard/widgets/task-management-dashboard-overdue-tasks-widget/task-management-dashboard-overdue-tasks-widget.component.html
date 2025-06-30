@@ -1,0 +1,17 @@
+<div class="task-mng-dash-overdue-tasks-widget-ctn border-bottom">
+  <div class="row">
+    <div class="col-4 task-mng-dash-overdue-tasks-widget-ctn__header" *ngFor="let title of titles$">
+      {{title}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-4 task-mng-dash-overdue-tasks-widget-ctn__value" *ngFor="let value of values$;let i = index" (click)="overdueClickHandler(titles$[i])">
+      {{value}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-4 task-mng-dash-overdue-tasks-widget-ctn__percent" *ngFor="let percent of percents$" [ngStyle]="{'color': percent.color}">
+      {{percent.value}}%
+    </div>
+  </div>
+</div>

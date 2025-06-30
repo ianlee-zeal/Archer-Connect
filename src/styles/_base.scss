@@ -1,0 +1,31 @@
+@import '_fonts.scss';
+@import 'variables';
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: $open-sans-font-family;
+  font-size: $font-size-base;
+  color: $black;
+}
+
+// to avoid black outline on focus on every elements in chrome (it was added not so long)
+*:focus {
+  outline: none;
+}
+
+.zebra:nth-child(even) {
+  background-color: $gray-lighter;
+}
+
+.hover-row:hover {
+  background-color: $grid-hover-row-bg-color;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}

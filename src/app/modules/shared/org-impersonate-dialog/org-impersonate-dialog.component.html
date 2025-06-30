@@ -1,0 +1,41 @@
+<modal (close)="onCancel()" class="impersonate-org-modal">
+  <modal-header>Impersonate Org</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="form" novalidate>
+        <label class="impersonate-label" for="0">Select an Organization:</label>
+        <span class="required">&nbsp;*</span>
+        <div class="org-select">
+          <app-select class="org-impersonate-select" placeholder="Search for an Organization" optionAsValue
+            [options]="orgsOptions" (onKeyup)="fetchOrgs($event)" [searchFn]="searchFn" [loading]="orgsLoading"
+            (onModelChange)="onOrgModelChange($event)" (onOpen)="fetchOrgs($event)" 
+            (change)="onSelectedOrgChange(selectedOrgId)" 
+            (cleared)="onSelectedOrgClear()" searchable>
+          </app-select>
+        </div>
+        <br>
+        <div class="document-types">
+          <label class="impersonate-label">Select Roles:</label>
+          <span class="required">&nbsp;*</span>
+          <div class="checkbox-group">
+            <app-select class="org-impersonate-select" [options]="rolesOptions"
+              placeholder="Select Role(s)" [model]="selectedRoles" searchable [isMultiselectDropdown]="true"
+              (onModelChange)="updateSelectedRoles($event)" [multiple]="true" [optionAsValue]="true" [loading]="rolesLoading"
+              (cleared)="onSelectedRolesClear()" filterMultiselect>
+            </app-select>
+          </div>
+        </div>
+        <br>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--primary" (click)="onImpersonate()"
+    [disabled]="!selectedOrgId || !selectedRoles.length">
+      Impersonate
+    </button>
+  </modal-footer>
+</modal>

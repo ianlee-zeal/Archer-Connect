@@ -1,0 +1,6 @@
+<div class="chip-list">
+    <div class="chip" *ngFor="let o of options">
+        <span class="chip__chip-name">{{ o.name }}</span>
+        <span *ngIf="!disabled && o.isRemovable" class="chip__remove-chip" (click)="onRemoveClicked(o)">&times;</span>
+    </div>
+</div>

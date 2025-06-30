@@ -1,0 +1,29 @@
+<card hideSeparator>
+  <card-col [width]="1500" [labelWidth]="100">
+    <form *ngIf="editable; else loadingTemplate" class="page-content" [formGroup]="form" (change)="onChange()">
+      <card-row label="Field 1" inputId="field1" [control]="form.get('field1')" [labelShrink]="0">
+        <input type="text" class="form-control long-text" formControlName="field1" id="field1" cardValue />
+      </card-row>
+      <card-row label="Field 2" inputId="field2" [control]="form.get('field2')" [labelShrink]="0">
+        <input type="text" class="form-control long-text" formControlName="field2" id="field2" cardValue />
+      </card-row>
+      <card-row label="Field 3" inputId="field3" [control]="form.get('field3')" [labelShrink]="0">
+        <input type="text" class="form-control long-text" formControlName="field3" id="field3" cardValue />
+      </card-row>
+      <card-row label="Field 4" inputId="field4" [control]="form.get('field4')" [labelShrink]="0">
+        <input type="text" class="form-control long-text" formControlName="field4" id="field4" cardValue />
+      </card-row>
+      <card-row label="Field 5" inputId="field5" [control]="form.get('field5')" [labelShrink]="0">
+        <input type="text" class="form-control long-text" formControlName="field5" id="field5" cardValue />
+      </card-row>
+    </form>
+
+    <ng-template #loadingTemplate>
+      <card-row label="Field 1" [value]="form.get('field1').value" ></card-row>
+      <card-row label="Field 2" [value]="form.get('field2').value" ></card-row>
+      <card-row label="Field 3" [value]="form.get('field3').value" ></card-row>
+      <card-row label="Field 4" [value]="form.get('field4').value" ></card-row>
+      <card-row label="Field 5" [value]="form.get('field5').value" ></card-row>
+    </ng-template>
+  </card-col>
+</card>

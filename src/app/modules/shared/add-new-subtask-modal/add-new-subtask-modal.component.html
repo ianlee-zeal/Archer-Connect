@@ -1,0 +1,113 @@
+<modal (close)="cancel()">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="form" novalidate>
+        <card hideSeparator>
+          <card-col [width]="490" [labelWidth]="158">
+
+            <card-row label="Sub-Task Name" inputId="name" [control]="form.get('name')" required>
+              <input id="name" type="text"  class="form-control" formControlName="name" cardValue>
+            </card-row>
+
+            <card-row label="Category" inputId="category" [control]="form.get('taskCategoryId')" required [containerWidth]="300">
+              <app-select cardValue id="feeScope" [options]="categories" formControlName="taskCategoryId"
+                placeholder="Select category" class="w-100"></app-select>
+            </card-row>
+
+            <ng-container *ngIf="isTaskManagementEntity">
+              <card-row label="Due Date" inputId="dueDate" [control]="form.get('dueDate')" required>
+                <app-date-selector [title]="dueDateTooltip" id="dueDate" formControlName="dueDate" cardValue></app-date-selector>
+              </card-row>
+            </ng-container>
+
+            <card-row label="Assigned to" inputId="assigneeUser" [control]="form.get('assigneeUser')" alignContentVertically>
+              <app-clearable-input
+                cursorPointer
+                [form]="form"
+                controlName="assigneeUser"
+                [isReadonly]="true"
+                id="assigneeUser"
+                placeholder="Select"
+                cardValue
+                (click)="onOpenModal()"
+                (clear)="onClear('assigneeUser')"
+                width="300">
+              </app-clearable-input>
+            </card-row>
+
+            <card-row label="Stage" inputId="stages" [control]="form.get('stageId')" [containerWidth]="300">
+              <app-select cardValue id="stage" [options]="stages$ | async" formControlName="stageId"
+                placeholder="Select Stage" class="w-100"></app-select>
+            </card-row>
+
+            <card-row label="Priority" inputId="priority" [control]="form.get('taskPriorityId')" required [containerWidth]="300">
+              <app-select cardValue id="priority" [options]="priorities$ | async" formControlName="taskPriorityId"
+                placeholder="Select priority" class="w-100"></app-select>
+            </card-row>
+
+            <card-row label="Description" inputId="description" [control]="form.get('description')">
+              <textarea id="description" maxlength="1000" class="form-control textarea-container" formControlName="description" cardValue ></textarea>
+            </card-row>
+
+            <ng-container
+              *ngIf="isTaskManagementEntity">
+              <card-row
+                label="Completed Date"
+                inputId="completedDate"
+                [control]="form.get('completedDate')">
+                <app-date-selector
+                  id="completedDate"
+                  formControlName="completedDate"
+                  cardValue>
+                </app-date-selector>
+              </card-row>
+              <card-row
+                label="Resolution Summary"
+                inputId="resolutionSummary"
+                [control]="form.get('resolutionSummary')">
+                <textarea
+                  id="description"
+                  maxlength="1000"
+                  class="form-control textarea-container"
+                  formControlName="resolutionSummary"
+                  cardValue>
+                </textarea>
+              </card-row>
+            </ng-container>
+
+            <div *ngIf="isTaskManagementEntity">
+              <card-row label="Attached Files"><span cardValue></span></card-row>
+              <app-drag-and-drop-multiple
+              cardValue
+              class="drag-drop-modal textarea-container"
+              [selectedDocuments$]="attachedDocuments$"
+              [allowedFileTypes]="allowedExtensions"
+              componentWidth="440"
+              [inProgress]="attachedDocsInProgress"
+              >
+              </app-drag-and-drop-multiple>
+            </div>
+          </card-col>
+        </card>
+
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="cancel()">
+      Cancel
+    </button>
+    <button
+      asyncButton
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      [awaitedActionTypes]="awaitedSaveActionTypes"
+      [ngClass]="{ 'disabled': (isInvalid || !hasChanges) }"
+      [disabled]="isInvalid || !hasChanges"
+      (click)="onSave()">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Save
+    </button>
+  </modal-footer>
+</modal>

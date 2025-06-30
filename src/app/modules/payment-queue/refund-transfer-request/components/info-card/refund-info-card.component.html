@@ -1,0 +1,18 @@
+<card class="refund-info-card" *ngIf="refundInfo" hideSeparator>
+  <card-col>
+    <card-row label="Project" cardValue [value]="refundInfo.projectName">
+
+    </card-row>
+    <card-row label="FROM Account" cardValue [value]="refundInfo.fromAccount">
+
+    </card-row>
+  </card-col>
+  <card-col>
+    <card-row label="TO QSF" cardValue [value]="refundInfo.toQsf">
+
+    </card-row>
+    <card-row label="Amount" cardValue [value]="refundInfo.amount">
+
+    </card-row>
+  </card-col>
+</card>

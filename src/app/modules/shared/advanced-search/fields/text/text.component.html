@@ -1,0 +1,23 @@
+<div class="advanced-search-field-text">
+  <div class="advanced-search-field-text__type-container">
+    <app-select class="advanced-search-field-text__type"
+                [model]="condition"
+                [options]="conditionOptions"
+                [disabled]="disabled"
+                (onModelChange)="onChangeCondition($event)"
+                placeholder="Select Condition"
+                fullwidth
+                searchable>
+    </app-select>
+  </div>
+  <div *ngIf="condition !== conditions.IsMissing" class="advanced-search-field-text__input-container" [class.has-error]="hasError(entry?.errors.term)">
+    <input class="form-control advanced-search-field-text__input w-100"
+           type="text"
+           maxLength="255"
+           [ngModel]="entry && entry.term"
+           (ngModelChange)="onChangeSearch($event)"
+           [disabled]="disabled || !condition"
+           autocomplete="nope"/>
+    <app-search-validation-messages [errors]="entry && entry.errors.term"></app-search-validation-messages>
+  </div>
+</div>

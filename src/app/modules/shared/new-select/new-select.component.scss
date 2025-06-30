@@ -1,0 +1,156 @@
+@import "src/styles.variables.scss";
+@import "src/styles/variables.scss";
+
+.custom-dropdown-btn {
+  border: 1px solid $blue;
+  border-radius: 60px;
+  padding: 2px 14px;
+  font-size: 13px;
+  color: $blue;
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 27px;
+  
+  width: 100%;
+  max-width: 100%;
+
+  img {
+    margin-top: 3px;
+    height: 12px;
+    width: 12px;
+    flex-shrink: 0;
+  }
+
+  &--active {
+    font-weight: 600;
+    color: #FFFFFF;
+    background-color: $blue;
+  }
+}
+
+.btn-text {
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-menu {
+  border: 1px solid #1774DE;
+  border-radius: 6px;
+  max-height: 230px;
+  overflow: hidden;
+  margin-top: 3px;
+
+  .dropdown-divider {
+    margin: 0 !important;
+  }
+
+  .options-menu {
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  
+  .show {
+    padding: 0 !important;
+  }
+
+  .options-btn {
+    display: flex;
+    align-items: center;
+    width: 99%;
+    max-width: 99%;
+    padding: 8px 5px 8px 16px;
+    font-size: 14px;
+    
+    span{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+.dropdown-menu.show {
+  padding: 0 !important;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px 5px 16px;
+
+  .search-icon {
+    height: 12px;
+    width: 12px;
+  }
+
+  .clear-btn {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.5s ease;
+
+    &:hover {
+      background-color: $light-blue;
+    }
+  }
+
+  input {
+    border: none;
+    flex: 1;
+    outline: none;
+    font-size: 14px;
+  }
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  color: #080808;
+  background-color: #EAF1FB !important;
+}
+
+.options-menu {
+  overflow-y: scroll;
+  margin-right: 4px;
+}
+
+.clear-all-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  .btn-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .clear-txt {
+      text-align: left;
+    }
+
+    .clear-count {
+      text-align: right;
+    }
+  }
+}
+
+.options-menu::-webkit-scrollbar {
+  width: 4px;
+}
+
+.options-menu::-webkit-scrollbar-track {
+  margin: 6px 0;
+  height: 54px;
+  box-shadow: none;
+}
+
+.options-menu::-webkit-scrollbar-thumb {
+  background: #BDBDBD;
+  border-radius: 40px;
+}

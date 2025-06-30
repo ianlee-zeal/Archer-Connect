@@ -1,0 +1,14 @@
+.price {
+    display: flex;
+    align-items: center;
+
+    .form-control {
+        margin-top: 0;
+        margin-right: 5px;
+        max-width: 300px;
+    }
+
+    .price-type {
+        flex-grow: 1;
+    }
+}

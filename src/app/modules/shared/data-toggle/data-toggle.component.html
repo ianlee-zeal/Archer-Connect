@@ -1,0 +1,8 @@
+<div class="mb-3 toggle-container">
+      <div  class="toggle-container__control">
+         <button (click)="toggleBtn()"  class="toggle-container__button" tabindex="-1">
+            <img  [src]="iconSrc">
+            <span class="toggle-container__action-name">{{ state === states.ExpandedAll ? 'Expand' : 'Collapse' }}</span>
+         </button>
+      </div>
+</div>

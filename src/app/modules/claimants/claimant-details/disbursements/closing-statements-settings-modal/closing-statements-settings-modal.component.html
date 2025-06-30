@@ -1,0 +1,34 @@
+<modal (close)="onClose()">
+  <modal-header>Closing Statements Settings</modal-header>
+
+  <modal-body>
+    <div class="modal-section">
+        <app-grid
+        entityLabel="Closing Statement Settings"
+        [gridId]="gridId"
+        [gridOptions]="gridOptions"
+        [saveGridDataOnModelUpdate]="true"
+        [isPagerEnabled]="false"
+        (gridReady)="onGridReady($event)"
+        (loadData)="loadData($event)">
+        </app-grid>
+    </div>
+  </modal-body>
+
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn  modal-footer__btn--secondary" (click)="onClose()">
+      Close
+    </button>
+    <button
+      *permissions="canEditPermission"
+      asyncButton
+      [awaitedActionTypes]="awaitedCheckActionTypes"
+      [disabled]="!(valid$ | async)"
+      type="submit"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      (click)="onSave()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Save
+    </button>
+  </modal-footer>
+</modal>

@@ -1,0 +1,83 @@
+<modal (close)="onCancel()">
+  <modal-header>Address Details</modal-header>
+
+  <modal-body>
+    <div class="modal-section">
+      <app-address-form
+        [entityId]="entityId"
+        [entityTypeId]="entityTypeId"
+        [address]="address"
+        [canEdit]="canEdit"
+        [showAddresseeAndAttnTo]="showAddresseeAndAttnTo"
+        [isPrimaryAddress]="isPrimaryAddress"
+        [canViewAuditInfoPermission]="canViewAuditInfoPermission">
+      </app-address-form>
+    </div>
+    <ng-container *permissions="canViewAuditInfoPermission">
+      <div *ngIf="address" class="modal-section">
+        <app-system-fields-section [item]="address" modalMode></app-system-fields-section>
+      </div>
+    </ng-container>
+  </modal-body>
+
+  <modal-footer>
+    <div class="d-flex me-auto align-items-center">
+      <ng-container *permissions="addressesDeletePermission">
+        <button
+          type="button"
+          *ngIf="canEdit && address"
+          class="btn modal-footer__btn modal-footer__btn--secondary add-address-modal__delete-button"
+          (click)="onDelete()">
+          Delete
+        </button>
+      </ng-container>
+      <ng-container  *permissions="personAddressesEditPermission">
+        <button
+          *ngIf="address && canRunMoveCheck"
+          type="button"
+          class="btn modal-footer__btn modal-footer__btn--secondary add-address-modal__move-check-button"
+          asyncButton
+          [awaitedActionTypes]="awaitedCheckActionTypes"
+          [ngClass]="{ 'disabled': !isFormValid || updatedAddress?.isPartial }"
+          [disabled]="!isFormValid || updatedAddress?.isPartial"
+          (click)="onMoveCheck()">
+          <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+          Run Move Check
+      </button>
+      </ng-container>
+      <span  *ngIf="deleteValidationMessageShow"
+      class="add-address-modal__delete_validation-message">Unable to delete Primary Address.</span>
+    </div>
+
+    <button
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--secondary add-address-modal__cancel-button"
+      (click)="onCancel()">
+      Cancel
+    </button>
+    <button
+      *permissions="personAddressesEditPermission"
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--primary add-address-modal__verify-and-save-button"
+      asyncButton
+      [awaitedActionTypes]="awaitedVerifyActionTypes"
+      [ngClass]="{ 'disabled': !isFormValid || updatedAddress?.isPartial }"
+      [disabled]="!isFormValid || updatedAddress?.isPartial"
+      (click)="onVerify()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Verify
+    </button>
+    <button
+      *ngIf="canEdit"
+      asyncButton
+      [awaitedActionTypes]="awaitedSaveActionTypes"
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      [ngClass]="{ 'disabled': !isFormValid }"
+      [disabled]="!isFormValid"
+      (click)="onSave()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Save
+    </button>
+  </modal-footer>
+</modal>

@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="financial-summary-charts-ctn financial-summary-charts-ctn-col-2">
+      <div class="row">
+        <div class="col-12 financial-summary-charts-ctn__title">QSF Totals</div>
+      </div>
+      <!-- <ng-container *ngIf="releaseAdminEngaged else notEngaged"> -->
+        <div class="row financial-summary-charts-ctn__chart"
+          *ngIf="(paidUnpaidSettlementsChart && paidUnpaidSettlementsChart.dataset?.length > 0) else noData">
+          <fusioncharts width="100%"
+            min-height="260"
+            class="w-100"
+            dataFormat="json"
+            type="stackedcolumn2d"
+            placeholder="Loading..."
+            [dataSource]="paidUnpaidSettlementsChart">
+          </fusioncharts>
+        </div>
+      <!-- </ng-container> -->
+    </div>
+    <div class="financial-summary-charts-ctn financial-summary-charts-ctn-col-3">
+      <div class="row">
+        <div class="col-12 financial-summary-charts-ctn__title">Paid</div>
+      </div>
+        <div class="row financial-summary-charts-ctn__chart"
+          *ngIf="(paidChart && paidChart.data?.length > 0) else noData">
+          <fusioncharts width="100%"
+            min-height="260"
+            class="w-100"
+            dataFormat="json"
+            type="doughnut2d"
+            placeholder="Loading..."
+            [dataSource]="paidChart">
+          </fusioncharts>
+        </div>
+    </div>
+</div>
+
+<ng-template #noData>
+    <div class="financial-summary-charts-ctn__no-data">No Data</div>
+  </ng-template>

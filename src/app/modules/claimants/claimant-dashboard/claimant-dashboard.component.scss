@@ -1,0 +1,70 @@
+@import "src/styles/variables.scss";
+
+.dashboard-container {
+  font-family: "Open Sans", sans-serif;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 50px;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    img {
+      cursor: pointer; 
+      stroke-width: 4; 
+      width: 18px;
+    }
+  }
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+h2 {
+  font-size: 50px;
+  color: $claimant-dashboard-primary;
+  font-weight: 300 !important;
+  margin: 0;
+}
+
+h3 {
+  font-weight: 300 !important;
+  color: $claimant-dashboard-alternative;
+  font-size: 25px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.card-grid-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.dashboard-services-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 50px;
+}
+
+.dashboard-services-container > * {
+  width: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

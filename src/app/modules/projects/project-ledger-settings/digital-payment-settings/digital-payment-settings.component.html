@@ -1,0 +1,25 @@
+<form [formGroup]="form" (change)="onChanges()">
+    <card header="Digital Payment Settings">
+        <card-col [labelWidth]="322" [width]="660">
+
+            <!-- Enable Digital Payments -->
+            <card-row label="Enable Digital Payments" inputId="isDigitalPaymentsEnabled" [control]="form.get('isDigitalPaymentsEnabled')">
+                <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="isDigitalPaymentsEnabled" formControlName="isDigitalPaymentsEnabled">
+                    <span></span>
+                </label>
+            </card-row>
+
+            <!-- Digital Payment Vendor -->
+            <card-row label="Digital Payment Vendor" inputId="digitalPaymentProviderId"
+                [control]="form.get('digitalPaymentProviderId')" [required]="form.get(formFields.digitalPaymentProviderId).value">
+                <app-select id="digitalPaymentProviderId" class="dropdown" [disabled]="!form.get('isDigitalPaymentsEnabled').value"
+                    [options]="digitalPaymentSettings.digitalPaymentProvidersOptions"
+                    formControlName="digitalPaymentProviderId" cardValue optionAsValue> </app-select>
+            </card-row>
+
+        </card-col>
+    </card>
+</form>
+
+<!-- digitalPaymentSettings: {{digitalPaymentSettings | json}} -->

@@ -1,0 +1,63 @@
+<modal (close)="modal.hide()">
+    <modal-header>Outcome Based Pricing</modal-header>
+
+    <modal-body>
+        <div class="modal-section">
+            <form [formGroup]="form" novalidate>
+                <card hideSeparator>
+                    <card-col [width]="760" [labelWidth]="250">
+                        <card-row [maxContentWidth]="500" [containerWidth]="760" label="Scenario" inputId="scenario" [control]="form.get('scenario')" required>
+                            <app-select
+                                placeholder="Select Scenario"
+                                cardValue
+                                id="scenario"
+                                [options]="scenarios$ | async"
+                                formControlName="scenario"
+                                optionAsValue>
+                            </app-select>
+                        </card-row>
+
+                        <card-row [marginTop]="15" label="Variable Pricing Applies?" inputId="variablePricingApplies" [control]="form.get('variablePricingApplies')" required>
+                            <app-yes-no-toggle cardValue formControlName="variablePricingApplies"></app-yes-no-toggle>
+                        </card-row>
+
+                        <card-row
+                            *ngIf="form.value.variablePricingApplies === toggleStateEnum.No"
+                            [formGroup]="form"
+                            [maxContentWidth]="500"
+                            [containerWidth]="760"
+                            [labelWidth]="250"
+                            [marginTop]="15"
+                            label="Price"
+                            inputId="price"
+                            [control]="form.get('price')">
+                            <app-price-input cardValue formControlName="price"></app-price-input>
+                        </card-row>
+                    </card-col>
+                </card>
+
+                <app-variable-pricing-form
+                    *ngIf="form.value.variablePricingApplies === toggleStateEnum.Yes"
+                    [tortId]="this.tortId"
+                    [variablePricingTypes]="variablePricingTypes$ | async"
+                    [value]="variablePricing"
+                    (valueChange)="onVariablePricingChange($event)"
+                    class="variable-pricing-section">
+                </app-variable-pricing-form>
+            </form>
+        </div>
+    </modal-body>
+
+    <modal-footer>
+        <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="modal.hide()">
+            Close
+        </button>
+        <button
+            type="submit"
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            (click)="onAdd()">
+            Add
+        </button>
+    </modal-footer>
+</modal>

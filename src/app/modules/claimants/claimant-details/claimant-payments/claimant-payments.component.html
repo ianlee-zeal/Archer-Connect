@@ -1,0 +1,9 @@
+<div class="page-content" *ngIf="(entity$ | async) as claimant">
+  <app-payments-grid
+    [isAdvancedSearchEnabled]="false"
+    [entityTypeId]="entityTypeId"
+    [entityId]="claimant.id"
+    [exportOnlyFilteredData]="false"
+    [useHasTransferItemsFilter]="false">
+  </app-payments-grid>
+</div>

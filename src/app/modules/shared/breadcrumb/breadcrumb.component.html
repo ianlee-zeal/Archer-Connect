@@ -1,0 +1,20 @@
+<div class="breadcrumbs-container">
+    <ul  class="navbar-nav me-auto ps-0">
+      <ng-container class="top-nav-breadcrumb" *ngFor="let subItem of lastThreeElements; index as ind">
+
+          <li *ngIf="ind !== lastThreeElements.length - 1" >
+            <a class="top-nav-breadcrumb__steps" href="{{subItem.route}}">{{subItem.name}}</a>
+          </li>
+
+          <li *ngIf="ind  == lastThreeElements.length - 1">
+              <a class="top-nav-breadcrumb__disable-step" >{{subItem.name}}</a>
+          </li>
+
+          <li *ngIf="ind !== lastThreeElements.length - 1">
+              <i class="fas fa-chevron-right top-nav-breadcrumb__chevron-icon"></i>
+          </li>
+
+      </ng-container>
+    </ul>
+  </div>
+

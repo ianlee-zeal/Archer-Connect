@@ -1,0 +1,23 @@
+<div class="page">
+    <div class="page-content">
+      <div class="fw-bold">QSF Sweep Results</div>
+      <div *ngIf="qsfBatch$ | async as qsfBatch" class="service-block">
+            <span class="line-part">Batch ID: {{ qsfBatch.id }}</span>
+            <span class="line-part">Created Date: {{ qsfBatch.createdDate | date: 'MM/dd/yyyy' }}</span>
+            <ng-container *ngIf="!qsfBatch.availableForCommit">
+            <span class="line-part">
+              <app-badge-pill [type]="type" [text]="text"></app-badge-pill>
+            </span>
+          </ng-container>
+      </div>
+      <app-grid
+        entityLabel=""
+        [gridOptions]="gridOptions"
+        [gridId]="gridId"
+        [canReorderColumns]="true"
+        [skipSetContentHeight]="true"
+        (gridReady)="gridReady($event)"
+        (loadData)="loadData($event)">
+      </app-grid>
+    </div>
+</div>

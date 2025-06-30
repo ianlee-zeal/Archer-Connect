@@ -1,0 +1,15 @@
+export enum DocumentImportTemplate {
+  ClientPerson = 1,
+  CondensedDisbursementWorksheet = 3,
+  DisbursementGroup = 4,
+  ARCHERFees = 7,
+  LienData = 23,
+  AllocationUpload = 24,
+  GTFMDW = 25,
+  DetailedDisbursementWorksheet = 26,
+  FirmFeesAndExpense = 27,
+  OtherFees = 28,
+  PaymentRequest = 29,
+  RefundTransferRequest = 32,
+  ManualPaymentRequest = 220,
+}

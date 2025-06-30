@@ -1,0 +1,178 @@
+<div class="dashboard-container">
+  <div class="info">
+      <div>
+          <img src="assets/svg/folder-open.svg" />
+          <h2>{{ projectName }}</h2>
+          <img *ngIf="!isPinned" class="pin-icon" (click)="pinPage()" src="assets/images/thumbtack-outlined.svg" alt="Pin Item"/>
+          <img *ngIf="isPinned" class="pin-icon" (click)="removePin()" src="assets/images/thumbtack-solid.svg" alt="Remove Pin"/>
+      </div>
+  </div>
+  
+  <ng-container *ngIf="!loading">
+    <div class="row mt-3">
+      <div class="col-6">
+        <app-landing-page-global-search *ngIf="!loading" [searchDropdownOptions]="quickSearchOption"></app-landing-page-global-search>
+      </div>
+    </div>
+
+    <div class="tracker-container">
+      <div *ngIf="releaseAdminStatusSummary" [ngStyle]="{ order: releaseAdminStatusSummary.isEngaged ? 0 : 1 }">
+        <app-project-service-status-tracker
+          [service]="ProductCategory.Release"
+          [isSelected]="selectedService === ProductCategory.Release"
+          [parentSelected]="!!selectedService"
+          (selected)="onTrackerSelected(ProductCategory.Release, releaseAdminStatusSummary)"
+          [lienStatusSummary]="releaseAdminStatusSummary">
+        </app-project-service-status-tracker>
+        <div *ngIf="selectedService === ProductCategory.Release" class="popover-arrow"></div>
+      </div>
+      
+      <div *ngIf="lienResolutionStatusSummary" [ngStyle]="{ order: lienResolutionStatusSummary.isEngaged ? 0 : 1 }">
+        <app-project-service-status-tracker
+          [service]="ProductCategory.MedicalLiens"
+          [isSelected]="selectedService === ProductCategory.MedicalLiens"
+          [parentSelected]="!!selectedService"
+          (selected)="onTrackerSelected(ProductCategory.MedicalLiens, lienResolutionStatusSummary)"
+          [lienStatusSummary]="lienResolutionStatusSummary">
+        </app-project-service-status-tracker>
+        <div *ngIf="selectedService === ProductCategory.MedicalLiens" class="popover-arrow"></div>
+      </div>
+
+      <div *ngIf="bankruptcyStatusSummary" [ngStyle]="{ order: bankruptcyStatusSummary.isEngaged ? 0 : 1 }">
+        <app-project-service-status-tracker
+          [service]="ProductCategory.Bankruptcy"
+          [isSelected]="selectedService === ProductCategory.Bankruptcy"
+          [parentSelected]="!!selectedService"
+          (selected)="onTrackerSelected(ProductCategory.Bankruptcy, bankruptcyStatusSummary)"
+          [lienStatusSummary]="bankruptcyStatusSummary">
+        </app-project-service-status-tracker>
+        <div *ngIf="selectedService === ProductCategory.Bankruptcy" class="popover-arrow"></div>
+      </div>
+      
+      <div *ngIf="probateStatusSummary" [ngStyle]="{ order: probateStatusSummary.isEngaged ? 0 : 1 }">
+        <app-project-service-status-tracker
+          [service]="ProductCategory.Probate"
+          [isSelected]="selectedService === ProductCategory.Probate"
+          [parentSelected]="!!selectedService"
+          (selected)="onTrackerSelected(ProductCategory.Probate, probateStatusSummary)"
+          [lienStatusSummary]="probateStatusSummary">
+        </app-project-service-status-tracker>
+        <div *ngIf="selectedService === ProductCategory.Probate" class="popover-arrow"></div>
+      </div>
+      
+      <div *ngIf="qsfAdminStatusSummary" [ngStyle]="{ order: qsfAdminStatusSummary.isEngaged ? 0 : 1 }">
+        <app-project-service-status-tracker
+          [service]="ProductCategory.QSFAdministration"
+          [isSelected]="selectedService === ProductCategory.QSFAdministration"
+          [parentSelected]="!!selectedService"
+          (selected)="onTrackerSelected(ProductCategory.QSFAdministration, qsfAdminStatusSummary)"
+          [lienStatusSummary]="qsfAdminStatusSummary">
+        </app-project-service-status-tracker>
+        <div *ngIf="selectedService === ProductCategory.QSFAdministration" class="popover-arrow"></div>
+      </div>
+    </div>
+    <app-project-dashboard-charts
+    *ngIf="selectedService && selectedLienStatusSummary"
+    [projectId]="projectId"
+    [service]="selectedService"
+    [lienStatusSummary]="selectedLienStatusSummary"
+    (outsideClick)="onOutsideClick()">
+    </app-project-dashboard-charts>
+    <div class="row">
+      <!-- Contact and Deficiencies Count Cards -->
+      <div class="col-md-6">
+        <div class="row">
+          <app-info-card class="col-6 square-info-card cursor-pointer" [isSquareCard]="true" (click)="onClickContact()" data-test-id="project-dashboard-contact-card">
+            <div class="card-content" infoCardData>
+              <span class="card-md-text primary-color-text mb-2">Contact ARCHER</span>
+              <img src="assets/svg/paper-plane.svg" alt="Contact Icon" class="card-icon">
+            </div>
+          </app-info-card>
+
+        <ng-container *ngIf="canAccessProjectDeficiencies; else deficienciesComingSoon">
+          <app-info-card *ngIf="deficienciesCount > 0" class="col-6 cursor-pointer" [state]="InfoCardState.Warning"  [isSquareCard]="true" (click)="onClickDeficienciesCard()" data-test-id="project-dashboard-deficiencies-count-card">
+            <div class="card-content" infoCardData>
+              <span class="card-md-text secondary-color-text inline-items">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Deficiencies</span>
+              </span>
+              <span class="card-xlg-text secondary-color-text">{{ deficienciesCount | formatLargeNumber}}</span>
+            </div>
+          </app-info-card>
+          <app-info-card *ngIf="deficienciesCount === 0" class="col-6" [state]="InfoCardState.Final" [isSquareCard]="true">
+            <div class="card-content" infoCardData>
+              <span class="card-md-text success-color-text">Deficiencies</span>
+              <img src="assets/svg/check_solid_green.svg" alt="Checkmark Icon" class="card-icon">
+              <span class="card-sm-text">No active deficiencies</span>
+            </div>
+          </app-info-card>
+        </ng-container>
+        <ng-template #deficienciesComingSoon>
+          <app-info-card [state]="InfoCardState.Neutral" class="col-6" [isSquareCard]="true">
+            <div class="card-content" infoCardData>
+              <span class="card-md-text error-color-text inline-items">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Deficiencies</span>
+              </span>
+              <span class="card-md-text-2">Currently unavailable</span>
+              <span style="font-size: 12px;">We’re actively working to bring it to you soon.</span>
+            </div>
+          </app-info-card>
+        </ng-template>
+      </div>
+      </div>
+      <!-- Total Payments Chart -->
+      <div *ngIf="qsfAdminStatusSummary.isEngaged" class="col-md-6">
+        <div style="margin-bottom: 12px" class="col">
+          <app-info-card class="expanded-info-card" [showInnerCard]="false">
+            <div class="px-3 py-2">
+              <div class="payments-chart">
+                <span class="card-md-text primary-color-text">Total Payments</span>
+                <span *ngIf="totalPaymentChartSummary" class="payments-chart-subtitle">Total Paid: {{totalPaymentChartSummary.total | extendedCurrency}}</span>
+              </div>
+              <fusioncharts width="100%" height="300" class="p-0" dataFormat="json" type="line" placeholder="Loading..."
+                [dataSource]="totalPaymentChart">
+              </fusioncharts>
+            </div>
+          </app-info-card>
+        </div>
+      </div>
+      <!-- Shared Documents Card -->
+      <div class="col-md-12">
+        <div style="margin-bottom: 24px; margin-top: 12px;" class="col">
+          <app-info-card class="expanded-info-card">
+              <div class="expanded-card-content" infoCardData>
+                <div class="card-title">
+                  <span class="primary-color-text">Shared Documents</span>
+                </div>
+                <div class="show-all" *ngIf="documents.length > 5" (click)="goToProjectDocuments()">
+                  <span>Show All</span>
+                  <span class="fa fa-arrow-right"></span>
+                </div>
+              </div>
+              <div *ngIf="documents?.length > 0; else emptySharedDocuments" class="shared-documents">
+                <div class="primary-color-text shared-documents__item col" (click)="onClickDownload(item.id)" *ngFor="let item of documents | slice:0:5">
+                  <div class="shared-documents__info col-6">
+                    <img *ngIf="IconHelper.getMimeIconByExtension(item.mimeType.extension) as iconUrl" [src]="iconUrl" />
+                    <div ellipsisTooltip>{{ item.name }}</div>
+                  </div>
+                  <span>{{item.createdDate | dateFormat}}</span>
+                  <span class="item-info" ellipsisTooltip class="col-3">{{item.documentType.name}}</span>
+                  <img src="assets/svg/download.svg" class="download-icon col-1" alt="Download Icon" />
+                </div>
+              </div>
+              <ng-template #emptySharedDocuments>
+                <div class="empty-container">
+                  Documents ARCHER shares will be available here
+                </div>
+              </ng-template>
+
+              <div *ngIf="loadingDocuments" class="loading-spinner">
+                <app-spinner></app-spinner>
+              </div>
+            </app-info-card>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

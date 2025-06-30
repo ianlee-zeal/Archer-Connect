@@ -1,0 +1,8 @@
+<div class="page">
+    <div class="page-content" *ngIf="(project$ | async) as currentProject">
+        <app-project-disbursement-group-list
+            *ngIf="currentProject"
+            [projectId]="currentProject.id">
+        </app-project-disbursement-group-list>
+    </div>
+</div>

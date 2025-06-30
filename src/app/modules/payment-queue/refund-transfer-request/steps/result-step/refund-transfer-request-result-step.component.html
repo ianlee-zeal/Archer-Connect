@@ -1,0 +1,10 @@
+<div class="refund-transfer-request-result-step__container">
+  <div class="tab-content" id="result-nav-tab-content">
+    <app-refund-info-card [refundInfo]="refundInfo"></app-refund-info-card>
+    <app-refund-transfer-request-result-grid
+      [batchActionId]="batchAction?.id"
+      [documentTypeId]="documentTypeId"></app-refund-transfer-request-result-grid>
+    <app-tab-placeholder *ngIf="!resultFileDocId" [text]="'Loading...'">
+    </app-tab-placeholder>
+  </div>
+</div>

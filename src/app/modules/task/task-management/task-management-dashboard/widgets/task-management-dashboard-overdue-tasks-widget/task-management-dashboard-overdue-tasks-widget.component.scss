@@ -1,0 +1,24 @@
+@import 'src/styles/variables.scss';
+
+.task-mng-dash-overdue-tasks-widget-ctn {
+  width: 100%;
+  font-size: 16px;
+
+  &__header {
+    font-size: 14px;
+    color: $gray-dark;
+    margin: 15px 0 15px 0;
+  }
+
+  &__value {
+    color: $label-color;
+
+    &:hover {
+      background-color: $gray-light;
+    }
+  }
+
+  &__percent {
+    margin: 15px 0 15px 0;
+  }
+}

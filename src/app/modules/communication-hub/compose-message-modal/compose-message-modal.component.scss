@@ -1,0 +1,107 @@
+@import "src/styles.variables.scss";
+@import "src/styles/variables.scss";
+
+.modal-hub {
+  padding: 28px;
+  width: 800px;
+  margin: auto;
+  background: #fff;
+  border-radius: 10px 10px 0 0;
+  border-width: 2px 2px 0 2px;
+  border-style: solid;
+  border-color: $communication-hub-secondary;
+  box-shadow: -4px -4px 30px 2px #5C5F6833;
+}
+
+.modal-header,
+.modal-footer {
+  padding: 0;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body app-new-select {
+  width: 100%;
+}
+
+.modal-header button {
+  font-size: 20px;
+  color: $communication-hub-secondary;
+}
+
+.modal-header h4 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 26px;
+  color: $communication-hub-primary;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.rich-text-editor {
+  position: relative;
+}
+
+.modal-body {
+  display: flex;
+  min-height: 30vh;
+  padding: 12px 0 12px 0;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #fff !important
+}
+
+.quill-editor_new {
+  padding-top: 3.5vh;
+  height: 28vh;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.validation-container {
+  flex-grow: 1;
+  margin-right: 1rem;
+}
+
+.validation-label {
+  color: red;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.send-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 60px;
+  cursor: pointer;
+  width: 50%;
+  margin-left: auto;
+  background: $communication-hub-primary;
+  color: #fff;
+
+  &:disabled {
+    font-weight: 700;
+    background: rgba(160, 160, 160, 0.71);
+    cursor: not-allowed;
+  }
+}
+
+.btn-ql-active {
+  color: blue;
+}

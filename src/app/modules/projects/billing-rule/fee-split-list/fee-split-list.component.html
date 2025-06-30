@@ -1,0 +1,23 @@
+<button
+  *ngIf="canEdit && isFeeSplitted"
+  class="btn btn-secondary btn-icon btn-icon-add"
+  (click)="onAdd()">
+</button>
+
+<app-grid *ngIf="feeSplits && feeSplits.length"
+  [gridOptions]="gridOptions"
+  (gridReady)="gridReady($event)"
+  (loadData)="loadData($event)"
+  [gridId]="gridId"
+  entityLabel="Fee Splits"
+  isContentAutoHeight="true"
+  [hideTopStatusbar]="true"
+  [saveGridDataOnModelUpdate]="true">
+</app-grid>
+
+<div
+  data-test-id="fee-splits-errors"
+  *ngIf="!isValid && canEdit" class="error-container text-danger">
+  <i class="fas fa-exclamation-triangle"></i>
+  <span>{{ errorMessage }}</span>
+</div>

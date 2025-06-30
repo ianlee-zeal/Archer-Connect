@@ -1,0 +1,53 @@
+@import "src/styles/variables.scss";
+
+.range-date-selector {
+  display: flex;
+
+  .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    margin-left: 0;
+  }
+  .input-group {
+    width: inherit;
+  }
+}
+
+.date-selector {
+    &__error {
+        position: fixed;
+    }
+    &__input.ng-dirty.ng-invalid {
+        border: 1px $validation-invalid-color solid;
+    }
+
+    &__filter-label{
+      padding: 0 5px;
+      background-color: #f7f9ff;
+    }
+
+    &--hidden {
+      width: 0;
+      margin: 0;
+      border: none;
+      padding: 0;
+
+      button {
+        display: none;
+      }
+    }
+}
+
+.custom-day {
+  text-align: center;
+  display: inline-block;
+  height: 1.4rem;
+  width: 2rem;
+}
+.custom-day.range, .custom-day:hover {
+  background-color: $yellow;
+  color: white;
+}
+.custom-day.faded {
+  background-color: $light-orange;
+  color: $black
+}
+

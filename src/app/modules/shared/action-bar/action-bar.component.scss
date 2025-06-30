@@ -1,0 +1,38 @@
+@import "src/styles/variables.scss";
+
+.action-bar {
+  display: flex;
+  padding: 0 20px 0 20px;
+  height: 40px;
+  align-items: center;
+  border-bottom: 2px solid $menu-color;
+
+  &__actions {
+    display: flex;
+    padding-left: 0;
+  }
+
+  &__actions + &__actions {
+    padding-left: 20px;
+    border-left: 2px solid $menu-color;
+  }
+
+  &__action-name {
+    margin-left: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #585858;
+  }
+
+  &__no-border {
+    border: none;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .action-bar {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 15px 0 15px;
+  }
+}

@@ -1,0 +1,25 @@
+.fee-split-container {
+    display: flex;
+
+    .fee-split {
+        margin-right: 10px;
+    }
+
+    .btn-icon-add {
+        margin-top: 10px;
+    }
+
+    .btn-icon-remove {
+        margin-top: 10px;
+    }
+}
+
+.error-container {
+    margin-top: 10px;
+
+    span {
+      display: inline-block;
+      margin-left: 10px;
+    }
+}
+

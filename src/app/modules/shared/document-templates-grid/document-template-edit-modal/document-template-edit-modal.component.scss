@@ -1,0 +1,35 @@
+@import "src/styles/_mixins.scss";
+
+@include uploadDocumentModal();
+
+.projects {
+  &__list {
+    padding-left: 15px;
+  }
+
+  &__title {
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+}
+
+.generate-button {
+  margin-top: -40px;
+  width: 150px;
+}
+
+.tested-by {
+  font-size: 14px;
+  display: flex;
+  height: 100%;
+  align-items: center;
+
+  &__header-text {
+    font-weight: 700;
+    padding-right: 5px;
+  }
+
+  &__text {
+    padding-right: 5px;
+  }
+}

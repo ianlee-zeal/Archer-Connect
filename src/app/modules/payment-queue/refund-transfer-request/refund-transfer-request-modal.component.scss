@@ -1,0 +1,41 @@
+@import "src/styles.variables.scss";
+@import "src/styles/variables.scss";
+
+.refund-transfer-request {
+    &__description {
+         display: block;
+         padding: 5px 0 10px 0;
+     }
+ }
+
+.note-editor-container {
+    &__col {
+        padding: 0 35px 0 20px;
+    }
+}
+
+.payment-request {
+    &__progress-bar-section {
+        background-color: $blue;
+        color: $white;
+    }
+
+    &__file-panel {
+        display: flex;
+        justify-content: space-between;
+        .btn-icon {
+            font-size: $font-size-m;
+            color: $primary-blue;
+        }
+    }
+
+    &__uploaded-attachments-container {
+        width: 70%;
+    }
+
+    &__file-name {
+        font-weight: bold;
+        margin-right: 5px;
+        max-width: 90%;
+    }
+}

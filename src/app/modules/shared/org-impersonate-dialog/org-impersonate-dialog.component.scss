@@ -1,0 +1,20 @@
+@import "../../../../styles/variables.scss";
+
+.impersonate-org-modal {
+  .form-control {
+    width: 100%;
+  }
+}
+
+.impersonate-label {
+  font-size: 14px;
+}
+
+.org-impersonate-select {
+  font-size: 14px;
+}
+
+.required {
+  color: $custom-blue;
+  font-weight: 700;
+}

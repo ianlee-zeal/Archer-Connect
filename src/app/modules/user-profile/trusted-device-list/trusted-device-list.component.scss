@@ -1,0 +1,26 @@
+@import "src/styles/variables.scss";
+@import "src/styles/_mixins.scss";
+
+.btn-icon {
+  margin-right: 16px;
+}
+
+.device {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__remove-btn {
+    margin-top: 4px;
+    margin-left: auto;
+  }
+
+  &__device-input {
+    width: 100%;
+    margin-right: 10px;
+  }
+}
+
+.not-found {
+  color: $label-color;
+}

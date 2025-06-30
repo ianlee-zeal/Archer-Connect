@@ -1,0 +1,8 @@
+<div class="grid-date-selector">
+  <app-date-selector-template-driven
+    [model]="date"
+    [isAutofocused]="isAutofocused"
+    (onDateTyped)="onDateSelected($event)"
+    (onDateSelected)="onDateSelected($event)">
+  </app-date-selector-template-driven>
+</div>

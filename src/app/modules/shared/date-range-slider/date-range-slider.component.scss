@@ -1,0 +1,139 @@
+@import "src/styles/variables.scss";
+
+.date-range-slider-inline {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.date-range-slider-header {
+  padding-top: 5px;
+  font-weight: bold;
+}
+
+.date-range-slider-container {
+  font-size: 12px;
+  background-color: beige;
+}
+
+.date-range-slider-date {
+  width: 108px;
+}
+.date-range-slider-date-l {
+  text-align: left;
+  padding-left: 5px;
+}
+.date-range-slider-date-r {
+  text-align: right;
+  padding-right: 5px;
+}
+
+.date-range-slider-center {
+  width: 170px; 
+  height: 25px; 
+  padding-top: 5px;
+}
+
+$primary: #c2c2c2; 
+$base: #8c8c8c;
+$shadow-color:  #8c8c8c;
+$lighter-shadow: rgba($shadow-color, .2);
+$white: #fff;
+$gray: #8c8c8c;
+$lighter-gray: rgba($gray, .1);
+$transition: .3s all ease;
+$slide-height: 4px;
+
+@mixin dragIndicator($property, $background, $z-index) {
+  #{$property}{
+      position: absolute;
+      top: 0;
+      z-index: $z-index;
+      width: 0;
+      height: $slide-height;
+      border-radius: $slide-height;
+      background: $background;
+      &:hover{
+        &::before{
+          opacity: 0;
+        }
+        &::after{
+          opacity: 0;
+        }
+      }
+      &::before{
+        opacity: 0;
+        content: attr(data-content);
+        display: block;
+        position: absolute;
+        top: -40px;
+        right: -23px;
+        width: 105px;
+        padding: 3px;
+        text-align: center;
+        color: white;
+        background: $shadow-color;
+        border-radius: 20px;
+    }
+    &::after{
+      opacity: 0;
+      content:'';
+      display: block;
+      position: absolute;
+      top: -18px;
+      right: -8px;
+      border-top: 8px solid $shadow-color;
+      border-left:8px solid transparent;
+      border-right:8px solid transparent;
+    }
+   #{$property}-drag{
+      position: absolute;
+      top: -6px;
+
+      width: 10px;
+      height: 16px;
+
+      background: white;
+      border: 1px solid $base;
+      transition: all .3s;
+      &:hover{
+        box-shadow: 0 0 0 6px $lighter-shadow;
+      }
+    }
+  }
+}
+
+    #slider{
+      position: relative;
+      margin: 0 auto;
+      width: 150px;
+      height: $slide-height;
+      background: $primary;
+      border-radius: $slide-height;
+      cursor: pointer;
+      
+      @include dragIndicator("#min", $primary, 2);
+      @include dragIndicator("#max", $primary, 1);
+
+      #min-drag{
+        right: -0.5px;
+
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        background: white;
+        border: 1px solid $base;
+        transition: all .3s;
+      }
+
+      #max-drag{
+        right: -8.5px;
+
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        background: white;
+        border: 1px solid $base;
+        transition: all .3s;
+      }
+    }

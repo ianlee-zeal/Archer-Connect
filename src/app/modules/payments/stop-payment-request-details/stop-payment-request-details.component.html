@@ -1,0 +1,34 @@
+<div class="page-content" *ngIf="stopPaymentRequest">
+  <div class="stop-payment-block">
+    <div>
+      <span class="stop-payment-block__header">Stop Payment Request Made</span>
+      <button class="btn btn-link stop-payment-block__view-details-link" (click)="viewDetails()">View more details</button>
+    </div>
+    <card hideSeparator>
+      <card-col [width]="400" [labelWidth]="150">
+        <card-row [marginTop]="5" label="Date of Request" [value]="stopPaymentRequest.createdDate | dateFormat"></card-row>
+        <card-row [marginTop]="5" label="Requester" [value]="stopPaymentRequest.createdBy?.displayName"></card-row>
+        <card-row [marginTop]="5" label="Resend Reason">
+          <span class="card-row__value form-control-plaintext stop-payment-block__resend-reason" cardValue>
+            <app-text-control [text]="getFullResendReason()"></app-text-control>
+
+          </span>
+        </card-row>
+      </card-col>
+      <card-col [labelWidth]="155">
+        <card-row [marginTop]="5" valueClass="stop-payment-block__status-request" label="Status of Request" [value]="getStatusOfRequest()"></card-row>
+        <card-row [marginTop]="5" label="Address Change" [value]="getAddressChange()"></card-row>
+        <card-row *ngIf="stopPaymentRequest.statusComment" [marginTop]="5" label="Status Comment">
+          <span class="card-row__value form-control-plaintext stop-payment-block__status-comment" cardValue>
+            {{ stopPaymentRequest.statusComment }}
+          </span>
+        </card-row>
+        <card-row *ngIf="stopPaymentRequest.sprAttachments && stopPaymentRequest.sprAttachments.length > 0" [marginTop]="5" [labelWidth]="155" label="Attachments">
+          <span cardValue class="card-row__value form-control-plaintext">
+            <button class="btn btn-link stop-payment-block__attachments-link" (click)="downloadAttachments()">Download files</button>
+          </span>
+        </card-row>
+      </card-col>
+    </card>
+  </div>
+</div>

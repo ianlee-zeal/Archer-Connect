@@ -1,0 +1,15 @@
+<div class="dialog-header">
+  <h4
+    data-test-id="dialog-title"
+    class="dialog-title">
+    <ng-content></ng-content>
+  </h4>
+  <button
+    *ngIf="!hideCloseButton"
+    data-test-id="dialog-close-btn"
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="onClose()">
+  </button>
+</div>

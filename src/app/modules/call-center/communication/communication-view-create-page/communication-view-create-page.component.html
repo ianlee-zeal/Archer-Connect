@@ -1,0 +1,12 @@
+<app-communication-create-page *ngIf="claimantsParentPage"></app-communication-create-page>
+<app-projects-communication-create-page *ngIf="!claimantsParentPage"></app-projects-communication-create-page>
+
+<div>
+  <ng-container *ngIf="tabs">
+    <app-tab-group>
+      <ng-container *ngFor="let tab of tabs">
+        <app-tab-item [title]="tab.title" [routerLink]="tab.link" [disabled]="tab.disabled" [count]="tab.count"></app-tab-item>
+      </ng-container>
+    </app-tab-group>
+  </ng-container>
+</div>

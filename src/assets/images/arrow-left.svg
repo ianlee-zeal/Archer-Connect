@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14.414" height="14" viewBox="0 0 14.414 14">
+    <defs>
+        <style>
+            .prefix__cls-1,.prefix__cls-3{fill:none}.prefix__cls-3{stroke:#1774DE;stroke-linecap:round;stroke-width:2px}
+        </style>
+    </defs>
+    <g id="prefix__ic_back" transform="rotate(90 172.207 -83.793)">
+        <path id="prefix__bg" d="M0 0H14V14H0z" class="prefix__cls-1" transform="translate(256 74)"/>
+        <g id="prefix__Rectangle_111" data-name="Rectangle 111" transform="translate(262.5 74)" style="stroke:#1774DE;fill:none">
+            <rect width="2" height="13" rx="1" style="stroke:none"/>
+            <rect width="1" height="12" x=".5" y=".5" class="prefix__cls-1" rx=".5"/>
+        </g>
+        <path id="prefix__Line_45" d="M0 4L4 0" class="prefix__cls-3" data-name="Line 45" transform="translate(263.5 83)"/>
+        <path id="prefix__Line_59" d="M4 4L0 0" class="prefix__cls-3" data-name="Line 59" transform="translate(259.5 83)"/>
+    </g>
+</svg>

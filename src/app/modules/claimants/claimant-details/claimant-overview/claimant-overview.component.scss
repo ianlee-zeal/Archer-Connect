@@ -1,0 +1,12 @@
+.loading-spinner {
+  position: absolute;
+  background-color: rgba(45, 64, 87, 0.1);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  margin: -20px;
+  padding-top: 15rem;
+  padding-right: 15rem;
+}

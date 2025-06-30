@@ -1,0 +1,15 @@
+export enum DocumentGenerationTemplates {
+  FeeExpenseExportTemplate = 2393,
+  ClosingStatementTemplate = 6129,
+  LienDataExportTemplate = 9000,
+  GTFExportTemplate = 12945,
+  ARCHERFeesTemplate = 2781,
+  DetailedDisbursementWorksheet = 14285,
+  FirmFeeExpenseTemplate = 14399,
+  PaymentQueueRemittanceDetails = 14402,
+  PaymentQueueRemittanceDetailsPLRP = 14403,
+  PaymentQueueRemittanceDetailsRawlingsPLRP = 14404,
+  PaymentQueueRemittanceDetailsRawlingsNonPLRP = 14405,
+  DigitalDisbursementStatus = 14286,
+  LienStatusReport = 9001,
+}

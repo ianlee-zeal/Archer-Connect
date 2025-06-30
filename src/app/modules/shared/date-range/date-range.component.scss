@@ -1,0 +1,13 @@
+@import "src/styles/variables.scss";
+
+.date-range {
+  &__divider {
+    padding-left: 6px;
+    padding-right: 2px;
+    color: $label-color;
+  }
+
+  &__date-selector {
+    width: 137px;
+  }
+}

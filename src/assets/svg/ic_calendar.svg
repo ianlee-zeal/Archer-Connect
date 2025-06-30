@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_calendar" width="12" height="14" viewBox="0 0 12 14">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:none;stroke:#707070}.prefix__cls-2{fill:#707070}
+        </style>
+    </defs>
+    <g id="prefix__Rectangle_150" class="prefix__cls-1" data-name="Rectangle 150" transform="translate(0 2)">
+        <rect width="12" height="12" rx="2" style="stroke:none"/>
+        <rect width="11" height="11" x=".5" y=".5" rx="1.5" style="fill:none"/>
+    </g>
+    <rect id="prefix__Rectangle_151" width="1" height="6" class="prefix__cls-2" data-name="Rectangle 151" rx=".5" transform="translate(3)"/>
+    <rect id="prefix__Rectangle_152" width="1" height="6" class="prefix__cls-2" data-name="Rectangle 152" rx=".5" transform="translate(8)"/>
+    <path id="prefix__Line_58" d="M0 0L11 0" class="prefix__cls-1" data-name="Line 58" transform="translate(.5 7.5)"/>
+</svg>

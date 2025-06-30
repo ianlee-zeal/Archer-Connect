@@ -1,0 +1,37 @@
+<div
+  data-test-id="grid-pages"
+  class="grid-pager">
+  <button
+    data-test-id="grid-pages-first-btn"
+    [style.visibility]="isPrevButtonsShow ? 'visible' : 'hidden'"
+    class="grid-pager__button grid-pager__button--first"
+    (click)="toFirstPageClick()">
+  </button>
+  <button
+    data-test-id="grid-pages-prev-btn"
+    [style.visibility]="isPrevButtonsShow ? 'visible' : 'hidden'"
+    class="grid-pager__button grid-pager__button--prev"
+    (click)="toPrevPageClick()">
+  </button>
+  <ng-container *ngFor="let pageNumber of buttonsToShow">
+    <button
+      data-test-id="grid-pages-page-btn"
+      class="grid-pager__button grid-pager__button--page"
+      [ngClass]="{ 'grid-pager__button--selected': pageNumber === pager.currentPage }"
+      (click)="toPageClick(pageNumber)">
+      {{ pageNumber }}
+    </button>
+  </ng-container>
+  <button
+    data-test-id="grid-pages-next-btn"
+    [style.visibility]="isNextButtonsShow ? 'visible' : 'hidden'"
+    class="grid-pager__button grid-pager__button--next"
+    (click)="toNextPageClick()">
+  </button>
+  <button
+    data-test-id="grid-pages-last-btn"
+    [style.visibility]="isNextButtonsShow ? 'visible' : 'hidden'"
+    class="grid-pager__button grid-pager__button--last"
+    (click)="toLastPageClick()">
+  </button>
+</div>

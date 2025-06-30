@@ -1,0 +1,14 @@
+<div>
+    <span class="grid-title">
+        <i class="fas fa-exclamation-triangle"></i>
+        CRITICAL DEFICIENCIES MUST BE FIXED BEFORE CONTINUING
+    </span>
+    <app-update-stage-deficiencies-critical-list [deficiencies]="criticalDeficiencies$"></app-update-stage-deficiencies-critical-list>
+</div>
+<div class="mt-4">
+    <span class="grid-title">
+        <i class="grid-title__warning fas fa-exclamation-triangle"></i>
+        WARNING DEFICIENCIES ON THIS PROCESS
+    </span>
+    <app-update-stage-deficiencies-warning-list [deficiencies]="warningDeficiencies$"></app-update-stage-deficiencies-warning-list>
+</div>

@@ -1,0 +1,10 @@
+<div class="modal-section">
+  <p class="text-center">Processing Payment Request {{request?.Id}} - Total Payments Count {{progressTotalCount}}</p>
+  <div class="progress-container mb-4">
+    <div *ngIf="progressTotalCount">{{progressCurrentCount}}/{{progressTotalCount}}</div>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" [style.width]="progressWidth" [attr.aria-valuenow]="progressValue"
+        aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+  </div>
+</div>

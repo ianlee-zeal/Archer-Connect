@@ -1,0 +1,31 @@
+<ng-container>
+  <div class="service-block">
+    <div *ngIf="lienData$ | async as data" class="service-header">
+      <div>
+        <span class="service-link line-part">Medical Lien Resolution</span>
+        <span class="status line-part"
+              [ngClass]="{
+           'status--pending': data?.service?.status?.id === statuses.Pending,
+           'status--finalized': data?.service?.status?.id === statuses.Finalized
+         }">{{ data?.service?.status?.name }}</span>
+      </div>
+      <div class="finalized-info">
+        <span class="line-part">Reported Final: {{ (finalizedDate$ | async | dateFormat : false : '' : '' : true) || 'No' }}</span>
+        <span class="line-part">Holdback: {{ data.holdback || 0 | extendedCurrency}}</span>
+        <span class="line-part">Total Liens: {{(data.totalLiens | extendedCurrency) || '-'}}</span>
+      </div>
+    </div>
+
+    <app-grid entityName="liens"
+              [gridId]="gridId"
+              [gridOptions]="gridOptions"
+              [canReorderColumns]="true"
+              [isContentAutoHeight]="true"
+              [enabledAutoHeight]="false"
+              hideTopStatusbar="true"
+              (gridReady)="onGridReady($event)"
+              hideBottomStatusbar="true"
+              [rowData]="items$ | async">
+    </app-grid>
+  </div>
+</ng-container>

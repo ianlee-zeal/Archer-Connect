@@ -1,0 +1,8 @@
+<app-grid 
+    entityLabel="contacts"
+    [class]="'ag-grid-custom-height-250'" 
+    [gridOptions]="gridOptions" 
+    [rowData]="persons | async" 
+    [gridId]="gridId"
+    (gridReady)="gridReady($event)">
+</app-grid>

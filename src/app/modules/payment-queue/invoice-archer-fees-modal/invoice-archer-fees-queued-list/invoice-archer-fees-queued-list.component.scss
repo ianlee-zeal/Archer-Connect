@@ -1,0 +1,10 @@
+.grid-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .totals-info {
+    text-align: right;
+    font-weight: bold;
+    margin-bottom: 8px; /* Add spacing between totals and the grid */
+  }

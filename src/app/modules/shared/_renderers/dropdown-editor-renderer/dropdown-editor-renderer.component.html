@@ -1,0 +1,41 @@
+<ng-container *ngIf="!editable else editor" [ngSwitch]="value">
+  <span><i *ngIf="selectedValue?.disabled" class="fas fas-error fa-exclamation-triangle"></i> {{selectedValue?.name}}</span>
+</ng-container>
+<ng-template #editor>
+
+  <span *ngIf="isRequired() && !isValid(selectedValue)" class="invalid-field__required-text">Required</span>
+  
+  
+  <i *ngIf="selectedValue?.disabled" class="fas fas-error fa-exclamation-triangle"></i>
+  <select [ngClass]="{
+    'dropdown-editor__select--with-primary-tag': withTag, 
+    'dropdown-editor__select--with-error-tag': selectedValue?.disabled || selectedValue?.active === false,
+    'invalid-field': !isValid(selectedValue)
+    }" 
+    class="dropdown-editor__select" 
+    [(ngModel)]="value" 
+    (change)="onChange()" 
+    ellipsisTooltip 
+    alwaysDisplayTooltip="true">
+    <option *ngIf="defaultOption" hidden [ngValue]="defaultOption.id">{{defaultOption.name}}</option>
+    <option *ngIf="placeholder" value="" [disabled]="disabledPlaceholder" selected>{{placeholder}}</option>
+    <ng-container *ngIf="!groups || !groups.length">
+      <option *ngFor="let value of values" [disabled]="value?.disabled || value?.active === false" [ngValue]="value.id">
+        <span *ngIf="value.icon" [innerHTML]="value.icon"></span>
+        {{ value.name }}
+      </option>
+    </ng-container>
+    <ng-container *ngIf="groups && groups.length">
+      <optgroup label="{{ group }}" *ngFor="let group of groups" class="group">
+        <option *ngFor="let value of filteredByGroups(group)" [disabled]="value?.disabled || value?.active === false" [ngValue]="value.id">
+          <span *ngIf="value.icon" [innerHTML]="value.icon"></span>
+          {{ value.name }}
+        </option>
+      </optgroup>
+    </ng-container>
+  </select>
+  <span class="dropdown-editor__tag tag tag--error" *ngIf="withTag && !isValid(selectedValue) else validItem" title="Invalid"></span>
+  <ng-template #validItem>
+    <span class="dropdown-editor__tag tag tag--check" *ngIf="withTag && isPrimary(selectedValue) " title="Primary"></span>
+  </ng-template>
+</ng-template>

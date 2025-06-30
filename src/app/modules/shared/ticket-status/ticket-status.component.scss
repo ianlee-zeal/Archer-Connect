@@ -1,0 +1,32 @@
+@import "src/styles/variables.scss";
+
+.status {
+  height: 27px;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-weight: 600;
+  margin: 0;
+
+  background-color: #b3b3ae;
+  color: #080808;
+  
+  &--light-yellow {
+    background-color: #FDE7A2;
+    color: #080808;
+  }
+
+  &--yellow {
+    background-color: #FDBA12;
+    color: #080808;
+  }
+
+  &--green {
+    background-color: #2D6F30;
+    color: #FFFFFF;
+  }
+}

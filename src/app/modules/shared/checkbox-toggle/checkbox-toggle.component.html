@@ -1,0 +1,4 @@
+<label class="checkbox" [ngClass]="{'active': checked, 'disabled': disabled}" cardValue>
+    <input type="checkbox" name="id" [disabled]="disabled" [checked]="checked" (change)="onCheck($event)">
+    <span *ngIf="showName" class="checkbox__label">{{ name }}</span>
+</label>

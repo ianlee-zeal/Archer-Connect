@@ -1,0 +1,33 @@
+@import "./variables.scss";
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .content {
+    height: 100%;
+  }
+}
+
+.page-content {
+  padding: 20px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.page-filter-panel {
+  padding-bottom: 20px;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.w-60 {
+  width: 60%;
+}
+
+
+

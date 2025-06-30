@@ -1,0 +1,8 @@
+.actions {
+  display: flex;
+  justify-content: space-between;
+
+  &__value {
+    margin-left: 4px;
+  }
+}

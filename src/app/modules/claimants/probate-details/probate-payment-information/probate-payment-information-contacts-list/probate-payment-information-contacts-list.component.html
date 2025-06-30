@@ -1,0 +1,10 @@
+<app-grid
+  [gridId]="gridId"
+  entityLabel="contacts"
+  isContentAutoHeight="true"
+  [gridOptions]="gridOptions"
+  hideTopStatusbar="true"
+  [additionalPageItemsCountValues]="additionalPageItemsCountValues"
+  (gridReady)="gridReady($event)"
+  [rowData]="personContacts$ | async">
+</app-grid>

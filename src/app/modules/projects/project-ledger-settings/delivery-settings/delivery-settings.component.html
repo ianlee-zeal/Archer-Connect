@@ -1,0 +1,45 @@
+<form [formGroup]="form" (change)="onChanges()">
+    <card header="Delivery Settings">
+        <card-col [labelWidth]="322" [width]="660">
+
+            <!-- Mail with Payment -->
+            <card-row label="Election Form Required before Payment" inputId="electionFormRequired"
+                [control]="form.get('electionFormRequired')">
+                <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="electionFormRequired"
+                        formControlName="electionFormRequired" [checked]="checkedElectionFormRequired()" >
+                    <span></span>
+                </label>
+            </card-row>
+
+            <!-- Enable Postal -->
+            <card-row label="Enable Postal" inputId="closingStatementEnabledPostal" [control]="form.get('closingStatementEnabledPostal')">
+                <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="closingStatementEnabledPostal" formControlName="closingStatementEnabledPostal">
+                    <span></span>
+                </label>
+            </card-row>
+
+            <!-- Electronic Delivery Enabled -->
+            <card-row label="Electronic Delivery Enabled" inputId="closingStatementElectronicDeliveryEnabled"
+                [control]="form.get('closingStatementElectronicDeliveryEnabled')">
+                <label class="form-check h-100" cardValue>
+                    <input type="checkbox" class="form-check-input" id="closingStatementElectronicDeliveryEnabled"
+                        formControlName="closingStatementElectronicDeliveryEnabled">
+                    <span></span>
+                </label>
+            </card-row>
+
+            <!-- Electronic Delivery Provider -->
+            <card-row label="Electronic Delivery Provider" inputId="closingStatementElectronicDeliveryProviderId"
+                [control]="form.get('closingStatementElectronicDeliveryProviderId')" [required]="form.get(formFields.closingStatementElectronicDeliveryEnabled).value">
+                <app-select id="closingStatementElectronicDeliveryProviderId" class="dropdown"
+                    [options]="deliverySettings.electronicDeliveryProviderOptions"
+                    formControlName="closingStatementElectronicDeliveryProviderId" cardValue optionAsValue> </app-select>
+            </card-row>
+
+        </card-col>
+    </card>
+</form>
+
+<!-- deliverySettings: {{deliverySettings | json}} -->

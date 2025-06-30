@@ -1,0 +1,62 @@
+@import "src/styles/variables.scss";
+
+.drop-container {
+  height: 100%;
+  width: 100%;
+  padding-bottom: 35px;
+
+  &__drop-zone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+    border-right: 1px solid $primary-blue;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    padding: 8px;
+    word-break: break-all;
+    &__grey {
+      background-color: #f2f2f2;
+    }
+    &__blue {
+      color: white;
+      background-color: #1774de;
+    }
+
+    &__test {
+      border: none;
+    }
+  }
+
+  &__upload-icon{
+    filter: invert(34%) sepia(90%) saturate(2476%) hue-rotate(193deg) brightness(96%) contrast(96%);
+    height: 124px;
+    width: 124px;
+  }
+
+  &__icon {    
+    font-size: 30px;
+    
+    filter: invert(34%) sepia(90%) saturate(2476%) hue-rotate(193deg) brightness(96%) contrast(96%);
+
+
+    &--success {
+      color: green !important;
+    }
+
+    &--error {
+      color: red !important;
+    }
+  }
+
+  &__select-button {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .drop-text {
+    padding: 5px;
+  }
+}
+

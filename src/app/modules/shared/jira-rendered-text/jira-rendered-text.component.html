@@ -1,0 +1,7 @@
+<div #contentWrapper class="content-wrapper" [ngClass]="{ 'expanded': isExpanded || !shouldShowExpandToggle }">
+    <quill-view-html (copy)="onCopy($event)" class="quill-container quill-jira" [content]="content"></quill-view-html>
+</div>
+
+<a *ngIf="shouldShowExpandToggle" href="javascript:void(0)" (click)="toggleView()" class="view-more">
+    {{ isExpanded ? 'View less' : 'View more' }}
+</a>

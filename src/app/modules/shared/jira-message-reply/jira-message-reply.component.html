@@ -1,0 +1,18 @@
+<ng-container>
+  <div class="reply-container">
+    <button *ngIf="!isDescriptionEnabled" class="reply-button" (click)="enableDescription()">Reply</button>
+    <div *ngIf="isDescriptionEnabled" class="quill-wrapper">
+      <div class="quill-header">
+        <span>To: {{ assignee?.name || 'Unassigned' }}</span>
+      </div>
+            <quill-editor #editor [(ngModel)]="content" class="quill-description quill-editor_new" sanitize
+                bounds="self" [modules]="editorModules" [placeholder]="descriptionPlaceholder" (onEditorCreated)="onEditorCreated()"
+        (onContentChanged)="onContentChanged()">
+      </quill-editor>
+    </div>
+
+    <div *ngIf="isDescriptionEnabled && canAttachFiles" class="upload-file">
+      <jira-file-uploader [columns]="2" (filesChanged)="onFilesSelected($event)"></jira-file-uploader>
+    </div>
+  </div>
+</ng-container>

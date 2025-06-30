@@ -1,0 +1,66 @@
+<modal (close)="onCancel()" class="add-new-user-modal">
+  <modal-header>{{title}}</modal-header>
+  <modal-body>
+    <div class="modal-section">
+      <form [formGroup]="userForm" novalidate>
+        <card hideSeparator>
+          <card-col [width]="620" [labelWidth]="140">
+            <card-row label="First Name" inputId="firstName" [control]="userForm.get('firstName')" required>
+              <input id="firstName" type="text" class="form-control" formControlName="firstName" maxlength="122"
+                appAutoFocus cardValue />
+            </card-row>
+            <card-row label="Last Name" inputId="lastName" [control]="userForm.get('lastName')" required>
+              <input id="lastName" type="text" class="form-control" formControlName="lastName" maxlength="122"
+                required cardValue />
+            </card-row>
+            <card-row label="Email" inputId="email" [control]="userForm.get('email')" required>
+              <input id="email" type="text" class="form-control" formControlName="email" maxlength="122" required
+                cardValue />
+              <div *ngIf="serverErrorService.hasWrongValue(userForm, 'email')" class="control-message text-danger">
+                <div *ngFor="let error of serverErrorService.getFieldError(userForm, 'email')">
+                  {{ error }}
+                </div>
+              </div>
+            </card-row>
+            <card-row label="Roles" inputId="roleIds" [control]="userForm.get('roleIds')" required>
+              <app-select 
+                id="roleIds"
+                formControlName="roleIds"
+                [options]="roleOptions"
+                [model]="selectedRoles"
+                (onModelChange)="updateSelectedRoles($event)"
+                cardValue
+                [optionAsValue]="true"
+                [isMultiselectDropdown]="true"
+                [multiple]="true"
+                filterMultiselect>
+              </app-select>
+            </card-row>
+            <card-row *permissions="canToggleMFA" label="Is MFA Enabled" inputId="isTwoFactorEnabled">
+              <label class="form-check h-100" cardValue>
+                <input type="checkbox" class="form-check-input" formControlName="isTwoFactorEnabled"
+                  id="isTwoFactorEnabled" />
+                <span></span>
+              </label>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onCancel()">
+      Cancel
+    </button>
+    <button 
+      type="button" 
+      class="btn modal-footer__btn modal-footer__btn--primary" 
+      asyncButton
+      [awaitedActionTypes]="awaitedActionTypes"
+      (asyncFinished)="onSaveActionFinished($event)"
+      (click)="onSave()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Save
+    </button>
+  </modal-footer>
+</modal>

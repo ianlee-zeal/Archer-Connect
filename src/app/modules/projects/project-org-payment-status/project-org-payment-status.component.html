@@ -1,0 +1,15 @@
+<div class="page">
+  <div class="page-content project-org-payment-status">
+    <card hideSeparator>
+      <card-col [width]="500" [labelWidth]="230">
+        <card-row labelWidth="230" label="Organization" inputId="organization" alignContentVertically required [control]="formGroup.get('organization')">
+          <app-clearable-input cursorPointer controlName="organization" [isReadonly]="true" [form]="formGroup"
+            id="organization" (click)="onOpenOrganizationModal()" placeholder="Select Organization" cardValue (clear)="onClear()">
+          </app-clearable-input>
+        </card-row>
+      </card-col>
+    </card>
+    <app-org-payment-status-list *ngIf="(project$ | async) &&  (projectOrgs$ | async)" [projectId]="currentProject.id" [orgId]="selectedOrganization?.id">
+    </app-org-payment-status-list>
+  </div>
+</div>

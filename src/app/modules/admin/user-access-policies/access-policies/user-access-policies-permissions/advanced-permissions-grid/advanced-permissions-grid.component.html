@@ -1,0 +1,34 @@
+<table class="table permissions-grid" *ngIf="selectedPermissions$ | async as selectedPermissions">
+  <ng-container *ngIf="allPermissions$ | async as allPermissions">
+    <thead>
+      <tr>
+        <th>Primary</th>
+        <th style="display: grid;">Active
+          <label class="form-check" [ngClass]="{'form-check__read-mode': !canEdit}" cardValue>
+            <input type="checkbox"
+              [disabled]="!canEdit"
+              [checked]="isAllAdvancedPermissionsChecked(allPermissions, entityType.id, selectedPermissions)"
+              (change)="onCheckAll(allPermissions, entityType.id, $event)" />
+            <span></span>
+          </label>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let actionType of actionTypes">
+        <tr *ngIf="isPermissionExist(allPermissions, entityType.id, actionType.id)">
+          <td>{{ actionType.name }}</td>
+          <td>
+            <label class="form-check" [ngClass]="{'form-check__read-mode': !canEdit}">
+              <input type="checkbox"
+                [disabled]="!canEdit || isPermissionDisabled(selectedPermissions, entityType.id, actionType.id)"
+                [checked]="isPermissionChecked(selectedPermissions, entityType.id, actionType.id)"
+                (change)="onCheck(allPermissions, entityType.id, actionType.id, $event)" />
+              <span></span>
+            </label>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </ng-container>
+</table>

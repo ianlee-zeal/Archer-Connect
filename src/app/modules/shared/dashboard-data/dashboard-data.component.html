@@ -1,0 +1,78 @@
+<div class="ac-dashboard">
+    <div *ngIf="config?.showHeader; else noheader" class="row ac-dashboard__header">
+        <div class="col-4"></div>
+        <div class="col ac-dashboard__header-value" *ngFor="let field of data?.rows[0]?.fields">
+            {{field.name}}
+        </div>
+    </div>
+    <ng-template #noheader>
+        <div class="row ac-dashboard__no-data"></div>
+    </ng-template>
+
+    <div *ngIf="dataByPhase?.message" class="ac-dashboard__section-name">No Results</div>
+    <div *ngFor="let row of dataByPhase?.rows; let rowIndex = index;"
+        style="margin-left: -15px; margin-top: 30px; margin-bottom: 30px;">
+        <div
+         [class]="'ac-dashboard__data ac-dashboard__data-row row ac-dashboard__data-row-level-' + row.level + ' ac-dashboard__data-row-fixed'"
+         [ngClass]="{
+             'ac-dashboard--grey' : row.color !== undefined && row.color === colors.Grey,
+             'hidden' : row.hidden,
+             'ac-dashboard__data-row-inner-section' : row.level === 0 && rowIndex !== 0
+            }">
+            <div class="col-4 ac-dashboard__data-item">
+                <div class="row">
+                    <div *ngIf="row.expandable && row.isEngaged"
+                         class="ac-dashboard__section-toggle"
+                         (click)="onRowDataToggle(rowIndex)">
+                        <i class="fas" [ngClass]="{
+                            'fa-angle-down' : row.expanded,
+                            'fa-angle-right' : !row.expanded
+                        }"></i>
+                    </div>
+                    <ng-container *ngIf="5 as paddingLeft">
+                        <div *ngIf="row.icon"
+                            class="ac-dashboard__icon"
+                            [ngStyle]="{'padding-left.px' : paddingLeft}">
+                            <img [src]="row.icon" />
+                        </div>
+                        <div [class]="'ac-dashboard__section-name ac-dashboard__section-level-' + row.level"
+                                [ngStyle]="{'padding-left.px' : row.icon ? 0 : paddingLeft}">
+                            {{row.name}}
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="last-col col ac-dashboard__column ac-dashboard__column-level-0">
+                <a *ngIf="row.isEngaged" class="ac-dashboard__value"
+                    [ngClass]="{'ac-dashboard__value--not-clickable' : (row.countByClaimants?.value == 0)}"
+                    (click)="onCountByClaimantsClick(rowIndex)">{{row.countByClaimants?.value}}</a>
+                <div *ngIf="!row.isEngaged" class="ac-dashboard__not-engaged">Not Engaged</div>
+            </div>
+        </div>
+        <ng-container *ngIf="row.expanded && row.isEngaged">
+            <recent-finalizations-widget
+                *ngIf="false"
+                [start]="recentFinalizationsCounts[row.id]?.from"
+                [end]="recentFinalizationsCounts[row.id]?.to"
+                [finalizedClaimantsCount]="recentFinalizationsCounts[row.id]?.count"
+                [productCategoryId]="row.id"
+                [onFinalizationWidgetChange]="onFinalizationWidgetChange"
+            ></recent-finalizations-widget>
+            <deficiencies-widget 
+                *ngIf="isMedicalLiens(row.id)"
+                [claimantsWithDeficiencies]="deficienciesWidgetData?.claimantsWithDeficiencies" 
+                [totalClaimants]="deficienciesWidgetData?.totalClaimants"
+                [monthlyReportDay]="deficienciesWidgetData?.monthlyReportDay"
+            ></deficiencies-widget>
+            <table class="ac-dashboard-by-phase">
+                <tr>
+                    <th *ngFor="let field of row.fields" >{{field.name}}</th>
+                </tr>
+                <tr  *ngFor="let child of row.children" class="zebra-darker">
+                    <td *ngFor="let childField of child.fields" >{{childField.value}}</td>
+                </tr>
+            </table>
+        </ng-container>
+    </div>
+
+</div>

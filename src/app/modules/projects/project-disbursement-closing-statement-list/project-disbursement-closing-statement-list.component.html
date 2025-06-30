@@ -1,0 +1,10 @@
+<app-grid
+    [class]="isModal ? 'ag-grid-custom-height-55vh' : ''"
+    entityLabel="Closing Statements"
+    [gridOptions]="gridOptions"
+    [gridId]="gridId"
+    [canReorderColumns]="true"
+    [skipSetContentHeight]="true"
+    (gridReady)="gridReady($event)"
+    (loadData)="loadData($event)">
+  </app-grid>

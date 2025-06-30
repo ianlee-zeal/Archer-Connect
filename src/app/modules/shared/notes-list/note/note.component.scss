@@ -1,0 +1,76 @@
+@import "src/styles/variables.scss";
+
+.note {
+  padding-bottom: 20px;
+
+  &__info-container {
+    display: flex;
+    align-items: center;
+  }
+
+  &__expand-btn {
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    background-color: $gray-mid-light;
+    color: $gray-darker;
+    margin-right: 10px;
+
+    &:active:not(:disabled) {
+      color: $gray-darker;
+    }
+
+    &:before {
+      content: '\f077';
+      font-family: $font-awesome;
+      font-weight: 600;
+      font-size: 10px;
+    }
+
+    &--expanded:before {
+      content: '\f078';
+    }
+  }
+
+  &__actions {
+    margin-left: auto;
+  }
+
+  &__action-btn {
+    height: 16px;
+    width: 16px;
+    line-height: 16px;
+  }
+
+  &__action-link {
+    height: 16px;
+    line-height: 8px;
+  }
+
+  &__content {
+    margin-left: 26px;
+    padding: 20px 0;
+    border-bottom: 2px solid $gray-mid-light;
+  }
+
+  &__edit-control {
+    padding-bottom: 20px;
+  }
+}
+
+.note-info {
+  font-size: 14px;
+  font-weight: 700;
+
+  &__item {
+    margin-right: 10px;
+
+    &:not(:first-child):before {
+      content: '•';
+      font-size: 8px;
+      line-height: 2.5;
+      vertical-align: bottom;
+      margin-right: 10px;
+    }
+  }
+}

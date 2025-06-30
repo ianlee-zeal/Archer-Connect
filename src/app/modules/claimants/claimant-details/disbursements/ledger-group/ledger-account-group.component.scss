@@ -1,0 +1,179 @@
+@import "src/styles/variables.scss";
+@import "src/styles/colors";
+
+.ledgers-list {
+  margin-right: 10px;
+
+  &__percentage {
+    text-align: end;
+
+    &--read-only {
+      margin-right: 20px;
+    }
+
+    &--input {
+      text-align: end;
+    }
+  }
+
+  &__related-entity-amount-col {
+    margin-left: 20px;
+  }
+
+  &__amount {
+    margin-left: 30px;
+    text-align: end;
+
+    &--input {
+      text-align: end;
+    }
+  }
+
+  &__related-entity-id {
+    text-align: end;
+    width: 85px;
+
+    &--input {
+      text-align: end;
+    }
+  }
+  &__modified-date {
+    margin-left: 30px;
+    text-align: end;
+  }
+
+  &__total-percentage {
+    &--error-container {
+      width: 532px;
+      text-align: end;
+    }
+
+    &--error {
+      color: $validation-invalid-color;
+      font-weight: bold;
+      vertical-align: sub;
+    }
+  }
+
+  &__actions {
+    margin-right: 3px;
+  }
+
+  &__disabled {
+    color: $yellow;
+    font-weight: bold;
+    vertical-align: middle;
+  }
+
+  &__no-records {
+    width: 100px;
+    color: $label-color;
+  }
+}
+
+.description-container {
+  display: flex;
+  width: 100%;
+  min-width: 95px;
+  margin-left: 50px;
+  word-break: break-all;
+
+  @media screen and (max-width: 1650px) {
+    min-width: 85px;
+  }
+
+  @media screen and (max-width: 1630px) {
+    min-width: 65px;
+  }
+
+  @media screen and (max-width: 1600px) {
+    min-width: 45px;
+  }
+
+  @media screen and (max-width: 1550px) {
+    min-width: 95px;
+  }
+}
+
+.sub-group-container:not(:first-child) {
+  margin-top: 10px !important;
+}
+
+.sub-group {
+  margin-right: 30px;
+  font-weight: 600;
+
+  &__total-paid-amount {
+    margin-right: 351px;
+    text-align: end;
+  }
+  @media screen and (max-width: 1790px) {
+    &__total-paid-amount {
+      margin-right: 360px;
+    }
+    ::ng-deep &__total-paid-amount .card-col {
+      min-width: 255px !important;
+      max-width: 255px !important;
+    }
+  }
+  @media screen and (min-width: 1760px) and (max-width: 1790px) {
+    ::ng-deep &__total-paid-amount .card-col {
+      min-width: 280px !important;
+      max-width: 280px !important;
+    }
+  }
+  @media screen and (max-width: 1550px) {
+    ::ng-deep &__total-paid-amount .card-col {
+      min-width: 205px !important;
+      max-width: 205px !important;
+    }
+  }
+}
+
+.no-accounts {
+  margin-left: 20px;
+}
+
+.fas {
+  cursor: default;
+}
+
+.fas-error {
+  color: red;
+}
+
+.align-end {
+  align-items: end !important;
+}
+
+.btn-external-link::before {
+  content: url("../../../../../../assets/images/thumb_external_link.png")
+}
+
+.btn-icon-info,
+.btn-icon-info:active:focus {
+  background: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn-icon-info::before {
+  content: url("../../../../../../assets/svg/info-circle-gray.svg");
+}
+
+.disabled-font {
+  color: $gray-darker;
+}
+
+.view-in-lpm {
+  white-space: nowrap;
+}
+
+// Workarounds to fix compatibility between flex markup and our col row controls
+.ms-m20 {
+  margin-left: -20px;
+}
+
+.ms-p20 {
+  margin-left: +20px;
+}

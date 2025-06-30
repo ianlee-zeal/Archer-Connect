@@ -1,0 +1,22 @@
+@import "src/styles/variables.scss";
+
+.file-import-configure {
+  .form-check {
+    display: flex;
+    line-height: normal;
+    align-items: center;
+  }
+  .carry-over-label span {
+    font-size: 14px;
+  }
+
+  .radio-btn-container {
+    &__label {
+      width: 850px;
+      &--desc {
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}
+

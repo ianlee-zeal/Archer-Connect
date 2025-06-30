@@ -1,0 +1,10 @@
+<app-grid 
+    [height]="isMaxRowsNumber ? rowHeight : 'auto'"
+    [enabledAutoHeight]="false"
+    [gridOptions]="gridOptions"
+    [gridId]="gridId"
+    [rowData]="deficiencies$ | async"
+    noRowsMessage="No Warning Deficiencies"
+    [isPagerEnabled]="false"
+    (gridReady)="onGridReady($event)">
+</app-grid>

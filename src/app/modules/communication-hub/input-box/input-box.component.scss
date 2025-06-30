@@ -1,0 +1,41 @@
+@import "src/styles.variables.scss";
+@import "src/styles/variables.scss";
+
+.input-container {
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  border: 1px solid $communication-hub-primary;
+  border-radius: 60px;
+  padding: 2px 14px;
+  font-weight: 400;
+  color: $communication-hub-primary;
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+}
+
+.input-container input {
+  padding: 0;
+  border: none;
+  outline: none;
+  flex: 1;
+}
+
+.input-label {
+  display: flex;
+  white-space: nowrap;
+  color: $communication-hub-primary;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}

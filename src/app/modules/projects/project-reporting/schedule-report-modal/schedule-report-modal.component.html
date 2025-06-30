@@ -1,0 +1,27 @@
+<modal (close)="onCancel()">
+    <modal-header>Create New Report Schedule</modal-header>
+
+    <modal-body>
+      <div class="modal-section">
+        <app-project-schedule-report-form></app-project-schedule-report-form>
+      </div>
+
+    </modal-body>
+
+    <modal-footer>
+      <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onCancel()">
+        Cancel
+      </button>
+      <button type="submit"
+              asyncButton
+              [ngClass]="{ disabled: !this.reportScheduleForm?.validate()}"
+              [disabled]="!this.reportScheduleForm?.validate()"
+              [awaitedActionTypes]="awaitedActionTypes"
+              class="btn modal-footer__btn modal-footer__btn--primary"
+              (click)="onSave()"
+              (asyncFinished)="onCancel()">
+              <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+              Save
+      </button>
+    </modal-footer>
+  </modal>

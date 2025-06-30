@@ -1,0 +1,104 @@
+<modal (close)="modalService.hide()">
+  <modal-header>Generate Closing Statement</modal-header>
+
+  <modal-body>
+    <div class="modal-section">
+      <app-claimants-with-ledgers-list [projectId]="projectId">
+      </app-claimants-with-ledgers-list>
+      <form [formGroup]="form">
+        <card maxWidth="500">
+          <card-col>
+            <card-row [labelWidth]="180" [marginTop]="20"  label="Draft or Publish"  inputId="outputType" required [control]="form.get('outputType')">
+              <app-select
+                id="outputType"
+                [options]="outputTypes"
+                formControlName="outputType"
+                placeholder="Select Draft or Publish"
+                fullwidth
+                cardValue
+                required>
+              </app-select>
+            </card-row>
+            <card-row *ngIf="showWatermarkInput" [labelWidth]="180" [marginTop]="20"  label="Watermark"  inputId="watermark" [control]="form.get('watermark')">
+              <input
+                  placeholder="Enter Watermark"
+                  type="text"
+                  class="form-control w-100"
+                  formControlName="watermark"
+                  id="watermark"
+                  maxLength="100"
+                  appAutoFocus
+                  cardValue />
+            </card-row>
+          </card-col>
+        </card>
+        <card header="Template Options" maxWidth="900">
+          <card-col>
+            <card-row class="ms-3" hideLabel inputId="templateId" [control]="form.get('templateId')" required>
+              <div class="select-container" cardValue>
+                <app-select required
+                            id="templateId"
+                            [options]="templates$ | async"
+                            groupBy="group"
+                            formControlName="templateId"
+                            placeholder="Select Template"
+                            groupBy="group">
+                </app-select>
+              </div>
+            </card-row>
+            <card-row class="ms-3" inputId="useSettingsTemplate" [control]="form.get('useSettingsTemplate')">
+              <div cardValue>
+                <fieldset class="form-check h-100">
+                  <table>
+                    <tr>
+                      <td class="td-checkbox">
+                        <input type="radio" formControlName="useSettingsTemplate" id="useSettingsTemplate" [value]="true" />
+                      </td>
+                      <td class="td-notes">
+                        <label>
+                            <span class="td-loud">Apply Closing Statement Template stored at Claimant Level</span>
+                            - The system will leverage the closing statement template assigned at the claimant level Closing Statement Settings instead of the selected template above.
+                            If no template is assigned at the claimant level, then the selected template will be applied.
+                        </label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="td-checkbox">
+                        <input type="radio" formControlName="useSettingsTemplate" id="useSettingsTemplate" [value]="false" />
+                      </td>
+                      <td class="td-notes">
+                        <label>
+                            <span class="td-loud">Apply Selected Template to ALL</span>
+                            - The Selected Template above will be applied to all claimants in this batch.
+                            Any claimant level Closing Statement Settings template setting will be ignored
+                        </label>
+                      </td>
+                    </tr>
+                  </table>
+                </fieldset>
+              </div>
+            </card-row>
+          </card-col>
+        </card>
+      </form>
+    </div>
+  </modal-body>
+
+  <modal-footer>
+    <span *ngIf="isErrorShown" class="text-danger small me-auto">{{ customError ?? 'Something went wrong, please try again later' }}</span>
+    <span *ngIf="errorMessage" class="text-danger small me-auto">{{errorMessage}}</span>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="modalService.hide()">
+      Close
+    </button>
+    <button asyncButton
+            [awaitedActionTypes]="awaitedActionTypes"
+            type="submit"
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            (click)="onGenerate()"
+            [disabled]="!valid || !loaded">
+      <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+      Generate
+    </button>
+  </modal-footer>
+</modal>

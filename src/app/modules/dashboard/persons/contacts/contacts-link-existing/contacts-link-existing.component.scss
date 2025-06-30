@@ -1,0 +1,26 @@
+@import "src/styles/variables.scss";
+
+.persons-list {
+  overflow-y: hidden;
+  max-height: 250px;
+  height: 250px;
+  border: 1px solid $gray;
+  margin: 15px 0;
+  padding: 0;
+}
+
+.btn {
+  &[disabled] {
+    pointer-events: none;
+    cursor: not-allowed;
+    color: $white;
+  }
+}
+
+.btn {
+  &[disabled] {
+    pointer-events: none;
+    cursor: not-allowed;
+    color: $white;
+  }
+}

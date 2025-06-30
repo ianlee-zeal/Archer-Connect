@@ -1,0 +1,31 @@
+<card hideSeparator>
+    <card-col [width]="760" [labelWidth]="250">
+        <ng-container *ngFor="let p of outcomeBasedPricings">
+            <card-row [maxContentWidth]="500" [containerWidth]="760" [labelWidth]="250" label="Scenario" [value]="p.scenario?.name" [marginTop]="15">
+            </card-row>
+
+            <card-row 
+                [maxContentWidth]="500" 
+                [containerWidth]="760" 
+                [labelWidth]="250" 
+                label="Variable Pricing" 
+                [value]="p.variablePricingApplies | yesNoPipe">
+            </card-row>
+
+            <card-row 
+                *ngIf="!p.variablePricingApplies" 
+                [maxContentWidth]="500" 
+                [containerWidth]="760" 
+                [labelWidth]="250" 
+                label="Price" 
+                [value]="format.toPrice(p.price, p.priceType)">
+            </card-row>
+
+            <app-outcome-based-pricing-details 
+                *ngIf="p.variablePricingApplies" 
+                [details]="p.details" 
+                [variablePricingType]="p.variablePricingType?.id">
+            </app-outcome-based-pricing-details>
+        </ng-container>
+    </card-col>
+</card>

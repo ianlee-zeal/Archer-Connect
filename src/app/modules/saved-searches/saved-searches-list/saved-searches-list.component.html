@@ -1,0 +1,14 @@
+<app-action-bar [actionHandlers]="actionBar"></app-action-bar>
+<div class="page">
+  <app-context-bar [title]="'Saved Searches'">
+  </app-context-bar>
+  <div class="page-content">
+    <app-grid 
+      [gridId]="gridId" 
+      [gridOptions]="gridOptions" 
+      (gridReady)="gridReady($event)" 
+      (loadData)="loadData($event)" 
+      entityLabel="Saved Searches">
+    </app-grid>
+  </div>
+</div>

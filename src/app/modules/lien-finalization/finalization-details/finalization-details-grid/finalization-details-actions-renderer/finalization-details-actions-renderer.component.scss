@@ -1,0 +1,11 @@
+:host {
+  width: 100%;
+}
+
+.grid-actions {
+  display: flex;
+  &__action-wrapper {
+    width: 47px;
+    cursor: pointer;
+  }
+}

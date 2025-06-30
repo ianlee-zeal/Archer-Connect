@@ -1,0 +1,39 @@
+@import "src/styles/variables.scss";
+@import "src/styles.variables.scss";
+
+.dialog-header {
+  border-bottom: none;
+  padding: 32px 32px 1px;
+  position: relative;
+}
+
+.dialog-title {
+  font-size: 30px;
+  font-weight: 300;
+  gap: 16px;
+  display: flex;
+
+  &--text-blue {
+    color: $blue;
+  }
+}
+
+.modal .btn-close {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 16px;
+  position: absolute;
+  top: 36px;
+  right: 30px;
+
+  &:focus, &:active {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}

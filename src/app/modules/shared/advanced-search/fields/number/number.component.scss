@@ -1,0 +1,37 @@
+@import "src/styles/variables.scss";
+
+.advanced-search-field-number {
+  display: flex;
+
+  &__type-container {
+    width: $advanced-search-condition-control-width;
+    margin-right: $advanced-search-controls-indent;
+  }
+
+  &__input {
+    width: $advanced-search-search-term-short-control-width;
+  }
+
+  &__range {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__range-controls {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: nowrap !important;
+    .advanced-search-field-number{
+      &__input{
+        width: 116px;
+      }
+    }
+  }
+
+  &__delimiter {
+    font-style: italic;
+    width: 30px;
+    text-align: center;
+    margin-top: 4px;
+  }
+}

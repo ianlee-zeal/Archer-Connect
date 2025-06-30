@@ -1,0 +1,8 @@
+<app-grid 
+  entityLabel="addresses"
+  [gridId]="gridId"
+  [gridOptions]="gridOptions"
+  [skipSetContentHeight]="true"
+  (newRecord)="addNewRecord()"
+  (gridReady)="onGridReady($event)">
+</app-grid>

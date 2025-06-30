@@ -1,0 +1,61 @@
+<ng-container *ngIf="allPermissions$ | async as allPermissions">
+  <table class="table permissions-grid ag-modern-grid" *ngIf="selectedPermissions$ | async as selectedPermissions">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Name</th>
+
+        <ng-container *ngFor="let actionType of actionTypes">
+          <th *ngIf="!actionType.isAdvanced">
+            <label class="form-check" [ngClass]="{'form-check__read-mode': !canEdit}" cardValue>
+              <input type="checkbox"
+                [disabled]="!canEdit || isAllDisabled(selectedPermissions, allPermissions, actionType.id)"
+                [checked]="isAllEntitiesChecked(selectedPermissions, allPermissions, actionType.id)"
+                (change)="onCheckAll(selectedPermissions, allPermissions, actionType.id, $event)" />
+              <span></span>
+            </label>
+            <span>{{ actionType.name }}</span>
+          </th>
+        </ng-container>
+
+        <th>Advanced Permissions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="entityTypes">
+        <ng-container *ngFor="let entityType of entityTypes">
+          <tr class="table-row" *ngIf="hasActivePermissions(allPermissions, entityType.id)">
+            <td class="table-row__category">{{ entityType.category?.name }}</td>
+            <td class="table-row__entity">{{ entityType.name }}</td>
+
+            <ng-container *ngFor="let actionType of actionTypes">
+              <td class="table-row__basic-action" *ngIf="!actionType.isAdvanced">
+                <label *ngIf="isPermissionExist(allPermissions, entityType.id, actionType.id)" class="form-check" [ngClass]="{'form-check__read-mode': !canEdit}" cardValue>
+                  <input type="checkbox"
+                    [disabled]="!canEdit || isDisabled(selectedPermissions, entityType.id, actionType.id)"
+                    [checked]="isPermissionChecked(selectedPermissions, entityType.id, actionType.id)"
+                    (change)="onCheck(allPermissions, entityType.id, actionType.id, $event)" />
+                  <span></span>
+                </label>
+              </td>
+            </ng-container>
+            <td class="table-row__advanced">
+              <a href="javascript:void(0);"
+              *ngIf="hasAdditionalPermissions(allPermissions, entityType.id)"
+              (click)="onEditFieldPermissions(entityType)">
+               {{canEdit ? 'Edit' : 'View'}}
+              </a>
+              <div class="tooltip-wrapper">
+                <app-tooltip-info *ngIf="hasAdvancedPermissionsSet(allPermissions, selectedPermissions, entityType.id)"
+                  [tooltipText]="advancedPermissionTooltip"
+                  placement='top'
+                  [inline]="true">
+                </app-tooltip-info>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</ng-container>

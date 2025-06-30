@@ -1,0 +1,33 @@
+@import "src/styles/variables.scss";
+
+.records-list {
+    display: flex;
+    flex-flow: row nowrap;
+
+    .records-container, .empty {
+        flex-grow: 1;
+        border: 1px solid $gray;
+        padding: 10px;
+        margin-right: 5px;
+    }
+
+    .records-container {
+        .record {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0;
+            
+            .record-name {
+                font-weight: bold;
+            }
+        }
+    }
+
+    .empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

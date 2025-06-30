@@ -1,0 +1,86 @@
+<ng-container>
+  <div *ngIf="data" class="custom-card custom-card-border">
+    <div class="card-row">
+      <div class="card-row-title">
+        <span [title]="data?.summary" class="title">
+          {{ data?.summary }}
+        </span>
+        <app-ticket-status class="status" [status]="data?.status"></app-ticket-status>
+      </div>
+      <div class="card-row-actions">
+        <div *ngIf="showFullScreenIcon" (click)="viewMessage()"><img src="assets/svg/arrows-maximize-grey.svg"/></div>
+      </div>
+    </div>
+    <div class="card-row">
+      <div class="user-info">
+        <img src="assets/svg/user-circle-unread.svg"/>
+        <span>{{ data?.assignee?.name || 'Unassigned' }}</span>
+      </div>
+      <span class="project-info">Project: {{ data?.project.name || '-' }}</span>
+    </div>
+    <div class="card-row">
+      <div class="participant-dropdown-container">
+        <div ngbDropdown *ngIf="data?.participants?.length > 0">
+          <span>CC:</span>
+          <span *ngFor="let participant of data?.participants.slice(0, 2); let i = index">
+              {{ participant.name }}<ng-container *ngIf="i < data?.participants.length - 1 && data?.participants.length > 1">,</ng-container>
+          </span>
+          <button ngbDropdownToggle *ngIf="data?.participants.length > 2">...</button>
+          <div class="margin-right-10" ngbDropdownMenu>
+            <span class="participant-dropdown" ngbDropdownItem *ngFor="let participant of data?.participants.slice(2); let last = last">
+              {{ participant.name }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="separator"></div>
+    <div class="card-row">
+      <div class="card-row-request-type">
+        <span class="request-type">Request Type: {{ data?.requestType.name }}</span>
+        <span class="createdAt">Created: {{ data?.createdAt | dateFormat }}</span>
+      </div>
+      <span class="last-updated">{{ data?.lastUpdatedAt | date: 'EEE MMM dd, yyyy h:mm a' }}</span>
+    </div>
+    <div class="card-row">
+      <span class="description"><jira-rendered-text [content]="data?.descriptionHtml"></jira-rendered-text></span>
+    </div>
+    <div class="card-row" *ngIf="data?.attachments?.length">
+      <div class="attachment-section">
+        <span class="attachment-title">Attachments ({{ data.attachments.length }}):</span>
+        <table class="attachment-table">
+          <tbody>
+            <tr *ngFor="let att of data.attachments">
+              <td>
+                <a href="#" (click)="handleLinkClick('#attachment-' + att.id); $event.preventDefault()">
+                  {{ att.fileName }}
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <jira-message-reply *ngIf="data" [assignee]="data.assignee" [ticketKey]="data.ticketKey"></jira-message-reply>
+  </div>
+  <div class="custom-card custom-card-separator" *ngFor="let comment of comments">
+    <div class="card-row">
+      <div class="user-info">
+        <img src="assets/svg/user-circle-unread.svg"/>
+        <span>{{ comment?.creator?.name || 'Unassigned' }}</span>
+      </div>
+      <div class="card-row-last-updated-thread">
+        <span class="last-updated-thread">{{ comment?.createdAt | date: 'EEE MMM dd, yyyy h:mm a' }}</span>
+      </div>
+    </div>
+    <div class="card-row">
+      <jira-rendered-text
+        [content]="comment?.description" 
+        [showExpandToggle]="true" 
+        [isExpanded]="expandedCommentIndex === comment?.id" 
+        (toggle)="toggleExpand(comment?.id)"
+        >
+      </jira-rendered-text>
+    </div>
+  </div>
+</ng-container>

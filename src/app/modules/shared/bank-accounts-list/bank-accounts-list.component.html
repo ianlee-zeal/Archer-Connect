@@ -1,0 +1,14 @@
+<!-- <div class="page">
+  <app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+  <app-context-bar [title]="title"></app-context-bar> -->
+  <div class="page-content">
+    <app-grid
+      [gridOptions]="gridOptions"
+      (gridReady)="gridReady($event)"
+      (loadData)="loadData($event)"
+      [gridId]="gridId"
+      entityLabel="Bank Accounts"
+      (newRecord)="addNewBankAccountHandler()">
+    </app-grid>
+  </div>
+<!-- </div> -->

@@ -1,0 +1,25 @@
+<div class="ag-input-wrapper dropdown-column-filter">
+  <select *ngIf="!searchable" class="form-control search-input" [ngModel]="currentValue" (ngModelChange)="onChange($event)" (keyup.tab)="tabToNextInput($event)" ellipsisTooltip alwaysDisplayTooltip="true" id="simpleDropdown">
+    <option [value]="null" [hidden]="currentValue === null">
+      <ng-container *ngIf="currentValue !== null">-- Reset --</ng-container>
+    </option>
+    <option *ngFor="let option of (options$ | async)" [value]="filterByName ? option.name : option.id">
+      {{ option.name }}
+    </option>
+  </select>
+
+  <app-select
+    *ngIf="searchable"
+    [options]="asyncOptions$ | async"
+    id="searchableDropdown"
+    placeholder="Type"
+    [fullwidth]="true"
+    class="searchable-dropdown"
+    [appendTo]="'body'"
+    optionAsValue
+    (onKeyup) = "onInputSearchTerm($event)"
+    (onModelChange)="onChange($event?.id)"
+    [searchFn] = searchFn
+    searchable>
+  </app-select>
+</div>

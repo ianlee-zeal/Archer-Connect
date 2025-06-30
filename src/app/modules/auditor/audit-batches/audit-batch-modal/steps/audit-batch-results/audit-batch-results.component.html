@@ -1,0 +1,24 @@
+<div class="modal-section" *ngIf="auditRun">
+  <ng-container *ngIf="previewStatus==previewStatuses.Approve; else validationGrids">
+    <app-upload-bulk-document-processing
+      [documentImport]="documentImport">
+    </app-upload-bulk-document-processing>
+  </ng-container>
+</div>
+
+<ng-template #validationGrids>
+  <nav>
+    <div class="nav nav-tabs" id="results-nav-tab" role="tablist">
+      <a *ngFor="let item of tabsGroup" class="nav-item nav-link" [class.active]="isActiveTab(item)" id="{{item.tab}}-tab"
+        (click)="onChangeTab(item.tab)" data-toggle="tab" data-target="#{{item.tab}}">{{item.title}} ({{item.count}})
+      </a>
+    </div>
+  </nav>
+
+  <div class="tab-content" id="results-nav-tab-content">
+    <div *ngFor="let item of tabsGroup" class="tab-pane fade show" [class.active]="isActiveTab(item)" id="{{item.tab}}">
+      <app-upload-audit-data-grid *ngIf="isActiveTab(item)" [tab]="activeTab" [auditRunId]="auditRun.id">
+      </app-upload-audit-data-grid>
+    </div>
+  </div>
+</ng-template>

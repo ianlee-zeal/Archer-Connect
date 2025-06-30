@@ -1,0 +1,15 @@
+.product-category-status {
+  margin-bottom: -3px;
+
+  &__value {
+    line-height: 28px;
+    
+    & > label:not(:first-of-type) {
+      margin-left: 10px;
+    }
+
+    &--option {
+      margin-left: 4px;
+    }
+  }
+}

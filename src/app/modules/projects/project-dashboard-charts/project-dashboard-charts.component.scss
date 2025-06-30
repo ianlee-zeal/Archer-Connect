@@ -1,0 +1,31 @@
+@import "src/styles.variables";
+
+.popover-container {
+    border: 1px solid $primary-blue;
+    border-radius: 16px;
+    box-shadow: 1px 1px 10px 0px rgba(142, 156, 206, 0.20);
+    padding: 24px;
+    width: 100%;
+}
+
+.popover-content {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    width: 100%;
+}
+
+.title-container {
+    display: flex;
+    padding: 16px 20px 16px 24px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px;
+    background-color: $pale-navy;
+
+    .title-text {
+        color: $primary-blue;
+        font-size: 22px;
+        font-weight: 600;
+    }
+}

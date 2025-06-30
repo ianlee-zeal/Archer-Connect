@@ -1,0 +1,7 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+  <app-context-bar [title]="'Forms Search'"></app-context-bar>
+    <div *ngIf="index$ | async as index" class="page-content">
+      <app-grid [gridOptions]="gridOptions" [rowData]="index" entityLabel="forms"></app-grid>
+    </div>
+</div>

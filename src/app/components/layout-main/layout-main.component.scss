@@ -1,0 +1,45 @@
+@import "src/styles/variables.scss";
+
+.layout-main {
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    height: $header-height;
+  }
+
+  &__main {
+    margin-top: -($header-height);
+    padding-top: $header-height;
+    min-height: 100vh;
+    min-width: 640px;
+    display: flex;
+    align-items: stretch;
+    background-color: $white;
+  }
+
+  &__page-content {
+    flex-grow: 1;
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 768px) {
+  .layout-main {
+    &__sidebar {
+      margin-left: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .layout-main {
+    &__main {
+      min-width: unset;
+      margin-top: 8vh;
+    }
+    &__header {
+      height: unset;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+@import "../../../../../styles/variables.scss";
+
+.communication {
+  &__start-date {
+    &__header {
+      margin: 0;
+      font-size: $field-font-size;
+      font-weight: bold;
+    }
+  }
+}

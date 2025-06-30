@@ -1,0 +1,23 @@
+<ng-container [ngSwitch]="tab">
+    <app-payments-all-records
+      *ngSwitchCase="tabs.AllRecords"
+      [documentTypeId]="documentTypeId"
+      [documentImport]="documentImport"
+    ></app-payments-all-records>
+    <app-payments-errors
+      *ngSwitchCase="tabs.Errors"
+      [documentImport]="documentImport"
+      [documentTypeId]="documentTypeId"
+    ></app-payments-errors>
+     <app-payments-warnings
+      *ngSwitchCase="tabs.Warnings"
+      [documentImport]="documentImport"
+      [documentTypeId]="documentTypeId"
+    ></app-payments-warnings>
+    <app-payments-queued
+      *ngSwitchCase="tabs.Queued"
+      [documentImport]="documentImport"
+      [documentTypeId]="documentTypeId"
+    ></app-payments-queued>
+  </ng-container>
+  

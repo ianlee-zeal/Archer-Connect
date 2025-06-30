@@ -1,0 +1,59 @@
+@import "src/styles/variables.scss";
+
+.election-form {
+    &__combination-fields {
+        margin: 20px 0 0 50px;
+
+        &-total {
+            margin-left: 185px;
+            margin-top: 10px;
+            border-top: 1px solid black;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
+
+    &__amount-field-container{
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        &__radio-container {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    &__amount-fields-value {
+        font-weight: bold;
+        text-align: center;
+    }
+
+    &__received {
+        .control-message {
+            display: none;
+        }
+    }
+
+    &__format-received {
+        .form-check-label {
+            margin-left: 42px;
+        }
+        .control-message {
+            display: none;
+        }
+    }
+
+    &__address-container {
+        margin: 20px 0 0 46px;
+    }
+
+    &__radio-label {
+        padding-left: 10px;
+    }
+
+    &__label-header{
+        padding: 0 26px 0 0;
+        font-weight: bold;
+        color: $dark-blue;
+    }
+}

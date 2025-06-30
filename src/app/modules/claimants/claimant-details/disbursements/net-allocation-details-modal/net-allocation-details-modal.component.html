@@ -1,0 +1,19 @@
+<modal (close)="onClose()">
+  <modal-header>Net Allocation Details</modal-header>
+
+  <modal-body>
+    <div class="modal-section">
+        <app-net-allocation-details [netAllocationDetails]="netAllocationDetails$ | async"></app-net-allocation-details>
+    </div>
+  </modal-body>
+
+  <modal-footer>
+    <button
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--primary net-allocation-details-modal__cancel-button"
+      (click)="onClose()"
+    >
+      Close
+    </button>
+  </modal-footer>
+</modal>

@@ -1,0 +1,15 @@
+.link-actions {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    div {
+      display: flex;
+      a {
+        display: inline-table;
+      }
+      .error-link {
+        color: red !important;
+      }
+    }
+  }
+}

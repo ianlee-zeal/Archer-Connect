@@ -1,0 +1,73 @@
+<p class="title-new-payment-request">New Manual Payment Request</p>
+<app-stepper [stage]="stage">
+    <step label="Upload Template & Attachments" [isActive]="isUploadTemplateAndAttachmentsStage">
+        <div class="section-content">
+            <app-upload-template-and-attachments-step [projectName]="projectName" [qsfName]="qsfName" [showError]="showError">
+            </app-upload-template-and-attachments-step>
+        </div>
+    </step>
+    <step label="Payment Details" [isActive]="isPaymentDetailsStage">
+        <div class="section-content">
+            <app-payment-details-step *ngIf="isPaymentDetailsStage" [importId]="documentImport?.id" [orgId]="orgId">
+            </app-payment-details-step>
+        </div>
+    </step>
+    <step label="Review" [isActive]="isReviewStage">
+        <div class="section-content">
+            <app-review-payments-details-step *ngIf="isReviewStage" [projectName]="projectName" [qsfName]="qsfName"
+                [tabsGroup]="reviewTabsGroup" [documentImport]="documentImport" [documentTypeId]="types.Review"
+                [previewTotalPayment]="previewTotalPayment">
+            </app-review-payments-details-step>
+        </div>
+    </step>
+    <step label="Results" [isActive]="isResultStage">
+        <div class="section-content">
+            <app-review-payments-details-step *ngIf="isResultStage" [projectName]="projectName" [qsfName]="qsfName"
+                [tabsGroup]="resultTabsGroup" [documentImport]="documentImport" [documentTypeId]="types.LoadingResults"
+                [noteText]="noteText"
+                [previewTotalPayment]="previewTotalPayment" [projectId]="entityId">
+            </app-review-payments-details-step>
+        </div>
+    </step>
+</app-stepper>
+<card>
+    <div class="card-container">
+        <div class="d-flex me-auto align-items-center">
+
+            <button *ngIf="stage === stages.ReviewPayments && documentImport?.previewImportDoc?.id" type="button"
+                (click)="downloadFile()" class="btn manual-payment-request__btn manual-payment-request__btn--success">
+                <p>Preview File</p>
+            </button>
+            <button *ngIf="stage === stages.Result && documentImport?.loadingResultsDoc?.id" type="button"
+                (click)="downloadFile()" class="btn manual-payment-request__btn manual-payment-request__btn--success">
+                <p>Preview File</p>
+            </button>
+        </div>
+        <div>
+        </div>
+        <button *ngIf="!isResultStage" type="button"
+            class="btn manual-payment-request__btn manual-payment-request__btn--secondary" (click)="onCancel()">
+            {{ stage === stages.Result ? 'Close' : 'Cancel' }}
+        </button>
+        <button *ngIf="isUploadTemplateAndAttachmentsStage" type="submit" (click)="onSubmit()"
+            class="btn manual-payment-request__btn manual-payment-request__btn--primary"
+            [ngClass]="{ disabled: !isUploadTemplateAndAttachmentsNextBtnEnabled }"
+            [disabled]="!isUploadTemplateAndAttachmentsNextBtnEnabled">
+            Next
+        </button>
+        <button *ngIf="isPaymentDetailsStage" type="submit" [awaitedActionTypes]="awaitedActionTypesForUploadTemplate"
+            asyncButton (click)="onSubmit()" class="btn manual-payment-request__btn manual-payment-request__btn--primary"
+            [ngClass]="{ disabled: !isPaymentDetailsNextBtnEnabled }" [disabled]="!isPaymentDetailsNextBtnEnabled">
+            Next
+        </button>
+        <button *ngIf="isReviewStage" type="submit" (click)="onSubmit()"
+            class="btn manual-payment-request__btn manual-payment-request__btn--primary"
+            [ngClass]="{ disabled: !isPaymentsReviewNextBtnEnabled }" [disabled]="!isPaymentsReviewNextBtnEnabled">
+            Submit
+        </button>
+        <button *ngIf="isResultStage" (click)="onCancel()" class="btn manual-payment-request__btn manual-payment-request__btn--primary">
+            <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+            Close
+        </button>
+    </div>
+</card>

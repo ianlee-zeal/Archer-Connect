@@ -1,0 +1,80 @@
+<modal (close)="onClose()">
+    <modal-header>New Refund Transfer Request
+      
+    </modal-header>
+   
+    <modal-body>
+        <div class="modal-section">
+          <span class="refund-transfer-request__description">
+            Use Refund Transfer Request to move funds back to the main QSF account.
+          </span>
+            <app-stepper [stage]="stage">
+                <step label="Request Form" [isActive]="isRequestFormStage">
+                  <div class="section-content">             
+                    <app-request-form-step (addManuallyClicked)="onAddManuallyClick()"></app-request-form-step>
+                  </div>
+                </step>
+                <step label="Manual Entry" [isActive]="isManualEntryStage">
+                  <div class="section-content">             
+                    <app-manual-entry-step [isActive]="isManualEntryStage"></app-manual-entry-step>
+                  </div>
+                </step>
+                <step label="Review" [isActive]="isReviewStage">
+                  <div class="section-content" *ngIf="isReviewStage">             
+                    <app-refund-transfer-request-review-step
+                    [refundInfo]="refundInfo"
+                    [tabsGroup]="tabsGroup"
+                    [previewFileDocId]="validationResultDocId"
+                    [batchAction]="batchAction"></app-refund-transfer-request-review-step>
+                  </div>
+                </step>
+                <step label="Result" [isActive]="isResultStage">
+                  <div class="section-content" *ngIf="isResultStage">             
+                    <app-refund-transfer-request-result-step
+                    [refundInfo]="refundInfo"
+                    [tabsGroup]="tabsGroup"
+                    [resultFileDocId]="loadingResultDocId"
+                    [batchAction]="batchAction"></app-refund-transfer-request-result-step>
+                  </div>
+                </step>
+              </app-stepper>
+        </div>
+      
+    </modal-body>
+    <modal-footer>
+      <div class="d-flex me-auto align-items-center">
+        <button *ngIf="isShowPreviewFileBtn" type="button" (click)="downloadFile()" class="btn modal-footer__btn modal-footer__btn--success">
+          <p>Preview File</p>
+        </button>
+        <div *ngIf="errorMessage" class="text-danger ms-2">{{ errorMessage }}</div>
+      </div>
+        <button
+            type="button"
+            class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onClose()">
+            {{ stage === stages.Result ? 'Close' : 'Cancel' }}
+        </button>
+        <button *ngIf="isRequestFormStage || isManualEntryStage"
+          type="submit"
+          [awaitedActionTypes]="awaitedActionTypesForForm"
+          asyncButton
+          (click)="onSubmit()"
+          class="btn modal-footer__btn modal-footer__btn--primary"
+          [ngClass]="{ disabled: !isRequestFormStageNextBtnEnabled }"
+          [disabled]="!isRequestFormStageNextBtnEnabled">
+          Next
+        </button>
+        <button *ngIf="isReviewStage"
+          type="submit"
+          [awaitedActionTypes]="awaitedActionTypesForReview"
+          asyncButton
+          (click)="onSubmit()"
+          class="btn modal-footer__btn modal-footer__btn--primary"
+          [ngClass]="{ disabled: !isReviewStageSubmitBtnEnabled }"
+          [disabled]="!isReviewStageSubmitBtnEnabled">
+          Submit
+        </button>
+
+    </modal-footer>
+</modal>
+

@@ -1,0 +1,11 @@
+<app-grid 
+      [gridId]="gridId"
+      entityLabel="contacts"
+      [gridOptions]="gridOptions"
+      [canReorderColumns]="true"
+      (gridReady)="gridReady($event)"
+      (loadData)="loadData($event)"
+      hideTopStatusbar="true"
+      isContentAutoHeight="true"
+      [enabledAutoHeight]="false">
+    </app-grid>

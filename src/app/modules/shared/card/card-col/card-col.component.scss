@@ -1,0 +1,20 @@
+.card-col {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+:host {
+  @media screen and (max-width: 992px) {
+    width: 100%;
+    .card-col {
+      width: 100% !important;
+      min-width: 100% !important;
+    }
+  }
+}
+
+.row > * {
+  flex-shrink: initial;
+  width: initial;
+}

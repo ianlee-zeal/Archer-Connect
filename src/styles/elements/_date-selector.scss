@@ -1,0 +1,75 @@
+@import "../variables.scss";
+@import "../mixins.scss";
+
+.date-selector {
+  position: relative;
+  font-family: inherit;
+
+  &__input {
+    padding-right: 20px !important;
+
+    @include placeholder {
+      font-size: 12px;
+    }
+
+    &--long {
+      width: 100%;
+    }
+  }
+
+  &__button {
+    cursor: pointer;
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    height: 14px;
+    padding: 0;
+    border: none;
+    display: flex;
+    background-color: transparent;
+
+    &:focus, &:active {
+      outline: none;
+    }
+
+    &--small {
+      height: 14px;
+    }
+
+    & img {
+      height: inherit;
+    }
+  }
+
+  &__close_button {
+    cursor: pointer;
+    position: absolute;
+    top: 2px;
+    right: 20px;
+    height: 14px;
+    padding: 0;
+    border: none;
+    display: flex;
+    background-color: transparent;
+
+    &:focus, &:active {
+      outline: none;
+    }
+
+    &--small {
+      height: 14px;
+    }
+
+    & img {
+      height: inherit;
+    }
+  }
+}
+
+.fixed-size-130 {
+  .date-selector {
+    &__input {
+      width: 130px;
+    }
+  }
+}

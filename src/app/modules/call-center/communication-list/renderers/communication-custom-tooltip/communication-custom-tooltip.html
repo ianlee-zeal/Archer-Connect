@@ -1,0 +1,8 @@
+<div class="custom-tooltip">
+  <ul class="related-documents-list">
+    <li class="related-documents-list__item"*ngFor="let item  of items">
+      <img class="related-documents-list__item-image" [src]="getMimeIconByExtension(item.extension)"/>
+      <span class="related-documents-list__item-text">{{ item.name }}</span>
+    </li>
+  </ul>
+</div>

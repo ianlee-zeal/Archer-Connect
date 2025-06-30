@@ -1,0 +1,11 @@
+<app-grid 
+    *ngIf="project$ | async"
+    entityLabel="Chart Of Accounts"
+    [gridId]="gridId"
+    [gridOptions]="gridOptions"
+    [saveGridDataOnModelUpdate]="true"
+    [skipSetContentHeight]="true"
+    [isPagerEnabled]="false"
+    (gridReady)="onGridReady($event)"
+    (loadData)="loadData($event)">
+</app-grid>

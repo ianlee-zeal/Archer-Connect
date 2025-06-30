@@ -1,0 +1,355 @@
+@import "src/styles/variables";
+@import "src/styles/colors";
+@import "src/styles.variables";
+
+.ledger-info {
+  &__container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.ledger-info-card {
+  display: flex;
+  justify-content: center;
+  background-color: $gray-lighter;
+  margin: -20px -20px 40px -20px;
+  padding: 0 20px;
+  border-bottom: 1px solid $border-gray;
+}
+
+.ledger-groups {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 44.9vh;
+  padding-right: 15px;
+  border-top: 2px solid $border-gray;
+
+  &--summary-bar-collapsed {
+    height: 61.5vh;
+  }
+
+  &__group {
+    margin-bottom: 5px;
+
+    &--disabled * :not(.fas) {
+      ::ng-deep.form-group .form-control-plaintext {
+        color: inherit;
+      }
+
+      color: $gray-darker !important;
+    }
+  }
+}
+
+.validation-error {
+  color: $validation-invalid-color;
+  margin-left: 20px;
+  margin-top: -10px;
+}
+
+// --- Expansion panel ---
+$panel-font-size: 14px;
+$panel-header-height: 25px;
+
+.expansion-panel-container {
+  display: flex;
+  flex-direction: column;
+  color: $custom-navy;
+  font-size: $panel-font-size;
+}
+
+.expansion-panel {
+  display: flex;
+  width: 100%;
+  padding: 5px 14px;
+  align-items: center;
+  background-color: $group-color;
+  border-bottom: 2px solid $border-gray;
+
+  &__header {
+    display: flex;
+    flex-grow: 1;
+    margin-left: 10px;
+    height: $panel-header-height;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+
+    &--sub-container {
+      display: flex;
+      align-items: flex-end;
+      width: 578px;
+    }
+
+    &--title {
+      font-weight: 600;
+      min-width: 160px;
+    }
+
+    &--action {
+      margin-left: 40px;
+      max-height: $panel-header-height;
+    }
+
+    &--input {
+      margin-left: 12px;
+      max-height: $panel-header-height;
+      text-align: end;
+    }
+
+    @media screen and (max-width: 1790px) {
+      &--input {
+        margin-left: 30px;
+      }
+    }
+
+    &--total-amount {
+      width: 100px;
+      font-weight: 700;
+      text-align: end;
+    }
+
+    &--description-placeholder {
+      margin-left: auto;
+      min-width: 150px;
+      @media screen and (max-width: 1550px) {
+        min-width: 260px;
+      }
+    }
+
+    &--total-paid-amount {
+      width: 100px;
+      font-weight: 700;
+      text-align: end;
+      margin-right: 297px;
+    }
+    @media screen and (max-width: 1790px) {
+      &--sub-container {
+        width: 400px;
+      }
+      &--total-paid-amount {
+        margin-right: 305px;
+      }
+    }
+    @media screen and (max-width: 1550px) {
+      &--sub-container {
+        width: 280px;
+        .expansion-panel__header--title {
+          min-width: 170px;
+        }
+      }
+      &--total-paid-amount {
+        margin-right: 295px;
+      }
+      &--total-amount {
+        width: 140px;
+      }
+    }
+  }
+
+  &__content {
+    margin: 5px 0px;
+  }
+
+  &_expand-button {
+    cursor: pointer;
+    width: 10px;
+    height: 10px;
+    color: $custom-navy;
+  }
+}
+
+.expansion-panel-element {
+  min-width: 100px !important;
+  text-align: end;
+
+  &__column {
+    text-align: left;
+    color: $label-color;
+  }
+
+  &__value {
+    text-align: left;
+    font-weight: bold;
+    color: $black;
+  }
+
+  &--error {
+    color: $validation-invalid-color;
+    margin-left: 5px;
+    margin-top: 3px;
+  }
+
+  &--warning {
+    color: $yellow;
+    margin-left: 5px;
+    margin-top: 3px;
+  }
+
+  &:last-child {
+    min-width: max-content;
+  }
+}
+
+
+
+@media screen and (max-width: 1790px) {
+  ::ng-deep .expansion-panel__header--input .cbf-percentage .card-col {
+    min-width: 135px !important;
+    max-width: 135px !important;
+  }
+  ::ng-deep app-ledger-account-group .account-name .card-col {
+    min-width: 360px !important;
+    max-width: 360px !important;
+  }
+  ::ng-deep app-ledger-account-group .account-percentage .card-col {
+    width: 0;
+    min-width: 0 !important;
+    max-width: 0 !important;
+  }
+  ::ng-deep app-ledger-account-group .account-amount-column .card-col {
+    min-width: 103px !important;
+    max-width: 103px !important;
+  }
+  ::ng-deep .expansion-panel__header--input .mdl-percentage .card-col {
+    min-width: 140px !important;
+    max-width: 140px !important;
+  }
+  ::ng-deep .expansion-panel__header--input .atty-percentage .card-col {
+    min-width: 140px !important;
+    max-width: 140px !important;
+  }
+
+  ::ng-deep app-ledger-account-group .name-column .card-col {
+    min-width: 240px !important;
+    max-width: 240px !important;
+  }
+
+  ::ng-deep app-ledger-account-group .amount-column .card-col {
+    min-width: 103px !important;
+    max-width: 103px !important;
+  }
+
+  ::ng-deep app-ledger-account-group .paid-amount-column .card-col {
+    min-width: 155px !important;
+    max-width: 155px !important;
+  }
+
+  ::ng-deep app-ledger-account-group .payment-status-column .card-col {
+    min-width: 150px !important;
+    max-width: 150px !important;
+  }
+
+  ::ng-deep app-ledger-account-group .payee-column .card-col {
+    min-width: 135px !important;
+    max-width: 135px !important;
+  }
+
+  ::ng-deep app-ledger-account-group .payment-status-column, ::ng-deep app-ledger-account-group .payee-column {
+    margin-left: 0 !important;
+  }
+
+  ::ng-deep app-ledger-account-group .payee-column .card-row__label-container {
+    display: none;
+  }
+
+  ::ng-deep app-ledger-account-group .ledgers-list__actions .card-row__label-container {
+    display: none;
+  }
+
+  ::ng-deep .expansion-panel__header--input .card-row__content .form-control {
+    width: 75px;
+  }
+}
+
+@media screen and (min-width: 1760px) and (max-width: 1790px) {
+  ::ng-deep app-ledger-account-group .paid-amount-column .card-col {
+    min-width: 180px !important;
+    max-width: 180px !important;
+  }
+}
+
+@media screen and (max-width: 1550px) {
+  ::ng-deep .expansion-panel__header--input .cbf-percentage .card-col {
+    min-width: 88px !important;
+    max-width: 88px !important;
+  }
+  ::ng-deep app-ledger-account-group .account-name .card-col {
+    min-width: 245px !important;
+    max-width: 245px !important;
+  }
+  ::ng-deep app-ledger-account-group .account-percentage .card-col {
+    width: 0;
+    min-width: 0 !important;
+    max-width: 0 !important;
+  }
+  ::ng-deep app-ledger-account-group .account-amount-column .card-col {
+    min-width: 150px !important;
+    max-width: 150px !important;
+  }
+
+  ::ng-deep app-ledger-account-group .amount-column .card-col {
+    min-width: 150px !important;
+    max-width: 150px !important;
+  }
+  ::ng-deep .expansion-panel__header--input .mdl-percentage .card-col {
+    min-width: 60px !important;
+    max-width: 60px !important;
+  }
+  ::ng-deep .expansion-panel__header--input .atty-percentage .card-col {
+    min-width: 125px !important;
+    max-width: 125px !important;
+  }
+
+  ::ng-deep app-ledger-account-group .name-column .card-col {
+    min-width: 117px !important;
+    max-width: 117px !important;
+  }
+
+  ::ng-deep app-ledger-account-group .paid-amount-column .card-col {
+    min-width: 110px !important;
+    max-width: 110px !important;
+  }
+
+  ::ng-deep .expansion-panel__header--input {
+    margin-left: -10px;
+    .col-auto {
+      width: auto !important;
+      padding-left: 0;
+      padding-right: 3px !important;
+    }
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  ::ng-deep app-ledger-account-group .payment-status-column .card-col {
+    min-width: 135px !important;
+    max-width: 135px !important;
+  }
+  ::ng-deep app-ledger-account-group .payee-column .card-col {
+    min-width: 65px !important;
+    max-width: 65px !important;
+  }
+
+}
+// --- Expansion panel end ---
+
+app-ledger-account-group,
+::ng-deep .expansion-panel__header--input .col-auto {
+  width: 100%;
+}
+
+.grid-expansion-panel-header-wrapper {
+  padding: 5px;
+
+  app-grid-expansion-panel-header {
+    display: block;
+    font-size: 14px;
+    margin-left: -40px !important;
+  }
+}
+
+.system-fields-section {
+  height: 65px;
+}

@@ -1,0 +1,31 @@
+<div class="modal-section">
+    <form *ngIf="templates" [formGroup]="form" novalidate>
+        <card hideSeparator>
+            <card-col [labelWidth]="160" [width]="1000">
+                <card-row label="Select Category" inputId="templateCategory" [control]="form.get('templateCategory')" required [maxContentWidth]="800">
+                    <div class="template-container" cardValue>
+                        <div class="category-selection">
+                            <app-select id="templateCategory" [options]="templateCategories" formControlName="templateCategory"
+                            (onModelChange)="onTemplateCategoryChange($event)" optionAsValue required cardValue></app-select>
+                        </div>
+                    </div>
+                </card-row>
+                <!-- Document Import Template Select -->
+                <card-row label="Select Template" inputId="documentImportType" [control]="form.get('documentImportType')" required [maxContentWidth]="800">
+                    <div class="template-container" cardValue>
+                        <div class="template-selection">
+                            <app-select id="documentImportType" [disabled]="isDisabledTemplateSelect" [options]="filteredTemplates" formControlName="documentImportType"
+                            (onModelChange)="onDocumentImportTemplateChange($event)" optionAsValue required cardValue></app-select>
+                        </div>
+                    </div>
+                </card-row>
+                <card-row *ngIf="isProbateCategory" label="Update" inputId="isUpdate" [control]="form.get('isUpdate')">
+                  <label class="form-check h-100" cardValue>
+                    <input type="checkbox" (change)="onCheckboxChange()" class="form-check-input" formControlName="isUpdate" id="isUpdate" />
+                    <span></span>
+                  </label>
+                </card-row>
+            </card-col>
+        </card>
+    </form>
+</div>

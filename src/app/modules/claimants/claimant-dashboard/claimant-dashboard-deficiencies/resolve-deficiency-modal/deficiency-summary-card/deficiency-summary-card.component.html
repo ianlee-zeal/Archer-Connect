@@ -1,0 +1,34 @@
+<div class="container" *ngIf="deficiencyItem" infoCardData>
+  <div class="section first-section">
+      <div class="title">Summary</div>
+      <div *ngIf="deficiencyItem.stageId" class="sub-status">
+          <img [src]="stageIconSrc" alt="stage icon"/>
+          <span data-test-id="modal-deficiency-summary-card-display-stage">{{ deficiencyItem.stage }}</span>
+      </div>
+
+  </div>
+  <div class="section second-section">
+      <div class="summary-row">
+          <span class="property-name">Deficiency Category</span>
+          <div class="dashed-line"></div>
+          <span data-test-id="modal-deficiency-summary-card-display-categoryName" class="property-value"> {{ deficiencyItem.deficiencyCategoryName || '-' }} </span>
+      </div>
+      <div class="summary-row">
+          <span class="property-name">Deficiency Type</span>
+          <div class="dashed-line"></div>
+          <span data-test-id="modal-deficiency-summary-card-display-typeDisplayName" class="property-value"> {{ deficiencyItem.deficiencyTypeDisplayName || '-' }} </span>
+      </div>
+  </div>
+  <div class="section third-section">
+      <div class="summary-row">
+          <span class="property-name">Date Last Updated</span>
+          <div class="dashed-line"></div>
+          <span data-test-id="modal-deficiency-summary-card-display-lastModifiedDate" class="property-value" > {{ (deficiencyItem.lastModifiedDate| date:'MM/dd/yyyy') || '-' }} </span>
+      </div>
+      <div class="summary-row">
+          <span class="property-name">Date Created</span>
+          <div class="dashed-line"></div>
+          <span data-test-id="modal-deficiency-summary-card-display-createdDate" class="property-value"> {{ (deficiencyItem.createdDate | date:'MM/dd/yyyy') || '-' }} </span>
+      </div>
+  </div>
+</div>

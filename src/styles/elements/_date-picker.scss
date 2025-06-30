@@ -1,0 +1,118 @@
+@import '../_mixins.scss';
+
+.date-picker {
+  display: flex;
+  align-items: center;
+
+  &-input {
+    width: 90px;
+  }
+
+  &-btn {
+    @include size(16px, 18px);
+
+    margin-left: 10px;
+    background: url('/assets/svg/calendar-alt-solid.svg') no-repeat;
+  }
+}
+
+$btn-size: 20px;
+
+// apply css style for third-party component in order to be consistent with our design
+.ngb-dp-body {
+  font-size: 12px;
+  background-color: $white;
+  color: $black;
+  padding: 15px 30px 30px !important;
+  margin-top: 0;
+  border-color: transparent;
+  border-radius: 15px 0 15px 15px;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+
+  .ngb-dp-header {
+    background-color: transparent;
+    padding-top: 0;
+  }
+
+  .ngb-dp-arrow {
+    display: flex;
+    align-items: center;
+  }
+
+  .ngb-dp-arrow-prev .ngb-dp-arrow-btn{
+    background: url('/assets/svg/angle-left-solid.svg') no-repeat center;
+  }
+
+  .ngb-dp-arrow-btn {
+    &:hover, &:focus {
+      outline: none;
+    }
+  }
+
+  .ngb-dp-arrow-next {
+    .ngb-dp-arrow-btn {
+      background: url('/assets/svg/angle-right-solid.svg') no-repeat center;
+    }
+  }
+
+  .ngb-dp-navigation-chevron {
+    display: none;
+  }
+
+  .ngb-dp-week {
+    margin-bottom: 5px;
+  }
+
+  .ngb-dp-weekdays {
+    background-color: transparent;
+    border-bottom: none;
+    margin-top: 14px;
+    margin-bottom: 8px;
+  }
+
+  .ngb-dp-weekday, .ngb-dp-day {
+    @include square($btn-size);
+    line-height: $btn-size;
+
+    &:not(:last-child) {
+      margin-right: 12px;
+    }
+  }
+
+  .ngb-dp-weekday {
+    font-size: inherit;
+    font-style: normal;
+    color: $gray;
+    text-transform: lowercase;
+  }
+
+  .ngb-dp-week {
+    &:last-child {
+      padding-bottom: 0 !important;
+    }
+  }
+
+  .ngb-dp-day {
+    [ngbdatepickerdayview] {
+      @include square($btn-size);
+      line-height: $btn-size;
+      border-radius: 2px;
+    }
+
+    &:focus, &.active {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    .btn-light.bg-primary {
+      background-color: $yellow !important;
+    }
+  }
+
+  .ngb-dp-today {
+    .btn-light {
+      background-color: transparent !important;
+      outline: none !important;
+    }
+  }
+}

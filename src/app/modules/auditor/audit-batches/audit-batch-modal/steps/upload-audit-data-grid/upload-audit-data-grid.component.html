@@ -1,0 +1,16 @@
+<ng-container [ngSwitch]="tab" *ngIf="!!auditRunId">
+  <app-upload-audit-data-all-records-list
+  *ngSwitchCase="tabs.AllRecords"
+  [auditRunId]="auditRunId"
+  ></app-upload-audit-data-all-records-list>
+  
+  <app-upload-audit-data-errors-list
+  *ngSwitchCase="tabs.Errors"
+  [auditRunId]="auditRunId"
+  ></app-upload-audit-data-errors-list>
+  
+  <app-upload-audit-data-warnings-list
+  *ngSwitchCase="tabs.Warnings"
+  [auditRunId]="auditRunId"
+  ></app-upload-audit-data-warnings-list>
+</ng-container>

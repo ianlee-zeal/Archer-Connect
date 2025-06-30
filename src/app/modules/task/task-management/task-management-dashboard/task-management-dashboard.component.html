@@ -1,0 +1,138 @@
+<div class="page">
+    <div class="row border-bottom task-mng-dash-ctn" *ngIf="isManager">
+
+      <div class="task-mng-dash-ctn__top-row">
+        <div class="task-mng-dash-ctn__select-ctn">
+          <div class="task-mng-dash-ctn__header">Team</div>
+          <app-select [options]="teams$ | async"
+                      (onModelChange)="onTeamChange($event)"
+                      [placeholder]="defaultSelectPlaceholder"
+                      fullwidth
+                      class="task-mng-dash-ctn__select"
+                      #teamsDDL
+                    >
+          </app-select>
+        </div>
+        <div class="task-mng-dash-ctn__select-ctn">
+          <div class="task-mng-dash-ctn__header">Assignee</div>
+          <app-select [options]="teamMembers$ | async"
+                      (onModelChange)="onMemberChange($event)"
+                      [placeholder]="defaultSelectPlaceholder"
+                      fullwidth
+                      class="task-mng-dash-ctn__select"
+                      #teamMembersDDL
+                    >
+          </app-select>
+        </div>
+        <div class="task-mng-dash-ctn__select-ctn">
+          <div class="task-mng-dash-ctn__header">Category</div>
+          <app-select [options]="categories$ | async"
+                      (onModelChange)="onCategoryChange($event)"
+                      [placeholder]="defaultSelectPlaceholder"
+                      fullwidth
+                      class="task-mng-dash-ctn__select"
+                      #categoriesDDL
+                    >
+          </app-select>
+        </div>
+      </div>
+
+      <div class="task-mng-dash-ctn__widgets-ctn">
+
+        <div class="task-mng-dash-ctn__widget" *ngIf="showTeamStats$">
+          <div class="task-mng-dash-ctn__title border-bottom">
+            <span class="chart-name">Team Stats</span>
+          </div>
+          <div class="task-mng-dash-ctn__2bars-ctn">
+            <div class="task-mng-dash-ctn__bar-legend-ctn">
+              <div class="task-mng-dash-ctn__bar-chart-ctn">
+                <fusioncharts width="100%"
+                      min-height="270"
+                      class="w-100"
+                      dataFormat="json"
+                      type="Scrollstackedbar2d"
+                      placeholder="Loading..."
+                      [dataSource]="teamStatsStagesData$"
+                      (dataplotClick)="teamStatsPlotClick($event)"
+                      (dataLabelClick)="teamStatsStatusLabelClick($event)">
+                      >
+                </fusioncharts>
+              </div>
+              <div class="task-mng-dash-ctn__legend">
+                <app-task-management-dashboard-legend [legendItems]="taskStageslegend"></app-task-management-dashboard-legend>
+              </div>
+            </div>
+            <div class="task-mng-dash-ctn__bar-legend-ctn">
+              <div class="task-mng-dash-ctn__bar-chart-ctn">
+                <fusioncharts width="100%"
+                      min-height="270"
+                      class="w-100"
+                      dataFormat="json"
+                      type="Scrollstackedbar2d"
+                      placeholder="Loading..."
+                      [dataSource]="teamStatsStatusesData$"
+                      (dataplotClick)="teamStatusPlotClick($event)"
+                      (dataLabelClick)="teamStatsStatusLabelClick($event)">
+                      >
+                </fusioncharts>
+              </div>
+              <div class="task-mng-dash-ctn__legend">
+                <app-task-management-dashboard-legend [legendItems]="taskStatusLegend"></app-task-management-dashboard-legend>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="task-mng-dash-ctn__widget" *ngIf="showSummaryData$">
+          <div class="task-mng-dash-ctn__title border-bottom">
+            <span class="chart-name">Open Tasks</span>
+          </div>
+          <div class="task-mng-dash-ctn__chart-ctn">
+            <fusioncharts width="100%"
+                          min-height="270"
+                          class="w-100"
+                          dataFormat="json"
+                          type="doughnut2d"
+                          placeholder="Loading..."
+                          [dataSource]="stageSummaryData$"
+                          (dataplotClick)="summaryDataplotClick($event)"
+                        >
+            </fusioncharts>
+          </div>
+          <div class="task-mng-dash-ctn__total">{{stageSummaryTotalLabel}}</div>
+          <div class="task-mng-dash-ctn__legend">
+            <app-task-management-dashboard-legend [legendItems]="taskSummaryLegend"></app-task-management-dashboard-legend>
+          </div>
+        </div>
+
+        <div class="task-mng-dash-ctn__widget" *ngIf="showOverdueData$">
+          <div class="task-mng-dash-ctn__title border-bottom">
+            <span class="chart-name">Overdue Tasks</span>
+          </div>
+          <div class="task-mng-dash-ctn__chart-ctn">
+            <app-task-management-dashboard-overdue-tasks-widget [overdueData]="overdueData$" [setOverdueFilter]="overdueValueClick"></app-task-management-dashboard-overdue-tasks-widget>
+          </div>
+          <div class="task-mng-dash-ctn__legend"></div>
+        </div>
+
+
+        <div class="task-mng-dash-ctn__widget" *ngIf="showAgingData$">
+          <div class="task-mng-dash-ctn__title border-bottom">
+            <span class="chart-name">Aging</span>
+          </div>
+          <div>
+            <app-task-management-dashboard-aging-widget [agingRowClick]="agingRowClick" [agingData]="agingData$"></app-task-management-dashboard-aging-widget>
+          </div>
+          <div class="task-mng-dash-ctn__legend"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col mt-3">
+          <app-task-management-list [listFilter]="listFilter$" [clearDashFilters]="clearDashFilters"></app-task-management-list>
+        </div>
+    </div>
+</div>
+

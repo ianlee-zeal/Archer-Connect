@@ -1,0 +1,11 @@
+<div class="grid-actions">
+  <ng-container *ngIf="!params?.data?.notExisting">
+    <button
+      *permissions="editPermission"
+      type="button"
+      class="btn-grid-action btn-edit"
+      (click)="onEditClick()"
+      title="Edit"
+    ></button>
+  </ng-container>
+</div>

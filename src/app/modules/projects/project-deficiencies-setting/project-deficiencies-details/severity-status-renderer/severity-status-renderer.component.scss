@@ -1,0 +1,19 @@
+@import "src/styles/variables.scss";
+
+.severity-status-renderer {
+  display: flex;
+  gap: 15px;
+  &__icon {
+    margin-right: 8px;
+    visibility: hidden;
+    &--warning::before {
+      color: $yellow;
+    }
+    &--error::before {
+      color: $validation-invalid-color;
+    }
+    &--selected {
+      visibility: visible;
+    }
+  }
+}

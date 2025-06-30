@@ -1,0 +1,107 @@
+<form *ngIf="canEdit; else viewTemplate" [formGroup]="form" [connectForm]="address" class="address-form">
+  <card hideSeparator>
+    <card-col [width]="491" [labelWidth]="165">
+      <card-row *ngIf="showAddresseeAndAttnTo" label="Addressee" inputId="addressee" [control]="form.get('addressee')">
+        <input type="text" class="form-control" formControlName="addressee" id="addressee"
+          cardValue maxLength="255" />
+      </card-row>
+      <card-row *ngIf="showAddresseeAndAttnTo" label="Attn To" inputId="attnTo" [control]="form.get('attnTo')">
+        <input type="text" class="form-control" formControlName="attnTo" id="attnTo"
+          maxLength="255" cardValue />
+      </card-row>
+      <card-row label="Address Line One" inputId="line1" [control]="form.get('line1')" [required]="!form.value.isPartial">
+        <input type="text" class="form-control" formControlName="line1" id="line1"
+          appAutoFocus cardValue maxLength="255" />
+      </card-row>
+      <card-row label="Address Line Two" inputId="line2" [control]="form.get('line2')">
+        <input type="text" class="form-control" formControlName="line2" id="line2"
+          maxLength="255" cardValue />
+      </card-row>
+      <card-row label="City" inputId="city" [control]="form.get('city')" [required]="!form.value.isPartial">
+        <input type="text" class="form-control" formControlName="city" id="city"
+          maxLength="60" cardValue />
+      </card-row>
+      <card-row label="State" inputId="state" [control]="form.get('state')" [required]="!form.value.isPartial">
+        <input type="text" class="form-control" formControlName="state" id="state" maxLength="10" cardValue />
+      </card-row>
+      <card-row label="Zip Code" inputId="zip" [control]="form.get('zip')">
+        <input type="text" class="form-control" formControlName="zip" id="zip" maxLength="20" cardValue />
+      </card-row>
+      <card-row label="Country" inputId="countryName" [control]="form.get('countryName')">
+        <input type="text" class="form-control" formControlName="countryName" [ngbTypeahead]="countrySearch"
+        (selectItem)="onCountrySelected($event)" (change)="onCountryChange($event)" id="countryName" cardValue />
+      </card-row>
+    </card-col>
+    <card-col [labelWidth]="138">
+      <card-row label="Type" inputId="type" [control]="form.get('type')" [required]="!form.value.isPartial">
+        <select id="type" class="form-control" formControlName="type"
+          [compareWith]="dropdownComparator" cardValue>
+          <option *ngFor="let type of addressTypesDropdownValues$ | async" [ngValue]="type">
+            {{ type.name }}
+          </option>
+        </select>
+      </card-row>
+      <card-row label="Primary Flag" inputId="isPrimary" [control]="form.get('isPrimary')">
+        <label class="form-check h-100" cardValue>
+          <input type="checkbox" class="form-check-input" formControlName="isPrimary" id="isPrimary" />
+          <span></span>
+        </label>
+      </card-row>
+      <card-row label="Active" inputId="isActive" [control]="form.get('isActive')">
+        <label class="form-check h-100" cardValue>
+          <input type="checkbox" class="form-check-input" formControlName="isActive" id="isActive" />
+          <span></span>
+        </label>
+      </card-row>
+      <card-row label="Partial Address" inputId="isPartial" [control]="form.get('isPartial')">
+        <label class="form-check h-100" cardValue>
+          <input type="checkbox" class="form-check-input" formControlName="isPartial" id="isPartial" />
+          <span></span>
+        </label>
+      </card-row>
+      <app-date-range [range]="form.get('range')" [labelWidth]="138"></app-date-range>
+      <card-row *permissions="canViewAuditInfoPermission" label="Source" [value]="address?.dataSourceName"></card-row>
+      <div *ngIf="address?.lastVerifiedDateTime" class="address-form__verified-date-time">
+        <label class="address-form__verified-date-time-label">
+          Address Verified On:
+        </label>
+        {{ (address.lastVerifiedDateTime | dateFormat) || '-' }}
+      </div>
+    </card-col>
+  </card>
+</form>
+
+<ng-template #viewTemplate>
+  <card hideSeparator>
+    <card-col [width]="491" [labelWidth]="165">
+      <card-row *ngIf="showAddresseeAndAttnTo" label="Addressee" [value]="address?.addressee"></card-row>
+      <card-row *ngIf="showAddresseeAndAttnTo" label="Attn To" [value]="address?.attnTo"></card-row>
+      <card-row label="Address Line One" [value]="address?.line1"></card-row>
+      <card-row label="Address Line Two" [value]="address?.line2"></card-row>
+      <card-row label="City" [value]="address?.city"></card-row>
+      <card-row label="State" [value]="address?.state"></card-row>
+      <card-row label="Zip Code" [value]="address?.zip"></card-row>
+      <card-row label="Country" [value]="address?.countryName"></card-row>
+    </card-col>
+    <card-col [labelWidth]="138">
+      <card-row label="Type" [value]="address?.type?.name"></card-row>
+      <card-row label="Primary Flag" [value]="address?.isPrimary | yesNoPipe"></card-row>
+      <card-row label="Active" [value]="address?.isActive | yesNoPipe"></card-row>
+      <card-row label="Partial Address" [value]="address?.isPartial | yesNoPipe"></card-row>
+      <card-row *ngIf="address?.range?.from || address?.range?.to" label="Range">
+        <div class="card-row__content form-control-plaintext" cardValue>
+          {{ (address?.range?.from | dateFormat) || '-'}}
+          <span class="date-range__divider">to:</span>
+           {{ (address?.range?.to | dateFormat) || '-'}}
+        </div>
+      </card-row>
+      <card-row *permissions="canViewAuditInfoPermission" label="Source" [value]="address?.dataSourceName"></card-row>
+      <div *ngIf="address?.lastVerifiedDateTime" class="address-form__verified-date-time">
+        <label class="address-form__verified-date-time-label">
+          Address Verified On:
+        </label>
+        {{ (address.lastVerifiedDateTime | dateFormat) || '-' }}
+      </div>
+    </card-col>
+  </card>
+</ng-template>

@@ -1,0 +1,27 @@
+.page {
+    margin-top: 40px;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.breadcrumb-title {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 26px;
+    margin-bottom: 30px;
+}
+
+.breadcrumb-title-item {
+    height: 30px;
+    align-self: flex-start;
+}
+
+.breadcrumb-title-item:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.breadcrumb-title-summary {
+    color: #1774DE;
+}

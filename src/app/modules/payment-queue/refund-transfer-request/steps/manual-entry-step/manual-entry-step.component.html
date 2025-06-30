@@ -1,0 +1,114 @@
+<div class="step-content">
+  <form [formGroup]="form">
+    <div class="manual-entry-header">
+      <div class="manual-entry-header__column">Client Id</div>
+      <div class="manual-entry-header__column">First Name</div>
+      <div class="manual-entry-header__column">Last Name</div>
+      <div class="manual-entry-header__column">Lien Id
+        <app-tooltip-info class="lien-tooltip" [tooltipText]="tooltip" placement='top' [inline]="true" >
+        </app-tooltip-info>
+      </div>
+      <div class="manual-entry-header__column">Payment Type</div>
+      <div class="manual-entry-header__column">Refund Amount</div>
+    </div>
+
+    <div class="data-entry-container" formArrayName="entries">
+      <div *ngFor="let entry of pagedEntries; let i = index" [formGroupName]="i + (currentPage - 1) * itemsPerPage" class="data-entry-row">
+        <card-row inputId="clientId" [control]="entry.get('clientId')" required>
+          <input
+            #clientIdInput
+            type="text"
+            class="form-control"
+            formControlName="clientId"
+            (blur)="getClaimantData(i + (currentPage - 1) * itemsPerPage)"
+            placeholder="Client ID"
+            cardValue
+          />
+        </card-row>
+        
+        <card-row inputId="firstName" [control]="entry.get('firstName')" readonly>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="firstName"
+            readonly
+            placeholder="First Name"
+            cardValue
+          />
+        </card-row>
+        
+        <card-row inputId="lastName" [control]="entry.get('lastName')" readonly>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="lastName"
+            readonly
+            placeholder="Last Name"
+            cardValue
+          />
+        </card-row>
+        
+        <card-row inputId="lienId" [control]="entry.get('lienId')" required>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="lienId"
+            placeholder="Lien ID"
+            [class.invalid]="entry.get('lienId')?.invalid"
+            cardValue
+          />
+        </card-row>
+        
+        <card-col [width]="155">
+          <card-row inputId="paymentType" [control]="entry.get('paymentType')" required>
+            <app-select id="paymentType" [options]="paymentTypes" formControlName="paymentType" placeholder="Payment Type"
+              fullwidth cardValue required>
+            </app-select>
+          </card-row>
+        </card-col>
+        
+        <card-row inputId="amount" [control]="entry.get('amount')" required>
+          <input
+            type="number"
+            class="form-control"
+            formControlName="amount"
+            placeholder="Refund Amount"
+            [class.invalid]="entry.get('amount')?.invalid"
+            cardValue
+          />
+        </card-row>
+
+        <!-- Delete Row -->
+        <button type="button" class="btn btn-secondary btn-icon btn-icon-remove" (click)="onRemoveManualEntry(i + (currentPage - 1) * itemsPerPage)">
+        </button>
+      </div>
+    </div>
+
+    <button type="button" class="add-row-button" class="btn btn-link add-row-button" (click)="onAddManualEntry()">
+      <span class="fa fa-plus"></span> Add Row
+    </button>
+  </form>
+  <div class="pagination-wrapper">
+    <div data-test-id="pages" class="pager">
+      <button data-test-id="pages-first-btn" [style.visibility]="isPrevButtonsShow ? 'visible' : 'hidden'"
+        class="pager__button pager__button--first" (click)="toPage(1)">
+      </button>
+      <button data-test-id="pages-prev-btn" [style.visibility]="isPrevButtonsShow ? 'visible' : 'hidden'"
+        class="pager__button pager__button--prev" (click)="prevPage()">
+      </button>
+      <ng-container *ngFor="let pageNumber of pageNumbers">
+        <button data-test-id="pages-page-btn" class="pager__button pager__button--page"
+        [style.visibility]="totalPages === 1 ? 'hidden' : 'visible'"
+          [ngClass]="{ 'pager__button--selected': pageNumber === currentPage }" (click)="toPage(pageNumber)">
+          {{ pageNumber }}
+        </button>
+      </ng-container>
+      <button data-test-id="pages-next-btn" [style.visibility]="isNextButtonsShow ? 'visible' : 'hidden'"
+        class="pager__button pager__button--next" (click)="nextPage()">
+      </button>
+      <button data-test-id="pages-last-btn" [style.visibility]="isNextButtonsShow ? 'visible' : 'hidden'"
+        class="pager__button pager__button--last" (click)="toPage(totalPages)">
+      </button>
+    </div>
+  </div>
+</div>

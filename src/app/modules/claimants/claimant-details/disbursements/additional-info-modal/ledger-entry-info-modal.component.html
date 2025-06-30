@@ -1,0 +1,149 @@
+<modal (close)="onClose()">
+    <modal-header>{{title}}</modal-header>
+
+    <modal-body>
+        <form [formGroup]="form" class="modal-section-fixed ledger-entry-info-modal-form">
+          <div class="ledger-entry-info-modal-form-container">
+            <div class="modal-section">
+                <card hideSeparator>
+                    <card-col [width]="420" [labelWidth]="170">
+                        <card-row label="Ledger Entry Id" [value]="ledgerEntryInfo?.id"></card-row>
+                        <card-row label="Account Number" [value]="ledgerEntryInfo?.accountNumber"></card-row>
+                        <card-row label="Account Group" [value]="ledgerEntryInfo?.accountGroup"></card-row>
+                        <card-row label="Type" [value]="ledgerEntryInfo?.type"></card-row>
+                        <card-row label="Default Display" [value]="ledgerEntryInfo?.defaultDisplay"></card-row>
+                        <card-row label="Display Override" [value]="ledgerEntryInfo?.displayOverride"></card-row>
+                        <card-row label="Description" inputId="description" [control]="form.get('description')">
+                            <input
+                                [readonly]="ledgerEntryService.isPaid(ledgerEntryInfo)"
+                                type="text"
+                                class="form-control input-field"
+                                formControlName="description"
+                                id="description"
+                                cardValue
+                                maxLength="255" />
+                        </card-row>
+                    </card-col>
+
+                    <card-col [width]="400" [labelWidth]="170">
+                        <card-row label="Amount" [value]="ledgerEntryInfo?.amount | extendedCurrency"></card-row>
+                        <card-row label="Status" [value]="ledgerEntryInfo?.status?.name"></card-row>
+                        <card-row label="Date" [value]="ledgerEntryInfo?.lastModifiedDate | dateFormat"></card-row>
+
+                        <ng-container *ngIf="isPaymentAvailable; then paymentAvailable else notAvailable" >
+                        </ng-container>
+                        <ng-template #paymentAvailable>
+                            <card-row
+                                label="Payment Enabled"
+                                [control]="form.get('enabled')"
+                                [labelWidth]="170">
+                                <label class="form-check h-100" cardValue>
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        formControlName="enabled"
+                                        id="enabled"
+                                        disabled />
+                                    <span></span>
+                                </label>
+                            </card-row>
+                        </ng-template>
+
+                        <ng-template #notAvailable>
+                            <card-row label="Payment Enabled" value="{{showNone ? 'None' : '-'}}"></card-row>
+                        </ng-template>
+                        <card-row [marginTop]="10" [maxContentWidth]="600" label="Notes" inputId="notes" [control]="form.get('notes')">
+                          <textarea id="notes" maxlength="500" class="form-control not-resizable" formControlName="notes" cardValue></textarea>
+                        </card-row>
+                    </card-col>
+                </card>
+            </div>
+
+            <div *ngIf="paymentInstructionsVisible && ledgerEntryInfo" class="modal-section">
+                <card header="Payment Instructions" hideSeparator class="custom-card">
+                  <card-col [width]="420">
+                    <card-row inputId="paymentType" [control]="form.get('paymentType')" [noLabelPadding]="true" class="payment-type h-100">
+                      <div cardValue>
+                        <fieldset class="payment-type h-100" [ngStyle]="{width: paymentTypeWidth}" [disabled]="!paymentInstructionsEditable">
+                          <label>
+                            <input type="radio" formControlName="paymentType" id="paymentType" [value]="paymentTypes.Default" />
+                            <span class="payment-type__value">Default</span>
+                          </label>
+                          <label>
+                            <input type="radio" formControlName="paymentType" id="paymentType" [value]="paymentTypes.Individual" />
+                            <span class="payment-type__value">Special Instructions</span>
+                          </label>
+                          <label>
+                            <input type="radio" formControlName="paymentType" id="paymentType" [value]="paymentTypes.Split" />
+                            <span class="payment-type__value">Split</span>
+                          </label>
+                        </fieldset>
+                      </div>
+                    </card-row>
+                    <label class="form-check transfer" *ngIf="isTransferMethodVisible">
+                      <input type="checkbox" class="form-check-input" id="transfer" formControlName="transfer">
+                      <span>Transfer to Sub-Account First</span>
+                    </label>
+                  </card-col>
+                </card>
+                <app-payment-instructions-grid
+                    *ngIf="ledgerEntryInfo.id"
+                    [paymentType]="+form?.value.paymentType"
+                    [ledgerEntry]="ledgerEntryInfo"
+                    [defaultPayeeId]="defaultPayeeId"
+                    [readonly]="!paymentInstructionsEditable"
+                    [enableTransfer]="form?.value.transfer"
+                    (validate)="onValidate($event)"
+                    (isTransferMethod)="onTransferMethod($event)">
+                </app-payment-instructions-grid>
+            </div>
+
+            <div class="modal-section modal-section-last">
+              <card header="Payment Tracking" hideSeparator class="mb-2"></card>
+              <app-payment-tracking-list
+                [ledgerEntryId]="ledgerEntryId"
+                (closeModal)="onClose()"
+              ></app-payment-tracking-list>
+            </div>
+          </div>
+        </form>
+    </modal-body>
+
+    <modal-footer [useAutoHeight]="true">
+      <div class="errors-container">
+        <div class="errors-container__row" *ngFor="let validationError of validationErrors">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span class="errors-container__text">{{validationError}}</span>
+        </div>
+      </div>
+      <button
+          type="button"
+          class="btn modal-footer__btn modal-footer__btn--secondary"
+          (click)="onClose()">
+              Cancel
+      </button>
+      <button
+          *ngIf="paymentInstructionAuthorizable"
+          type="submit"
+          class="btn modal-footer__btn modal-footer__btn--primary"
+          asyncButton
+          [awaitedActionTypes]="awaitedActionTypes"
+          [disabled]="!ledgerEntryInfo || (paymentInstructionsVisible && !(paymentInstructionsGrid?.valid$ | async)) || 
+          this.paymentInstructionsGrid?.getGridApi()?.getSelectedRows()?.length === 0"
+          (click)="onAuthorize()">
+              <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+              Authorize
+      </button>
+      <button
+          *ngIf="paymentInstructionsEditable"
+          type="submit"
+          class="btn modal-footer__btn modal-footer__btn--primary"
+          asyncButton
+          [awaitedActionTypes]="isFormValid ? awaitedActionTypes : ''"
+          [disabled]="!ledgerEntryInfo || !paymentInstructionsEditable || (paymentInstructionsVisible && !(paymentInstructionsGrid?.valid$ | async))"
+          (click)="onSave()">
+              <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+              Save
+      </button>
+    </modal-footer>
+</modal>

@@ -1,0 +1,50 @@
+<modal (close)="close()">
+  <modal-header>
+    <span>Upload Progress</span>
+  </modal-header>
+  <modal-body>
+    <div class="modal-section modal-content" >
+      <div>
+        <div>
+          <div>{{ uploading ? 'Processing' : 'Processed'}}</div>
+        </div>
+        <div class="upload-progress-text">
+          {{ uploading ? '0' : '1'}} / 1
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" [style.width]="progressStyle"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-section" *ngIf="validationResult">
+      <div class="validation-result-box" [ngClass]="status">
+        <div class="d-flex justify-content-between mb-4">
+          <span class="fw-semibold">{{ status }}</span>
+          <img src="/assets/svg/status-{{ status === 'Error' ? 'error' : 'finalized' }}.svg" alt="">
+        </div>
+        <ul>
+          <li *ngFor="let msg of messages" [innerHTML]="msg"></li>
+        </ul>
+      </div>
+    </div>
+  </modal-body>
+  <modal-footer class="modal-footer">
+    <div>
+      <button
+        [disabled]="!uploading"
+        (click)="close()"
+        class="btn modal-footer__btn modal-footer__btn--secondary"
+      >
+        Cancel
+      </button>
+      <button
+        [disabled]="uploading"
+        (click)="close()"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+      >
+        Complete
+      </button>
+    </div>
+  </modal-footer>
+</modal>
+

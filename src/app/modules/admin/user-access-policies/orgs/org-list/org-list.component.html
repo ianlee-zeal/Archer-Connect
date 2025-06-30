@@ -1,0 +1,17 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBar$ | async"></app-action-bar>
+  <app-context-bar [title]="'Organizations Search'"></app-context-bar>
+
+  <!-- main listview -->
+  <div class="page-content">
+    <app-grid
+      [gridOptions]="gridOptions"
+      (gridReady)="gridReady($event)"
+      (loadData)="loadData($event)"
+      (newRecord)="addNewRecord()"
+      entityLabel="organizations"
+      [skipSetContentHeight]="true"
+      [gridId]="gridId">
+    </app-grid>
+  </div>
+</div>

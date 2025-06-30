@@ -1,0 +1,14 @@
+<div>
+    <span class="grid-title">
+        <i class="fas fa-exclamation-triangle"></i>
+        CRITICAL DEFICIENCIES
+    </span>
+    <app-invoice-archer-fees-deficiencies-critical-list [deficiencies]="criticalDeficiencies$"></app-invoice-archer-fees-deficiencies-critical-list>
+</div>
+<div class="mt-4">
+    <span class="grid-title">
+        <i class="grid-title__warning fas fa-exclamation-triangle"></i>
+        WARNING DEFICIENCIES
+    </span>
+    <app-invoice-archer-fees-deficiencies-warning-list [deficiencies]="warningDeficiencies$"></app-invoice-archer-fees-deficiencies-warning-list>
+</div>

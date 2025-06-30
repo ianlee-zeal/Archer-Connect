@@ -1,0 +1,16 @@
+<div class="move-check-address">
+  <card class="move-check-address__body" *ngFor="let address of moveCheckResults" hideSeparator>
+    <card-col [width]="200">
+      <a href="javascript:void(0)" (click)="addAddress(address)" class="move-check-address__link" *ngIf="canEdit">Add address</a>
+    </card-col>
+    <card-col [width]="205">
+      <app-address-verification-validated-line-item [address]="address"></app-address-verification-validated-line-item>
+    </card-col>
+    <card-col [width]="405"> Date Moved: {{ address.dateMoved | date: 'MM/yyyy' }} </card-col>
+  </card>
+  <card class="move-check-address__body" *ngIf="moveCheckResults?.length == 0" hideSeparator>
+    <card-col [width]="810">
+      No results available
+    </card-col>
+  </card>
+</div>

@@ -1,0 +1,9 @@
+:host {
+  @media screen and (max-width: 992px) {
+    .user-general-info {
+      .form-control {
+        width: 100% !important;
+      }
+    }
+  }
+}

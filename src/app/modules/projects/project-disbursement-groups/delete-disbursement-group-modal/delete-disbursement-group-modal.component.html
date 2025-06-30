@@ -1,0 +1,29 @@
+<modal (close)="onClose()">
+  <modal-header>Confirm</modal-header>
+
+  <modal-body>
+    <div class="modal-section"> 
+      Completing this action will delete all ledgers within this group and all related entries. Are you sure you want to delete the disbursement group?
+    </div>
+  </modal-body>
+
+  <modal-footer>
+    <div *ngIf="errorMessage$ | async as errorMessage" class="text-danger me-auto" style="white-space: pre-wrap;">
+      {{ errorMessage }}
+    </div>
+    <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onClose()">
+      Cancel
+    </button>
+    <button
+      type="button"
+      asyncButton
+      class="btn modal-footer__btn modal-footer__btn--primary"
+      [awaitedActionTypes]="awaitedSubmitActionTypes"
+      [disabled]="disabledDelete"
+      (click)="onDelete()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Delete
+    </button>
+  </modal-footer>
+</modal>

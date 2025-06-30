@@ -1,0 +1,62 @@
+@import "src/styles/variables.scss";
+@import "src/styles/colors";
+
+.grid-expansion-panel-row {
+  margin-left: 8px;
+
+  &__background {
+    background-color: $menu-color;
+    border-radius: 4px;
+    display: flex;
+  }
+
+  &__content {
+    margin: 5px 0px;
+  }
+}
+
+.grid-expansion-panel-row-element {
+  padding: 7px 8px;
+  &__value {
+    text-align: left;
+    color: $gray-dim;
+  }
+
+  &:last-child {
+    min-width: max-content;
+  }
+
+  &__right {
+    text-align: right;
+  }
+}
+
+.grid-expansion-panel__variances {
+  .expand-button {    
+    cursor: pointer;
+    color: $custom-navy;
+    &::before {
+      width: 18px;
+      height: 18px;
+      background-color: $menu-color;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5px;
+    }
+    &__text {
+      font-family: $open-sans-font-family;
+      font-weight: normal;
+      color: $label-color;
+    }
+  }
+}
+
+.expand-button {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  color: $custom-navy;
+  background-color: $white;
+}

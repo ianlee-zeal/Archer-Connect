@@ -1,0 +1,45 @@
+@import "../../../../styles/elements/charts";
+
+.row {
+  flex-wrap: nowrap;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.pie-chart {
+  min-width: 200px;
+
+  &__header {
+    height: 50px;
+  }
+
+  &__chart {
+    height: 300px;
+  }
+}
+
+.column-chart {
+  min-width: 390px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    padding-right: 10px;
+  }
+
+  &__chart {
+    height: 270px;
+  }
+}
+
+.phase-legend {
+  @extend .legend;
+  width: 300px;
+
+  &__item {
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+  }
+}

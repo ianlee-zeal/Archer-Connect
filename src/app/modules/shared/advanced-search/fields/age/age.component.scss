@@ -1,0 +1,46 @@
+@import "src/styles/variables.scss";
+
+.advanced-search-field-age {
+  display: flex;
+
+  &__type-container {
+    width: $advanced-search-condition-control-width;
+    margin-right: $advanced-search-controls-indent;
+  }
+
+  &__filter-container {
+    display: flex;
+  }
+
+  &__term-container {
+    width: $advanced-search-search-term-short-control-width;
+    margin-right: $advanced-search-controls-indent;
+  }
+
+  &__range-controls {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: nowrap !important;
+  }
+
+  &__range-controls > input {
+    width: 100px !important;
+  }
+  
+  &__range-controls > app-select {
+    width: 100px !important;
+  }
+  
+  &__delimiter {
+    font-style: italic;
+    width: 30px;
+    flex-shrink: 0;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  &__period-container {
+    width: 150px;
+    padding-left: 10px;
+  }
+}

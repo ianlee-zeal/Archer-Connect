@@ -1,0 +1,52 @@
+<form novalidate *ngIf="form" [formGroup]="form">
+  <table class="category-services">
+    <tbody>
+      <tr *ngIf="!products.controls?.length && !productCategory.childs.length">
+        <td class="product-category-status"></td>
+        <td class="service pb-1">No Services</td>
+        <td></td>
+      </tr>
+
+      <tr formArrayName="products" *ngFor="let product of products.controls; let i = index;" [ngClass]="productCategoryIndex && i==0 && 'row-bt'">
+        <ng-container [formGroupName]="i">
+          <ng-container [ngTemplateOutlet]="serviceTemplate"
+                        [ngTemplateOutletContext]="{ form: product, readOnly: readOnly, isFirst: i==0, isLast: i==products.length-1}">
+          </ng-container>
+        </ng-container>
+      </tr>
+    </tbody>    
+  </table>
+</form>
+
+
+<ng-template #serviceTemplate let-form='form' let-readOnly='readOnly' let-isFirst='isFirst' let-isLast='isLast'>
+  <ng-container [formGroup]="form">
+    <td class="product-category-status">
+      <b>{{form.value.isChildProductCategory && isFirst ? form.value.productCategoryShortName : ''}}</b>
+    </td>
+
+    <td class="service" [ngClass]="!isLast && 'row-bb'">
+      <label [readonlyForm]="readOnly" class="form-check">
+        <input 
+          type="checkbox" 
+          class="form-check-input" 
+          formControlName="isChecked" 
+          [id]="form.value.id" 
+          (change)="onServiceCheckboxChange($event.target.checked, form.get('id').value)">
+
+        <span [ngClass]="form.get('isChecked').errors?.required && 'error'"></span>
+      
+        <span class="form-check-label--ellipsis">{{form.value.name}}</span>
+        <div class="text-danger" *ngIf="form.get('isChecked').errors?.required">Required if conditions are selected</div>
+    </label>
+    </td>
+ 
+
+    <td class="conditions" [ngClass]="!isLast && 'row-bb'">
+      <app-engagement-conditions [readOnly]="readOnly" [product]="form.value" (conditionChanged)="onConditionChanged()" [isLastProduct]="isLast">
+      </app-engagement-conditions>
+    </td>
+
+    <td class="other-fields" colspan="4"></td>
+  </ng-container>
+</ng-template>

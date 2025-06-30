@@ -1,0 +1,49 @@
+<modal class="lien-processing-modal" (close)="onClose()">
+  <modal-header>Create New Finalization Batch</modal-header>
+    <modal-body>
+      <div class="lien-processing-modal__body">
+        <div class="modal-section" *ngIf="this.dropdownValues">
+          <ng-container *ngIf="status < statuses.Find; else progressBar">
+            <form *ngIf="dropdownValues.collectors" [formGroup]="form">
+                <card hideSeparator>
+                    <card-col [labelWidth]="160" [width]="550">
+                        <!--Collector Select-->
+                        <card-row label="Select Collector" inputId="collector" [control]="form.get('collector')" required>
+                            <app-select id="collector" [options]="dropdownValues.collectors"
+                             formControlName="collector" (onModelChange)="onCollectorChange($event)" optionAsValue required cardValue></app-select>
+                        </card-row>
+                    </card-col>
+                </card>
+            </form>
+          </ng-container>
+        </div>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <div *ngIf="errorMessage$ | async as errorMessage" class="lien-processing-modal__error-message text-danger">{{ errorMessage }}</div>
+
+      <button 
+        class="btn modal-footer__btn modal-footer__btn--secondary"
+        (click)="onClose()">
+        Cancel
+      </button>
+
+      <button
+        asyncButton
+        [awaitedActionTypes]="awaitedRunActionTypes"
+        type="submit"
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="finalizationStart()"
+        [ngClass]="{ disabled: !isValidSettings }"
+        [disabled]="!isValidSettings || isResultAvailable">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Save
+      </button>
+    </modal-footer>
+</modal>
+
+<ng-template #progressBar>
+    <app-upload-bulk-document-processing
+      [documentImport]="documentImport">
+    </app-upload-bulk-document-processing>
+  </ng-template>

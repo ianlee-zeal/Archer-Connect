@@ -1,0 +1,161 @@
+<div class="landing-page" *ngIf="!loading">
+  <div class="header">
+    <h2>{{ greetingMessage }}</h2>
+    <h3>{{ organizationName }}</h3>
+  </div>
+
+  <div style="width: 100%">
+    <div style="margin-top: 21px; margin-bottom: 52px;" class="row">
+      <div class="col-6">
+        <app-landing-page-global-search [searchDropdownOptions]="quickSearchOption"></app-landing-page-global-search>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <app-info-card *ngIf="responseNeededCount != null" class="col-6 square-info-card cursor-pointer" [isSquareCard]="true" (click)="onClickContact()">
+            <div *ngIf="canAccessANDIMessaging && responseNeededCount != -1; else contactCard" class="card-content" infoCardData>
+              <img src="assets/svg/andi-messaging-logo.svg" alt="Messaging Icon" class="card-icon">
+              <span class="card-count primary-color-text">{{ responseNeededCount }}</span>
+            </div>
+          </app-info-card>
+          <ng-template #contactCard>
+              <div class="card-content" infoCardData>
+                <span class="card-md-text primary-color-text mb-2">Contact ARCHER</span>
+                <img src="assets/svg/paper-plane.svg" alt="Contact Icon" class="card-icon">
+              </div>
+          </ng-template>
+
+          <ng-container *ngIf="canAccessGlobalDeficiencies; else deficienciesComingSoon">
+            <app-info-card *ngIf="deficienciesCount > 0" class="col-6 square-info-card cursor-pointer" [state]="InfoCardState.Warning" [isSquareCard]="true" (click)="onRedirectTo('home/global-deficiencies')">
+              <div class="card-content" infoCardData>
+                <span class="card-md-text secondary-color-text inline-items">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>Deficiencies</span>
+                </span>
+                <span class="card-xlg-text secondary-color-text">{{ deficienciesCount | formatLargeNumber}}</span>
+              </div>
+            </app-info-card>
+            <app-info-card *ngIf="deficienciesCount === 0" class="col-6 square-info-card" [state]="InfoCardState.Final" [isSquareCard]="true">
+              <div class="card-content" infoCardData>
+                <span class="card-md-text success-color-text">Deficiencies</span>
+                <img src="assets/svg/check_solid_green.svg" alt="Checkmark Icon" class="card-icon">
+                <span class="card-sm-text">No active deficiencies</span>
+              </div>
+            </app-info-card>
+          </ng-container>
+          <ng-template #deficienciesComingSoon>
+            <app-info-card [state]="InfoCardState.Warning" class="col-6 square-info-card" [isSquareCard]="true">
+              <div class="card-content" infoCardData>
+                <span class="card-md-text secondary-color-text">Deficiencies</span>
+                <img src="assets/svg/bullhorn.svg" alt="Bullhorn Icon" class="card-icon">
+                <span style="font-weight: 600">Coming Soon</span>
+              </div>
+            </app-info-card>
+          </ng-template>
+
+        </div>
+        <div style="margin-top: 25px" class="col">
+          <div *ngIf="canCreateDocumentBatches" (click)="onClickUpload()" class="col-6 border-info-card">
+            <div class="card-content primary-color-text">
+              Upload Documents
+              <span>
+                <img src="assets/svg/upload-white.svg" alt="Upload Icon" class="card-icon">
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 25px" class="col">
+          <ng-container *ngIf="pinnedPages$ | async as pinnedPages">
+            <app-info-card class="expanded-info-card">
+              <div class="card-content" infoCardData>
+                <div class="card-title">
+                  <span class="primary-color-text">Pinned Pages</span>
+                  <img src="assets/images/thumbtack-outlined.svg" class="pin-icon" alt="Pin Icon" />
+                </div>
+                <div class="show-all" *ngIf="pinnedPages.length > 5" (click)="togglePinnedPages()">
+                  <span>{{ showAllPinnedPages ? 'Hide' : 'Show All' }}</span>
+                  <span class="fa" [ngClass]="showAllPinnedPages ? 'fa-chevron-up' : 'fa-chevron-down'"></span>
+                </div>
+              </div>
+              <div *ngIf="pinnedPages.length > 0; else emptyPinnedPages" class="pinned-pages">
+                <div class="primary-color-text pinned-pages__item" (click)="onRedirectTo(item.url)" *ngFor="let item of (showAllPinnedPages ? pinnedPages : (pinnedPages | slice:0:5))">
+                  <div class="pinned-pages__info">
+                    <img class="orange-icon" [src]="IconHelper.getIconByEntityType(item.entityTypeId)" alt="Entity Icon" />
+                    <div class="item-info" ellipsisTooltip>{{ item.name }}</div>
+                  </div>
+                  <img src="assets/images/thumbtack-solid.svg" class="pin-icon" alt="Pin Icon" />
+                </div>
+              </div>
+              <ng-template #emptyPinnedPages>
+                <div class="empty-container">
+                  Pin a Claimant or Project for quick access
+                </div>
+              </ng-template>
+            </app-info-card>
+          </ng-container>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div style="margin-bottom: 25px" class="col">
+           <app-info-card class="expanded-info-card">
+              <div class="card-content" infoCardData>
+                <div class="card-title">
+                  <span class="primary-color-text">Shared Documents</span>
+                </div>
+                <div class="show-all" *ngIf="documents.length > 5" (click)="onRedirectTo('dashboard/documents')">
+                  <span>Show All</span>
+                  <span class="fa fa-arrow-right"></span>
+                </div>
+              </div>
+              <div *ngIf="documents?.length > 0; else emptySharedDocuments" class="shared-documents">
+                <div class="primary-color-text shared-documents__item col" (click)="onClickDownload(item.id)" *ngFor="let item of documents | slice:0:5">
+                  <div class="shared-documents__info col-6">
+                    <img *ngIf="IconHelper.getMimeIconByExtension(item.mimeType.extension) as iconUrl" [src]="iconUrl" />
+                    <div ellipsisTooltip>{{ item.name }}</div>
+                  </div>
+                  <span>{{item.createdDate | dateFormat}}</span>
+                  <span class="item-info" ellipsisTooltip class="col-3">{{item.documentType.name}}</span>
+                  <img src="assets/svg/download.svg" class="download-icon col-1" alt="Download Icon" />
+                </div>
+              </div>
+              <ng-template #emptySharedDocuments>
+                <div class="empty-container">
+                  Documents ARCHER shares will be available here
+                </div>
+              </ng-template>
+
+              <div *ngIf="loadingDocuments" class="loading-spinner">
+                <app-spinner></app-spinner>
+              </div>
+            </app-info-card>
+        </div>
+        <ng-container *ngIf="recentViews$ | async as recentViews">
+          <app-info-card class="col-6 expanded-info-card">
+            <div class="card-content" infoCardData>
+              <div>
+                <span class="card-title primary-color-text">Recently Viewed</span>
+              </div>
+              <div class="show-all">
+                <img style="cursor: default !important; width: 18px" src="assets/svg/eye.svg" alt="Eye Icon">
+              </div>
+            </div>
+            <div *ngIf="recentViews.length > 0; else emptyRecentlyViews" class="recently-viewed">
+              <div class="primary-color-text recently-viewed__item" (click)="onRedirectTo(item.url)" *ngFor="let item of recentViews | slice:0:5">
+                <img [src]="IconHelper.getIconByEntityType(item.entityTypeId)" alt="Entity Icon" class="recently-viewed__icon orange-icon">
+                <div class="item-info" ellipsisTooltip>{{ item.name }}</div>
+              </div>
+            </div>
+            <ng-template #emptyRecentlyViews>
+              <div class="empty-container">
+                View a Project or Claimant to surface recently viewed pages
+              </div>
+            </ng-template>
+          </app-info-card>
+        </ng-container>
+      </div>
+    </div>
+
+  </div>
+
+</div>

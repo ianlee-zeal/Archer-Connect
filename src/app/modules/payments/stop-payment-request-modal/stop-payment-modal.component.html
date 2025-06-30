@@ -1,0 +1,377 @@
+<modal (close)="onCancel()">
+    <modal-header>
+      <span>Stop Payment Request</span>
+      <div *ngIf="canToggleMode && !canEdit && payment" class="me-3">
+        <button [disabled]="!optionsReasonSpec || !optionsReasonSpec.length" class="btn btn-link btn-details-edit" (click)="toggleViewMode()">Edit</button>
+      </div>
+    </modal-header>
+
+    <modal-body  *ngIf="(payment$ | async) as payment">
+      <form [formGroup]="form">
+        <div class="modal-section">
+          <card hideSeparator>
+            <card-col [width]="480" [labelWidth]="160">
+              <card-row label="Name" [value]="payment?.payeeName"></card-row>
+              <card-row label="Phone Number" [value]="payment?.phoneNumber"></card-row>
+              <card-row label="Payer Name" [value]="payment?.payerAccount?.organization?.name"></card-row>
+              <card-row label="Payee ID" [value]="payment?.payeeExternalId"></card-row>
+            </card-col>
+            <card-col [labelWidth]="160" [width]="480">
+              <card-row label="Date on Check" [value]="payment?.dateSent | date: 'MM/dd/yyyy'">
+              </card-row>
+              <card-row label="Check Number" [value]="payment?.referenceNumber"></card-row>
+              <card-row label="Amount" [value]="(payment?.amount | extendedCurrency)"></card-row>
+              <card-row label="Check Address" [value]="getFullPayeeAddress()"></card-row>
+            </card-col>
+          </card>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section__title">Check Verification</div>
+          <app-spr-check-verification-list></app-spr-check-verification-list>
+        </div>
+        <div *ngIf="canEdit; else viewTemplate" class="modal-section">
+          <card hideSeparator>
+            <card-col [width]="680" [labelWidth]="200">
+              <card-row  [maxContentWidth]="600" label="Resend Reason" [control]="form.get('resendReason')" required>
+               <app-select 
+                id="resendReason"
+                placeholder="Select an option"
+                optionAsValue
+                [fullwidth]="true"
+                class="w-100"
+                [disabled]="!canEditResendReason()"
+                formControlName="resendReason"
+                (onModelChange)="onResendReasonSelected($event)"
+                [options]="(dropDownValues$ | async).resendReasons" cardValue >
+                </app-select>
+              </card-row>
+              <card-row 
+                [marginTop]="10" 
+                [maxContentWidth]="600" 
+                [labelWidth]="200" 
+                [containerWidth]="680" 
+                *ngIf="relatedOptionsReasonSpec && relatedOptionsReasonSpec.length" 
+                label="Specifications" 
+                [control]="form.get('resendReasonSpecification')"
+                [required]="isReasonSpecRequired">
+                  <app-select 
+                    [disabled]="!canEditResendReason()"
+                    id="resendReasonSpecification"
+                    placeholder="Select an option"
+                    optionAsValue
+                    [fullwidth]="true"
+                    class="w-100"
+                    formControlName="resendReasonSpecification"
+                    (onModelChange)="onResendReasonSpecSelected($event)" 
+                    [options]="relatedOptionsReasonSpec" cardValue >
+                  </app-select>
+               </card-row>
+              <card-row [marginTop]="10" [maxContentWidth]="600" label="Comments" inputId="comments" [control]="form.get('comments')" [required]="isCommentFieldRequired">
+                <div class="textarea-wrapper" cardValue>
+                  <textarea id="comments" [characterCountContainer]="charCount" maxlength="200" class="form-control" formControlName="comments" placeholder="You can add comments to the request"></textarea>
+                  <span class="char-count" #charCount></span>
+                </div>
+              </card-row>                  
+              <card-row [marginTop]="10" [maxContentWidth]="600" label="Add SPR Attachments" [labelWidth]="175" [marginTop]="15" [required]="isAttachmentsFieldsRequired">
+                  <app-drag-and-drop
+                    [isSelectButtonInside]="true"
+                    class="drag-drop-modal w-100" 
+                    [valueClass]="'drop-container__drop-zone__grey'"
+                    (filesSelected)="onFileSelected($event[0])"
+                    [allowedFileTypes]="allowedExtensions$ | async" 
+                    [selectedFile]="selectedFile"
+                    cardValue>
+                  </app-drag-and-drop>
+              </card-row>
+              <ng-container *ngIf="attachments && attachments.length; then selectedFileTemplate"></ng-container>
+              <ng-container *ngIf="qsfAcctAttachments && qsfAcctAttachments.length; then selectedQSFFileTemplate"></ng-container>
+            </card-col>
+          </card>
+        </div>
+        <div class="modal-section stop-payment-modal__verify-address">
+          <card formGroupName="addressFields" *ngIf="canEditAddress" header="Verify Address" hideSeparator>
+            <card-col [width]="480" [labelWidth]="170">
+              <card-row
+                label="Address Line One"
+                inputId="line1"
+                [control]="form.get('addressFields.line1')"
+                required
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="line1"
+                  id="line1"
+                  cardValue
+                  maxLength="255"
+                />
+              </card-row>
+              <card-row
+                label="Address Line Two"
+                inputId="line2"
+                [control]="form.get('addressFields.line2')"
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="line2"
+                  id="line2"
+                  cardValue
+                  maxLength="255"
+                />
+              </card-row>
+              <card-row label="City" inputId="city" [control]="form.get('addressFields.city')" required>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="city"
+                  id="city"
+                  maxLength="255"
+                  cardValue
+                />
+              </card-row>
+              <card-row
+                label="State"
+                inputId="state"
+                [control]="form.get('addressFields.state')"
+                required
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="state"
+                  id="state"
+                  maxLength="10"
+                  cardValue
+                />
+              </card-row>
+            </card-col>
+            <card-col [width]="400" [labelWidth]="100">
+              <card-row
+                label="Zip Code"
+                inputId="zip"
+                [control]="form.get('addressFields.zip')"
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="zip"
+                  id="zip"
+                  maxLength="20"
+                  cardValue
+                />
+              </card-row>
+              <card-row
+                label="Country"
+                inputId="countryName"
+                [control]="form.get('addressFields.countryName')"
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="countryName"
+                  [ngbTypeahead]="countrySearch"
+                  (change)="onCountryChange($event)"
+                  id="countryName"
+                  cardValue
+                />
+              </card-row>
+              <card-row label="Type" inputId="type" [control]="form.get('addressFields.type')" required>
+                <select
+                  id="type"
+                  class="form-control"
+                  formControlName="type"
+                  [compareWith]="dropdownComparator"
+                  cardValue
+                >
+                  <option
+                    *ngFor="let type of addressTypesDropdownValues$ | async"
+                    [ngValue]="type"
+                  >
+                    {{ type.name }}
+                  </option>
+                </select>
+              </card-row>
+              <card-row>
+                <button
+                [disabled]="!isValidAddress"
+                [ngClass]="{ disabled: !isValidAddress}" 
+                type="button" 
+                class="btn btn-primary stop-payment-modal__verify-address__change-address-btn"
+                (click)="onVerifyAddress()"
+                cardValue>
+                Verify Address
+                </button>
+              </card-row>
+            </card-col>
+          </card>
+          <div *ngIf="!canEditAddress" class="verify-address-header container-with-edit-date">
+            <span class="verify-address-header__title">Verify Address</span>
+            <span *ngIf="!canEdit && canShowEditMadeDate(payment.stopPaymentRequest.addressLink?.createdDate)"  class="container-with-edit-date__edit-made">Edit made on {{payment.stopPaymentRequest.requestInformationUpdatedDate | dateFormat: true }}</span>
+          </div>
+          <card *ngIf="!canEditAddress" hideSeparator >
+            <card-col [width]="480" [labelWidth]="160">
+              <card-row label="Address Line One" [value]="payment?.stopPaymentRequest?.addressLink?.line1 || address?.line1"></card-row>
+              <card-row label="Address Line Two" [value]="payment?.stopPaymentRequest?.addressLink?.line2 || address?.line2"></card-row>
+              <card-row label="City" [value]="payment?.stopPaymentRequest?.addressLink?.city || address?.city"></card-row>
+              <card-row label="State" [value]="payment?.stopPaymentRequest?.addressLink?.state || address?.state"></card-row>
+            </card-col>
+            <card-col [labelWidth]="180" [width]="480">
+              <card-row label="Zip Code" [value]="payment?.stopPaymentRequest?.addressLink?.zip || address?.zip"></card-row>
+              <card-row label="Country" [value]="payment?.stopPaymentRequest?.addressLink?.countryName || address?.countryName"></card-row>
+              <card-row label="Type" [value]="payment?.stopPaymentRequest?.addressLink?.type?.name || address?.type?.name"></card-row>
+              <card-row *ngIf="canEdit" label="Is Address Correct?" [control]="form.get('isAddressCorrect')" [maxContentWidth]="200">
+                <app-yes-no-toggle [disabled]="isAddressChangeDisabled" cardValue formControlName="isAddressCorrect"></app-yes-no-toggle>
+              </card-row>
+              <card-row>
+                <button
+                *ngIf="!form.value.isAddressCorrect || form.value.isAddressCorrect === toggleStateEnum.No" 
+                type="button" 
+                class="btn btn-primary stop-payment-modal__verify-address__change-address-btn"
+                (click)="onChangeAddress()"
+                cardValue>
+                Change Address
+                </button>
+              </card-row>
+            </card-col>
+          </card>
+        </div>
+      </form>
+      <div *ngIf="!canEdit" class="modal-section stop-payment-info-container">
+        <div class="stop-payment-info">
+          <label class="stop-payment-info__label">Created By:</label>
+          <div class="stop-payment-info__value">{{payment.stopPaymentRequest.createdBy?.displayName || '-'}}</div>
+        </div>
+        <div class="stop-payment-info">
+          <label class="stop-payment-info__label">Created Date:</label>
+          <div class="stop-payment-info__value">{{(payment.stopPaymentRequest.createdDate | dateFormat) || '-'}}</div>
+        </div>
+        <div  class="stop-payment-info">
+          <label class="stop-payment-info__label">Last Modified By:</label>
+          <div class="stop-payment-info__value">{{payment.stopPaymentRequest.lastModifiedBy?.displayName || '-'}}</div>
+        </div>
+        <div  class="stop-payment-info">
+          <label class="stop-payment-info__label">Last Modified Date:</label>
+          <div class="stop-payment-info__value">{{(payment.stopPaymentRequest.lastModifiedDate | dateFormat) || '-'}}</div>
+        </div>
+      </div>
+    </modal-body>
+
+    <modal-footer *ngIf="canEdit">
+      <div *ngIf="warningMsg" class="me-auto">
+        {{ warningMsg }}
+      </div>
+      <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary"
+          (click)="onCancel()">
+          Close
+      </button>
+      <button
+        asyncButton
+        [awaitedActionTypes]="awaitedActionTypes"
+        type="submit" 
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        [ngClass]="{ disabled: form.invalid || !isValidAttachment }" 
+        [disabled]="form.invalid || !isValidAttachment" 
+        (click)="onSubmit()">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        {{ this.editMode ? 'Save Changes' :  'Submit'}}
+      </button>
+    </modal-footer>
+</modal>
+
+<ng-template #selectedFileTemplate>
+  <card-row label="SPR Attachments" [labelWidth]="200">
+      <div class="stop-payment-modal__file-panel" cardValue>
+        <div class="stop-payment-modal__uploaded-attachments-container w-100">
+          <div class="stop-payment-modal__uploaded-attachment" *ngFor="let attachment of attachments">
+            <span class="stop-payment-modal__file-name">{{ attachment.name }}</span>
+            <button
+                type="button"
+                class="btn btn-icon btn-icon-remove"
+                (click)="onRemoveSelectedFile(attachment)"
+                title="Delete Document">
+            </button>
+          </div>
+        </div>
+      </div>
+  </card-row>
+</ng-template>
+
+<ng-template #selectedQSFFileTemplate>
+  <card-row label="QSF Acct Attachments" [labelWidth]="200">
+      <div class="stop-payment-modal__file-panel" cardValue>
+        <div class="stop-payment-modal__uploaded-attachments-container w-100">
+          <div class="stop-payment-modal__uploaded-attachment" *ngFor="let attachment of qsfAcctAttachments">
+            <span class="stop-payment-modal__file-name">{{ attachment.name }}</span>
+            <button
+                *permissions="DeleteQSFAcctAttachmentsPermission"
+                type="button"
+                class="btn btn-icon btn-icon-remove"
+                (click)="onRemoveQSFAcctAttachments(attachment)"
+                title="Delete Document">
+            </button>
+          </div>
+        </div>
+      </div>
+  </card-row>
+</ng-template>
+
+<ng-template #viewTemplate>
+  <div class="modal-section">
+    <card hideSeparator>
+      <card-col [width]="480" [labelWidth]="160">
+          <card-row label="Resend Reason" [value]="payment.stopPaymentRequest.resendReason?.name"></card-row>  
+       </card-col>
+      <card-col>
+        <card-row label="Specifications" [value]="payment.stopPaymentRequest.resendReasonSpecification?.name"></card-row>
+      </card-col>
+    </card>
+  </div>
+  <div class="modal-section">
+    <card hideSeparator>
+      <card-col [labelWidth]="185">
+        <card-row label="Comments">
+          <div class="container-with-edit-date" cardValue>
+            <span  [ngClass]="{'container-with-edit-date__edited-value': canShowEditMadeDate(payment.stopPaymentRequest.note?.createdDate),'container-with-edit-date__comments': !canShowEditMadeDate(payment.stopPaymentRequest.note?.createdDate)}" class="card-row__value form-control-plaintext">
+              {{payment.stopPaymentRequest.note?.html}}
+            </span>
+            <span *ngIf="canShowEditMadeDate(payment.stopPaymentRequest.note?.createdDate)"  class="container-with-edit-date__edit-made">Edit made on {{payment.stopPaymentRequest.requestInformationUpdatedDate | dateFormat: true }}</span>
+          </div>
+          
+        </card-row>
+        <card-row label="SPR Attachments" [marginTop]="10">
+          <div *ngIf="payment.stopPaymentRequest.sprAttachments && payment.stopPaymentRequest.sprAttachments.length" class="stop-payment-modal__file-panel" cardValue>
+            <div class="stop-payment-modal__uploaded-attachments-container">
+              <div class="stop-payment-modal__uploaded-attachment" *ngFor="let attachment of payment.stopPaymentRequest.sprAttachments">
+                <span class="stop-payment-modal__file-name">{{ attachment.fileName }}</span>
+                <button
+                  type="button"
+                  class="btn btn-icon btn-icon-download"
+                  (click)="onDownloadDocument(attachment.id)"
+                  title="Download Document">
+                </button>
+              </div>
+            </div>
+            <span *ngIf="canShowEditMadeDateOnAttachments()" class="container-with-edit-date__edit-made">Edit made on {{payment.stopPaymentRequest.requestInformationUpdatedDate | dateFormat: true }}</span>
+          </div>
+        </card-row>
+        <card-row label="QSF Acct Attachments" [marginTop]="10">
+          <div *ngIf="payment.stopPaymentRequest.qsfAcctAttachments && payment.stopPaymentRequest.qsfAcctAttachments.length" class="stop-payment-modal__file-panel" cardValue>
+            <div class="stop-payment-modal__uploaded-attachments-container">
+              <div class="stop-payment-modal__uploaded-attachment" *ngFor="let attachment of payment.stopPaymentRequest.qsfAcctAttachments">
+                <span class="stop-payment-modal__file-name">{{ attachment.fileName }}</span>
+                <button
+                  type="button"
+                  class="btn btn-icon btn-icon-download"
+                  (click)="onDownloadDocument(attachment.id)"
+                  title="Download Document">
+                </button>
+              </div>
+            </div>
+            <span *ngIf="canShowEditMadeDateOnQSFAttachments()" class="container-with-edit-date__edit-made">Edit made on {{payment.stopPaymentRequest.requestInformationUpdatedDate | dateFormat: true }}</span>
+          </div>
+        </card-row>
+      </card-col>
+    </card>
+  </div>
+</ng-template>

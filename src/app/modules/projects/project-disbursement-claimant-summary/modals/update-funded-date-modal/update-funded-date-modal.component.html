@@ -1,0 +1,53 @@
+<modal (close)="onClose()">
+    <modal-header>
+      <span>Update Funded Date</span>
+    </modal-header>
+
+    <modal-body>
+        <div  class="modal-section">
+            <app-update-funded-date-selected-list [projectId]="projectId" [updatedTimes]="updatedTimes"></app-update-funded-date-selected-list>
+            <div class="section-content">
+                <p>To update the funded date, choose the date and complete the update action.</p>
+                <form [formGroup]="form">
+                    <card hideSeparator>
+                        <card-col [width]="500" [labelWidth]="230">
+                            <card-row label="Selected date" inputId="fundedDate" [control]="form.get('fundedDate')" required>
+                                <app-date-selector
+                                    class="date-range__date-selector"
+                                    id="fundedDate"
+                                    formControlName="fundedDate"
+                                    fullwidth
+                                    cardValue>
+                                </app-date-selector>
+                            </card-row>    
+                        </card-col>
+                        <card-col *ngIf="isShowWarning" [width]="500" [labelWidth]="0">
+                            <card-row label="">
+                                <div class="text-danger small w-100" cardValue>You have selected individuals that already have a funded date. Completing this action will override existing dates.</div>
+                            </card-row>    
+                        </card-col>
+                    </card>
+                </form>
+            </div>
+        </div>
+    </modal-body>
+
+    <modal-footer>
+      <div *ngIf="errorText" class="text-danger small w-100">{{ errorText }}</div>
+
+      <button type="button" class="btn modal-footer__btn modal-footer__btn--secondary" (click)="onClose()">
+        Close
+      </button>
+      <button
+        class="btn modal-footer__btn modal-footer__btn--primary"
+        (click)="onUpdate()"
+        asyncButton
+        [awaitedActionTypes]="submitButtonAwaitedActions"
+        [disabled]="isButtonDisabled">
+        <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+        Update
+    </button>
+    </modal-footer>
+</modal>
+
+

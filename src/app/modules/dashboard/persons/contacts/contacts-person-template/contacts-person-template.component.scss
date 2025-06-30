@@ -1,0 +1,28 @@
+.ssn-sequence {
+    .form-group {
+      position: relative;
+  
+      &:not(:last-child):after {
+        content: '-';
+        position: absolute;
+        top: 0;
+        right: -3px;
+      }
+    }
+  }
+
+.modal-section {
+    margin-bottom: 0;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.card-row {
+  &__content--editable {
+    max-width: 100%;
+    justify-content: flex-end;
+    position: relative;
+    left: 6px;
+    bottom: 15px;
+  }
+}
+

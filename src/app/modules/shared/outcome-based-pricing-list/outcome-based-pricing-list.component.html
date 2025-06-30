@@ -1,0 +1,16 @@
+<div>
+  <app-action-bar 
+    *ngIf="canEdit" 
+    [actionHandlers]="actionBarActionHandlers">
+  </app-action-bar>
+  <div>
+    <app-grid 
+      isContentAutoHeight="true" 
+      entityLabel="Outcome Based Pricing" 
+      [gridId]="gridId" 
+      [gridOptions]="gridOptions"
+      (gridReady)="gridReady($event)" 
+      (loadData)="loadData($event)">
+    </app-grid>
+  </div>
+</div>

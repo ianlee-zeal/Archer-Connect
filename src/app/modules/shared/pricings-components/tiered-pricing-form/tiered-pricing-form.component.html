@@ -1,0 +1,16 @@
+<form [formGroup]="form" novalidate>
+    <card hideSeparator>
+        <card-col [width]="760" [labelWidth]="250">
+            <card-row [maxContentWidth]="500" [containerWidth]="760" label="Range">
+                <div cardValue class="range-container">
+                    <app-range-input class="range-input" formControlName="range"></app-range-input>
+                    <button type="button" class="btn btn-secondary btn-icon btn-icon-remove" (click)="onDeleteClick()"></button>
+                </div>
+            </card-row>
+    
+            <card-row [maxContentWidth]="500" [containerWidth]="760" [marginTop]="15" label="Tier Price">
+                <app-price-input cardValue formControlName="price"></app-price-input>
+            </card-row>
+        </card-col>
+    </card>
+</form>

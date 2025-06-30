@@ -1,0 +1,177 @@
+@import "src/styles.variables.scss";
+@import "src/styles/variables.scss";
+
+.upload-file {
+    position: relative;
+    border-radius: 4px;
+    font-size: 12px;
+
+    .uploader {
+        color: #333;
+        margin-top: 20px;
+        margin-left: 4px;
+
+        a {
+            margin-left: 16px;
+            font-size: 15px;
+        }
+
+        span {
+            img {
+                height: 16px;
+                width: 16px;
+            }
+
+            a {
+                font-size: 16px;
+                margin-left: 10px;
+                border-bottom: 1px solid $gray-dim;
+            }
+        }
+    }
+
+    .exceeds-file-limit {
+        display: inline-block;
+        margin-top: 10px;
+        gap: 4px;
+        border-radius: 4px;
+        padding: 3px 3px;
+        background: $pale-navy;
+        font-size: 17px;
+        color: #1567CD;
+        font-weight: 600;
+    }
+
+    .file-tiles-container {
+        display: grid;
+        gap: 12px;
+        width: 100%;
+
+        &.columns-1 {
+            grid-template-columns: 1fr;
+        }
+
+        &.columns-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        &.columns-2.single-item-span .file-tile {
+            grid-column: span 2;
+        }
+    }
+
+    .file-tile {
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid $gray;
+        border-radius: 5px;
+        padding: 7px 10px;
+        margin-top: 8px;
+        font-size: 13px;
+        background-color: white;
+        width: 100%;
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            min-width: 30%;
+            max-width: 70%;
+
+            .remove-button {
+                margin-right: 12px;
+                background: none;
+                border: none;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+            .file-name-icon {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                min-width: 0;
+                max-width: 100%;
+
+                .file-name {
+                    max-width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: inline-block;
+                }
+
+                .file-icon {
+                    width: 18px;
+                    height: 18px;
+                    flex-shrink: 0;
+                    margin-right: 10px;
+                }
+            }
+        }
+
+        .file-status {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            text-align: right;
+            flex: 0 1 20%;
+
+            &.uploading {
+                flex: 0 1 50%;
+            }
+
+            &.error {
+                flex: 0 1 40%;
+            }
+
+            .success-icon {
+                opacity: 0;
+                transform: scale(0.8);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+
+                &.visible {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            .error-message {
+                color: #B11B1B;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .progress-bar-container {
+                height: 10px;
+                width: 100%;
+                background-color: #E3E3E3;
+                border-radius: 10px;
+                overflow: hidden;
+
+                .progress-bar {
+                    height: 100%;
+                    background: linear-gradient(90deg, #00A14B 25%, #66d368 50%, #00A14B 75%);
+                    background-size: 200% 100%;
+                    border-radius: 10px;
+                    animation: shift 2s linear infinite;
+                    transition: width 0.3s ease-in-out;
+                }
+            }
+        }
+
+        @keyframes shift {
+            0% {
+                background-position: 140% 0;
+            }
+
+            100% {
+                background-position: -30% 0;
+            }
+        }
+    }
+}

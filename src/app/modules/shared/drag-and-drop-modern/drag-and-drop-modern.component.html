@@ -1,0 +1,27 @@
+<div class="drop-container">
+  <div [className]="'drop-container__drop-zone' + (valueClass || '')" appDragAndDrop (filesDropped)="onFilesDropped($event)" [stopPropagation]="stopPropagation" [multiple]="multiple" [onError]="onError">
+  <div>
+    <div (click)="multiple ? selectFilesInput.click() : selectFileInput.click()">
+      <img src="assets/svg/upload-round.svg" alt="Upload Icon" class="drop-container__upload-icon">
+      <div class="drop-text">
+        <span style="font-size: 24px;">Drag and Drop</span>
+      </div>
+      <div class="drop-text">
+        <span style="font-size: 16px;">or Upload files here</span>
+      </div>
+      <div class="drop-text">
+        <span style="font-size: 10px;">250 File Quantity Limit - No larger than 50mb each</span>
+      </div>
+      <div *ngIf="error">
+        <span class="fa fa-times-circle drop-container__icon drop-container__icon--error"></span>
+        <span>{{ error }}</span>
+      </div>
+    </div>
+    <input type="file" #selectFileInput (change)="onFilesAdded(selectFileInput)" accept="{{ allowedTypesCSV }}" hidden />
+    <input type="file" #selectFilesInput (change)="onFilesAdded(selectFilesInput)" accept="{{ allowedTypesCSV }}" hidden multiple />
+  </div>
+</div>
+</div>
+
+
+

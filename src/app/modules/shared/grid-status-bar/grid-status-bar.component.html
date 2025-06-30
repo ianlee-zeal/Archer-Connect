@@ -1,0 +1,35 @@
+<div
+  *ngIf="pager"
+  data-test-id="grid-status"
+  class="grid-status-bar">
+  <div
+    *ngIf="!loading ? pager.totalCount > 0 : pager.totalCount > 1"
+    class="grid-status-bar__state">
+    <div>
+      Showing
+      <span class="fw-bold">
+        {{ firstOnPage | number }}-{{ lastOnPage | number }}
+      </span>
+      of
+      <span class="fw-bold">
+        {{ pager.totalCount | number }}
+      </span>
+      {{ entityLabel }}
+      <span
+        *ngIf="isSelectedVisible"
+        class="grid-status-bar__selected-count">
+        ({{selectedCount}} Selected)
+      </span>
+    </div>
+  </div>
+  <app-grid-pager
+    *ngIf="isVisible"
+    [pager]="pager"
+    (toPage)="toPage($event)">
+  </app-grid-pager>
+  <app-records-per-page
+    [pager]="pager"
+    [additionalPageItemsCountValues]="additionalPageItemsCountValues"
+    (itemsPerPageChange)="itemsPerPageChange.emit($event)">
+  </app-records-per-page>
+</div>

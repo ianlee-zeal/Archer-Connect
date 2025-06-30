@@ -1,0 +1,43 @@
+@import 'src/styles/variables.scss';
+.upload-w9-info{
+  display: flex;
+  padding-left: 50px;
+  padding-top: 10px;
+  gap: 10px;
+  align-items: center;
+}
+
+.upload-area {
+  padding: 20px;
+  display: flex;
+  min-height: 350px;
+  gap: 30px;
+}
+
+.drag-drop {
+  flex-basis: 40%;
+  margin-right: 10px;
+}
+
+.instructions-box {
+  margin-left: 20px;
+  flex-basis: 50%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  line-height: 1.6;
+}
+
+.instructions-box li {
+  margin-bottom: 8px; 
+}
+
+.instructions-box a {
+  color: #007bff; 
+  text-decoration: none; 
+}
+
+.instructions-box a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,66 @@
+<div class="security-settings">
+  <form [formGroup]="form" novalidate *ngIf="canEdit; else viewTemplate">
+    <card hideSeparator>
+      <card-col [labelWidth]="159" width="475">
+        <card-row label="Username" inputId="userName" [control]="form.get('userName')" required>
+          <div class="security-settings__user-name" cardValue>
+            <input type="text" class="form-control" formControlName="userName" id="userName" appAutoFocus required/>
+          </div>
+        </card-row>
+      </card-col>
+    </card>
+
+   <app-password-change [passwordForm]="passwordForm" labelWidth="159" width="475">
+   </app-password-change>
+   <div *ngIf="serverErrorService.hasWrongValue(passwordForm, 'confirmation')" class="control-message text-danger">
+    <div *ngFor="let error of serverErrorService.getFieldError(passwordForm, 'confirmation')">
+      {{ error }}
+    </div>
+  </div>
+  <ng-container *ngIf="userProfileSettings.mfaEnabled">
+    <card header="MFA">
+      <card-col [width]="mfaEditorEnabled ? 500 :427">
+        <card-row class="mfa" [labelWidth]="300" *ngIf="mfaEditorEnabled" [control]="form.get('mfa')">
+          <ng-container cardLabel>
+          <app-select 
+            id="mfaCountryCode" 
+            [options]="countriesPhoneCodes$ | async" 
+            formControlName="mfaCountryCode" 
+            cardValue 
+            fullwidth
+          ></app-select>
+          </ng-container>
+          <div class="card-row__content phone" cardValue>
+            <input type="text" mask="(000) 000-0000" formControlName="mfa" class="form-control" placeholder="Phone number" required>
+          </div>
+        </card-row>
+        <card-row *ngIf="!isMfaEdit && !mfaEditorEnabled && form.get('mfaWithCountryCode').value" [labelWidth]="159" label="Mobile Phone">
+          <div class="card-row__content mfa-removed" cardValue>
+            <span class="mfa-removed__value">{{'+' + form.controls.mfaWithCountryCode?.value}}</span>
+            <button *permissions="resetPermission" type="button" class="btn btn-secondary btn-icon btn-icon-remove btn-icon-remove-small mfa-removed__remove-btn" (click)="deleteMfa()"></button>
+          </div>
+        </card-row>
+      </card-col>
+    </card>
+    <app-trusted-device-list labelWidth="159" width="475" [devices]="userProfileSettings.trustedDevices" [canEdit]="true" (devicesChanged)="onDevicesChanged($event)">
+    </app-trusted-device-list>
+  </ng-container>
+  </form>
+</div>
+
+<ng-template #viewTemplate>
+  <card hideSeparator>
+    <card-col [labelWidth]="159" width="475">
+      <card-row  label="Username" [value]="userProfileSettings.userName"></card-row>
+      <card-row  label="Password" value="********"></card-row>
+    </card-col>
+  </card>
+  <ng-container *ngIf="userProfileSettings.mfaEnabled">
+    <card header="MFA">
+      <card-col [labelWidth]="159" width="475">
+         <card-row label="Mobile Phone:" [value]="userProfileSettings.hiddenMfa"></card-row>
+      </card-col>
+   </card>
+   <app-trusted-device-list labelWidth="159" width="475" [devices]="userProfileSettings.trustedDevices" [canEdit]="false"></app-trusted-device-list>
+  </ng-container>
+</ng-template>

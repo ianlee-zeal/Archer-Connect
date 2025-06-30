@@ -1,0 +1,11 @@
+<div class="page-content" *ngIf="item$ | async as item">
+  <app-documents-list
+      [entityTypeId]="entityTypeId"
+      [entityId]="item.id"
+			[documentTypeId]="deficiencyReportDocumentTypeId"
+			[showNewDocumentButton]="false"
+      [forOneEntityOnly]="true"
+      [gridId]="gridId"
+      (onActionBarUpdated)="onActionBarUpdated($event)">
+  </app-documents-list>
+</div>

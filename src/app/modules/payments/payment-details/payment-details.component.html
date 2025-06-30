@@ -1,0 +1,133 @@
+<div>
+  <app-stop-payment-request-details></app-stop-payment-request-details>
+</div>
+
+<div class="page-content" *ngIf="(payment$ | async) as payment">
+  <div class="page-content">
+    <card hideSeparator>
+      <card-col [width]="450" [labelWidth]="170">
+        <card-row label="Payee Name" [value]="truncatePayeeName(payment.payeeName).displayName" 
+        [attr.title]="truncatePayeeName(payment.payeeName).fullName"></card-row>
+        <card-row label="Payee ID" [value]="payment.payeeExternalId"></card-row>
+        <card-row label="Amount" [value]="payment.amount | extendedCurrency"></card-row>
+        <card-row label="Method" [value]="payment.paymentMethod?.name"></card-row>
+        <card-row label="Reference Number" [value]="payment.referenceNumber"></card-row>
+        <card-row label="Memo Reference" [value]="payment.memoReference"></card-row>
+        <card-row label="Disbursement Type" [value]="payment.disbursementType"></card-row>
+      </card-col>
+      <card-col [labelWidth]="194">
+        <card-row label="Status" [value]="payment.status"></card-row>
+        <card-row
+        label="Cleared Date"
+        [value]="payment.clearedDate | date: 'MMMM dd, yyyy hh:mm:ss aaa'"
+        title="The Date when Payment was moved to 'Cleared' status.">
+      </card-row>
+        <card-row
+          label="Date Submitted"
+          [value]="payment.dateSubmitted | date: 'MMMM dd, yyyy hh:mm:ss aaa'"
+          title="The Date the Payment was added to the Accounting System">
+        </card-row>
+        <card-row
+          label="Date Sent"
+          [value]="payment.dateSent | date: 'MMMM dd, yyyy hh:mm:ss aaa'"
+          title="The Date the Check Payment was mailed from the Payment provider">
+        </card-row>
+        <card-row
+          label="Date Modified"
+          [value]="payment.dateModified | date: 'MMMM dd, yyyy hh:mm:ss aaa'"
+          title="The Date the Payment was last Modified in the Payment Provider system">
+        </card-row>
+        <card-row
+          label="Voided By"
+          [value]="payment.voidedByUser?.displayName">
+        </card-row>
+        <card-row
+          label="Void Date"
+          [value]="payment.voidedDate | date: 'MMMM dd, yyyy hh:mm:ss aaa'"
+          title="The Date the Payment was voided">
+        </card-row>
+        <card-row label="Void Reason">
+          <quill-view [content]="payment.voidReason ?? '-'" cardValue class="form-control-plaintext quill-container"></quill-view>
+        </card-row>
+      </card-col>
+    </card>
+
+    <card hideSeparator>
+      <card-col [width]="450" [labelWidth]="170">
+        <card-row label="Address Line 1" [value]="payment.payeeAddress1"></card-row>
+        <card-row label="Address Line 2" [value]="payment.payeeAddress2"></card-row>
+        <card-row label="City" [value]="payment.payeeAddressCity"></card-row>
+        <card-row label="State" [value]="payment.payeeAddressState"></card-row>
+        <card-row label="Zip Code" [value]="payment.payeeAddressZip"></card-row>
+        <card-row label="Country" [value]="payment.payeeAddressCountry"></card-row>
+      </card-col>
+      <card-col [labelWidth]="194">
+        <card-row label="Description" [value]="payment.paymentDescriptionType"></card-row>
+        <card-row label="Stub Text" [value]="payment.memoText" valueClass="payment-details__stub-text"></card-row>
+      </card-col>
+    </card>
+
+    <div class="d-flex flex-wrap">
+      <div class="card-container">
+        <card [maxWidth]="445" header="Tracking">
+          <card-col [width]="475" [labelWidth]="163">
+            <card-row label="Postage Code" [value]="payment.postalCode?.name"></card-row>
+            <card-row label="Tracking Number">
+              <app-payments-tracking-link [providerCode]="payment.postalCode?.code" [trackingNumber]="payment.trackingNumber" cardValue></app-payments-tracking-link>
+            </card-row>
+          </card-col>
+        </card>
+      </div>
+      <card header="Digital Payments Details" [maxWidth]="445">
+        <card-col [width]="445" [labelWidth]="163">
+          <card-row label="Payment Provider" [value]="payment.acPaymentProvider?.name"></card-row>
+          <card-row label="Status" [value]="payment.paymentProviderStatusName"></card-row>
+          
+          <card-row label="Payment Method" [value]="showDigitalValue(payment.paymentProviderOption, payment.acPaymentProvider?.name)"></card-row>
+          <card-row label="Created Date" [value]="showDigitalValue(payment.digitalPaymentCreatedDate, payment.acPaymentProvider?.name) | date: 'MMMM dd, yyyy'" [tooltip]="digitalPaymentCreatedDateTooltip" [tooltipPosition]="tooltipPosition"></card-row>
+          <card-row label="Submitted Date" [value]="showDigitalValue(payment.digitalPaymentSubmittedDate, payment.acPaymentProvider?.name) | date: 'MMMM dd, yyyy'" [tooltip]="digitalPaymentSubmittedDateTooltip" [tooltipPosition]="tooltipPosition"></card-row>
+          <card-row label="Disbursed Date" [value]="showDigitalValue(payment.digitalPaymentDisbursedDate, payment.acPaymentProvider?.name) | date: 'MMMM dd, yyyy'" [tooltip]="digitalPaymentDisbursedDateTooltip" [tooltipPosition]="tooltipPosition"></card-row>
+          <card-row label="Finished Date" [value]="showDigitalValue(payment.digitalPaymentFinishedDate, payment.acPaymentProvider?.name) | date: 'MMMM dd, yyyy'" [tooltip]="digitalPaymentFinishedDateTooltip" [tooltipPosition]="tooltipPosition"></card-row>
+          <card-row label="Selection Deadline" [value]="showDigitalValue(payment.selectionDeadline, payment.acPaymentProvider?.name) | date: 'MMMM dd, yyyy'"></card-row>
+
+        </card-col>
+      </card>
+    </div>
+
+    <div class="d-flex flex-wrap">
+      <div class="card-container">
+        <card header="Payer Organization" [maxWidth]="445">
+          <card-col [width]="475" [labelWidth]="163">
+            <card-row label="ID" [value]="payment.payerAccount?.organization?.id"></card-row>
+            <card-row label="Name" [value]="payment.payerAccount?.organization?.name" containValue></card-row>
+            <card-row label="Tax ID" [value]="payment.payerAccount?.organization?.taxId"></card-row>
+          </card-col>
+        </card>
+      </div>
+
+      <card header="Bank Account" [maxWidth]="445">
+        <card-col [width]="445" [labelWidth]="163">
+          <card-row label="ID" [value]="payment.bankAccountId"></card-row>
+          <card-row label="Name" [value]="payment.bankAccountName"></card-row>
+          <card-row label="Bank Name" [value]="payment.bankName"></card-row>
+          <card-row label="Account Number" [value]="payment.hiddenBankAccountNumber"></card-row>
+        </card-col>
+      </card>
+    </div>
+
+    <card>
+      <card-col [width]="445" [labelWidth]="163">
+        <card-row label="Source" [value]="payment.dataSource?.name"></card-row>
+        <card-row label="Last Import Date" [value]="payment.dateModified | dateFormat : false : '' : '' : true"></card-row>
+      </card-col>
+    </card>
+
+    <card header="Accounting System Info">
+      <card-col [labelWidth]="220">
+        <card-row label="External Transaction ID" [value]="payment.externalTrxnId"></card-row>
+        <card-row label="Accounting System" [value]="payment.accountingSystem"></card-row>
+        <card-row label="Last Modified in Accounting System Date" [value]="payment.accountingSystemLastModifiedDate | date: 'MMMM dd, yyyy hh:mm:ss aaa'"></card-row>
+      </card-col>
+    </card>
+  </div>
+</div>

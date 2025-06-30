@@ -1,0 +1,21 @@
+<div class="page">
+  <app-action-bar [actionHandlers]="actionBarActionHandlers"></app-action-bar>
+  <app-context-bar [title]="'Persons Search'"></app-context-bar>
+  <div class="page-content">
+    <app-advanced-search 
+      *ngIf="showAdvancedSearch" 
+      [fields]="searchFields" 
+      [state]="searchState"
+      (onSearch)="advancedSearchSubmit()" >
+    </app-advanced-search>
+    <app-grid
+      [gridOptions]="gridOptions"
+      (gridReady)="gridReady($event)"
+      (loadData)="loadData($event)"
+      (newRecord)="addNewRecord()"
+      entityLabel="persons"
+      [skipSetContentHeight]="true"
+      [gridId]="gridId">
+    </app-grid>
+  </div>
+</div>

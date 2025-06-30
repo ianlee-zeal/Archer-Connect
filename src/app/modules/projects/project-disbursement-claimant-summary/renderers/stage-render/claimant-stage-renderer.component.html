@@ -1,0 +1,4 @@
+<div class="claimant-stage-renderer">
+  <img *ngIf="isPreviousStage" src="assets/svg/arrow-back.svg" />
+  <span [ngStyle]="{'marginLeft': isPreviousStage ? 'none' : '25px'}">{{ params.value }}</span>
+</div>

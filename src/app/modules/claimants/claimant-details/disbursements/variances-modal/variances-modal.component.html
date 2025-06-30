@@ -1,0 +1,19 @@
+<modal (close)="onClose()">
+  <modal-header>Variances</modal-header>
+
+  <modal-body>
+    <div class="modal-section">
+      <app-variances-list [claimantId]="claimantId" [disbursementGroupId]="disbursementGroupId"></app-variances-list>
+    </div>
+  </modal-body>
+
+  <modal-footer>
+    <button
+      type="button"
+      class="btn modal-footer__btn modal-footer__btn--primary net-allocation-details-modal__cancel-button"
+      (click)="onClose()"
+    >
+      Close
+    </button>
+  </modal-footer>
+</modal>

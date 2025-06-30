@@ -1,0 +1,32 @@
+@import "src/styles/variables.scss";
+
+
+table.deficiencies-widget-table {
+  border: #303030 1px solid;
+  border-bottom-width: 0;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+}
+.deficiencies-widget-table {
+  td {
+    align-items: center;
+    justify-content: center;
+  }
+
+  th {
+      background-color: #050041;
+      color: white;
+  }
+
+  .info {
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    span {
+      line-height: 30px;
+    }
+  }
+}

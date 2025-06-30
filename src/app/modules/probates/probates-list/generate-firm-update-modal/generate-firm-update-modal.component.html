@@ -1,0 +1,51 @@
+<modal (close)="modalService.hide()">
+    <modal-header>{{title}}</modal-header>
+
+    <modal-body>
+        <div class="modal-section">
+            <form [formGroup]="form" novalidate>
+                <card hideSeparator>
+                  <card-col [width]="470" [labelWidth]="200">
+                    <card-row
+                        labelWidth="200"
+                        label="Project"
+                        inputId="project"
+                        [control]="form.get('project')"
+                        alignContentVertically
+                        required>
+                        <app-text-input-button
+                            formControlName="project"
+                            id="project"
+                            propertyNameForInputText="name"
+                            cardValue
+                            placeholder="Select Project"
+                            (onClick)="onOpenProjectSelectModal()">
+                        </app-text-input-button>
+                    </card-row>
+                </card-col>
+                </card>
+            </form>
+        </div>
+    </modal-body>
+
+    <modal-footer>
+        <button 
+            type="button" 
+            class="btn modal-footer__btn modal-footer__btn--secondary"
+            (click)="onCancel()">
+                Cancel
+        </button>
+        <button 
+            type="submit" 
+            class="btn modal-footer__btn modal-footer__btn--primary"
+            asyncButton
+            [awaitedActionTypes]="awaitedActionTypes"
+            [ngClass]="{ disabled: isSaveDisabled }" 
+            [disabled]="isSaveDisabled" 
+            (asyncFinished)="onCancel"
+            (click)="onSave()">
+                <span class="spinner-border spinner-border-sm align-middle ms-1 hidden"></span>
+                Ok
+        </button>
+    </modal-footer>
+</modal>

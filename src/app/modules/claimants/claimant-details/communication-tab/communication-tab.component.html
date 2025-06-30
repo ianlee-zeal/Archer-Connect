@@ -1,0 +1,8 @@
+<div class="page-content" *ngIf="item$ | async as claimant">
+  <app-communication-list 
+    [entityId]="claimant.id" 
+    [entityType]="entityType" 
+    [parentSelector]="selector"
+    class="claimant-communication-tab">
+  </app-communication-list>
+</div>

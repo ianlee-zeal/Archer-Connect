@@ -1,0 +1,62 @@
+<div class="modal-section" *ngIf="this.state">
+    <form [formGroup]="form" (change)="onChanges()">
+        <card hideSeparator>
+            <card-col [width]="500" [labelWidth]="180">
+
+                <!-- Template Select -->
+                <card-row label="Template" inputId="template" [control]="form.get('template')" [maxContentWidth]="maxContentWidth" required>
+                    <app-select id="template" [options]="state.data.templateOptions" [model]="state.currentData.templateOption"
+                        class="form-control form-select-long" panel-class=""
+                        formControlName="template" (onModelChange)="onTemplateChange($event)" groupBy="group" cardValue optionAsValue>
+                    </app-select>
+                </card-row>
+
+                <!-- Output Type -->
+                <card-row [ngClass]="{'hide': !state.currentData.template?.outputTypeSupported || !form.get('template').value}"
+                  label="Draft or Publish" inputId="outputType" [control]="form.get('outputType')" [maxContentWidth]="maxContentWidth" required>
+                    <app-select id="outputType" [options]="state.data.outputTypeOptions"  [model]="state.currentData.outputTypeOption"
+                        class="form-control form-select-long" panel-class=""
+                        formControlName="outputType" (onModelChange)="onEditableFieldChange($event, this.formFields.outputType)" cardValue optionAsValue>
+                    </app-select>
+                </card-row>
+
+                <!-- Watermark -->
+                <card-row *ngIf="state.showWatermark" [ngClass]="{'hide': !state.currentData.template?.watermarkSupported || !form.get('template').value}"
+                  label="Watermark" inputId="watermark" [control]="form.get('watermark')" [maxContentWidth]="maxContentWidth">
+                    <input id="watermark" type="text" class="form-control form-control-long" formControlName="watermark"
+                        (change)="onEditableFieldChange($event, this.formFields.watermark)" cardValue />
+                </card-row>
+
+                <!-- Name Convention -->
+                <card-row *ngIf="!state.isSingleExportMode"  [ngClass]="{'hide': !state.currentData.template?.outputFileNamingConventionSupported || !form.get('template').value}"
+                  label="Naming" inputId="outputFileNamingConvention" [control]="form.get('outputFileNamingConvention')" [maxContentWidth]="maxContentWidth" required>
+                    <input id="outputFileNamingConvention" type="text" class="form-control form-control-long" formControlName="outputFileNamingConvention"
+                        (change)="onEditableFieldChange($event, this.formFields.outputFileNamingConvention)" (keyup)="updateValidationOnInput()" cardValue />
+                </card-row>
+
+                <!-- File Name -->
+                <card-row *ngIf="!state.isSingleExportMode" [ngClass]="{'hide': !state.currentData.template?.outputFileNameSupported || !form.get('template').value}"
+                  label="File Name" inputId="outputFileName" [control]="form.get('outputFileName')" [maxContentWidth]="maxContentWidth">
+                    <input id="outputFileName" type="text" class="form-control form-control-long" formControlName="outputFileName"
+                        (change)="onEditableFieldChange($event, this.formFields.outputFileName)" cardValue />
+                </card-row>
+
+                <!-- File Type -->
+                <card-row [ngClass]="{'hide': !state.currentData.template?.outputFileTypeSupported || !form.get('template').value}"
+                  label="File Type" inputId="outputFileType" [control]="form.get('outputFileType')" [maxContentWidth]="maxContentWidth" required>
+                    <app-select id="type" [options]="state.data.outputFileTypeOptions"  [model]="state.currentData.outputFileTypeOption"
+                        class="form-control form-select-long" panel-class=""
+                        formControlName="outputFileType" (onModelChange)="onEditableFieldChange($event, this.formFields.outputFileType)" cardValue optionAsValue>
+                    </app-select>
+                </card-row>
+
+                <!-- Organization Select -->
+                <!-- <card-row label="Organization" inputId="organization" [control]="form.get('organization')" required>
+                    <app-select id="organization" [options]="state.data.organizations" [model]="state.currentData.organization" formControlName="organization"
+                    (onModelChange)="onOrganizationChange($event)" cardValue fullwidth></app-select>
+                </card-row> -->
+
+            </card-col>
+        </card>
+    </form>
+</div>

@@ -1,0 +1,35 @@
+<div class="drop-container">
+  <div [className]="'drop-container__drop-zone ' + (valueClass || '')" appDragAndDrop (filesDropped)="onFilesDropped($event)" [stopPropagation]="stopPropagation" [multiple]="multiple" [onError]="onError">
+  <div>
+    <div *ngIf="!selectedFile && !error && !isSelectButtonInside">
+      <span>{{areaTitle}}</span>
+    </div>
+    <div *ngIf="!selectedFile && !error && isSelectButtonInside">
+      <button [className]="'btn btn-link ' + (btnValueClass || '')" type="button" (click)="multiple ? selectFilesInput.click() : selectFileInput.click()">{{ title }}</button>
+    </div>
+    <div *ngIf="selectedFile && !error">
+      <span class="fa fa-check-circle drop-container__icon drop-container__icon--success"></span>
+      <span>{{ selectedFile.name }} has been selected</span>
+    </div>
+    <div *ngIf="selectedFiles && selectedFiles.length">
+      <span class="fa fa-check-circle drop-container__icon drop-container__icon--success"></span>
+      <span>{{ selectedFiles.length }} {{ selectedFiles.length === 1 ? 'file' : 'files' }} has been selected</span>
+    </div>
+    <div *ngIf="error">
+      <span class="fa fa-times-circle drop-container__icon drop-container__icon--error"></span>
+      <span>{{ error }}</span>
+    </div>
+    <input type="file" #selectFileInput (change)="onFilesAdded(selectFileInput)" accept="{{ allowedTypesCSV }}" hidden />
+    <input type="file" #selectFilesInput (change)="onFilesAdded(selectFilesInput)" accept="{{ allowedTypesCSV }}" hidden multiple />
+  </div>
+</div>
+<div *ngIf="!isSelectButtonInside" class="drop-container__select-button">
+  <button class="btn btn-secondary" type="button" (click)="multiple ? selectFilesInput.click() : selectFileInput.click()">
+    {{ title }}
+  </button>
+  <ng-content #otherButtons></ng-content>
+</div>
+</div>
+
+
+

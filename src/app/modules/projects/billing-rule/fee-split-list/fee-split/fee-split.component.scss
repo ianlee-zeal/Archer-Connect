@@ -1,0 +1,17 @@
+.org-container {
+    display: flex;
+    align-items: center;
+
+    .org-select {
+        flex: 1 0 70%;
+    }
+
+    .fee-percentage {
+        text-align: end;
+        margin: 0 5px;
+    }
+}
+
+card {
+    margin-bottom: 15px;
+}

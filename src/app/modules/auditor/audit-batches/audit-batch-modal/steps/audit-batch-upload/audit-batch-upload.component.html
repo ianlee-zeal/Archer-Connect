@@ -1,0 +1,21 @@
+<div class="modal-section" *ngIf="!isOriginalFileUploaded; else validationTemplate">
+  <form [formGroup]="form" novalidate>
+    <card hideSeparator>
+      <card-col [labelWidth]="145">
+        <app-drag-and-drop 
+          class="drag-drop-modal" 
+          (filesSelected)="onFilesSelected($event)"
+          [allowedFileTypes]="allowedExtensions$ | async"
+          [selectedFile]="selectedFile"
+          cardValue>
+        </app-drag-and-drop>
+      </card-col>
+    </card>
+  </form>
+</div>
+  
+<ng-template #validationTemplate>
+  <app-upload-bulk-document-processing
+    [documentImport]="documentImport">
+  </app-upload-bulk-document-processing>
+</ng-template>

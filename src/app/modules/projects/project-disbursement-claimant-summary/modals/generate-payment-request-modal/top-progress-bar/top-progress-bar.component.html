@@ -1,0 +1,33 @@
+<div>
+  <p class="text-center">{{ message }}</p>
+  <div class="progress-container mb-4">
+    
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" [style.width]="progressWidth" [attr.aria-valuenow]="progressValue"
+        aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <div class="progress-container__count" *ngIf="progressTotalCount">{{progressCurrentCount}}/{{progressTotalCount}}</div>
+  </div>
+  <div *ngIf="statistics" class="result-table-element-container">
+    <div class="result-table-element">
+      <div class="result-table-element__column">Payments</div>
+      <div class="result-table-element__value">{{ statistics.Payments }}</div>
+    </div>
+    <div class="result-table-element">
+      <div class="result-table-element__column">Payment Items</div>
+      <div class="result-table-element__value">{{ statistics.PaymentItems }}</div>
+    </div>
+    <div class="result-table-element">
+      <div class="result-table-element__column">Critical Deficiencies</div>
+      <div class="result-table-element__value">{{ statistics.Errors }}</div>
+    </div>
+    <div class="result-table-element">
+      <div class="result-table-element__column">Warning Deficiencies</div>
+      <div class="result-table-element__value">{{ statistics.Deficiencies }}</div>
+    </div>
+    <div class="result-table-element">
+      <div class="result-table-element__column">Errors</div>
+      <div class="result-table-element__value">{{ statistics.LedgerEntryErrors }}</div>
+    </div>
+  </div>
+</div>

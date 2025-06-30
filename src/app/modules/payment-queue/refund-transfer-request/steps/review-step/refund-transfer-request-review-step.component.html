@@ -1,0 +1,36 @@
+<div class="refund-transfer-request-review-step__container">
+  <nav>
+    <div class="nav nav-tabs" id="results-nav-tab" role="tablist">
+      <a *ngFor="let item of tabsGroup" class="nav-item nav-link" [class.active]="isActiveTab(item)" id="{{item.tab}}-tab"
+        (click)="onChangeTab(item.tab)" data-toggle="tab" data-target="#{{item.tab}}">{{item.title}} ({{item.count}})
+        <div *ngIf="item.title === 'Errors' && item.count > 0" class="error__icon">
+          <img src="assets/images/warning-icon.png" title="Error" />
+        </div>
+      </a>
+      
+    </div>
+  </nav>
+  <div class="tab-content" id="review-nav-tab-content">
+    <app-refund-info-card [refundInfo]="refundInfo"></app-refund-info-card>
+    <div *ngFor="let item of tabsGroup" class="tab-pane fade show" [class.active]="isActiveTab(item)" id="{{item.tab}}">
+        <app-refund-transfer-request-summary-grid *ngIf="isActiveTab(item)" [tab]="activeTab" [batchAction]="batchAction" [documentTypeId]="documentTypeId">
+        </app-refund-transfer-request-summary-grid>
+        <app-tab-placeholder *ngIf="!previewFileDocId" [text]="'Loading...'">
+        </app-tab-placeholder>
+    </div>
+</div>
+</div>
+<div *ngIf="showNoteForm">
+ <form [formGroup]="form">
+  <card [maxWidth]="700" hideSeparator>
+      <card-col>
+            <card-row  label="Add a Note" [valuePaddingTop]="5" inputId="note" [control]="form.get('note')" required>
+              <quill-editor formControlName="note"
+                placeholder="Enter text here..."
+                cardValue>
+              </quill-editor>
+            </card-row>
+      </card-col>
+    </card>
+  </form>
+</div>
